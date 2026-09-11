@@ -1,0 +1,34 @@
+# ---- Market data (large, re-downloadable) — never commit ----
+data/
+*.parquet
+*.zip
+*.csv.gz
+*.data
+
+# ---- Secrets ----
+.env
+*.pem
+*.key
+
+# ---- Python ----
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# ---- Build / outputs ----
+build/
+dist/
+reports_out/
+checkpoints/
+*.pt
+*.ckpt
+
+# ---- Office temp files / OS ----
+~$*
+.DS_Store
+Thumbs.db
+desktop.ini

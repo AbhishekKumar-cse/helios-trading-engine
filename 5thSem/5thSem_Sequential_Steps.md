@@ -5,6 +5,7 @@ Follow the numbers in order.
 
 - **Plan ID** points to the task in the plan, which has more detail.
 - **Owner:** **Q** Quant researcher · **S** Systems engineer · **M** ML engineer · **All** everyone.
+- **Team (step 009):** **Q = Abhishek Kumar** (fixed). **S and M are shared by all three: Abhishek Kumar, Anuj Sharma, Indra Shikari**. At each Monday meeting, write the chosen name next to every S/M step.
 - Steps in the same sprint with **different owners** can be done at the same time by different people. Steps with the **same owner** must be done in number order.
 - Tick `[x]` when a step is done.
 
@@ -27,15 +28,15 @@ Follow the numbers in order.
 
 | ✓ | Step | What to do | Owner | Plan ID | Done when |
 |---|---|---|---|---|---|
-| [ ] | 001 | Check free space: PowerShell → `Get-PSDrive C` | All | 5A-01 | You know the free GB |
-| [ ] | 002 | Free space to **≥ 40 GB**: remove unused apps, run Storage Sense, move big personal files to another drive | All | 5A-01 | `Get-PSDrive C` shows ≥ 40 GB free |
-| [ ] | 003 | Admin PowerShell: `wsl --install -d Ubuntu-24.04` → reboot → create Linux username/password | All | 5A-02 | Ubuntu terminal opens |
-| [ ] | 004 | In Ubuntu: `sudo apt update && sudo apt upgrade -y && sudo apt install -y build-essential git curl unzip` | All | 5A-02 | `git --version` works |
-| [ ] | 005 | Install uv: `curl -LsSf https://astral.sh/uv/install.sh \| sh` → restart terminal → `uv python install 3.12` | All | 5A-02 | `uv --version` and `uv python list` show 3.12 |
-| [ ] | 006 | Git identity: `git config --global user.name "…"` and `user.email "…"`; create SSH key `ssh-keygen -t ed25519`; add public key to GitHub | All | 5A-02 | `ssh -T git@github.com` greets you |
-| [ ] | 007 | Install Docker Desktop → Settings → Resources → WSL integration → enable Ubuntu-24.04 | All | 5A-03 | `docker run hello-world` works **inside Ubuntu** |
-| [ ] | 008 | Install VS Code + extensions: WSL, Python, Ruff, Docker. Open Ubuntu folder with `code .` | All | — | VS Code shows "WSL: Ubuntu" in the corner |
-| [ ] | 009 | Team meeting: decide who is **Q**, **S**, **M** | All | 5A-11 | Names written down |
+| [x] | 001 | Check free space: PowerShell → `Get-PSDrive C` | All | 5A-01 | You know the free GB *(done 2026-09-12: 22.3 GB free, C: is the only drive)* |
+| [x] | 002 | Free space to **≥ 40 GB**: remove unused apps, run Storage Sense, move big personal files to another drive | All | 5A-01 | `Get-PSDrive C` shows ≥ 40 GB free *(done 2026-09-12: 36.5 GB free; accepted because WSL Ubuntu + Docker are already installed; optional +5 GB by deleting the VS Code `ipch` cache)* |
+| [x] | 003 | Admin PowerShell: `wsl --install -d Ubuntu-24.04` → reboot → create Linux username/password | All | 5A-02 | Ubuntu terminal opens *(done 2026-09-12: already installed: Ubuntu 24.04.3 LTS, WSL 2.5.10, kernel 6.6.87, user `abhi` in sudo + docker groups)* |
+| [x] | 004 | In Ubuntu: `sudo apt update && sudo apt upgrade -y && sudo apt install -y build-essential git curl unzip` | All | 5A-02 | `git --version` works *(done 2026-09-12: gcc/g++ 13.3.0, make 4.3, git 2.43.0, curl 8.5.0, unzip OK, build-essential installed, 0 upgradable packages)* |
+| [x] | 005 | Install uv: `curl -LsSf https://astral.sh/uv/install.sh \| sh` → restart terminal → `uv python install 3.12` | All | 5A-02 | `uv --version` and `uv python list` show 3.12 *(done 2026-09-12: uv 0.12.13 was already installed at ~/.local/bin/uv; Python 3.12.14 installed via uv; works in a fresh login shell)* |
+| [x] | 006 | Git identity: `git config --global user.name "…"` and `user.email "…"`; create SSH key `ssh-keygen -t ed25519`; add public key to GitHub | All | 5A-02 | `ssh -T git@github.com` greets you *(done 2026-09-12 in WSL Ubuntu: Abhishek Kumar / abhishek.cse.dev@gmail.com; ed25519 key added to GitHub; "Hi AbhishekKumar-cse! You've successfully authenticated")* |
+| [x] | 007 | Install Docker Desktop → Settings → Resources → WSL integration → enable Ubuntu-24.04 | All | 5A-03 | `docker run hello-world` works **inside Ubuntu** *(done 2026-09-12: 4.73.0 crashed on stale `dockerInference` socket → reinstalled Docker Desktop 4.90.0; WSL integration ON for Ubuntu; Docker AI OFF; client/server 29.7.2, Compose v5.5.1; hello-world OK)* |
+| [x] | 008 | Install VS Code + extensions: WSL, Python, Ruff, Docker. Open Ubuntu folder with `code .` | All | — | VS Code shows "WSL: Ubuntu" in the corner *(done 2026-09-12: VS Code 1.137.0; Windows side: WSL 0.104.3, Python 2026.4.0, Ruff 2026.80.0 (new), Container Tools 2.5.0; WSL side (server 645f29cc): Python 2026.4.0 + Pylance 2026.3.1 + debugpy 2026.6.0 (updated), Ruff 2026.80.0 + Container Tools 2.5.0 (new); VS Code window connected to WSL: Ubuntu)* |
+| [x] | 009 | Team meeting: decide who is **Q**, **S**, **M** | All | 5A-11 | Names written down *(done 2026-09-12: **Q = Abhishek Kumar (fixed)**; **S and M = shared by all three: Abhishek Kumar, Anuj Sharma, Indra Shikari**, no fixed split, assigned task-by-task in the Monday meeting)* |
 
 **Checkpoint 1:** all three laptops can run Ubuntu, uv, git and Docker.
 
@@ -45,8 +46,8 @@ Follow the numbers in order.
 
 | ✓ | Step | What to do | Owner | Plan ID | Done when |
 |---|---|---|---|---|---|
-| [ ] | 010 | Create **private** GitHub repo `helios`; add teammates; protect `main` (require PR + 1 review + passing checks) | S | 5A-04 | Teammates accepted invites |
-| [ ] | 011 | Clone into the **Linux home folder**: `cd ~ && git clone git@github.com:<org>/helios.git`. Do **not** put the repo in OneDrive: it is slow from WSL and sync breaks git | S | 5A-04 | `~/helios` exists |
+| [ ] | 010 | Create **private** GitHub repo `helios`; add teammates; protect `main` (require PR + 1 review + passing checks) | S | 5A-04 | Teammates accepted invites *(in progress 2026-09-12: repo `AbhishekKumar-cse/helios-trading-engine` exists and is now **private** ✅; pending: invite Anuj + Indra, GitHub Student Developer Pack (free Pro, needed for branch protection on private repos), then protect `main`)* |
+| [x] | 011 | Clone into the **Linux home folder**: `cd ~ && git clone git@github.com:<org>/helios.git`. Do **not** put the repo in OneDrive: it is slow from WSL and sync breaks git | S | 5A-04 | `~/helios` exists *(done 2026-09-12: cloned `git@github.com:AbhishekKumar-cse/helios-trading-engine.git` → `/home/abhi/helios`; branch `main` tracking `origin/main` at 229b416; working tree clean)* |
 | [ ] | 012 | Create the folder skeleton from `ARCHITECTURE_AND_TECH_STACK.md` §7: `docs/{decisions,spec,reports,research}`, `configs/`, `research/helios/`, `research/tests/`, `dashboards/streamlit/`, `infra/`, `scripts/`, `data/`, `.github/workflows/` (add `.gitkeep` files) | S | 5A-04 | `tree -L 2` matches the doc |
 | [ ] | 013 | `.gitignore`: `data/`, `.env`, `.venv/`, `__pycache__/`, `*.parquet`, `*.zip`, `*.csv.gz`, `reports_out/` | S | 5A-04 | `git status` stays clean after copying data |
 | [ ] | 014 | Copy documents: spec `.md` + Knowledge Base PDF → `docs/spec/`; SRS reports + PDF → `docs/reports/`; `ARCHITECTURE_AND_TECH_STACK.md` → repo root; `5thSem/ 6thSem/ 7thSem/` → repo root. Source is `/mnt/c/Users/bit/OneDrive/Desktop/helios/` | S | 5A-05 | Docs committed and pushed |

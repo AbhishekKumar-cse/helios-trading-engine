@@ -9,12 +9,16 @@ authors = [
     { name = "Indra Shikari" },
 ]
 dependencies = [
+    "alembic>=1.20.0",
     "duckdb>=1.5.5",
     "numpy>=2.5.3",
     "pandas>=3.0.5",
+    "psycopg[binary]>=3.3.5",
     "pyarrow>=25.0.1",
     "pydantic>=2.13.5",
+    "pydantic-settings>=2.15.0",
     "pyyaml>=6.0.3",
+    "sqlalchemy>=2.0.52",
 ]
 
 [build-system]

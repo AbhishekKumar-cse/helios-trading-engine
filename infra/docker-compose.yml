@@ -1,0 +1,49 @@
+# HELIOS local infrastructure (step 023)
+# Run from the project root in Ubuntu (Docker Desktop must be running):
+#   Start:  docker compose --env-file .env -f infra/docker-compose.yml up -d
+#   Status: docker compose --env-file .env -f infra/docker-compose.yml ps
+#   Stop:   docker compose --env-file .env -f infra/docker-compose.yml down
+# Database files live in the Docker volume "helios_pgdata" (not in OneDrive, not in git).
+# Ports are bound to 127.0.0.1, so the database is reachable only from this laptop.
+name: helios
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: helios-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?set POSTGRES_USER in .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:?set POSTGRES_DB in .env}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - helios_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  adminer:
+    image: adminer:5
+    container_name: helios-adminer
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+    ports:
+      - "127.0.0.1:${ADMINER_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@fsockopen('127.0.0.1', 8080) ? 0 : 1);"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  helios_pgdata:

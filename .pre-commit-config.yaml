@@ -1,0 +1,35 @@
+# HELIOS pre-commit hooks (step 019)
+# These checks run automatically before every commit made from Ubuntu / VS Code "WSL: Ubuntu".
+#   Install once per laptop:   uv run pre-commit install
+#   Run on everything now:     uv run pre-commit run --all-files
+# gitleaks must be installed in Ubuntu (~/.local/bin/gitleaks, official release binary).
+
+# Never auto-edit the source documents (SRS spec, reports)
+exclude: ^docs/(spec|reports)/
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: check-yaml
+      - id: check-toml
+      - id: check-added-large-files
+        args: [--maxkb=1024]
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.7 # keep equal to the ruff version in uv.lock
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: gitleaks
+        name: gitleaks (block passwords and secret keys)
+        entry: gitleaks git --pre-commit --redact --staged --verbose
+        language: system
+        pass_filenames: false

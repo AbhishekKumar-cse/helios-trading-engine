@@ -5,8 +5,14 @@ data/
 *.csv.gz
 *.data
 
+# ---- Exception: tiny test fixtures ARE committed (step 045) ----
+!research/tests/fixtures/
+!research/tests/fixtures/**
+
 # ---- Secrets ----
 .env
+.env.*
+!.env.example
 *.pem
 *.key
 
@@ -14,10 +20,14 @@ data/
 .venv/
 __pycache__/
 *.pyc
+*.egg-info/
 .pytest_cache/
+.hypothesis/
 .mypy_cache/
 .ruff_cache/
 .ipynb_checkpoints/
+.coverage
+htmlcov/
 
 # ---- Build / outputs ----
 build/

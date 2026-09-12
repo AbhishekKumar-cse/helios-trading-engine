@@ -5,7 +5,7 @@
 | **Period** | ~16 working weeks (5th sem, Jul–Dec 2026; implementation starts mid-Sep 2026). Adjust week numbers to your calendar. |
 | **Priority** | Priority 1: Alpha / Quant |
 | **Data** | Binance spot 1h (2017 →) and 1m klines · 5-coin universe BTC, ETH, SOL, BNB, XRP · FI-2010 (ML track) |
-| **Reference** | [../ARCHITECTURE_AND_TECH_STACK.md](../ARCHITECTURE_AND_TECH_STACK.md) · spec `HELIOS_SRS_and_System_Design_v1.md` |
+| **Reference** | [../ARCHITECTURE_AND_TECH_STACK.md](../ARCHITECTURE_AND_TECH_STACK.md) · spec [../docs/spec/HELIOS_SRS_and_System_Design_v1.md](../docs/spec/HELIOS_SRS_and_System_Design_v1.md) |
 | **Owners** | **Q** Quant researcher · **S** Systems engineer · **M** ML engineer |
 
 ## Goal of this semester

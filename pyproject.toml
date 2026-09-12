@@ -1,0 +1,61 @@
+[project]
+name = "helios"
+version = "0.1.0"
+description = "HELIOS: an alpha-driven quantitative trading system with fault-tolerant and low-latency trading infrastructure"
+requires-python = ">=3.12"
+authors = [
+    { name = "Abhishek Kumar" },
+    { name = "Anuj Sharma" },
+    { name = "Indra Shikari" },
+]
+dependencies = [
+    "duckdb>=1.5.5",
+    "numpy>=2.5.3",
+    "pandas>=3.0.5",
+    "pyarrow>=25.0.1",
+    "pydantic>=2.13.5",
+    "pyyaml>=6.0.3",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# The Python package lives in research/helios (see ARCHITECTURE_AND_TECH_STACK.md §7)
+[tool.hatch.build.targets.wheel]
+packages = ["research/helios"]
+
+[tool.pytest.ini_options]
+testpaths = ["research/tests"]
+
+# ---- ruff: code style + lint (step 018) ----
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["research"]
+# Only check real Python code, never the Python examples inside Markdown docs
+extend-exclude = ["*.md"]
+
+[tool.ruff.lint]
+# E/W = pycodestyle, F = pyflakes (real mistakes), I = import sorting,
+# B = bugbear (likely bugs), UP = modern Python syntax
+select = ["E", "W", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["helios"]
+
+# ---- mypy: strict type checking for the helios package (step 018) ----
+[tool.mypy]
+python_version = "3.12"
+strict = true
+mypy_path = "research"
+plugins = ["pydantic.mypy"]
+
+[dependency-groups]
+dev = [
+    "hypothesis>=6.168.0",
+    "mypy>=2.3.1",
+    "pre-commit>=4.6.2",
+    "pytest>=9.1.1",
+    "ruff>=0.16.7",
+]

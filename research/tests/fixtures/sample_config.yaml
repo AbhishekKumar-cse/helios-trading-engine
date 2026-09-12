@@ -1,0 +1,10 @@
+# Sample config used by research/tests/test_config.py (step 026).
+# Shaped like the real gate settings that arrive in configs/gates_v1.yaml (step 036).
+name: sample
+sharpe_min: 1.0
+fitness_min: 1.0
+turnover_min: 0.01
+turnover_max: 0.70
+symbols:
+  - BTCUSDT
+  - ETHUSDT

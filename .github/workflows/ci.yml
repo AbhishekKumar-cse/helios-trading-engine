@@ -1,0 +1,46 @@
+# HELIOS continuous integration (step 020)
+# GitHub runs these checks on a clean Linux machine for every push to main
+# and for every pull request. A red X means something must be fixed before merging.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: lint, types, tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+
+      - name: Install uv (same version as the team laptops)
+        uses: astral-sh/setup-uv@v10
+        with:
+          version: "0.12.13"
+          enable-cache: true
+
+      - name: Install Python 3.12 and exact dependencies from uv.lock
+        run: uv sync --locked
+
+      - name: Ruff lint
+        run: uv run ruff check .
+
+      - name: Ruff format check
+        run: uv run ruff format --check .
+
+      - name: Mypy (strict)
+        run: uv run mypy research/helios
+
+      - name: Pytest
+        run: uv run pytest -v

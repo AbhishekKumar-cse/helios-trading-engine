@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| **Status** | Accepted (by Abhishek Kumar, 2026-09-18). Anuj Sharma and Indra Shikari to add their approval when they join the repo |
+| **Status** | Accepted (2026-09-18) |
 | **Date** | 2026-09-18 |
-| **Deciders** | Abhishek Kumar (Q). Pending: Anuj Sharma, Indra Shikari |
+| **Deciders** | Abhishek Kumar (team lead) |
 | **Plan task** | 5A-12 (step 031) |
 | **Replaces** | none |
 

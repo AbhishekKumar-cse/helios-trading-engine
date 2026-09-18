@@ -18,3 +18,4 @@ memory, so nobody has to guess later why something is the way it is.
 | ADR | Title | Status | Date |
 |---|---|---|---|
 | [000](ADR-000-template.md) | Template | — | 2026-09-18 |
+| [001](ADR-001-tech-stack.md) | Technology stack and architecture | Accepted (1 of 3 approvals; teammates pending) | 2026-09-18 |

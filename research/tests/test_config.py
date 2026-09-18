@@ -5,7 +5,13 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from helios.common.config import ConfigError, HeliosConfig, load_config
+from helios.common.config import (
+    ConfigError,
+    HeliosConfig,
+    canonical_json,
+    config_hash,
+    load_config,
+)
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -81,3 +87,84 @@ def test_loaded_config_is_frozen() -> None:
     cfg = load_config(FIXTURES / "sample_config.yaml", SampleConfig)
     with pytest.raises(ValidationError):
         cfg.sharpe_min = 5.0  # type: ignore[misc]
+
+
+# ---------------------------------------------------------------- config_hash (step 027)
+
+SAMPLE_YAML = """\
+name: sample
+sharpe_min: 1.0
+fitness_min: 1.0
+turnover_min: 0.01
+turnover_max: 0.70
+symbols: [BTCUSDT, ETHUSDT]
+"""
+
+
+def test_canonical_json_is_sorted_and_compact() -> None:
+    cfg = load_config(FIXTURES / "sample_config.yaml", SampleConfig)
+    assert canonical_json(cfg) == (
+        '{"fitness_min":1.0,"name":"sample","sharpe_min":1.0,'
+        '"symbols":["BTCUSDT","ETHUSDT"],"turnover_max":0.7,"turnover_min":0.01}'
+    )
+
+
+def test_hash_is_sha256_hex_and_stable() -> None:
+    first = config_hash(load_config(FIXTURES / "sample_config.yaml", SampleConfig))
+    second = config_hash(load_config(FIXTURES / "sample_config.yaml", SampleConfig))
+    assert first == second
+    assert len(first) == 64
+    assert all(ch in "0123456789abcdef" for ch in first)
+
+
+def test_key_order_does_not_change_hash(tmp_path: Path) -> None:
+    reordered = """\
+symbols: [BTCUSDT, ETHUSDT]
+turnover_max: 0.70
+name: sample
+turnover_min: 0.01
+fitness_min: 1.0
+sharpe_min: 1.0
+"""
+    a = load_config(write(tmp_path, SAMPLE_YAML), SampleConfig)
+    b_file = tmp_path / "reordered.yaml"
+    b_file.write_text(reordered, encoding="utf-8")
+    b = load_config(b_file, SampleConfig)
+    assert config_hash(a) == config_hash(b)
+
+
+def test_formatting_and_comments_do_not_change_hash(tmp_path: Path) -> None:
+    styled = """\
+# same values, different writing style
+name: "sample"
+sharpe_min: 1
+fitness_min: 1.00
+turnover_min: 1.0e-2
+turnover_max: 0.7   # 70 percent
+symbols:
+  - BTCUSDT
+  - ETHUSDT
+"""
+    a = load_config(write(tmp_path, SAMPLE_YAML), SampleConfig)
+    b_file = tmp_path / "styled.yaml"
+    b_file.write_text(styled, encoding="utf-8")
+    b = load_config(b_file, SampleConfig)
+    assert config_hash(a) == config_hash(b)
+
+
+def test_value_change_changes_hash(tmp_path: Path) -> None:
+    a = load_config(write(tmp_path, SAMPLE_YAML), SampleConfig)
+    b_file = tmp_path / "changed.yaml"
+    b_file.write_text(SAMPLE_YAML.replace("sharpe_min: 1.0", "sharpe_min: 1.5"), encoding="utf-8")
+    b = load_config(b_file, SampleConfig)
+    assert config_hash(a) != config_hash(b)
+
+
+def test_list_order_changes_hash(tmp_path: Path) -> None:
+    a = load_config(write(tmp_path, SAMPLE_YAML), SampleConfig)
+    b_file = tmp_path / "swapped.yaml"
+    b_file.write_text(
+        SAMPLE_YAML.replace("[BTCUSDT, ETHUSDT]", "[ETHUSDT, BTCUSDT]"), encoding="utf-8"
+    )
+    b = load_config(b_file, SampleConfig)
+    assert config_hash(a) != config_hash(b)

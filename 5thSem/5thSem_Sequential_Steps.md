@@ -93,7 +93,7 @@ Follow the numbers in order.
 
 | ✓ | Step | What to do | Owner | Plan ID | Done when |
 |---|---|---|---|---|---|
-| [ ] | 039 | `scripts/download_binance.py`: CLI args `--symbol --interval --start YYYY-MM --end YYYY-MM`; builds monthly URLs | S | 5B-01 | `--dry-run` prints correct URLs |
+| [x] | 039 | `scripts/download_binance.py`: CLI args `--symbol --interval --start YYYY-MM --end YYYY-MM`; builds monthly URLs | S | 5B-01 | `--dry-run` prints correct URLs *(done 2026-09-20: logic in `research/helios/data/binance.py` (`Month`, `month_range`, `KlineFile` with url / checksum_url / path in the existing `data/binance/spot/klines_<interval>/` layout, `plan_klines`, `--symbol universe` expands configs/universe.yaml), thin CLI `scripts/download_binance.py`; `--dry-run` prints `exists`/`missing` per file; real dry-run: BTC 1h 2017-08→2026-08 = 109 planned, 109 on disk; universe 1m 2024-09→2026-08 = 120 planned, 24 on disk, 96 to download; 17 tests, no network; also fixed `.gitignore` `data/` → `/data/` (it was hiding the new `research/helios/data/` package); 84 passed)* |
 | [ ] | 040 | Add download with retries; skip file if already present; months that return 404 (before listing) are skipped with a log line | S | 5B-01 | Re-run downloads nothing new |
 | [ ] | 041 | Checksum: download `<file>.zip.CHECKSUM`, verify sha256, delete and retry on mismatch | S | 5B-01 | Test with a corrupted file |
 | [ ] | 042 | Verify checksums of the BTCUSDT files already in `data/` | S | 5B-01 | All OK |

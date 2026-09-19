@@ -1,5 +1,5 @@
 # ---- Market data (large, re-downloadable) — never commit ----
-data/
+/data/
 *.parquet
 *.zip
 *.csv.gz

@@ -1,5 +1,6 @@
-"""Tests for Binance kline downloads (steps 039-040). No real network access is used."""
+"""Tests for Binance kline downloads (steps 039-041). No real network access is used."""
 
+import hashlib
 import io
 import urllib.error
 from email.message import Message
@@ -10,6 +11,7 @@ import pytest
 from helios.data import binance
 from helios.data.binance import (
     BinanceDownloadError,
+    ChecksumMismatchError,
     DownloadStatus,
     KlineFile,
     Month,
@@ -17,9 +19,11 @@ from helios.data.binance import (
     fetch_to_file,
     main,
     month_range,
+    parse_checksum,
     plan_klines,
     resolve_symbols,
     run_downloads,
+    sha256_file,
 )
 
 
@@ -119,7 +123,10 @@ def test_bad_month_on_command_line(capsys: pytest.CaptureFixture[str]) -> None:
     assert "YYYY-MM" in capsys.readouterr().err
 
 
-# ---------------------------------------------------------------- downloading (step 040)
+# ---------------------------------------------------------------- downloading (040-041)
+
+PAYLOAD = b"zip-bytes"
+GOOD_SHA = hashlib.sha256(PAYLOAD).hexdigest()
 
 
 def http_error(code: int) -> urllib.error.HTTPError:
@@ -131,57 +138,123 @@ def kline(tmp_path: Path) -> KlineFile:
 
 
 class FakeFetch:
-    """Stands in for the network: raises the queued errors in order, then succeeds."""
+    """Stands in for the network: raises the queued errors in order, then writes `payloads`
+    in turn (the last one repeats)."""
 
-    def __init__(self, *errors: Exception, payload: bytes = b"zip-bytes") -> None:
+    def __init__(self, *errors: Exception, payloads: tuple[bytes, ...] = (PAYLOAD,)) -> None:
         self.errors = list(errors)
-        self.payload = payload
+        self.payloads = list(payloads)
         self.calls = 0
 
     def __call__(self, url: str, dest: Path) -> int:
         self.calls += 1
         if self.errors:
             raise self.errors.pop(0)
+        data = self.payloads.pop(0) if len(self.payloads) > 1 else self.payloads[0]
         dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_bytes(self.payload)
-        return len(self.payload)
+        dest.write_bytes(data)
+        return len(data)
+
+
+class FakeText:
+    """Serves the .CHECKSUM text (or raises the given error)."""
+
+    def __init__(self, sha: str = GOOD_SHA, error: Exception | None = None) -> None:
+        self.sha, self.error, self.calls = sha, error, 0
+
+    def __call__(self, url: str) -> str:
+        self.calls += 1
+        if self.error:
+            raise self.error
+        return f"{self.sha}  {url.rsplit('/', 1)[1].removesuffix('.CHECKSUM')}"
 
 
 def no_sleep(seconds: float) -> None:
     pass
 
 
-def test_download_success(tmp_path: Path) -> None:
-    fetch = FakeFetch()
-    status, _ = download_file(kline(tmp_path), fetch=fetch, sleep=no_sleep)
+def test_download_success_verifies_and_keeps_checksum(tmp_path: Path) -> None:
+    f = kline(tmp_path)
+    status, message = download_file(f, fetch=FakeFetch(), get_text=FakeText(), sleep=no_sleep)
     assert status is DownloadStatus.DOWNLOADED
-    assert kline(tmp_path).path.read_bytes() == b"zip-bytes"
+    assert "checksum OK" in message
+    assert f.path.read_bytes() == PAYLOAD
+    assert f.checksum_path.read_text().startswith(GOOD_SHA)
 
 
-def test_existing_file_is_skipped_without_network(tmp_path: Path) -> None:
+def test_verified_file_is_skipped_offline(tmp_path: Path) -> None:
     f = kline(tmp_path)
     f.path.parent.mkdir(parents=True)
-    f.path.write_bytes(b"old")
-    fetch = FakeFetch()
-    status, _ = download_file(f, fetch=fetch, sleep=no_sleep)
+    f.path.write_bytes(PAYLOAD)
+    f.checksum_path.write_text(f"{GOOD_SHA}  {f.filename}")
+    fetch, text = FakeFetch(), FakeText()
+    status, message = download_file(f, fetch=fetch, get_text=text, sleep=no_sleep)
     assert status is DownloadStatus.SKIPPED
-    assert fetch.calls == 0
-    assert f.path.read_bytes() == b"old"
+    assert "checksum OK" in message
+    assert (fetch.calls, text.calls) == (0, 0)  # no network at all
 
 
-def test_404_is_not_found_and_not_retried(tmp_path: Path) -> None:
-    fetch = FakeFetch(http_error(404))
-    status, message = download_file(kline(tmp_path), fetch=fetch, sleep=no_sleep)
+def test_existing_file_without_local_checksum_is_verified(tmp_path: Path) -> None:
+    f = kline(tmp_path)
+    f.path.parent.mkdir(parents=True)
+    f.path.write_bytes(PAYLOAD)
+    fetch, text = FakeFetch(), FakeText()
+    status, _ = download_file(f, fetch=fetch, get_text=text, sleep=no_sleep)
+    assert status is DownloadStatus.SKIPPED
+    assert (fetch.calls, text.calls) == (0, 1)
+    assert f.checksum_path.is_file()
+
+
+def test_damaged_file_on_disk_is_replaced(tmp_path: Path) -> None:
+    f = kline(tmp_path)
+    f.path.parent.mkdir(parents=True)
+    f.path.write_bytes(b"corrupted")
+    status, message = download_file(f, fetch=FakeFetch(), get_text=FakeText(), sleep=no_sleep)
+    assert status is DownloadStatus.DOWNLOADED
+    assert "replaced a damaged file" in message
+    assert f.path.read_bytes() == PAYLOAD
+
+
+def test_mismatch_after_download_is_retried(tmp_path: Path) -> None:
+    f = kline(tmp_path)
+    fetch = FakeFetch(payloads=(b"bad-bytes", PAYLOAD))
+    waits: list[float] = []
+    status, _ = download_file(f, fetch=fetch, get_text=FakeText(), sleep=waits.append)
+    assert status is DownloadStatus.DOWNLOADED
+    assert fetch.calls == 2
+    assert waits == [2.0]
+
+
+def test_persistent_mismatch_fails_and_leaves_no_file(tmp_path: Path) -> None:
+    f = kline(tmp_path)
+    fetch = FakeFetch(payloads=(b"always-bad",))
+    status, message = download_file(f, retries=2, fetch=fetch, get_text=FakeText(), sleep=no_sleep)
+    assert status is DownloadStatus.FAILED
+    assert "ChecksumMismatchError" in message
+    assert fetch.calls == 3
+    assert not f.path.exists()
+
+
+def test_checksum_404_means_month_not_found(tmp_path: Path) -> None:
+    fetch = FakeFetch()
+    status, message = download_file(
+        kline(tmp_path), fetch=fetch, get_text=FakeText(error=http_error(404)), sleep=no_sleep
+    )
     assert status is DownloadStatus.NOT_FOUND
     assert "404" in message
-    assert fetch.calls == 1
+    assert fetch.calls == 0
 
 
 def test_network_errors_are_retried_with_growing_waits(tmp_path: Path) -> None:
     waits: list[float] = []
     fetch = FakeFetch(urllib.error.URLError("reset"), TimeoutError(), http_error(503))
     status, _ = download_file(
-        kline(tmp_path), retries=4, backoff_seconds=2.0, fetch=fetch, sleep=waits.append
+        kline(tmp_path),
+        retries=4,
+        backoff_seconds=2.0,
+        fetch=fetch,
+        get_text=FakeText(),
+        sleep=waits.append,
     )
     assert status is DownloadStatus.DOWNLOADED
     assert fetch.calls == 4
@@ -190,7 +263,9 @@ def test_network_errors_are_retried_with_growing_waits(tmp_path: Path) -> None:
 
 def test_gives_up_after_all_retries(tmp_path: Path) -> None:
     fetch = FakeFetch(*[urllib.error.URLError("down")] * 10)
-    status, message = download_file(kline(tmp_path), retries=2, fetch=fetch, sleep=no_sleep)
+    status, message = download_file(
+        kline(tmp_path), retries=2, fetch=fetch, get_text=FakeText(), sleep=no_sleep
+    )
     assert status is DownloadStatus.FAILED
     assert fetch.calls == 3
     assert "URLError" in message
@@ -199,9 +274,22 @@ def test_gives_up_after_all_retries(tmp_path: Path) -> None:
 
 def test_client_error_other_than_404_is_not_retried(tmp_path: Path) -> None:
     fetch = FakeFetch(http_error(403))
-    status, _ = download_file(kline(tmp_path), fetch=fetch, sleep=no_sleep)
+    status, _ = download_file(kline(tmp_path), fetch=fetch, get_text=FakeText(), sleep=no_sleep)
     assert status is DownloadStatus.FAILED
     assert fetch.calls == 1
+
+
+def test_parse_checksum() -> None:
+    assert parse_checksum(f"{GOOD_SHA.upper()}  a.zip", "a.zip") == GOOD_SHA
+    for bad in ("", f"{GOOD_SHA}  other.zip", "xyz  a.zip", f"{GOOD_SHA} a.zip extra"):
+        with pytest.raises(ChecksumMismatchError):
+            parse_checksum(bad, "a.zip")
+
+
+def test_sha256_file_matches_hashlib(tmp_path: Path) -> None:
+    p = tmp_path / "big.bin"
+    p.write_bytes(b"a" * (2 * binance.CHUNK_BYTES + 7))
+    assert sha256_file(p) == hashlib.sha256(p.read_bytes()).hexdigest()
 
 
 class FakeResponse(io.BytesIO):

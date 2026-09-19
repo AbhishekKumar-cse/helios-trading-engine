@@ -12,12 +12,15 @@ Files are saved in the layout already used in `data/`:
 - Step 039: build the list of monthly URLs and target paths, and show them with `--dry-run`.
 - Step 040: download with retries; files already on disk are skipped; months Binance does not
   have (HTTP 404, e.g. before a coin was listed) are skipped and reported.
-- Step 041: checks the SHA-256 checksums.
+- Step 041: every file is checked against Binance's SHA-256 checksum (kept next to the zip as
+  `<file>.zip.CHECKSUM`, so later checks work offline). Damaged files are re-downloaded,
+  and files already on disk are verified too.
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import re
 import sys
 import time
@@ -101,6 +104,11 @@ class KlineFile:
     def path(self) -> Path:
         return self.data_dir / "binance" / "spot" / f"klines_{self.interval}" / self.filename
 
+    @property
+    def checksum_path(self) -> Path:
+        """Local copy of Binance's .CHECKSUM file, kept next to the zip."""
+        return self.path.with_name(self.filename + ".CHECKSUM")
+
 
 def plan_klines(
     symbols: Sequence[str],
@@ -129,9 +137,16 @@ CHUNK_BYTES = 1024 * 1024
 
 class DownloadStatus(StrEnum):
     DOWNLOADED = "downloaded"
-    SKIPPED = "skipped"  # already on disk
+    SKIPPED = "skipped"  # already on disk and its checksum matches
     NOT_FOUND = "not-found"  # Binance has no file for this month (HTTP 404)
     FAILED = "failed"  # still failing after all retries
+
+
+class ChecksumMismatchError(Exception):
+    """The downloaded file's SHA-256 differs from Binance's published checksum."""
+
+
+_SHA256_HEX = re.compile(r"^[0-9a-f]{64}$")
 
 
 def fetch_to_file(url: str, dest: Path, timeout: float = 60.0) -> int:
@@ -156,9 +171,47 @@ def fetch_to_file(url: str, dest: Path, timeout: float = 60.0) -> int:
 
 
 def _is_retryable(exc: Exception) -> bool:
+    if isinstance(exc, ChecksumMismatchError):
+        return True  # damaged in transit: download again
     if isinstance(exc, urllib.error.HTTPError):
         return exc.code >= 500 or exc.code == 429  # server error or "too many requests"
     return isinstance(exc, (urllib.error.URLError, TimeoutError, ConnectionError, OSError))
+
+
+def fetch_text(url: str, timeout: float = 30.0) -> str:
+    """Download a small text file (such as a .CHECKSUM) and return its content."""
+    request = Request(url, headers={"User-Agent": USER_AGENT})
+    with urlopen(request, timeout=timeout) as response:
+        data: bytes = response.read()
+    return data.decode("ascii")
+
+
+def parse_checksum(text: str, filename: str) -> str:
+    """Read a Binance .CHECKSUM file: '<64 hex characters>  <filename>'."""
+    parts = text.split()
+    if len(parts) != 2 or parts[1] != filename or not _SHA256_HEX.match(parts[0].lower()):
+        raise ChecksumMismatchError(f"unexpected .CHECKSUM content for {filename}: {text!r}")
+    return parts[0].lower()
+
+
+def sha256_file(path: Path) -> str:
+    """SHA-256 of a file, read in chunks (works for files larger than memory)."""
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        while chunk := handle.read(CHUNK_BYTES):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def expected_checksum(f: KlineFile, get_text: Callable[[str], str] = fetch_text) -> str:
+    """Binance's checksum for `f`: from the local copy if present, else downloaded and saved."""
+    if f.checksum_path.is_file():
+        return parse_checksum(f.checksum_path.read_text(encoding="ascii"), f.filename)
+    text = get_text(f.checksum_url)
+    expected = parse_checksum(text, f.filename)  # validate before saving
+    f.checksum_path.parent.mkdir(parents=True, exist_ok=True)
+    f.checksum_path.write_text(text, encoding="ascii")
+    return expected
 
 
 def download_file(
@@ -167,17 +220,34 @@ def download_file(
     retries: int = 4,
     backoff_seconds: float = 2.0,
     fetch: Callable[[str, Path], int] = fetch_to_file,
+    get_text: Callable[[str], str] = fetch_text,
     sleep: Callable[[float], None] = time.sleep,
 ) -> tuple[DownloadStatus, str]:
-    """Download one monthly file. Returns (status, short message). Never raises for network
-    problems: they become FAILED after `retries` extra attempts with growing waits."""
-    if f.path.is_file():
-        return DownloadStatus.SKIPPED, "already on disk"
+    """Make sure one monthly file is on disk and matches Binance's SHA-256 checksum.
 
+    - File already on disk and checksum matches: SKIPPED.
+    - File missing, or on disk but damaged: (re)download, then check the checksum.
+    - A checksum mismatch after download deletes the file and counts as a failed attempt.
+    - Network problems are retried with growing waits; never raises for them.
+    """
+    replaced = False
     for attempt in range(retries + 1):
         try:
+            expected = expected_checksum(f, get_text)
+            if f.path.is_file():
+                if sha256_file(f.path) == expected:
+                    return DownloadStatus.SKIPPED, "already on disk, checksum OK"
+                f.path.unlink()
+                replaced = True
             size = fetch(f.url, f.path)
-            return DownloadStatus.DOWNLOADED, f"{size / 1e6:.1f} MB"
+            actual = sha256_file(f.path)
+            if actual != expected:
+                f.path.unlink()
+                raise ChecksumMismatchError(
+                    f"got sha256 {actual[:12]}..., expected {expected[:12]}..."
+                )
+            note = ", replaced a damaged file" if replaced else ""
+            return DownloadStatus.DOWNLOADED, f"{size / 1e6:.1f} MB, checksum OK{note}"
         except urllib.error.HTTPError as exc:
             if exc.code == 404:
                 return DownloadStatus.NOT_FOUND, "Binance has no file for this month (404)"

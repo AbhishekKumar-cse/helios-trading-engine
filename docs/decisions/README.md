@@ -22,3 +22,4 @@ memory, so nobody has to guess later why something is the way it is.
 | [002](ADR-002-fitness-formula.md) | Fitness formula (gate G2), floor 0.125 | Accepted | 2026-09-19 |
 | [003](ADR-003-horizon-families.md) | Horizon families and daily-aggregated Sharpe | Accepted | 2026-09-20 |
 | [004](ADR-004-split-dates.md) | Train / validation / test split dates | Accepted | 2026-09-20 |
+| [005](ADR-005-fees-and-slippage.md) | Trading fees and slippage assumptions | Accepted | 2026-09-20 |

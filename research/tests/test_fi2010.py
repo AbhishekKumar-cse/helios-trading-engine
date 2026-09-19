@@ -13,11 +13,15 @@ import pytest
 from helios.ml.fi2010 import (
     DEFAULT_ZIP,
     FI2010_ROWS,
+    LABEL_HORIZONS,
+    LABEL_VALUES,
     TEST_FILES,
     TRAIN_FILE,
     FI2010Error,
     list_files,
+    load,
     read_matrix,
+    split_matrix,
 )
 
 
@@ -76,3 +80,66 @@ def test_real_day10_file() -> None:
     assert m.shape == (FI2010_ROWS, 31937)
     labels = m[-5:]
     assert set(np.unique(labels)) <= {1.0, 2.0, 3.0}
+
+
+# ---------------------------------------------------------------- step 038: split
+
+
+def fake_matrix(n: int) -> np.ndarray:
+    """149 x n matrix: row r holds the value r (so we can see which rows went where),
+    except the 5 label rows, which cycle through 1, 2, 3."""
+    m = np.repeat(np.arange(FI2010_ROWS, dtype=np.float64)[:, None], n, axis=1)
+    m[-5:] = (np.arange(5 * n).reshape(5, n) % 3) + 1
+    return m
+
+
+def test_split_shapes_and_orientation() -> None:
+    data = split_matrix(fake_matrix(7))
+    assert data.n_events == 7
+    assert data.lob.shape == (7, 40)
+    assert data.features.shape == (7, 104)
+    assert data.labels.shape == (7, 5)
+    # rows 0-39 -> lob columns, rows 40-143 -> feature columns
+    np.testing.assert_array_equal(data.lob[0], np.arange(40))
+    np.testing.assert_array_equal(data.features[0], np.arange(40, 144))
+    assert data.labels.dtype == np.int8
+
+
+def test_labels_for_each_horizon() -> None:
+    m = fake_matrix(4)
+    data = split_matrix(m)
+    for i, k in enumerate(LABEL_HORIZONS):
+        np.testing.assert_array_equal(data.labels_for(k), m[144 + i].astype(np.int8))
+    with pytest.raises(FI2010Error, match="horizon must be one of"):
+        data.labels_for(15)
+
+
+def test_bad_label_value_is_rejected() -> None:
+    m = fake_matrix(3)
+    m[-1, 0] = 4.0
+    with pytest.raises(FI2010Error, match="labels must be 1, 2 or 3"):
+        split_matrix(m)
+
+
+def test_wrong_shape_is_rejected() -> None:
+    with pytest.raises(FI2010Error, match="149 rows"):
+        split_matrix(np.ones((40, 3)))
+
+
+def test_load_reads_and_splits(tmp_path: Path) -> None:
+    zip_path = make_zip(tmp_path, TRAIN_FILE, fake_matrix(3))
+    data = load(TRAIN_FILE, zip_path)
+    assert data.lob.shape == (3, 40)
+
+
+@pytest.mark.skipif(not DEFAULT_ZIP.is_file(), reason="FI-2010 dataset not downloaded")
+def test_real_day10_split() -> None:
+    data = load("Test_Dst_NoAuction_DecPre_CF_9.txt")
+    assert (data.lob.shape, data.features.shape, data.labels.shape) == (
+        (31937, 40),
+        (31937, 104),
+        (31937, 5),
+    )
+    assert set(np.unique(data.labels).tolist()) <= set(LABEL_VALUES)
+    # level-1 ask price must not be below level-1 bid price (normalised, but order kept)
+    assert (data.lob[:, 0] >= data.lob[:, 2]).mean() > 0.99

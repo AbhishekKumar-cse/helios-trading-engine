@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import io
 import zipfile
+from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
@@ -70,3 +71,62 @@ def read_matrix(member: str, zip_path: Path = DEFAULT_ZIP) -> Matrix:
     if not np.isfinite(matrix).all():
         raise FI2010Error(f"{member}: contains NaN or infinite values")
     return matrix
+
+
+# ---------------------------------------------------------------- step 038: split the matrix
+
+LOB_ROWS = slice(0, 40)  # 10 levels x (ask price, ask volume, bid price, bid volume)
+FEATURE_ROWS = slice(40, 144)  # 104 hand-made features
+LABEL_ROWS = slice(144, 149)  # 5 label rows
+LABEL_HORIZONS = (10, 20, 30, 50, 100)  # events ahead, one per label row
+LABEL_VALUES = (1, 2, 3)  # 1 = up, 2 = stationary, 3 = down
+
+Labels = npt.NDArray[np.int8]
+
+
+@dataclass(frozen=True)
+class FI2010Data:
+    """One FI-2010 file split into its parts, with one row per event (samples first).
+
+    - lob:      (n_events, 40)  order book, level by level: ask price, ask volume,
+                                bid price, bid volume (level 1 first)
+    - features: (n_events, 104) hand-made features from the FI-2010 paper
+    - labels:   (n_events, 5)   mid-price direction 10/20/30/50/100 events ahead,
+                                1 = up, 2 = stationary, 3 = down
+    """
+
+    lob: Matrix
+    features: Matrix
+    labels: Labels
+
+    @property
+    def n_events(self) -> int:
+        return int(self.lob.shape[0])
+
+    def labels_for(self, horizon: int) -> Labels:
+        """Label column for one horizon (10, 20, 30, 50 or 100 events ahead)."""
+        if horizon not in LABEL_HORIZONS:
+            raise FI2010Error(f"horizon must be one of {LABEL_HORIZONS}, got {horizon}")
+        return self.labels[:, LABEL_HORIZONS.index(horizon)]
+
+
+def split_matrix(matrix: Matrix) -> FI2010Data:
+    """Split a (149, n_events) FI-2010 matrix into order book, features and labels."""
+    if matrix.ndim != 2 or matrix.shape[0] != FI2010_ROWS:
+        raise FI2010Error(f"expected a matrix with {FI2010_ROWS} rows, got shape {matrix.shape}")
+
+    raw_labels = matrix[LABEL_ROWS]
+    if not np.isin(raw_labels, LABEL_VALUES).all():
+        bad = np.unique(raw_labels[~np.isin(raw_labels, LABEL_VALUES)])
+        raise FI2010Error(f"labels must be 1, 2 or 3; found {bad[:5].tolist()}")
+
+    return FI2010Data(
+        lob=np.ascontiguousarray(matrix[LOB_ROWS].T),
+        features=np.ascontiguousarray(matrix[FEATURE_ROWS].T),
+        labels=np.ascontiguousarray(raw_labels.T).astype(np.int8),
+    )
+
+
+def load(member: str, zip_path: Path = DEFAULT_ZIP) -> FI2010Data:
+    """Read one FI-2010 file and split it (`read_matrix` + `split_matrix`)."""
+    return split_matrix(read_matrix(member, zip_path))

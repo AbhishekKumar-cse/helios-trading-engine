@@ -19,3 +19,4 @@ memory, so nobody has to guess later why something is the way it is.
 |---|---|---|---|
 | [000](ADR-000-template.md) | Template | — | 2026-09-18 |
 | [001](ADR-001-tech-stack.md) | Technology stack and architecture | Accepted | 2026-09-18 |
+| [002](ADR-002-fitness-formula.md) | Fitness formula (gate G2), floor 0.125 | Accepted | 2026-09-19 |

@@ -1,17 +1,25 @@
-"""Tests for planning Binance kline downloads (step 039). No network access is used."""
+"""Tests for Binance kline downloads (steps 039-040). No real network access is used."""
 
+import io
+import urllib.error
+from email.message import Message
 from pathlib import Path
 
 import pytest
 
+from helios.data import binance
 from helios.data.binance import (
     BinanceDownloadError,
+    DownloadStatus,
     KlineFile,
     Month,
+    download_file,
+    fetch_to_file,
     main,
     month_range,
     plan_klines,
     resolve_symbols,
+    run_downloads,
 )
 
 
@@ -103,17 +111,145 @@ def test_dry_run_prints_plan(tmp_path: Path, capsys: pytest.CaptureFixture[str])
     assert "2 files planned: 1 already on disk, 1 to download" in out
 
 
-def test_without_dry_run_refuses_until_step_040(capsys: pytest.CaptureFixture[str]) -> None:
-    code = main(
-        ["--symbol", "BTCUSDT", "--interval", "1h", "--start", "2026-08", "--end", "2026-08"]
-    )
-    assert code == 2
-    assert "step 040" in capsys.readouterr().err
-
-
 def test_bad_month_on_command_line(capsys: pytest.CaptureFixture[str]) -> None:
     code = main(
         ["--symbol", "BTCUSDT", "--interval", "1h", "--start", "2026-8", "--end", "2026-08"]
     )
     assert code == 2
     assert "YYYY-MM" in capsys.readouterr().err
+
+
+# ---------------------------------------------------------------- downloading (step 040)
+
+
+def http_error(code: int) -> urllib.error.HTTPError:
+    return urllib.error.HTTPError("https://x", code, "error", Message(), io.BytesIO())
+
+
+def kline(tmp_path: Path) -> KlineFile:
+    return KlineFile("BTCUSDT", "1h", Month(2026, 8), tmp_path)
+
+
+class FakeFetch:
+    """Stands in for the network: raises the queued errors in order, then succeeds."""
+
+    def __init__(self, *errors: Exception, payload: bytes = b"zip-bytes") -> None:
+        self.errors = list(errors)
+        self.payload = payload
+        self.calls = 0
+
+    def __call__(self, url: str, dest: Path) -> int:
+        self.calls += 1
+        if self.errors:
+            raise self.errors.pop(0)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(self.payload)
+        return len(self.payload)
+
+
+def no_sleep(seconds: float) -> None:
+    pass
+
+
+def test_download_success(tmp_path: Path) -> None:
+    fetch = FakeFetch()
+    status, _ = download_file(kline(tmp_path), fetch=fetch, sleep=no_sleep)
+    assert status is DownloadStatus.DOWNLOADED
+    assert kline(tmp_path).path.read_bytes() == b"zip-bytes"
+
+
+def test_existing_file_is_skipped_without_network(tmp_path: Path) -> None:
+    f = kline(tmp_path)
+    f.path.parent.mkdir(parents=True)
+    f.path.write_bytes(b"old")
+    fetch = FakeFetch()
+    status, _ = download_file(f, fetch=fetch, sleep=no_sleep)
+    assert status is DownloadStatus.SKIPPED
+    assert fetch.calls == 0
+    assert f.path.read_bytes() == b"old"
+
+
+def test_404_is_not_found_and_not_retried(tmp_path: Path) -> None:
+    fetch = FakeFetch(http_error(404))
+    status, message = download_file(kline(tmp_path), fetch=fetch, sleep=no_sleep)
+    assert status is DownloadStatus.NOT_FOUND
+    assert "404" in message
+    assert fetch.calls == 1
+
+
+def test_network_errors_are_retried_with_growing_waits(tmp_path: Path) -> None:
+    waits: list[float] = []
+    fetch = FakeFetch(urllib.error.URLError("reset"), TimeoutError(), http_error(503))
+    status, _ = download_file(
+        kline(tmp_path), retries=4, backoff_seconds=2.0, fetch=fetch, sleep=waits.append
+    )
+    assert status is DownloadStatus.DOWNLOADED
+    assert fetch.calls == 4
+    assert waits == [2.0, 4.0, 8.0]
+
+
+def test_gives_up_after_all_retries(tmp_path: Path) -> None:
+    fetch = FakeFetch(*[urllib.error.URLError("down")] * 10)
+    status, message = download_file(kline(tmp_path), retries=2, fetch=fetch, sleep=no_sleep)
+    assert status is DownloadStatus.FAILED
+    assert fetch.calls == 3
+    assert "URLError" in message
+    assert not kline(tmp_path).path.exists()
+
+
+def test_client_error_other_than_404_is_not_retried(tmp_path: Path) -> None:
+    fetch = FakeFetch(http_error(403))
+    status, _ = download_file(kline(tmp_path), fetch=fetch, sleep=no_sleep)
+    assert status is DownloadStatus.FAILED
+    assert fetch.calls == 1
+
+
+class FakeResponse(io.BytesIO):
+    def __enter__(self) -> "FakeResponse":
+        return self
+
+    def __exit__(self, *args: object) -> None:
+        self.close()
+
+
+def test_fetch_to_file_streams_and_leaves_no_part_file(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    data = b"x" * (3 * binance.CHUNK_BYTES + 5)
+    monkeypatch.setattr(binance, "urlopen", lambda req, timeout: FakeResponse(data))
+    dest = tmp_path / "sub" / "file.zip"
+    assert fetch_to_file("https://example.invalid/file.zip", dest) == len(data)
+    assert dest.read_bytes() == data
+    assert not (tmp_path / "sub" / "file.zip.part").exists()
+
+
+def test_interrupted_download_leaves_nothing(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    class Broken(FakeResponse):
+        def read(self, size: int | None = -1) -> bytes:
+            raise ConnectionResetError("dropped")
+
+    monkeypatch.setattr(binance, "urlopen", lambda req, timeout: Broken(b""))
+    dest = tmp_path / "file.zip"
+    with pytest.raises(ConnectionResetError):
+        fetch_to_file("https://example.invalid/file.zip", dest)
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_run_downloads_summary_and_exit_code(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    files = plan_klines(["BTCUSDT"], "1h", Month(2026, 6), Month(2026, 8), tmp_path)
+    outcomes = iter(
+        [
+            (DownloadStatus.DOWNLOADED, "1.0 MB"),
+            (DownloadStatus.NOT_FOUND, "404"),
+            (DownloadStatus.FAILED, "URLError"),
+        ]
+    )
+    monkeypatch.setattr(binance, "download_file", lambda f, retries: next(outcomes))
+    assert run_downloads(files) == 1
+    out = capsys.readouterr().out
+    assert "[1/3] downloaded" in out and "[3/3] failed" in out
+    assert "done: 1 downloaded, 0 skipped, 1 not-found, 1 failed" in out

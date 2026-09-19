@@ -9,8 +9,10 @@ Files are saved in the layout already used in `data/`:
 
     data/binance/spot/klines_1h/BTCUSDT-1h-2026-08.zip
 
-Step 039 (this file so far): build the list of monthly URLs and target paths, and show them
-with `--dry-run`. Step 040 adds the download with retries; step 041 checks the checksums.
+- Step 039: build the list of monthly URLs and target paths, and show them with `--dry-run`.
+- Step 040: download with retries; files already on disk are skipped; months Binance does not
+  have (HTTP 404, e.g. before a coin was listed) are skipped and reported.
+- Step 041: checks the SHA-256 checksums.
 """
 
 from __future__ import annotations
@@ -18,9 +20,13 @@ from __future__ import annotations
 import argparse
 import re
 import sys
-from collections.abc import Sequence
+import time
+import urllib.error
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
+from enum import StrEnum
 from pathlib import Path
+from urllib.request import Request, urlopen
 
 BASE_URL = "https://data.binance.vision/data/spot/monthly/klines"
 # research/helios/data/binance.py -> parents[3] is the project root
@@ -115,6 +121,75 @@ def plan_klines(
     return [KlineFile(s, interval, m, data_dir) for s in symbols for m in months]
 
 
+# ---------------------------------------------------------------- downloading (step 040)
+
+USER_AGENT = "helios-research/0.1 (academic project; +https://data.binance.vision)"
+CHUNK_BYTES = 1024 * 1024
+
+
+class DownloadStatus(StrEnum):
+    DOWNLOADED = "downloaded"
+    SKIPPED = "skipped"  # already on disk
+    NOT_FOUND = "not-found"  # Binance has no file for this month (HTTP 404)
+    FAILED = "failed"  # still failing after all retries
+
+
+def fetch_to_file(url: str, dest: Path, timeout: float = 60.0) -> int:
+    """Stream `url` into `dest` via a temporary `.part` file; return the number of bytes.
+
+    The file only appears under its final name once the download is complete, so a dropped
+    connection never leaves a half file that looks finished.
+    """
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    part = dest.with_name(dest.name + ".part")
+    request = Request(url, headers={"User-Agent": USER_AGENT})
+    size = 0
+    try:
+        with urlopen(request, timeout=timeout) as response, part.open("wb") as out:
+            while chunk := response.read(CHUNK_BYTES):
+                out.write(chunk)
+                size += len(chunk)
+        part.replace(dest)
+    finally:
+        part.unlink(missing_ok=True)
+    return size
+
+
+def _is_retryable(exc: Exception) -> bool:
+    if isinstance(exc, urllib.error.HTTPError):
+        return exc.code >= 500 or exc.code == 429  # server error or "too many requests"
+    return isinstance(exc, (urllib.error.URLError, TimeoutError, ConnectionError, OSError))
+
+
+def download_file(
+    f: KlineFile,
+    *,
+    retries: int = 4,
+    backoff_seconds: float = 2.0,
+    fetch: Callable[[str, Path], int] = fetch_to_file,
+    sleep: Callable[[float], None] = time.sleep,
+) -> tuple[DownloadStatus, str]:
+    """Download one monthly file. Returns (status, short message). Never raises for network
+    problems: they become FAILED after `retries` extra attempts with growing waits."""
+    if f.path.is_file():
+        return DownloadStatus.SKIPPED, "already on disk"
+
+    for attempt in range(retries + 1):
+        try:
+            size = fetch(f.url, f.path)
+            return DownloadStatus.DOWNLOADED, f"{size / 1e6:.1f} MB"
+        except urllib.error.HTTPError as exc:
+            if exc.code == 404:
+                return DownloadStatus.NOT_FOUND, "Binance has no file for this month (404)"
+            error: Exception = exc
+        except Exception as exc:  # noqa: BLE001 - classified below
+            error = exc
+        if not _is_retryable(error) or attempt == retries:
+            return DownloadStatus.FAILED, f"{type(error).__name__}: {error}"
+        sleep(backoff_seconds * 2**attempt)
+    raise AssertionError("unreachable")
+
+
 # ---------------------------------------------------------------- command line
 
 
@@ -134,6 +209,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--end", required=True, help="last month, YYYY-MM")
     p.add_argument("--data-dir", type=Path, default=DEFAULT_DATA_DIR)
     p.add_argument("--dry-run", action="store_true", help="only print URLs and target paths")
+    p.add_argument("--retries", type=int, default=4, help="extra attempts per file (default 4)")
     return p
 
 
@@ -165,8 +241,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 2
 
     if not args.dry_run:
-        print("error: downloading is added in step 040; use --dry-run for now", file=sys.stderr)
-        return 2
+        return run_downloads(files, retries=args.retries)
 
     for f in files:
         state = "exists " if f.path.is_file() else "missing"
@@ -176,3 +251,16 @@ def main(argv: Sequence[str] | None = None) -> int:
         f"{len(files)} files planned: {present} already on disk, {len(files) - present} to download"
     )
     return 0
+
+
+def run_downloads(files: Sequence[KlineFile], *, retries: int = 4) -> int:
+    """Download every file in order, print one line each and a summary. Exit code 1 if any
+    file FAILED (so scripts and CI notice), otherwise 0."""
+    counts = dict.fromkeys(DownloadStatus, 0)
+    for n, f in enumerate(files, start=1):
+        status, message = download_file(f, retries=retries)
+        counts[status] += 1
+        print(f"[{n}/{len(files)}] {status:<10} {f.filename}  ({message})", flush=True)
+    summary = ", ".join(f"{counts[s]} {s}" for s in DownloadStatus)
+    print(f"done: {summary}")
+    return 1 if counts[DownloadStatus.FAILED] else 0

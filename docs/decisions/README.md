@@ -21,3 +21,4 @@ memory, so nobody has to guess later why something is the way it is.
 | [001](ADR-001-tech-stack.md) | Technology stack and architecture | Accepted | 2026-09-18 |
 | [002](ADR-002-fitness-formula.md) | Fitness formula (gate G2), floor 0.125 | Accepted | 2026-09-19 |
 | [003](ADR-003-horizon-families.md) | Horizon families and daily-aggregated Sharpe | Accepted | 2026-09-20 |
+| [004](ADR-004-split-dates.md) | Train / validation / test split dates | Accepted | 2026-09-20 |

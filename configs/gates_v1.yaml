@@ -1,0 +1,27 @@
+# HELIOS alpha selection gates, version 1 (step 036).
+# Decisions: ADR-002 (Fitness), ADR-003 (horizon families), ADR-005 (costs).
+# Gates are SELECTION CRITERIA, not promised results. An alpha is promoted only if ALL pass.
+# Changing any value needs a new ADR and a new file version (gates_v2.yaml).
+version: gates_v1
+
+# G1: annualised Sharpe (net of costs, per horizon family) must be greater than this
+sharpe_min: 1.0
+
+# G2: Fitness = Sharpe * sqrt(|annual_return| / max(turnover, floor)) must be greater than this
+fitness_min: 1.0
+fitness_turnover_floor: 0.125
+
+# G3: turnover per decision period must lie strictly between these (fractions: 0.01 = 1 %)
+turnover_min: 0.01
+turnover_max: 0.70
+
+# G4: gate metrics must come from out-of-sample data (VALID or TEST), never TRAIN
+require_out_of_sample: true
+
+# G5: stability: more than this fraction of sub-periods must have Sharpe > 0
+stability_subperiod: month
+stability_min_positive_fraction: 0.5
+
+# G6: cost stress: Sharpe at (multiplier x assumed cost) must be greater than this
+cost_stress_multiplier: 2.0
+cost_stress_sharpe_min: 0.0

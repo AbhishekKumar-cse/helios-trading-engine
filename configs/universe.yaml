@@ -1,0 +1,12 @@
+# HELIOS 5th-semester coin universe (step 036).
+# Binance spot pairs quoted in USDT. Listing dates and tick/lot sizes are read from the
+# data and exchange info later (steps 058, 060), not typed in here.
+version: universe_v1
+exchange: binance_spot
+quote: USDT
+symbols:
+  - BTCUSDT
+  - ETHUSDT
+  - SOLUSDT
+  - BNBUSDT
+  - XRPUSDT

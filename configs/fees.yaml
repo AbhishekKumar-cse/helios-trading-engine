@@ -1,0 +1,19 @@
+# HELIOS trading costs (step 036). Decision: ADR-005.
+# 1 bps = 0.01 %. Slippage is an ASSUMPTION, to be checked against paper trading (step 170).
+# Changing any value needs a new ADR.
+version: fees_v1
+exchange: binance_spot
+source_url: https://www.binance.com/en/fee/schedule
+checked_on: 2026-09-20
+tier: VIP 0, no BNB discount
+
+maker_fee_bps: 10.0
+taker_fee_bps: 10.0
+
+# per side, per coin
+slippage_bps:
+  BTCUSDT: 2.0
+  ETHUSDT: 2.0
+  SOLUSDT: 5.0
+  BNBUSDT: 5.0
+  XRPUSDT: 5.0

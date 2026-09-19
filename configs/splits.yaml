@@ -1,0 +1,17 @@
+# HELIOS train / validation / test splits (step 036). Decisions: ADR-003, ADR-004.
+# UTC calendar days, both ends inclusive. Gaps between splits are the embargo.
+# TEST may be used at most twice per alpha. Changing a date needs a new ADR.
+version: splits_v1
+families:
+  H-HOURLY:
+    periods_per_year: 8760
+    embargo_days: 7
+    train: {start: 2018-01-01, end: 2022-12-31}
+    valid: {start: 2023-01-08, end: 2024-06-30}
+    test: {start: 2024-07-08, end: 2026-08-31}
+  H-MINUTE:
+    periods_per_year: 525600
+    embargo_days: 1
+    train: {start: 2024-09-01, end: 2025-08-31}
+    valid: {start: 2025-09-02, end: 2026-02-28}
+    test: {start: 2026-03-02, end: 2026-08-31}

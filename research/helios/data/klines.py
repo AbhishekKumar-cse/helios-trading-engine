@@ -180,3 +180,87 @@ def validate_bars(frame: pd.DataFrame) -> pd.DataFrame:
         for index in out.index
     ]
     return out
+
+
+# ---------------------------------------------------------------- gaps and duplicates (048)
+
+INTERVAL_US: dict[str, int] = {
+    "1s": 1_000_000,
+    "1m": 60_000_000,
+    "3m": 180_000_000,
+    "5m": 300_000_000,
+    "15m": 900_000_000,
+    "30m": 1_800_000_000,
+    "1h": 3_600_000_000,
+    "2h": 7_200_000_000,
+    "4h": 14_400_000_000,
+    "6h": 21_600_000_000,
+    "8h": 28_800_000_000,
+    "12h": 43_200_000_000,
+    "1d": 86_400_000_000,
+}
+
+
+def interval_us(interval: str) -> int:
+    """Length of one candle in microseconds ('1h' -> 3_600_000_000)."""
+    try:
+        return INTERVAL_US[interval]
+    except KeyError:
+        raise KlineFormatError(
+            f"unknown interval {interval!r}; known: {sorted(INTERVAL_US)}"
+        ) from None
+
+
+def find_duplicates(frame: pd.DataFrame) -> pd.DataFrame:
+    """Rows whose `open_time` appears more than once (every copy is returned)."""
+    if "open_time" not in frame.columns:
+        raise KlineFormatError("column 'open_time' is missing")
+    return frame.loc[frame["open_time"].duplicated(keep=False)].copy()
+
+
+def find_off_grid(frame: pd.DataFrame, interval: str) -> pd.DataFrame:
+    """Rows whose `open_time` does not sit on an exact multiple of the interval."""
+    step = interval_us(interval)
+    if "open_time" not in frame.columns:
+        raise KlineFormatError("column 'open_time' is missing")
+    return frame.loc[frame["open_time"] % step != 0].copy()
+
+
+def find_gaps(frame: pd.DataFrame, interval: str) -> pd.DataFrame:
+    """Missing candles between the first and last row, as one row per unbroken run.
+
+    Columns: `gap_start`, `gap_end` (open_time of the first and last missing candle, in UTC
+    microseconds), `missing` (how many candles), `gap_start_utc`, `gap_end_utc` (readable).
+
+    Nothing is filled in. A missing candle usually means the exchange was down or the pair
+    did not trade; inventing a price there would put made-up data into every later result.
+    Candles outside the first/last row are not gaps: that is simply where the data ends.
+    """
+    step = interval_us(interval)
+    if "open_time" not in frame.columns:
+        raise KlineFormatError("column 'open_time' is missing")
+    if frame.empty:
+        raise KlineFormatError("no rows to check for gaps")
+
+    times = frame["open_time"].drop_duplicates().sort_values().to_numpy()
+    if times.size and (times % step != 0).any():
+        raise KlineFormatError(
+            f"timestamps are not on the {interval} grid; check them with find_off_grid first"
+        )
+
+    diffs = times[1:] - times[:-1]
+    breaks = diffs > step
+    starts = times[:-1][breaks] + step
+    ends = times[1:][breaks] - step
+    counts = (diffs[breaks] // step) - 1
+
+    gaps = pd.DataFrame(
+        {
+            "gap_start": starts.astype("int64"),
+            "gap_end": ends.astype("int64"),
+            "missing": counts.astype("int64"),
+        }
+    )
+    gaps["gap_start_utc"] = to_utc(gaps["gap_start"])
+    gaps["gap_end_utc"] = to_utc(gaps["gap_end"])
+    return gaps

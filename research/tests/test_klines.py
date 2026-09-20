@@ -1,4 +1,4 @@
-"""Tests for reading and time-normalising Binance kline zips (steps 045-047).
+"""Tests for reading and time-normalising Binance kline zips (steps 045-048).
 
 The fixtures are 3 real rows each from two real monthly files, small enough to commit:
 2024-12 (timestamps in milliseconds) and 2025-01 (microseconds).
@@ -13,6 +13,10 @@ import pytest
 from helios.data.klines import (
     COLUMNS,
     KlineFormatError,
+    find_duplicates,
+    find_gaps,
+    find_off_grid,
+    interval_us,
     normalise_klines,
     normalise_ts,
     read_klines,
@@ -261,3 +265,96 @@ def test_all_rows_can_be_bad() -> None:
 def test_missing_columns_are_rejected() -> None:
     with pytest.raises(KlineFormatError, match="columns missing for validation"):
         validate_bars(pd.DataFrame({"open": [1.0]}))
+
+
+# ---------------------------------------------------------------- gaps and duplicates (048)
+
+
+def hourly_frame(hours: int = 6) -> pd.DataFrame:
+    """A clean hourly frame starting 2025-01-01 00:00 UTC."""
+    step = interval_us("1h")
+    start = 1735689600000000
+    return pd.DataFrame({"open_time": [start + i * step for i in range(hours)], "close": 1.0})
+
+
+def test_clean_hours_have_no_gaps() -> None:
+    assert find_gaps(hourly_frame(), "1h").empty
+
+
+def test_one_deleted_row_appears_as_a_gap() -> None:
+    frame = hourly_frame().drop(index=2).reset_index(drop=True)
+    gaps = find_gaps(frame, "1h")
+    assert len(gaps) == 1
+    assert gaps["missing"].iloc[0] == 1
+    assert gaps["gap_start"].iloc[0] == gaps["gap_end"].iloc[0]
+    assert str(gaps["gap_start_utc"].iloc[0]) == "2025-01-01 02:00:00+00:00"
+
+
+def test_several_missing_hours_are_one_run() -> None:
+    frame = hourly_frame(10).drop(index=[3, 4, 5]).reset_index(drop=True)
+    gaps = find_gaps(frame, "1h")
+    assert len(gaps) == 1
+    assert gaps["missing"].iloc[0] == 3
+    assert str(gaps["gap_start_utc"].iloc[0]) == "2025-01-01 03:00:00+00:00"
+    assert str(gaps["gap_end_utc"].iloc[0]) == "2025-01-01 05:00:00+00:00"
+
+
+def test_two_separate_gaps() -> None:
+    frame = hourly_frame(10).drop(index=[2, 6, 7]).reset_index(drop=True)
+    gaps = find_gaps(frame, "1h")
+    assert gaps["missing"].tolist() == [1, 2]
+
+
+def test_gaps_never_change_the_data() -> None:
+    frame = hourly_frame().drop(index=2).reset_index(drop=True)
+    before = frame.copy()
+    find_gaps(frame, "1h")
+    assert frame.equals(before)  # nothing filled in
+
+
+def test_minute_interval() -> None:
+    step = interval_us("1m")
+    start = 1735689600000000
+    frame = pd.DataFrame({"open_time": [start, start + step, start + 4 * step]})
+    gaps = find_gaps(frame, "1m")
+    assert gaps["missing"].tolist() == [2]
+
+
+def test_unsorted_rows_are_still_understood() -> None:
+    frame = hourly_frame().drop(index=2).sample(frac=1, random_state=0)
+    assert find_gaps(frame, "1h")["missing"].tolist() == [1]
+
+
+def test_duplicates_are_found_and_not_counted_as_gaps() -> None:
+    frame = pd.concat([hourly_frame(), hourly_frame().iloc[[1]]], ignore_index=True)
+    assert len(find_duplicates(frame)) == 2  # both copies are returned
+    assert find_gaps(frame, "1h").empty
+
+
+def test_no_duplicates_in_clean_data() -> None:
+    assert find_duplicates(hourly_frame()).empty
+
+
+def test_off_grid_timestamps_are_found() -> None:
+    frame = hourly_frame()
+    frame.loc[1, "open_time"] += 30 * 10**6  # half a minute late
+    off = find_off_grid(frame, "1h")
+    assert len(off) == 1
+    with pytest.raises(KlineFormatError, match="not on the 1h grid"):
+        find_gaps(frame, "1h")
+
+
+def test_unknown_interval_is_rejected() -> None:
+    with pytest.raises(KlineFormatError, match="unknown interval"):
+        find_gaps(hourly_frame(), "7m")
+
+
+def test_empty_frame_is_rejected() -> None:
+    with pytest.raises(KlineFormatError, match="no rows"):
+        find_gaps(pd.DataFrame({"open_time": pd.Series([], dtype="int64")}), "1h")
+
+
+def test_real_fixture_month_has_no_gaps() -> None:
+    frame = normalise_klines(read_klines(MS_FIXTURE))
+    assert find_gaps(frame, "1h").empty
+    assert find_duplicates(frame).empty

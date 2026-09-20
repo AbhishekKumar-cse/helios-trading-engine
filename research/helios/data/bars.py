@@ -166,3 +166,79 @@ def read_bars(
     if not files:
         raise BarBuildError(f"no bars under {folder}")
     return pd.concat([pd.read_parquet(f) for f in files], ignore_index=True)
+
+
+# ---------------------------------------------------------------- reports (step 052)
+
+DEFAULT_REPORT_DIR = DEFAULT_DATA_DIR / "processed" / "reports"
+OFF_GRID_PROBLEM = "timestamp not on the interval grid"
+VALIDATION_COLUMNS = ("symbol", "interval", "open_time", "open_time_utc", "problems")
+GAP_COLUMNS = (
+    "symbol",
+    "interval",
+    "gap_start",
+    "gap_end",
+    "missing",
+    "gap_start_utc",
+    "gap_end_utc",
+)
+
+
+def validation_report(result: BuildResult) -> pd.DataFrame:
+    """Every row that broke a rule or sat off the interval grid, one line each.
+
+    Kept even when empty: a report that exists and says "nothing wrong" is evidence, while a
+    missing file only means nobody looked.
+    """
+    parts = []
+    if not result.bad_rows.empty:
+        parts.append(result.bad_rows[["open_time", "problems"]])
+    if not result.off_grid.empty:
+        off = result.off_grid[["open_time"]].copy()
+        off["problems"] = OFF_GRID_PROBLEM
+        parts.append(off)
+
+    if not parts:
+        return pd.DataFrame(columns=list(VALIDATION_COLUMNS))
+
+    report = pd.concat(parts, ignore_index=True).sort_values("open_time")
+    report.insert(0, "interval", result.interval)
+    report.insert(0, "symbol", result.symbol)
+    report["open_time_utc"] = to_utc(report["open_time"])
+    return report[list(VALIDATION_COLUMNS)].reset_index(drop=True)
+
+
+def gap_report(result: BuildResult) -> pd.DataFrame:
+    """One line per unbroken run of missing bars (never filled, only recorded)."""
+    if result.gaps.empty:
+        return pd.DataFrame(columns=list(GAP_COLUMNS))
+    report = result.gaps.copy()
+    report.insert(0, "interval", result.interval)
+    report.insert(0, "symbol", result.symbol)
+    return report[list(GAP_COLUMNS)].reset_index(drop=True)
+
+
+def write_reports(result: BuildResult, report_dir: Path = DEFAULT_REPORT_DIR) -> list[Path]:
+    """Write the validation and gap reports for one symbol and interval."""
+    report_dir.mkdir(parents=True, exist_ok=True)
+    written = []
+    for kind, report in (
+        ("validation", validation_report(result)),
+        ("gaps", gap_report(result)),
+    ):
+        path = report_dir / f"{kind}_{result.symbol}_{result.interval}.parquet"
+        report.to_parquet(path, engine="pyarrow", compression="zstd", index=False)
+        written.append(path)
+    return written
+
+
+def read_report(
+    kind: str, symbol: str, interval: str, report_dir: Path = DEFAULT_REPORT_DIR
+) -> pd.DataFrame:
+    """Read back a 'validation' or 'gaps' report."""
+    if kind not in ("validation", "gaps"):
+        raise BarBuildError(f"kind must be 'validation' or 'gaps', got {kind!r}")
+    path = report_dir / f"{kind}_{symbol}_{interval}.parquet"
+    if not path.is_file():
+        raise BarBuildError(f"no {kind} report at {path}")
+    return pd.read_parquet(path)

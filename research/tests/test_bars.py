@@ -1,4 +1,4 @@
-"""Tests for building Parquet bars (step 051).
+"""Tests for building Parquet bars and data-quality reports (steps 051-052).
 
 A fake data folder is built from the two committed fixture zips, so these run without the
 real 240 MB dataset (and on CI).
@@ -12,12 +12,17 @@ import pytest
 
 from helios.data.bars import (
     BAR_COLUMNS,
+    GAP_COLUMNS,
+    OFF_GRID_PROBLEM,
+    VALIDATION_COLUMNS,
     BarBuildError,
     build_bars,
     load_history,
     monthly_zips,
     read_bars,
+    read_report,
     write_bars,
+    write_reports,
 )
 from helios.data.klines import normalise_klines, read_klines
 
@@ -124,3 +129,82 @@ def test_empty_frame_cannot_be_written(tmp_path: Path) -> None:
 def test_reading_missing_bars_is_rejected(tmp_path: Path) -> None:
     with pytest.raises(BarBuildError, match="no bars under"):
         read_bars("BTCUSDT", "1h", tmp_path)
+
+
+# ---------------------------------------------------------------- reports (step 052)
+
+
+def test_reports_are_written_even_when_clean(data_dir: Path, tmp_path: Path) -> None:
+    result = build_bars("BTCUSDT", "1h", data_dir, tmp_path / "processed", write=False)
+    written = write_reports(result, tmp_path / "reports")
+    assert [p.name for p in written] == [
+        "validation_BTCUSDT_1h.parquet",
+        "gaps_BTCUSDT_1h.parquet",
+    ]
+    validation = read_report("validation", "BTCUSDT", "1h", tmp_path / "reports")
+    assert validation.empty  # a report saying "nothing wrong" is still evidence
+    assert list(validation.columns) == list(VALIDATION_COLUMNS)
+
+
+def test_gap_report_records_the_missing_hours(data_dir: Path, tmp_path: Path) -> None:
+    result = build_bars("BTCUSDT", "1h", data_dir, tmp_path / "processed", write=False)
+    write_reports(result, tmp_path / "reports")
+    gaps = read_report("gaps", "BTCUSDT", "1h", tmp_path / "reports")
+    assert list(gaps.columns) == list(GAP_COLUMNS)
+    assert len(gaps) == 1  # the month between the two fixtures
+    row = gaps.iloc[0]
+    assert (row["symbol"], row["interval"]) == ("BTCUSDT", "1h")
+    assert row["missing"] == result.missing_bars
+    assert str(row["gap_start_utc"]) == "2024-12-01 03:00:00+00:00"
+
+
+def test_bad_rows_reach_the_validation_report(data_dir: Path, tmp_path: Path) -> None:
+    result = build_bars("BTCUSDT", "1h", data_dir, tmp_path / "processed", write=False)
+    frame = load_history("BTCUSDT", "1h", data_dir)
+    broken = frame.head(1).copy()
+    broken["problems"] = "price not above zero"
+    result.bad_rows = broken
+
+    write_reports(result, tmp_path / "reports")
+    report = read_report("validation", "BTCUSDT", "1h", tmp_path / "reports")
+    assert len(report) == 1
+    assert report["problems"].iloc[0] == "price not above zero"
+    assert str(report["open_time_utc"].iloc[0]) == "2024-12-01 00:00:00+00:00"
+
+
+def test_off_grid_rows_reach_the_validation_report(data_dir: Path, tmp_path: Path) -> None:
+    """Like the real February 2018 candles that start at 09:28:14 instead of 09:00."""
+    result = build_bars("BTCUSDT", "1h", data_dir, tmp_path / "processed", write=False)
+    frame = load_history("BTCUSDT", "1h", data_dir)
+    off = frame.head(2).copy()
+    off["open_time"] = off["open_time"] + 1_694_789_000
+    result.off_grid = off
+
+    write_reports(result, tmp_path / "reports")
+    report = read_report("validation", "BTCUSDT", "1h", tmp_path / "reports")
+    assert len(report) == 2
+    assert set(report["problems"]) == {OFF_GRID_PROBLEM}
+
+
+def test_reports_are_sorted_by_time(data_dir: Path, tmp_path: Path) -> None:
+    result = build_bars("BTCUSDT", "1h", data_dir, tmp_path / "processed", write=False)
+    frame = load_history("BTCUSDT", "1h", data_dir)
+    bad = frame.tail(1).copy()
+    bad["problems"] = "negative volume"
+    result.bad_rows = bad
+    result.off_grid = frame.head(1).copy()
+
+    write_reports(result, tmp_path / "reports")
+    report = read_report("validation", "BTCUSDT", "1h", tmp_path / "reports")
+    assert report["open_time"].is_monotonic_increasing
+    assert report["problems"].tolist() == [OFF_GRID_PROBLEM, "negative volume"]
+
+
+def test_unknown_report_kind_is_rejected(tmp_path: Path) -> None:
+    with pytest.raises(BarBuildError, match="kind must be"):
+        read_report("everything", "BTCUSDT", "1h", tmp_path)
+
+
+def test_missing_report_is_rejected(tmp_path: Path) -> None:
+    with pytest.raises(BarBuildError, match="no gaps report"):
+        read_report("gaps", "BTCUSDT", "1h", tmp_path)

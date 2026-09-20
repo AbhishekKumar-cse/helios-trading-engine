@@ -1,27 +1,37 @@
-"""Run the FI-2010 logistic-regression baseline and save the results (step 050).
+"""Run the FI-2010 baselines and save the results (steps 050, 063).
 
-    uv run python scripts/fi2010_baseline.py                  # seeds 0 1 2, horizon 10
-    uv run python scripts/fi2010_baseline.py --horizon 50 --seeds 0
+    uv run python scripts/fi2010_baseline.py                      # both models, seeds 0 1 2
+    uv run python scripts/fi2010_baseline.py --model mlp --seeds 0
+    uv run python scripts/fi2010_baseline.py --horizon 50
 
 Results go to reports_out/, which git ignores: every number here comes from a run that
 records its own commit and config hash, so results are reproduced, never copied by hand.
+`scripts/fi2010_baselines_report.py` turns those files into the document.
 """
 
 import argparse
 import sys
 from pathlib import Path
 
-from helios.ml.baselines import LogisticBaselineConfig, run_logistic_baseline
+import pandas as pd
+
+from helios.ml.baselines import (
+    LogisticBaselineConfig,
+    MLPBaselineConfig,
+    run_baseline,
+    summarise,
+)
 from helios.ml.fi2010 import DEFAULT_ZIP, LABEL_HORIZONS, load_split
 
 DEFAULT_OUT = Path(__file__).resolve().parents[1] / "reports_out"
+MODELS = ("logreg", "mlp")
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--model", choices=[*MODELS, "both"], default="both")
     parser.add_argument("--horizon", type=int, default=10, choices=LABEL_HORIZONS)
     parser.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2])
-    parser.add_argument("--max-iter", type=int, default=200)
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUT)
     args = parser.parse_args(argv)
 
@@ -37,16 +47,28 @@ def main(argv: list[str] | None = None) -> int:
         flush=True,
     )
 
-    config = LogisticBaselineConfig(horizon=args.horizon, max_iter=args.max_iter)
-    results = run_logistic_baseline(split, config, seeds=args.seeds)
-
+    wanted = MODELS if args.model == "both" else (args.model,)
     args.out_dir.mkdir(parents=True, exist_ok=True)
-    out_file = args.out_dir / f"fi2010_logreg_k{args.horizon}.csv"
-    results.to_csv(out_file, index=False)
+    everything = []
 
-    shown = ["seed", "accuracy", "macro_f1", "majority_accuracy", "fit_seconds"]
-    print(results[shown].to_string(index=False))
-    print(f"saved: {out_file}")
+    for name in wanted:
+        config = (
+            LogisticBaselineConfig(horizon=args.horizon)
+            if name == "logreg"
+            else MLPBaselineConfig(horizon=args.horizon)
+        )
+        print(f"\n--- {config.model}, seeds {args.seeds} ---", flush=True)
+        results = run_baseline(split, config, seeds=args.seeds)
+        out_file = args.out_dir / f"fi2010_{name}_k{args.horizon}.csv"
+        results.to_csv(out_file, index=False)
+        everything.append(results)
+
+        shown = ["seed", "accuracy", "macro_f1", "majority_accuracy", "fit_seconds"]
+        print(results[shown].to_string(index=False))
+        print(f"saved: {out_file}")
+
+    print("\n--- mean and spread across seeds ---")
+    print(summarise(pd.concat(everything, ignore_index=True)).to_string(index=False))
     return 0
 
 

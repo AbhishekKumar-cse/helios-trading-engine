@@ -30,18 +30,23 @@ def toy_part(n: int, seed: int = 0) -> FI2010Data:
     return FI2010Data(lob=lob, features=rng.normal(size=(n, 104)), labels=labels)
 
 
+def fast_logreg(**overrides: object) -> LogisticBaselineConfig:
+    """Few iterations: these tests check the plumbing, not convergence on random data."""
+    return LogisticBaselineConfig(max_iter=20, **overrides)  # type: ignore[arg-type]
+
+
 def toy_split(n: int = 300) -> FI2010Split:
     return FI2010Split(train=toy_part(n, 0), val=toy_part(n // 4, 1), test=toy_part(n // 2, 2))
 
 
 def test_one_row_per_seed_with_all_columns() -> None:
-    results = run_logistic_baseline(toy_split(), seeds=(0, 1, 2))
+    results = run_logistic_baseline(toy_split(), fast_logreg(), seeds=(0, 1, 2))
     assert list(results.columns) == list(RESULT_COLUMNS)
     assert results["seed"].tolist() == [0, 1, 2]
 
 
 def test_scores_are_in_range_and_beat_guessing() -> None:
-    results = run_logistic_baseline(toy_split(), seeds=(0,))
+    results = run_logistic_baseline(toy_split(), fast_logreg(), seeds=(0,))
     row = results.iloc[0]
     assert 0.0 <= row["accuracy"] <= 1.0
     assert 0.0 <= row["macro_f1"] <= 1.0
@@ -50,13 +55,13 @@ def test_scores_are_in_range_and_beat_guessing() -> None:
 
 def test_seeds_give_the_same_answer() -> None:
     """This solver is deterministic: equal numbers prove no hidden randomness."""
-    results = run_logistic_baseline(toy_split(), seeds=(0, 1, 2))
+    results = run_logistic_baseline(toy_split(), fast_logreg(), seeds=(0, 1, 2))
     assert results["accuracy"].nunique() == 1
     assert results["macro_f1"].nunique() == 1
 
 
 def test_lineage_is_recorded() -> None:
-    row = run_logistic_baseline(toy_split(), seeds=(0,)).iloc[0]
+    row = run_logistic_baseline(toy_split(), fast_logreg(), seeds=(0,)).iloc[0]
     assert len(row["code_commit"]) == 40  # the git commit the result came from
     assert isinstance(bool(row["dirty"]), bool)
     assert len(row["config_hash"]) == 64
@@ -64,14 +69,14 @@ def test_lineage_is_recorded() -> None:
 
 
 def test_same_config_gives_the_same_hash() -> None:
-    a = run_logistic_baseline(toy_split(), seeds=(0,))
-    b = run_logistic_baseline(toy_split(), seeds=(0,))
+    a = run_logistic_baseline(toy_split(), fast_logreg(), seeds=(0,))
+    b = run_logistic_baseline(toy_split(), fast_logreg(), seeds=(0,))
     assert a["config_hash"].iloc[0] == b["config_hash"].iloc[0]
 
 
 def test_different_config_gives_a_different_hash() -> None:
-    a = run_logistic_baseline(toy_split(), LogisticBaselineConfig(horizon=10), seeds=(0,))
-    b = run_logistic_baseline(toy_split(), LogisticBaselineConfig(horizon=50), seeds=(0,))
+    a = run_logistic_baseline(toy_split(), fast_logreg(horizon=10), seeds=(0,))
+    b = run_logistic_baseline(toy_split(), fast_logreg(horizon=50), seeds=(0,))
     assert a["config_hash"].iloc[0] != b["config_hash"].iloc[0]
 
 
@@ -83,12 +88,12 @@ def test_majority_accuracy() -> None:
 
 def test_bad_horizon_is_rejected() -> None:
     with pytest.raises(FI2010Error, match="horizon must be one of"):
-        run_logistic_baseline(toy_split(), LogisticBaselineConfig(horizon=7), seeds=(0,))
+        run_logistic_baseline(toy_split(), fast_logreg(horizon=7), seeds=(0,))
 
 
 def test_no_seeds_is_rejected() -> None:
     with pytest.raises(FI2010Error, match="at least one seed"):
-        run_logistic_baseline(toy_split(), seeds=())
+        run_logistic_baseline(toy_split(), fast_logreg(), seeds=())
 
 
 # ---------------------------------------------------------------- the neural network (063)
@@ -126,7 +131,7 @@ def test_early_stopping_stays_off() -> None:
 
 
 def test_the_two_models_have_different_fingerprints() -> None:
-    logreg = run_logistic_baseline(toy_split(200), seeds=(0,))
+    logreg = run_logistic_baseline(toy_split(200), fast_logreg(), seeds=(0,))
     mlp = run_mlp_baseline(toy_split(200), small_mlp(), seeds=(0,))
     assert logreg["config_hash"].iloc[0] != mlp["config_hash"].iloc[0]
 
@@ -154,7 +159,7 @@ def test_summary_has_mean_and_spread() -> None:
 def test_models_are_summarised_separately() -> None:
     both = pd.concat(
         [
-            run_logistic_baseline(toy_split(200), seeds=(0, 1)),
+            run_logistic_baseline(toy_split(200), fast_logreg(), seeds=(0, 1)),
             run_mlp_baseline(toy_split(200), small_mlp(), seeds=(0, 1)),
         ],
         ignore_index=True,
@@ -164,7 +169,7 @@ def test_models_are_summarised_separately() -> None:
 
 
 def test_one_seed_reports_zero_spread() -> None:
-    summary = summarise(run_logistic_baseline(toy_split(200), seeds=(0,)))
+    summary = summarise(run_logistic_baseline(toy_split(200), fast_logreg(), seeds=(0,)))
     assert summary["macro_f1_std"].iloc[0] == 0.0
 
 

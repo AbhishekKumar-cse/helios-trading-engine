@@ -12,6 +12,7 @@ from pydantic import ValidationError
 from sqlalchemy import Connection
 
 from helios.common import db
+from helios.common.lineage import forget_git_state
 
 
 @pytest.fixture
@@ -31,3 +32,14 @@ def connection() -> Iterator[Connection]:
     finally:
         transaction.rollback()
         conn.close()
+
+
+@pytest.fixture(autouse=True)
+def _fresh_git_state() -> None:
+    """Forget the cached repository state before each test.
+
+    `git_commit` and `git_is_dirty` are cached for speed (asking git costs most of a second
+    on this filesystem). Tests create and change repositories, so each one starts from a
+    clean slate.
+    """
+    forget_git_state()

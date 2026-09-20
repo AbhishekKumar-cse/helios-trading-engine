@@ -13,6 +13,7 @@ from __future__ import annotations
 import subprocess
 from dataclasses import dataclass
 from datetime import UTC, datetime
+from functools import lru_cache
 from pathlib import Path
 
 from pydantic import BaseModel
@@ -42,14 +43,29 @@ def _git(repo: Path, *args: str) -> str:
     return result.stdout.strip()
 
 
+@lru_cache(maxsize=8)
 def git_commit(repo: Path = PROJECT_ROOT) -> str:
     """Full hash of the commit currently checked out."""
     return _git(repo, "rev-parse", "HEAD")
 
 
+@lru_cache(maxsize=8)
 def git_is_dirty(repo: Path = PROJECT_ROOT) -> bool:
     """True if there are uncommitted changes or new files that git is not ignoring."""
     return _git(repo, "status", "--porcelain") != ""
+
+
+def forget_git_state() -> None:
+    """Read the repository state again next time.
+
+    Both answers above are cached for the life of the process. Two reasons: asking git is
+    slow here (the repository lives on the Windows filesystem, and each call from Ubuntu
+    costs most of a second), and a long run should describe the code it *started* with
+    rather than notice an edit made while it was running. Anything that changes the
+    repository on purpose — a test, a tool — calls this to clear the answers.
+    """
+    git_commit.cache_clear()
+    git_is_dirty.cache_clear()
 
 
 @dataclass(frozen=True)

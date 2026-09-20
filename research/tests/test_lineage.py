@@ -7,7 +7,13 @@ from pathlib import Path
 import pytest
 
 from helios.common.config import HeliosConfig, config_hash
-from helios.common.lineage import LineageError, RunContext, git_commit, git_is_dirty
+from helios.common.lineage import (
+    LineageError,
+    RunContext,
+    forget_git_state,
+    git_commit,
+    git_is_dirty,
+)
 
 
 class DemoConfig(HeliosConfig):
@@ -85,7 +91,22 @@ def test_commit_changes_after_new_commit(repo: Path) -> None:
     before = git_commit(repo)
     (repo / "code.py").write_text("x = 4\n", encoding="utf-8")
     git(repo, "commit", "-q", "-am", "second")
+    forget_git_state()  # the answers are remembered for the life of the process
     assert git_commit(repo) != before
+
+
+def test_the_repository_state_is_read_once(repo: Path) -> None:
+    """Asking git is slow here, so the answer is remembered until something clears it.
+
+    A run therefore describes the code it *started* with, rather than noticing an edit made
+    while it was running.
+    """
+    assert git_is_dirty(repo) is False
+    (repo / "code.py").write_text("x = 5\n", encoding="utf-8")
+    assert git_is_dirty(repo) is False  # still the remembered answer
+
+    forget_git_state()
+    assert git_is_dirty(repo) is True
 
 
 def test_not_a_git_repo(tmp_path: Path) -> None:

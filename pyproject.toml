@@ -62,6 +62,7 @@ plugins = ["pydantic.mypy"]
 dev = [
     "hypothesis>=6.168.0",
     "mypy>=2.3.1",
+    "pandas-stubs>=3.0.5.260914",
     "pre-commit>=4.6.2",
     "pytest>=9.1.1",
     "ruff>=0.16.7",

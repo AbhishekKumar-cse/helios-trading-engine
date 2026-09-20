@@ -113,3 +113,27 @@ def available_symbols(interval: str, out_dir: Path = DEFAULT_OUT_DIR) -> list[st
     """Coins that have bars for this interval."""
     root = out_dir / "source=binance" / f"interval={interval}"
     return sorted(p.name.removeprefix("symbol=") for p in root.glob("symbol=*") if p.is_dir())
+
+
+def first_open_time(symbol: str, interval: str, out_dir: Path = DEFAULT_OUT_DIR) -> int | None:
+    """Timestamp of the earliest bar held for one coin, or None when there are none.
+
+    Only the timestamp column is read, so this stays fast even over the whole history.
+    """
+    interval_us(interval)
+    pattern = str(
+        out_dir
+        / "source=binance"
+        / f"interval={interval}"
+        / f"symbol={symbol}"
+        / "year=*"
+        / "bars.parquet"
+    )
+    with duckdb.connect() as connection:
+        try:
+            value = connection.execute(
+                "SELECT min(open_time) FROM read_parquet($pattern)", {"pattern": pattern}
+            ).fetchone()
+        except duckdb.IOException:  # no files match the pattern
+            return None
+    return None if value is None or value[0] is None else int(value[0])

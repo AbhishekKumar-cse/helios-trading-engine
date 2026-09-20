@@ -31,12 +31,18 @@ INSERT INTO data_snapshots
 VALUES (:id, 'test', '1h', '["TESTAUSDT"]'::jsonb, 1, 2, 1, 10, 100, :commit)
 """
 
+EXPERIMENT = """
+INSERT INTO experiments (kind, hypothesis, params, author, status)
+VALUES ('alpha', 'a hypothesis written before the run', '{}'::jsonb, 'abhishek', 'planned')
+RETURNING experiment_id
+"""
+
 RESULT = """
 INSERT INTO alpha_results
-    (run_id, alpha_id, version, split, snapshot_id, gate_config_id,
+    (run_id, experiment_id, alpha_id, version, split, snapshot_id, gate_config_id,
      sharpe, annual_return, turnover, fitness, max_drawdown, hit_rate,
      periods, gate_results, status, code_commit, config_hash, seed, dirty)
-VALUES (:run_id, :alpha_id, :version, :split, :snapshot_id, :config_id,
+VALUES (:run_id, :experiment_id, :alpha_id, :version, :split, :snapshot_id, :config_id,
         :sharpe, 0.25, :turnover, 1.4, :drawdown, :hit_rate,
         :periods, '{"G1": true}'::jsonb, :status, :commit, :hash, 0, false)
 """

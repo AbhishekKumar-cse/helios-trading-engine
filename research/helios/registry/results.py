@@ -10,6 +10,9 @@ the model refuses to be built without them:
 | `snapshot_id` | which data, exactly (step 059) |
 | `seed` | which random draw |
 
+Since step 068 a result also names the **experiment** it answers, so no measurement exists
+without a question that was written down before it.
+
 `RunContext` (step 028) already collects all four, so `result_from_context()` is the normal
 way to build a result and there is nothing to type twice.
 
@@ -37,6 +40,7 @@ from sqlalchemy.exc import IntegrityError
 
 from helios.common.lineage import RunContext
 from helios.registry.api import COMMIT, RegistryError
+from helios.registry.experiments import require_open_experiment
 
 GATE_NAME = re.compile(r"^G[1-9]$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
@@ -65,6 +69,7 @@ class AlphaResult(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     run_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    experiment_id: int = Field(ge=1)  # the pre-registered question this run answers (step 068)
     alpha_id: str
     version: int = Field(ge=1)
     split: Split
@@ -139,6 +144,7 @@ class AlphaResult(BaseModel):
 def result_from_context(
     context: RunContext,
     *,
+    experiment_id: int,
     alpha_id: str,
     version: int,
     split: Split,
@@ -153,6 +159,7 @@ def result_from_context(
 ) -> AlphaResult:
     """Build a result, taking all four lineage fields from the run context (step 028)."""
     return AlphaResult(
+        experiment_id=experiment_id,
         alpha_id=alpha_id,
         version=version,
         split=split,
@@ -174,12 +181,12 @@ def result_from_context(
 
 INSERT = text("""
 INSERT INTO alpha_results
-    (run_id, alpha_id, version, split, snapshot_id, gate_config_id,
+    (run_id, experiment_id, alpha_id, version, split, snapshot_id, gate_config_id,
      sharpe, annual_return, turnover, fitness, max_drawdown, hit_rate,
      cost_stress_sharpe, stability_positive_fraction, periods, gate_results, status,
      code_commit, config_hash, seed, dirty, runtime_seconds)
 VALUES
-    (:run_id, :alpha_id, :version, :split, :snapshot_id, :gate_config_id,
+    (:run_id, :experiment_id, :alpha_id, :version, :split, :snapshot_id, :gate_config_id,
      :sharpe, :annual_return, :turnover, :fitness, :max_drawdown, :hit_rate,
      :cost_stress_sharpe, :stability_positive_fraction, :periods,
      CAST(:gate_results AS jsonb), :status,
@@ -188,7 +195,7 @@ RETURNING created_at
 """)
 
 SELECT = """
-SELECT run_id, alpha_id, version, split, snapshot_id, gate_config_id,
+SELECT run_id, experiment_id, alpha_id, version, split, snapshot_id, gate_config_id,
        sharpe, annual_return, turnover, fitness, max_drawdown, hit_rate,
        cost_stress_sharpe, stability_positive_fraction, periods, gate_results, status,
        code_commit, config_hash, seed, dirty, runtime_seconds, created_at
@@ -199,6 +206,7 @@ FROM alpha_results
 def _to_result(row: Any) -> AlphaResult:
     return AlphaResult(
         run_id=row.run_id,
+        experiment_id=row.experiment_id,
         alpha_id=row.alpha_id,
         version=row.version,
         split=Split(row.split),
@@ -231,12 +239,18 @@ def _broken_constraint(exc: IntegrityError) -> str | None:
 
 
 def record_result(connection: Connection, result: AlphaResult) -> AlphaResult:
-    """Store one evaluation run. Results are never updated, only added."""
+    """Store one evaluation run. Results are never updated, only added.
+
+    The experiment is checked first, so a run that belongs to no registered question is
+    refused with an explanation rather than a foreign-key error.
+    """
+    require_open_experiment(connection, result.experiment_id)
     try:
         created_at = connection.execute(
             INSERT,
             {
                 "run_id": result.run_id,
+                "experiment_id": result.experiment_id,
                 "alpha_id": result.alpha_id,
                 "version": result.version,
                 "split": result.split.value,
@@ -275,6 +289,11 @@ def record_result(connection: Connection, result: AlphaResult) -> AlphaResult:
             raise RegistryError(
                 f"data snapshot {result.snapshot_id} is unknown; "
                 "build the bars so the snapshot is recorded first"
+            ) from exc
+        if broken == "alpha_results_experiment_fkey":
+            raise RegistryError(
+                f"experiment {result.experiment_id} is not registered; "
+                "register the question before measuring anything"
             ) from exc
         if broken == "alpha_results_gate_config_id_fkey":
             raise RegistryError(f"gate configuration {result.gate_config_id} is unknown") from exc

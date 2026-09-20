@@ -6,11 +6,21 @@ refuses each one. Everything runs inside a transaction that is rolled back.
 """
 
 import pytest
-from registry_sql import ACCESS, COMMIT, DEFINITION, GATE_CONFIG, HASH, RESULT, SNAPSHOT
+from registry_sql import (
+    ACCESS,
+    COMMIT,
+    DEFINITION,
+    EXPERIMENT,
+    GATE_CONFIG,
+    HASH,
+    RESULT,
+    SNAPSHOT,
+)
 from sqlalchemy import Connection, text
 from sqlalchemy.exc import IntegrityError
 
 INSERT_ONLY = "is insert-only"
+EXPERIMENT_ID: dict[str, int] = {"value": 0}  # filled in by the registry fixture
 
 
 @pytest.fixture
@@ -38,9 +48,11 @@ def registry(connection: Connection) -> Connection:
         },
     )
     connection.execute(text(SNAPSHOT), {"id": "locked-snapshot", "commit": COMMIT})
+    EXPERIMENT_ID["value"] = connection.execute(text(EXPERIMENT)).scalar_one()
     connection.execute(
         text(RESULT),
         {
+            "experiment_id": EXPERIMENT_ID["value"],
             "run_id": "locked-run",
             "alpha_id": "locked_alpha",
             "version": 1,
@@ -151,6 +163,7 @@ def test_new_rows_are_still_accepted(registry: Connection) -> None:
     registry.execute(
         text(RESULT),
         {
+            "experiment_id": EXPERIMENT_ID["value"],
             "run_id": "second-run",
             "alpha_id": "locked_alpha",
             "version": 1,

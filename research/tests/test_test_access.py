@@ -12,6 +12,7 @@ from sqlalchemy import Connection, text
 
 from helios.common.project_config import HorizonFamily
 from helios.registry.api import AlphaDefinition, Provenance, RegistryError, register_definition
+from helios.registry.experiments import ExperimentKind, register_experiment
 from helios.registry.results import AlphaResult, Split, Status, list_results
 from helios.registry.test_access import (
     MAX_TEST_ACCESSES,
@@ -29,6 +30,7 @@ SNAPSHOT_ID = "t-access-snapshot"
 GATES_ID = "t_access_gates"
 ALPHA = "t_access_alpha"
 ALL_PASSED = {"G1": True, "G2": True, "G3": True, "G4": True, "G5": True, "G6": True}
+EXPERIMENT: dict[str, int] = {"id": 0}  # filled in by the registry fixture
 PURPOSE = "final confirmation before promotion"
 
 
@@ -51,6 +53,13 @@ def registry(connection: Connection) -> Connection:
                 code_commit=COMMIT,
             ),
         )
+    EXPERIMENT["id"] = register_experiment(
+        connection,
+        hypothesis="hourly momentum beats holding BTC after costs",
+        params={"lookback_hours": 24},
+        kind=ExperimentKind.ALPHA,
+        author="abhishek",
+    ).experiment_id
     connection.execute(
         text(GATE_CONFIG),
         {
@@ -78,6 +87,7 @@ def access(connection: Connection, version: int = 1, purpose: str = PURPOSE) -> 
 
 def a_result(**overrides: object) -> AlphaResult:
     values: dict[str, object] = {
+        "experiment_id": EXPERIMENT["id"] or 1,
         "alpha_id": ALPHA,
         "version": 1,
         "split": Split.TEST,

@@ -7,7 +7,16 @@ reachable. Ids are deliberately fake so nothing collides with real work.
 from datetime import UTC, datetime
 
 import pytest
-from registry_sql import ACCESS, COMMIT, DEFINITION, GATE_CONFIG, HASH, RESULT, SNAPSHOT
+from registry_sql import (
+    ACCESS,
+    COMMIT,
+    DEFINITION,
+    EXPERIMENT,
+    GATE_CONFIG,
+    HASH,
+    RESULT,
+    SNAPSHOT,
+)
 from sqlalchemy import Connection, text
 from sqlalchemy.exc import IntegrityError
 
@@ -37,11 +46,13 @@ def registry(connection: Connection) -> Connection:
         },
     )
     connection.execute(text(SNAPSHOT), {"id": "test-snapshot", "commit": COMMIT})
+    EXPERIMENT_ID["value"] = connection.execute(text(EXPERIMENT)).scalar_one()
     return connection
 
 
 def insert_result(connection: Connection, **overrides: object) -> None:
     params: dict[str, object] = {
+        "experiment_id": EXPERIMENT_ID["value"],
         "run_id": "run-1",
         "alpha_id": "test_alpha",
         "version": 1,
@@ -58,6 +69,9 @@ def insert_result(connection: Connection, **overrides: object) -> None:
         "hash": HASH,
     }
     connection.execute(text(RESULT), params | overrides)
+
+
+EXPERIMENT_ID: dict[str, int] = {"value": 0}  # filled in by the registry fixture
 
 
 def test_the_four_tables_exist(connection: Connection) -> None:

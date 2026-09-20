@@ -15,6 +15,7 @@ from sqlalchemy import Connection, text
 from helios.common.lineage import RunContext
 from helios.common.project_config import HorizonFamily
 from helios.registry.api import AlphaDefinition, Provenance, RegistryError, register_definition
+from helios.registry.experiments import ExperimentKind, register_experiment
 from helios.registry.results import (
     AlphaResult,
     Split,
@@ -30,10 +31,12 @@ CONFIG_HASH = "b" * 64
 SNAPSHOT_ID = "t-snapshot-0001"
 GATES_ID = "t_gates_v1"
 ALL_PASSED = {"G1": True, "G2": True, "G3": True, "G4": True, "G5": True, "G6": True}
+EXPERIMENT: dict[str, int] = {"id": 0}  # filled in by the registry fixture
 
 
 def result(**overrides: object) -> AlphaResult:
     values: dict[str, object] = {
+        "experiment_id": EXPERIMENT["id"] or 1,
         "alpha_id": "t_result_alpha",
         "version": 1,
         "split": Split.VALID,
@@ -71,6 +74,13 @@ def registry(connection: Connection) -> Connection:
             code_commit=COMMIT,
         ),
     )
+    EXPERIMENT["id"] = register_experiment(
+        connection,
+        hypothesis="hourly momentum beats holding BTC after costs",
+        params={"lookback_hours": 24},
+        kind=ExperimentKind.ALPHA,
+        author="abhishek",
+    ).experiment_id
     connection.execute(
         text(GATE_CONFIG),
         {
@@ -196,6 +206,7 @@ def test_a_result_can_be_built_from_the_run_context() -> None:
     )
     built = result_from_context(
         context,
+        experiment_id=EXPERIMENT["id"] or 1,
         alpha_id="t_result_alpha",
         version=1,
         split=Split.VALID,

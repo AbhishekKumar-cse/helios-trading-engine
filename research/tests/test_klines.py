@@ -1,4 +1,4 @@
-"""Tests for reading and time-normalising Binance kline zips (steps 045-046).
+"""Tests for reading and time-normalising Binance kline zips (steps 045-047).
 
 The fixtures are 3 real rows each from two real monthly files, small enough to commit:
 2024-12 (timestamps in milliseconds) and 2025-01 (microseconds).
@@ -17,6 +17,7 @@ from helios.data.klines import (
     normalise_ts,
     read_klines,
     to_utc,
+    validate_bars,
 )
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -191,3 +192,72 @@ def test_empty_column_is_rejected() -> None:
 def test_missing_column_is_rejected() -> None:
     with pytest.raises(KlineFormatError, match="'open_time' is missing"):
         normalise_klines(pd.DataFrame({"close_time": [1733011200000]}))
+
+
+# ---------------------------------------------------------------- checking rows (step 047)
+
+
+def good_frame() -> pd.DataFrame:
+    return normalise_klines(read_klines(MS_FIXTURE))
+
+
+def test_real_fixture_rows_are_all_valid() -> None:
+    bad = validate_bars(good_frame())
+    assert bad.empty
+    assert "problems" in bad.columns  # same shape even when nothing is wrong
+
+
+@pytest.mark.parametrize(
+    ("column", "value", "expected"),
+    [
+        ("open", 0.0, "price not above zero"),
+        ("close", -1.0, "price not above zero"),
+        ("high", 1.0, "high below open or close"),
+        ("low", 10**9, "low above open or close"),
+        ("volume", -0.5, "negative volume"),
+        ("quote_volume", -1.0, "negative volume"),
+        ("trades", -3, "negative trade count"),
+        ("taker_buy_base", 10**9, "taker volume above total volume"),
+    ],
+)
+def test_one_broken_value_is_reported(column: str, value: float, expected: str) -> None:
+    frame = good_frame()
+    frame.loc[1, column] = value
+    bad = validate_bars(frame)
+    assert len(bad) == 1
+    assert bad.index.tolist() == [1]
+    assert expected in bad["problems"].iloc[0]
+
+
+def test_missing_value_is_reported() -> None:
+    frame = good_frame()
+    frame.loc[0, "close"] = float("nan")
+    bad = validate_bars(frame)
+    assert bad["problems"].iloc[0].startswith("missing value")
+
+
+def test_high_below_low_is_reported() -> None:
+    frame = good_frame()
+    frame.loc[2, ["open", "close", "high", "low"]] = [100.0, 100.0, 90.0, 110.0]
+    problems = validate_bars(frame)["problems"].iloc[0]
+    assert "high below low" in problems
+    assert "high below open or close" in problems  # several rules can break at once
+
+
+def test_bad_rows_are_returned_untouched() -> None:
+    frame = good_frame()
+    frame.loc[1, "open"] = -5.0
+    bad = validate_bars(frame)
+    assert bad["open"].iloc[0] == -5.0  # reported as-is, never repaired
+    assert len(frame) == 3  # nothing dropped from the input either
+
+
+def test_all_rows_can_be_bad() -> None:
+    frame = good_frame()
+    frame["volume"] = -1.0
+    assert len(validate_bars(frame)) == 3
+
+
+def test_missing_columns_are_rejected() -> None:
+    with pytest.raises(KlineFormatError, match="columns missing for validation"):
+        validate_bars(pd.DataFrame({"open": [1.0]}))

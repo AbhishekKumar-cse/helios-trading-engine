@@ -133,3 +133,50 @@ def normalise_klines(frame: pd.DataFrame) -> pd.DataFrame:
 def to_utc(micros: pd.Series) -> pd.Series:
     """UTC timestamps for reading by humans (plots and reports); the stored unit stays int64."""
     return pd.to_datetime(micros, unit="us", utc=True)
+
+
+# ---------------------------------------------------------------- checking rows (step 047)
+
+PRICE_COLUMNS = ("open", "high", "low", "close")
+
+_REQUIRED = (*PRICE_COLUMNS, "volume", "quote_volume", "trades", "taker_buy_base")
+
+
+def _problems(frame: pd.DataFrame) -> dict[str, pd.Series]:
+    """Rule name -> True where the row BREAKS that rule."""
+    high, low = frame["high"], frame["low"]
+    open_, close = frame["open"], frame["close"]
+    return {
+        "missing value": frame[list(_REQUIRED)].isna().any(axis=1),
+        "price not above zero": (frame[list(PRICE_COLUMNS)] <= 0).any(axis=1),
+        "high below open or close": (high < open_) | (high < close),
+        "low above open or close": (low > open_) | (low > close),
+        "high below low": high < low,
+        "negative volume": (frame["volume"] < 0) | (frame["quote_volume"] < 0),
+        "negative trade count": frame["trades"] < 0,
+        "taker volume above total volume": frame["taker_buy_base"] > frame["volume"],
+    }
+
+
+def validate_bars(frame: pd.DataFrame) -> pd.DataFrame:
+    """Return the rows that break a rule, with a `problems` column naming which ones.
+
+    Nothing is repaired or removed: a bad candle means the source data is wrong, and quietly
+    "fixing" it would invent numbers and hide the problem. The caller decides what to do
+    (the pipeline in step 052 writes these rows to a report).
+
+    An empty result (with the same columns) means every row passed.
+    """
+    missing = [c for c in (*_REQUIRED, "open_time") if c not in frame.columns]
+    if missing:
+        raise KlineFormatError(f"columns missing for validation: {missing}")
+
+    flags = _problems(frame)
+    bad_anywhere = pd.concat(flags.values(), axis=1).any(axis=1)
+
+    out = frame.loc[bad_anywhere].copy()
+    out["problems"] = [
+        ", ".join(name for name, mask in flags.items() if bool(mask.loc[index]))
+        for index in out.index
+    ]
+    return out

@@ -83,3 +83,53 @@ def read_klines(zip_path: Path | str) -> pd.DataFrame:
     if frame.empty:
         raise KlineFormatError(f"{zip_path.name}: contains no rows")
     return frame
+
+
+# ---------------------------------------------------------------- one time unit (step 046)
+
+US_THRESHOLD = 10**14
+"""At or above this value a timestamp is microseconds, below it milliseconds.
+
+As microseconds 1e14 is 1973-03-03; as milliseconds it would be the year 5138. Binance data
+starts in 2017, so no real timestamp can fall on the wrong side of this line. Binance wrote
+milliseconds up to 2024-12 and microseconds from 2025-01.
+"""
+
+MIN_TIMESTAMP_US = 1_230_768_000_000_000  # 2009-01-01, before any crypto exchange data
+MAX_TIMESTAMP_US = 4_102_444_800_000_000  # 2100-01-01
+
+
+def normalise_ts(values: pd.Series) -> pd.Series:
+    """Turn a column of Binance timestamps into int64 **UTC microseconds**.
+
+    Milliseconds (before 2025-01) are multiplied by 1000; microseconds are kept. Each value
+    is judged on its own, so a column holding both units is still handled correctly.
+    """
+    if values.empty:
+        raise KlineFormatError("no timestamps to normalise")
+    if not pd.api.types.is_integer_dtype(values):
+        raise KlineFormatError(f"timestamps must be whole numbers, got dtype {values.dtype}")
+
+    as_int = values.astype("int64")
+    micros = as_int.where(as_int >= US_THRESHOLD, as_int * 1000).astype("int64")
+
+    outside = ~micros.between(MIN_TIMESTAMP_US, MAX_TIMESTAMP_US)
+    if outside.any():
+        bad = micros[outside].head(3).tolist()
+        raise KlineFormatError(f"timestamps outside 2009-2100 after conversion: {bad}")
+    return micros
+
+
+def normalise_klines(frame: pd.DataFrame) -> pd.DataFrame:
+    """Copy of `frame` with `open_time` and `close_time` in UTC microseconds."""
+    out = frame.copy()
+    for column in ("open_time", "close_time"):
+        if column not in out.columns:
+            raise KlineFormatError(f"column {column!r} is missing")
+        out[column] = normalise_ts(out[column])
+    return out
+
+
+def to_utc(micros: pd.Series) -> pd.Series:
+    """UTC timestamps for reading by humans (plots and reports); the stored unit stays int64."""
+    return pd.to_datetime(micros, unit="us", utc=True)

@@ -6,6 +6,10 @@ They skip when PostgreSQL is not available (for example on CI).
 Why test the database and not just the code: a rule written in Python only holds for code
 that remembers to call it. A CHECK constraint holds for every insert, from any script, any
 teammate and any tool, including someone typing SQL into Adminer.
+
+The symbols here are deliberately fake (TESTAUSDT and friends). The real coins are
+seeded into `instruments` by step 058, and a test must never depend on what a table
+already holds.
 """
 
 from collections.abc import Iterator
@@ -23,14 +27,14 @@ pytestmark = pytest.mark.usefixtures("connection")
 INSTRUMENT = """
 INSERT INTO instruments
     (symbol, base_asset, quote_asset, tick_size, lot_size, first_available_date)
-VALUES (:symbol, 'BTC', 'USDT', :tick, :lot, DATE '2017-08-17')
+VALUES (:symbol, 'TESTA', 'USDT', :tick, :lot, DATE '2017-08-17')
 """
 
 SNAPSHOT = """
 INSERT INTO data_snapshots
     (snapshot_id, source, interval, symbols, first_open_time, last_open_time,
      file_count, row_count, total_bytes, code_commit)
-VALUES (:id, 'binance', '1h', '["BTCUSDT"]'::jsonb, :first, :last, :files, 100, 1000, 'abc123')
+VALUES (:id, 'test', '1h', '["TESTAUSDT"]'::jsonb, :first, :last, :files, 100, 1000, 'abc123')
 """
 
 EXPERIMENT = """
@@ -69,9 +73,9 @@ def test_the_three_tables_exist(connection: Connection) -> None:
 
 
 def test_a_valid_instrument_is_accepted(connection: Connection) -> None:
-    connection.execute(text(INSTRUMENT), {"symbol": "BTCUSDT", "tick": "0.01", "lot": "0.00001"})
+    connection.execute(text(INSTRUMENT), {"symbol": "TESTAUSDT", "tick": "0.01", "lot": "0.00001"})
     count = connection.execute(
-        text("SELECT count(*) FROM instruments WHERE symbol = 'BTCUSDT'")
+        text("SELECT count(*) FROM instruments WHERE symbol = 'TESTAUSDT'")
     ).scalar_one()
     assert count == 1
 
@@ -79,18 +83,18 @@ def test_a_valid_instrument_is_accepted(connection: Connection) -> None:
 def test_lower_case_symbol_is_refused(connection: Connection) -> None:
     with pytest.raises(IntegrityError, match="instruments_symbol_upper"):
         connection.execute(
-            text(INSTRUMENT), {"symbol": "btcusdt", "tick": "0.01", "lot": "0.00001"}
+            text(INSTRUMENT), {"symbol": "testausdt", "tick": "0.01", "lot": "0.00001"}
         )
 
 
 @pytest.mark.parametrize("value", ["0", "-0.01"])
 def test_tick_size_must_be_positive(connection: Connection, value: str) -> None:
     with pytest.raises(IntegrityError, match="instruments_tick_size_positive"):
-        connection.execute(text(INSTRUMENT), {"symbol": "ETHUSDT", "tick": value, "lot": "1"})
+        connection.execute(text(INSTRUMENT), {"symbol": "TESTBUSDT", "tick": value, "lot": "1"})
 
 
 def test_the_same_symbol_cannot_be_added_twice(connection: Connection) -> None:
-    params = {"symbol": "SOLUSDT", "tick": "0.01", "lot": "0.001"}
+    params = {"symbol": "TESTCUSDT", "tick": "0.01", "lot": "0.001"}
     connection.execute(text(INSTRUMENT), params)
     with pytest.raises(IntegrityError, match="instruments_symbol_key"):
         connection.execute(text(INSTRUMENT), params)
@@ -101,9 +105,11 @@ def test_prices_keep_their_exact_decimals(connection: Connection) -> None:
 
     With a float, 0.1 + 0.2 is 0.30000000000000004; prices and sizes must never drift.
     """
-    connection.execute(text(INSTRUMENT), {"symbol": "XRPUSDT", "tick": "0.00000001", "lot": "0.1"})
+    connection.execute(
+        text(INSTRUMENT), {"symbol": "TESTDUSDT", "tick": "0.00000001", "lot": "0.1"}
+    )
     tick = connection.execute(
-        text("SELECT tick_size FROM instruments WHERE symbol = 'XRPUSDT'")
+        text("SELECT tick_size FROM instruments WHERE symbol = 'TESTDUSDT'")
     ).scalar_one()
     assert isinstance(tick, Decimal)  # not a float
     assert tick == Decimal("0.00000001")
@@ -118,7 +124,10 @@ def test_prices_keep_their_exact_decimals(connection: Connection) -> None:
 
 def test_a_snapshot_is_accepted(connection: Connection) -> None:
     connection.execute(text(SNAPSHOT), {"id": "sha-1", "first": 1, "last": 2, "files": 3})
-    assert connection.execute(text("SELECT count(*) FROM data_snapshots")).scalar_one() == 1
+    count = connection.execute(
+        text("SELECT count(*) FROM data_snapshots WHERE snapshot_id = 'sha-1'")
+    ).scalar_one()
+    assert count == 1
 
 
 def test_a_snapshot_cannot_end_before_it_starts(connection: Connection) -> None:
@@ -135,6 +144,7 @@ def test_a_snapshot_must_cover_at_least_one_file(connection: Connection) -> None
 
 
 def test_an_experiment_is_accepted(connection: Connection) -> None:
+    before = connection.execute(text("SELECT count(*) FROM experiments")).scalar_one()
     connection.execute(
         text(EXPERIMENT),
         {
@@ -143,7 +153,8 @@ def test_an_experiment_is_accepted(connection: Connection) -> None:
             "status": "planned",
         },
     )
-    assert connection.execute(text("SELECT count(*) FROM experiments")).scalar_one() == 1
+    after = connection.execute(text("SELECT count(*) FROM experiments")).scalar_one()
+    assert after == before + 1
 
 
 def test_an_unknown_kind_is_refused(connection: Connection) -> None:

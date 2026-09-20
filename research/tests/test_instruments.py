@@ -1,5 +1,8 @@
 """Tests for seeding the instruments table (step 058).
 
+The database tests use fake symbols (TESTAUSDT and friends) so they never collide with
+the real coins this very step seeds.
+
 No network is used: Binance's answer is replaced by a small fixed example. The database
 tests run inside a transaction that is rolled back, and skip when no database is reachable.
 """
@@ -156,7 +159,7 @@ def connection() -> Iterator[Connection]:
         conn.close()
 
 
-def spec(symbol: str = "BTCUSDT", tick: str = "0.01") -> InstrumentSpec:
+def spec(symbol: str = "TESTAUSDT", tick: str = "0.01") -> InstrumentSpec:
     return InstrumentSpec(
         symbol=symbol,
         base_asset=symbol.removesuffix("USDT"),
@@ -174,12 +177,13 @@ def count(connection: Connection) -> int:
 
 def test_rows_are_written(connection: Connection) -> None:
     before = count(connection)
-    written = seed_instruments(connection, [spec("BTCUSDT"), spec("ETHUSDT")])
+    written = seed_instruments(connection, [spec("TESTAUSDT"), spec("TESTBUSDT")])
     assert written == 2
     assert count(connection) == before + 2
     row = connection.execute(
         text(
-            "SELECT tick_size, first_available_date, active FROM instruments WHERE symbol='BTCUSDT'"
+            "SELECT tick_size, first_available_date, active FROM instruments "
+            "WHERE symbol = 'TESTAUSDT'"
         )
     ).one()
     assert row.tick_size == Decimal("0.01")
@@ -198,14 +202,14 @@ def test_a_changed_tick_size_updates_the_row(connection: Connection) -> None:
     seed_instruments(connection, [spec(tick="0.01")])
     seed_instruments(connection, [spec(tick="0.05")])
     tick = connection.execute(
-        text("SELECT tick_size FROM instruments WHERE symbol = 'BTCUSDT'")
+        text("SELECT tick_size FROM instruments WHERE symbol = 'TESTAUSDT'")
     ).scalar_one()
     assert tick == Decimal("0.05")
 
 
 def test_a_missing_first_date_is_refused(connection: Connection) -> None:
     without_date = InstrumentSpec(
-        symbol="XRPUSDT",
+        symbol="TESTEUSDT",
         base_asset="XRP",
         quote_asset="USDT",
         tick_size=Decimal("0.0001"),

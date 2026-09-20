@@ -60,3 +60,45 @@ def log_return_4(bars: pd.DataFrame) -> pd.Series:
 def log_return_24(bars: pd.DataFrame) -> pd.Series:
     """Log return over 24 bars: one day on hourly bars."""
     return log_return(bars["close"], 24)
+
+
+# ---------------------------------------------------------------- distance from the average
+
+
+def distance_from_mean(close: pd.Series, window: int) -> pd.Series:
+    """How far the close sits above or below its own average of the last `window` bars.
+
+        close / mean(close over the last `window` bars, this one included) - 1
+
+    0.02 means the price is 2 % above its recent average. The window is **trailing**: it
+    ends at the current bar and never includes a later one, so the value at any moment could
+    have been computed at that moment.
+
+    Two of these on different windows say something a single price cannot: 2 % above the
+    12-bar average but 5 % below the 168-bar average is a short bounce inside a longer fall.
+    """
+    if window < 1:
+        raise ValueError(f"an average needs at least one bar, got {window}")
+
+    prices = pd.to_numeric(close, errors="coerce").astype("float64")
+    average = prices.rolling(window).mean()
+    ratio = (prices / average).where(average > 0)
+    return pd.Series(ratio - 1.0, index=close.index, dtype="float64")
+
+
+@feature(name="close_over_mean_12", lookback=12, units=Units.FRACTION)
+def close_over_mean_12(bars: pd.DataFrame) -> pd.Series:
+    """Distance from the average of the last 12 bars: half a day on hourly bars."""
+    return distance_from_mean(bars["close"], 12)
+
+
+@feature(name="close_over_mean_48", lookback=48, units=Units.FRACTION)
+def close_over_mean_48(bars: pd.DataFrame) -> pd.Series:
+    """Distance from the average of the last 48 bars: two days on hourly bars."""
+    return distance_from_mean(bars["close"], 48)
+
+
+@feature(name="close_over_mean_168", lookback=168, units=Units.FRACTION)
+def close_over_mean_168(bars: pd.DataFrame) -> pd.Series:
+    """Distance from the average of the last 168 bars: a week on hourly bars."""
+    return distance_from_mean(bars["close"], 168)

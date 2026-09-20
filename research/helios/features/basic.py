@@ -22,6 +22,8 @@ Importing this module registers the features in the project registry.
 
 from __future__ import annotations
 
+import math
+
 import numpy as np
 import pandas as pd
 
@@ -102,3 +104,98 @@ def close_over_mean_48(bars: pd.DataFrame) -> pd.Series:
 def close_over_mean_168(bars: pd.DataFrame) -> pd.Series:
     """Distance from the average of the last 168 bars: a week on hourly bars."""
     return distance_from_mean(bars["close"], 168)
+
+
+# ---------------------------------------------------------------- volatility
+
+PARKINSON_FACTOR = 1.0 / (4.0 * math.log(2.0))
+GARMAN_KLASS_FACTOR = 2.0 * math.log(2.0) - 1.0
+
+
+def realized_volatility(close: pd.Series, window: int) -> pd.Series:
+    """Standard deviation of the 1-bar log returns over the last `window` bars.
+
+    The plainest measure of how much a price is moving. It uses closes only, so everything
+    that happened inside a bar — a spike up and back down — is invisible to it. That is the
+    weakness the two estimators below address.
+    """
+    if window < 2:
+        raise ValueError(f"a standard deviation needs at least two returns, got {window}")
+    returns = log_return(close, 1)
+    return returns.rolling(window).std(ddof=1)
+
+
+def _log_ratio(top: pd.Series, bottom: pd.Series) -> pd.Series:
+    """ln(top / bottom), or NaN where either price is not positive."""
+    high = pd.to_numeric(top, errors="coerce").astype("float64")
+    low = pd.to_numeric(bottom, errors="coerce").astype("float64")
+    ratio = (high / low).where((high > 0) & (low > 0))
+    return pd.Series(np.log(ratio), index=top.index, dtype="float64")
+
+
+def parkinson(high: pd.Series, low: pd.Series, window: int) -> pd.Series:
+    """Parkinson's volatility estimator (1980), from the high and low of each bar.
+
+        sqrt( mean( ln(high/low)^2 ) / (4 ln 2) )
+
+    A bar that swings from 100 up to 110 and back to 100 has a close-to-close return of
+    zero, so the plain measure calls it a quiet bar. Parkinson sees the 10 % range and calls
+    it what it was. For the same number of bars it is several times more accurate than
+    close-to-close, which matters when only 24 bars are in the window.
+
+    It assumes the price wanders without drift and that trading never stops, so it tends to
+    read slightly low on real data. It is an estimate, not a measurement.
+    """
+    if window < 1:
+        raise ValueError(f"an estimate needs at least one bar, got {window}")
+    squared = _log_ratio(high, low) ** 2
+    estimate = np.sqrt(PARKINSON_FACTOR * squared.rolling(window).mean())
+    return pd.Series(estimate, index=high.index, dtype="float64")
+
+
+def garman_klass(
+    open_: pd.Series, high: pd.Series, low: pd.Series, close: pd.Series, window: int
+) -> pd.Series:
+    """Garman–Klass volatility estimator (1980), from all four prices of each bar.
+
+        sqrt( mean( 0.5 * ln(high/low)^2 - (2 ln 2 - 1) * ln(close/open)^2 ) )
+
+    It adds the open-to-close move to Parkinson's range, which makes it more accurate again.
+
+    The subtraction cannot make the term negative for a real bar: the coefficient
+    2 ln 2 - 1 = 0.386 is smaller than 0.5, and a close can never be further from the open
+    than the high is from the low. The guard below is therefore only for impossible input
+    (a close outside the bar's own range), where the answer is NaN rather than a made-up
+    number.
+    """
+    if window < 1:
+        raise ValueError(f"an estimate needs at least one bar, got {window}")
+    range_part = 0.5 * _log_ratio(high, low) ** 2
+    move_part = GARMAN_KLASS_FACTOR * _log_ratio(close, open_) ** 2
+    average = (range_part - move_part).rolling(window).mean()
+    estimate = np.sqrt(average.where(average >= 0))
+    return pd.Series(estimate, index=close.index, dtype="float64")
+
+
+@feature(name="volatility_24", lookback=25, units=Units.VOLATILITY)
+def volatility_24(bars: pd.DataFrame) -> pd.Series:
+    """Standard deviation of the last 24 one-bar log returns: a day on hourly bars."""
+    return realized_volatility(bars["close"], 24)
+
+
+@feature(name="volatility_168", lookback=169, units=Units.VOLATILITY)
+def volatility_168(bars: pd.DataFrame) -> pd.Series:
+    """Standard deviation of the last 168 one-bar log returns: a week on hourly bars."""
+    return realized_volatility(bars["close"], 168)
+
+
+@feature(name="parkinson_24", lookback=24, units=Units.VOLATILITY)
+def parkinson_24(bars: pd.DataFrame) -> pd.Series:
+    """Parkinson volatility over 24 bars, using each bar's high and low."""
+    return parkinson(bars["high"], bars["low"], 24)
+
+
+@feature(name="garman_klass_24", lookback=24, units=Units.VOLATILITY)
+def garman_klass_24(bars: pd.DataFrame) -> pd.Series:
+    """Garman-Klass volatility over 24 bars, using open, high, low and close."""
+    return garman_klass(bars["open"], bars["high"], bars["low"], bars["close"], 24)

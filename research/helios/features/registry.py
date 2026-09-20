@@ -52,6 +52,7 @@ class Units(StrEnum):
     VOLUME = "volume"  # base currency, e.g. BTC
     COUNT = "count"  # a number of things (trades, bars)
     RATIO = "ratio"  # one quantity divided by another of the same kind
+    VOLATILITY = "volatility"  # a standard deviation of log returns, per bar
     ZSCORE = "zscore"  # standard deviations from a mean
     SECONDS = "seconds"
 

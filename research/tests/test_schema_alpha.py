@@ -4,75 +4,12 @@ Every test runs inside a transaction that is rolled back, and skips when Postgre
 reachable. Ids are deliberately fake so nothing collides with real work.
 """
 
-from collections.abc import Iterator
 from datetime import UTC, datetime
 
 import pytest
-from pydantic import ValidationError
+from registry_sql import ACCESS, COMMIT, DEFINITION, GATE_CONFIG, HASH, RESULT, SNAPSHOT
 from sqlalchemy import Connection, text
 from sqlalchemy.exc import IntegrityError
-
-from helios.common import db
-
-COMMIT = "a" * 40
-HASH = "b" * 64
-
-DEFINITION = """
-INSERT INTO alpha_definitions
-    (alpha_id, version, name, provenance, spec_json, feature_set_version,
-     horizon_family, horizon_periods, author, code_commit)
-VALUES (:alpha_id, :version, 'test alpha', :provenance, '{"rule": "momentum"}'::jsonb, 'fs_v1',
-        :family, :horizon, 'abhishek', :commit)
-"""
-
-GATE_CONFIG = """
-INSERT INTO alpha_gate_config
-    (config_id, sharpe_min, fitness_min, fitness_turnover_floor, turnover_min, turnover_max,
-     stability_min_positive_fraction, cost_stress_multiplier, cost_stress_sharpe_min,
-     config_hash, author, effective_from)
-VALUES (:config_id, 1.0, 1.0, 0.125, :turnover_min, :turnover_max, 0.5, :stress, 0.0,
-        :hash, 'abhishek', now())
-"""
-
-SNAPSHOT = """
-INSERT INTO data_snapshots
-    (snapshot_id, source, interval, symbols, first_open_time, last_open_time,
-     file_count, row_count, total_bytes, code_commit)
-VALUES (:id, 'test', '1h', '["TESTAUSDT"]'::jsonb, 1, 2, 1, 10, 100, :commit)
-"""
-
-RESULT = """
-INSERT INTO alpha_results
-    (run_id, alpha_id, version, split, snapshot_id, gate_config_id,
-     sharpe, annual_return, turnover, fitness, max_drawdown, hit_rate,
-     periods, gate_results, status, code_commit, config_hash, seed, dirty)
-VALUES (:run_id, :alpha_id, :version, :split, :snapshot_id, :config_id,
-        :sharpe, 0.25, :turnover, 1.4, :drawdown, :hit_rate,
-        :periods, '{"G1": true}'::jsonb, :status, :commit, :hash, 0, false)
-"""
-
-ACCESS = """
-INSERT INTO test_set_access (alpha_id, version, snapshot_id, actor, purpose)
-VALUES (:alpha_id, :version, :snapshot_id, 'abhishek', :purpose)
-"""
-
-
-@pytest.fixture
-def connection() -> Iterator[Connection]:
-    try:
-        db.get_settings()
-    except ValidationError:
-        pytest.skip("database settings not configured (no .env / POSTGRES_* variables)")
-    try:
-        conn = db.get_engine().connect()
-    except Exception as exc:  # noqa: BLE001 - any failure here means "no database"
-        pytest.skip(f"database not reachable: {type(exc).__name__}")
-    transaction = conn.begin()
-    try:
-        yield conn
-    finally:
-        transaction.rollback()
-        conn.close()
 
 
 @pytest.fixture
@@ -271,7 +208,8 @@ def test_a_result_must_point_at_a_real_snapshot(registry: Connection) -> None:
 
 def test_a_used_definition_cannot_be_deleted(registry: Connection) -> None:
     insert_result(registry)
-    with pytest.raises(IntegrityError, match="alpha_results_definition_fkey"):
+    # step 062 makes definitions insert-only, so the delete is refused by the trigger
+    with pytest.raises(IntegrityError, match="insert-only|alpha_results_definition_fkey"):
         registry.execute(text("DELETE FROM alpha_definitions WHERE alpha_id = 'test_alpha'"))
 
 

@@ -5,15 +5,12 @@ the tests do not depend on what the table already holds. One extra test checks t
 seeded coins when they are present.
 """
 
-from collections.abc import Iterator
 from datetime import date
 from decimal import Decimal
 
 import pytest
-from pydantic import ValidationError
 from sqlalchemy import Connection, text
 
-from helios.common import db
 from helios.data.instruments import InstrumentSpec, seed_instruments
 from helios.data.universe import (
     UniverseError,
@@ -24,24 +21,6 @@ from helios.data.universe import (
 )
 
 VENUE = "test_venue"  # keeps these coins out of the real binance_spot universe
-
-
-@pytest.fixture
-def connection() -> Iterator[Connection]:
-    try:
-        db.get_settings()
-    except ValidationError:
-        pytest.skip("database settings not configured (no .env / POSTGRES_* variables)")
-    try:
-        conn = db.get_engine().connect()
-    except Exception as exc:  # noqa: BLE001 - any failure here means "no database"
-        pytest.skip(f"database not reachable: {type(exc).__name__}")
-    transaction = conn.begin()
-    try:
-        yield conn
-    finally:
-        transaction.rollback()
-        conn.close()
 
 
 def coin(symbol: str, first: date, status: str = "TRADING") -> InstrumentSpec:

@@ -6,15 +6,12 @@ transaction that is rolled back, and skip when no database is reachable.
 
 import json
 import shutil
-from collections.abc import Iterator
 from pathlib import Path
 
 import pandas as pd
 import pytest
-from pydantic import ValidationError
 from sqlalchemy import Connection, text
 
-from helios.common import db
 from helios.data.bars import BarBuildError, build_bars
 from helios.data.snapshots import (
     Snapshot,
@@ -158,24 +155,6 @@ def test_a_missing_manifest_is_refused(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------- the database row
-
-
-@pytest.fixture
-def connection() -> Iterator[Connection]:
-    try:
-        db.get_settings()
-    except ValidationError:
-        pytest.skip("database settings not configured (no .env / POSTGRES_* variables)")
-    try:
-        conn = db.get_engine().connect()
-    except Exception as exc:  # noqa: BLE001 - any failure here means "no database"
-        pytest.skip(f"database not reachable: {type(exc).__name__}")
-    transaction = conn.begin()
-    try:
-        yield conn
-    finally:
-        transaction.rollback()
-        conn.close()
 
 
 def test_the_row_is_stored(store: Path, connection: Connection) -> None:

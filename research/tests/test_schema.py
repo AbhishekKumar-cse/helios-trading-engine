@@ -12,15 +12,11 @@ seeded into `instruments` by step 058, and a test must never depend on what a ta
 already holds.
 """
 
-from collections.abc import Iterator
 from decimal import Decimal
 
 import pytest
-from pydantic import ValidationError
 from sqlalchemy import Connection, text
 from sqlalchemy.exc import DBAPIError, IntegrityError
-
-from helios.common import db
 
 pytestmark = pytest.mark.usefixtures("connection")
 
@@ -41,25 +37,6 @@ EXPERIMENT = """
 INSERT INTO experiments (kind, hypothesis, author, status)
 VALUES (:kind, :hypothesis, 'abhishek', :status)
 """
-
-
-@pytest.fixture
-def connection() -> Iterator[Connection]:
-    try:
-        db.get_settings()
-    except ValidationError:
-        pytest.skip("database settings not configured (no .env / POSTGRES_* variables)")
-    engine = db.get_engine()
-    try:
-        conn = engine.connect()
-    except Exception as exc:  # noqa: BLE001 - any connection failure means "no database here"
-        pytest.skip(f"database not reachable: {type(exc).__name__}")
-    transaction = conn.begin()
-    try:
-        yield conn
-    finally:
-        transaction.rollback()  # nothing these tests write is kept
-        conn.close()
 
 
 def test_the_three_tables_exist(connection: Connection) -> None:
@@ -200,5 +177,7 @@ def test_a_used_snapshot_cannot_be_deleted(connection: Connection) -> None:
             "VALUES ('alpha', 'a hypothesis long enough to pass', 'abhishek', 'sha-9')"
         )
     )
-    with pytest.raises(IntegrityError, match="foreign key|violates"):
+    # since step 062 the insert-only trigger refuses the delete before the foreign key
+    # is even considered, which is a stronger guarantee than the one this test started with
+    with pytest.raises(IntegrityError, match="insert-only|foreign key|violates"):
         connection.execute(text("DELETE FROM data_snapshots WHERE snapshot_id = 'sha-9'"))

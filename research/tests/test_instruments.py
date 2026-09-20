@@ -9,16 +9,13 @@ tests run inside a transaction that is rolled back, and skip when no database is
 
 import json
 import shutil
-from collections.abc import Iterator
 from datetime import date
 from decimal import Decimal
 from pathlib import Path
 
 import pytest
-from pydantic import ValidationError
 from sqlalchemy import Connection, text
 
-from helios.common import db
 from helios.data.bars import BarBuildError, build_bars
 from helios.data.instruments import (
     InstrumentError,
@@ -139,24 +136,6 @@ def test_build_specs_joins_both_sources(store: Path) -> None:
 
 
 # ---------------------------------------------------------------- writing to the database
-
-
-@pytest.fixture
-def connection() -> Iterator[Connection]:
-    try:
-        db.get_settings()
-    except ValidationError:
-        pytest.skip("database settings not configured (no .env / POSTGRES_* variables)")
-    try:
-        conn = db.get_engine().connect()
-    except Exception as exc:  # noqa: BLE001 - any failure here means "no database"
-        pytest.skip(f"database not reachable: {type(exc).__name__}")
-    transaction = conn.begin()
-    try:
-        yield conn
-    finally:
-        transaction.rollback()
-        conn.close()
 
 
 def spec(symbol: str = "TESTAUSDT", tick: str = "0.01") -> InstrumentSpec:

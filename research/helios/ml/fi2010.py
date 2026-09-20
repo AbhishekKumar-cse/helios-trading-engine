@@ -1,4 +1,4 @@
-"""FI-2010 limit-order-book benchmark loader (steps 037-038).
+"""FI-2010 limit-order-book benchmark loader (steps 037-039, 049).
 
 FI-2010 (Ntakaris et al., 2018) holds 10 days of order-book events for 5 Nasdaq Nordic
 stocks. We use the DeepLOB packaging: one zip with 4 text files (decimal-precision
@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import io
 import zipfile
+from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -130,3 +131,66 @@ def split_matrix(matrix: Matrix) -> FI2010Data:
 def load(member: str, zip_path: Path = DEFAULT_ZIP) -> FI2010Data:
     """Read one FI-2010 file and split it (`read_matrix` + `split_matrix`)."""
     return split_matrix(read_matrix(member, zip_path))
+
+
+# ---------------------------------------------------------------- day split (step 049)
+
+VAL_FRACTION = 0.2
+"""Share of the training file (days 1-7) held back for validation, as in the DeepLOB paper."""
+
+
+@dataclass(frozen=True)
+class FI2010Split:
+    """Train / validation / test parts, split exactly as the DeepLOB paper does.
+
+    - train: first 80 % of the days 1-7 file
+    - val:   last 20 % of the same file (kept in time order, never shuffled: the validation
+             events must come *after* the training events, or the model sees its own future)
+    - test:  days 8, 9 and 10, joined in order
+    """
+
+    train: FI2010Data
+    val: FI2010Data
+    test: FI2010Data
+
+
+def concat(parts: Sequence[FI2010Data]) -> FI2010Data:
+    """Join several FI-2010 parts end to end, keeping their order."""
+    if not parts:
+        raise FI2010Error("nothing to join")
+    return FI2010Data(
+        lob=np.concatenate([p.lob for p in parts]),
+        features=np.concatenate([p.features for p in parts]),
+        labels=np.concatenate([p.labels for p in parts]),
+    )
+
+
+def take(data: FI2010Data, start: int, stop: int) -> FI2010Data:
+    """The events from `start` (included) to `stop` (excluded), in order."""
+    if not 0 <= start < stop <= data.n_events:
+        raise FI2010Error(f"bad range {start}:{stop} for {data.n_events} events")
+    return FI2010Data(
+        lob=data.lob[start:stop],
+        features=data.features[start:stop],
+        labels=data.labels[start:stop],
+    )
+
+
+def load_split(zip_path: Path = DEFAULT_ZIP, val_fraction: float = VAL_FRACTION) -> FI2010Split:
+    """Load FI-2010 and split it by day: train/val from days 1-7, test from days 8-10.
+
+    Returns plain numpy arrays: nothing here depends on PyTorch.
+    """
+    if not 0.0 < val_fraction < 1.0:
+        raise FI2010Error(f"val_fraction must be between 0 and 1, got {val_fraction}")
+
+    days_1_to_7 = load(TRAIN_FILE, zip_path)
+    cut = int(days_1_to_7.n_events * (1.0 - val_fraction))
+    if cut in (0, days_1_to_7.n_events):
+        raise FI2010Error("training file is too small to split")
+
+    return FI2010Split(
+        train=take(days_1_to_7, 0, cut),
+        val=take(days_1_to_7, cut, days_1_to_7.n_events),
+        test=concat([load(name, zip_path) for name in TEST_FILES]),
+    )

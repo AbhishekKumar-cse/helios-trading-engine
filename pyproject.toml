@@ -33,7 +33,10 @@ packages = ["research/helios"]
 testpaths = ["research/tests"]
 # Short tracebacks: never print function arguments on failure (they can contain secrets,
 # e.g. a database connection string with the password)
-addopts = "--tb=short"
+addopts = "--tb=short -m 'not slow'"
+markers = [
+    "slow: reads the full FI-2010 dataset (~25 s); run with `uv run pytest -m slow`",
+]
 
 # ---- ruff: code style + lint (step 018) ----
 [tool.ruff]

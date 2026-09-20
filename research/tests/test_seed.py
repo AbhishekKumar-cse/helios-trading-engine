@@ -41,3 +41,17 @@ def test_boundary_seeds_are_accepted(seed: int) -> None:
 def test_bad_seeds_are_rejected(seed: object) -> None:
     with pytest.raises(ValueError, match="seed"):
         set_seed(seed)  # type: ignore[arg-type]
+
+
+def test_pytorch_is_seeded_too() -> None:
+    """A network starts from random weights, so the recorded seed must reach PyTorch."""
+    torch = pytest.importorskip("torch", reason="PyTorch is not installed")
+
+    set_seed(7)
+    first = torch.randn(4)
+    set_seed(7)
+    second = torch.randn(4)
+    assert torch.equal(first, second)
+
+    set_seed(8)
+    assert not torch.equal(torch.randn(4), first)

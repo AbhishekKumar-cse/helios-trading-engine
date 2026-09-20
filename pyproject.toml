@@ -20,7 +20,18 @@ dependencies = [
     "pyyaml>=6.0.3",
     "scikit-learn>=1.9.1",
     "sqlalchemy>=2.0.52",
+    "torch>=2.14.0",
 ]
+
+# PyTorch, from the CPU-only wheels. The default wheels bundle CUDA (about 2.5 GB) for GPUs
+# this project does not have; the CPU build is a few hundred MB and runs the same code.
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu" }]
 
 [build-system]
 requires = ["hatchling"]

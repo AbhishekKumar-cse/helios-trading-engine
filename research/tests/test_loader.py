@@ -7,6 +7,7 @@ import shutil
 from datetime import UTC, date, datetime
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import pytest
 
@@ -142,6 +143,20 @@ def test_to_micros_handles_every_input() -> None:
     assert to_micros(date(2024, 12, 1)) == DEC_FIRST
     assert to_micros(date(2024, 12, 1), end=True) == DEC_FIRST + 86_400_000_000 - 1
     assert to_micros(datetime(2024, 12, 1, tzinfo=UTC)) == DEC_FIRST
+
+
+def test_numpy_integer_timestamp_works(store: Path) -> None:
+    """A timestamp taken straight from a column is a numpy integer, not a Python int."""
+    frame = load_bars("BTCUSDT", "1h", out_dir=store)
+    first = frame["open_time"].min()
+    assert isinstance(first, np.integer)
+    assert to_micros(first) == DEC_FIRST
+    assert len(load_bars("BTCUSDT", "1h", first, frame["open_time"].max(), out_dir=store)) == 6
+
+
+def test_booleans_are_rejected() -> None:
+    with pytest.raises(BarBuildError, match="cannot be True or False"):
+        to_micros(True)
 
 
 def test_naive_datetime_is_treated_as_utc() -> None:

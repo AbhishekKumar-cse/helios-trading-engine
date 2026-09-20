@@ -17,13 +17,14 @@ from datetime import UTC, date, datetime
 from pathlib import Path
 
 import duckdb
+import numpy as np
 import pandas as pd
 
 from helios.data.bars import BAR_COLUMNS, DEFAULT_OUT_DIR, BarBuildError
 from helios.data.klines import interval_us
 
 DAY_US = 86_400_000_000
-TimeLike = str | date | datetime | int | None
+TimeLike = str | date | datetime | int | np.integer | None
 
 
 def to_micros(value: TimeLike, *, end: bool = False) -> int | None:
@@ -36,8 +37,9 @@ def to_micros(value: TimeLike, *, end: bool = False) -> int | None:
         return None
     if isinstance(value, bool):  # bool is an int in Python; never a timestamp
         raise BarBuildError("a timestamp cannot be True or False")
-    if isinstance(value, int):
-        return value
+    if isinstance(value, int | np.integer):
+        # numpy integers come straight out of a DataFrame column and are NOT Python ints
+        return int(value)
     if isinstance(value, str):
         # "2024-12-01" is a day, so it must behave like a date (a whole day when it is the
         # end of a range); "2024-12-01T09:30" is an exact moment

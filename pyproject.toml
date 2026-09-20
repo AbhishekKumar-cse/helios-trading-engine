@@ -18,6 +18,7 @@ dependencies = [
     "pydantic>=2.13.5",
     "pydantic-settings>=2.15.0",
     "pyyaml>=6.0.3",
+    "scikit-learn>=1.9.1",
     "sqlalchemy>=2.0.52",
 ]
 
@@ -71,3 +72,8 @@ dev = [
     "ruff>=0.16.7",
     "types-pyyaml>=6.0.12.20260906",
 ]
+
+# scikit-learn ships no type information, so mypy cannot check inside it
+[[tool.mypy.overrides]]
+module = ["sklearn.*"]
+ignore_missing_imports = true

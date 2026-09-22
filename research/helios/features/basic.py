@@ -199,3 +199,51 @@ def parkinson_24(bars: pd.DataFrame) -> pd.Series:
 def garman_klass_24(bars: pd.DataFrame) -> pd.Series:
     """Garman-Klass volatility over 24 bars, using open, high, low and close."""
     return garman_klass(bars["open"], bars["high"], bars["low"], bars["close"], 24)
+
+
+# ---------------------------------------------------------------- activity
+
+
+def rolling_zscore(values: pd.Series, window: int) -> pd.Series:
+    """How unusual each value is, measured against its own last `window` values.
+
+        (value - mean of the window) / standard deviation of the window
+
+    A z-score of 2 means "twice as far above the recent average as the usual wobble". This
+    is what makes volume comparable: 900 BTC traded in an hour is enormous for a quiet
+    market and ordinary for a busy one, and the raw number cannot tell the difference.
+
+    A window with no variation at all has no scale to measure against, so the answer is NaN
+    rather than zero or infinity.
+    """
+    if window < 2:
+        raise ValueError(f"a z-score needs at least two values, got {window}")
+
+    numbers = pd.to_numeric(values, errors="coerce").astype("float64")
+    rolling = numbers.rolling(window)
+    spread = rolling.std(ddof=1)
+    centred = numbers - rolling.mean()
+    return pd.Series((centred / spread).where(spread > 0), index=values.index, dtype="float64")
+
+
+@feature(name="volume_zscore_168", lookback=168, units=Units.ZSCORE)
+def volume_zscore_168(bars: pd.DataFrame) -> pd.Series:
+    """How unusual this bar's traded amount is, against the last week of bars."""
+    return rolling_zscore(bars["volume"], 168)
+
+
+@feature(name="dollar_volume", lookback=1, units=Units.NOTIONAL)
+def dollar_volume(bars: pd.DataFrame) -> pd.Series:
+    """Money that changed hands in this bar, in the quote currency (USDT).
+
+    Taken from the exchange's own `quote_volume`, which is the sum of price x quantity over
+    the real trades in the bar. Computing `close x volume` instead would use one price for
+    the whole bar and quietly misstate a bar that moved.
+    """
+    return pd.to_numeric(bars["quote_volume"], errors="coerce").astype("float64")
+
+
+@feature(name="dollar_volume_zscore_168", lookback=168, units=Units.ZSCORE)
+def dollar_volume_zscore_168(bars: pd.DataFrame) -> pd.Series:
+    """How unusual this bar's money flow is, against the last week of bars."""
+    return rolling_zscore(pd.to_numeric(bars["quote_volume"], errors="coerce"), 168)

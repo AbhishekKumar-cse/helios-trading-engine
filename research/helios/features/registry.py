@@ -51,6 +51,7 @@ class Units(StrEnum):
     PRICE = "price"  # quote currency, e.g. USDT
     VOLUME = "volume"  # base currency, e.g. BTC
     COUNT = "count"  # a number of things (trades, bars)
+    NOTIONAL = "notional"  # an amount of money that changed hands, in the quote currency
     RATIO = "ratio"  # one quantity divided by another of the same kind
     VOLATILITY = "volatility"  # a standard deviation of log returns, per bar
     ZSCORE = "zscore"  # standard deviations from a mean

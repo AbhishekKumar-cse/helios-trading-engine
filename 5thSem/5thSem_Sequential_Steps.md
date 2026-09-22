@@ -151,7 +151,7 @@ Follow the numbers in order.
 
 | ✓ | Step | What to do | Owner | Plan ID | Done when |
 |---|---|---|---|---|---|
-| [ ] | 076 | Features: volume z-score (168), dollar volume | Q | 5D-05 | Tests |
+| [x] | 076 | Features: volume z-score (168), dollar volume | Q | 5D-05 | Tests *(done 2026-09-23: `rolling_zscore(values, window)` in `research/helios/features/basic.py` plus the features `volume_zscore_168`, `dollar_volume` and `dollar_volume_zscore_168`; new unit `Units.NOTIONAL` for amounts of money. A z-score answers 'how unusual is this, for this coin lately': 900 BTC in an hour is enormous in a quiet market and ordinary in a busy one, and the raw number cannot tell the difference. A window with no variation has no scale to measure against, so the answer is **NaN rather than 0 or infinity**, and the runner marks it unavailable. `dollar_volume` uses the exchange's own `quote_volume` (the sum of price x quantity over real trades) rather than `close x volume`, which would price a whole bar at its last trade. 19 tests, with the z-score checked by hand: for 1, 2, 3, 4 the mean is 2.5 and the sample standard deviation sqrt(5/3), so the last value scores **1.161895003862225**. **Also fixed an inconsistency:** `test_select_one` skipped when settings were missing but *failed* when Docker was merely stopped, leaving one red test among a hundred honest skips; it now uses the shared `connection` fixture like every other database test. 621 passed with Postgres running again)* |
 | [ ] | 077 | Features: taker-buy ratio = taker_buy_base / volume, and its z-score | Q | 5D-06 | Tests |
 | [ ] | 078 | Features: n_trades z-score, average trade size | Q | 5D-07 | Tests |
 | [ ] | 079 | Features: hour-of-day, day-of-week (sin/cos encoded) | Q | 5D-08 | Tests |

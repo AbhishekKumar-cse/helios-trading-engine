@@ -1,20 +1,19 @@
 """Database connection tests (step 025)."""
 
-import pytest
-from pydantic import ValidationError
-from sqlalchemy import text
+from sqlalchemy import Connection, text
 
 from helios.common import db
 
 
-def test_select_one() -> None:
-    """Connects to PostgreSQL and runs SELECT 1. Skips when no DB settings exist (e.g. CI)."""
-    try:
-        db.get_settings()
-    except ValidationError:
-        pytest.skip("database settings not configured (no .env / POSTGRES_* variables)")
-    with db.get_engine().connect() as conn:
-        assert conn.execute(text("SELECT 1")).scalar_one() == 1
+def test_select_one(connection: Connection) -> None:
+    """Connects to PostgreSQL and runs SELECT 1.
+
+    It uses the shared `connection` fixture, so it skips for the same reasons every other
+    database test does: no settings, or no database running. Before, it skipped on missing
+    settings but *failed* when Docker was merely stopped, which made one red test sit among
+    a hundred honest skips.
+    """
+    assert connection.execute(text("SELECT 1")).scalar_one() == 1
 
 
 def test_password_is_never_shown() -> None:

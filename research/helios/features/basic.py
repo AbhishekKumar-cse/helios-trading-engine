@@ -274,3 +274,34 @@ def taker_buy_ratio_zscore_168(bars: pd.DataFrame) -> pd.Series:
     The window is in bars: a week on hourly data, 168 minutes on minute data.
     """
     return rolling_zscore(taker_buy_ratio(bars), 168)
+
+
+def _trade_counts(bars: pd.DataFrame) -> pd.Series:
+    """Read the canonical `trades` column; invalid counts remain unknown."""
+    counts = pd.to_numeric(bars["trades"], errors="coerce").astype("float64")
+    valid = np.isfinite(counts) & (counts >= 0) & (counts == counts.round())
+    return counts.where(valid)
+
+
+@feature(name="n_trades_zscore_168", lookback=168, units=Units.ZSCORE)
+def n_trades_zscore_168(bars: pd.DataFrame) -> pd.Series:
+    """Trade count against the last 168 bars, including this bar (step 078).
+
+    The source column is `trades`. Zero trades is a valid observation; negative,
+    fractional, missing or nonfinite counts are unavailable. Uses sample standard
+    deviation and requires a full, varying window, like the other activity z-scores.
+    """
+    return rolling_zscore(_trade_counts(bars), 168)
+
+
+@feature(name="average_trade_size", lookback=1, units=Units.VOLUME)
+def average_trade_size(bars: pd.DataFrame) -> pd.Series:
+    """Base-currency volume per trade in this bar: volume / trades (step 078).
+
+    For BTCUSDT the unit is BTC per trade, not USDT. With no trades the average is
+    undefined, not zero. Invalid volume or trade counts also produce NaN.
+    """
+    counts = _trade_counts(bars)
+    volume = pd.to_numeric(bars["volume"], errors="coerce").astype("float64")
+    valid = np.isfinite(volume) & (volume >= 0) & (counts > 0)
+    return pd.Series(volume.where(valid) / counts.where(valid), index=bars.index, dtype="float64")

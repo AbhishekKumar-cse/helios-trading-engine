@@ -15,6 +15,12 @@ A value is only available when all three of these hold:
 
 Where a value is unavailable it is set to NaN, never 0. Zero is a claim that nothing moved;
 NaN with a mask beside it is the truth: we do not know.
+
+Step 081's warm-up contract is positional: lookback includes the current bar, so a
+lookback of w masks the first w-1 rows (or more if warmup explicitly requests it).
+This is enforced even when the feature itself returns finite early values. Reaching
+the warm-up boundary does not override gaps or nonfinite output. Each invocation
+starts with only the history supplied to it; an input index is not prior history.
 """
 
 from __future__ import annotations

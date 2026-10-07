@@ -27,6 +27,7 @@ import math
 import numpy as np
 import pandas as pd
 
+from helios.features.helpers import zscore
 from helios.features.registry import Units, feature
 
 
@@ -218,12 +219,7 @@ def rolling_zscore(values: pd.Series, window: int) -> pd.Series:
     """
     if window < 2:
         raise ValueError(f"a z-score needs at least two values, got {window}")
-
-    numbers = pd.to_numeric(values, errors="coerce").astype("float64")
-    rolling = numbers.rolling(window)
-    spread = rolling.std(ddof=1)
-    centred = numbers - rolling.mean()
-    return pd.Series((centred / spread).where(spread > 0), index=values.index, dtype="float64")
+    return zscore(values, window)
 
 
 @feature(name="volume_zscore_168", lookback=168, units=Units.ZSCORE)

@@ -305,3 +305,43 @@ def average_trade_size(bars: pd.DataFrame) -> pd.Series:
     volume = pd.to_numeric(bars["volume"], errors="coerce").astype("float64")
     valid = np.isfinite(volume) & (volume >= 0) & (counts > 0)
     return pd.Series(volume.where(valid) / counts.where(valid), index=bars.index, dtype="float64")
+
+
+# ---------------------------------------------------------------- calendar
+
+
+def _calendar_phase(bars: pd.DataFrame, *, weekday: bool) -> pd.Series:
+    """UTC opening-time phase in radians, from integer microsecond timestamps.
+
+    Use discrete hour/day categories: minutes do not change the hour encoding, and
+    hours do not change the weekday encoding. Monday is day 0. Missing or out-of-range
+    timestamps become NaN rather than a fabricated calendar observation.
+    """
+    timestamps = pd.to_datetime(bars["open_time"], unit="us", utc=True, errors="coerce")
+    component = timestamps.dt.dayofweek if weekday else timestamps.dt.hour
+    period = 7 if weekday else 24
+    return component.astype("float64") * (2 * math.pi / period)
+
+
+@feature(name="hour_of_day_sin", lookback=1, units=Units.DIMENSIONLESS)
+def hour_of_day_sin(bars: pd.DataFrame) -> pd.Series:
+    """sin(2*pi*UTC opening hour/24); pairs with hour_of_day_cos (step 079)."""
+    return pd.Series(np.sin(_calendar_phase(bars, weekday=False)), index=bars.index)
+
+
+@feature(name="hour_of_day_cos", lookback=1, units=Units.DIMENSIONLESS)
+def hour_of_day_cos(bars: pd.DataFrame) -> pd.Series:
+    """cos(2*pi*UTC opening hour/24); keeps hours 23 and 0 adjacent (step 079)."""
+    return pd.Series(np.cos(_calendar_phase(bars, weekday=False)), index=bars.index)
+
+
+@feature(name="day_of_week_sin", lookback=1, units=Units.DIMENSIONLESS)
+def day_of_week_sin(bars: pd.DataFrame) -> pd.Series:
+    """sin(2*pi*UTC opening weekday/7), Monday=0 through Sunday=6 (step 079)."""
+    return pd.Series(np.sin(_calendar_phase(bars, weekday=True)), index=bars.index)
+
+
+@feature(name="day_of_week_cos", lookback=1, units=Units.DIMENSIONLESS)
+def day_of_week_cos(bars: pd.DataFrame) -> pd.Series:
+    """cos(2*pi*UTC opening weekday/7); pairs with day_of_week_sin (step 079)."""
+    return pd.Series(np.cos(_calendar_phase(bars, weekday=True)), index=bars.index)

@@ -55,6 +55,7 @@ class Units(StrEnum):
     RATIO = "ratio"  # one quantity divided by another of the same kind
     VOLATILITY = "volatility"  # a standard deviation of log returns, per bar
     ZSCORE = "zscore"  # standard deviations from a mean
+    DIMENSIONLESS = "dimensionless"  # e.g. sine/cosine calendar coordinates
     SECONDS = "seconds"
 
 

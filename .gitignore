@@ -42,3 +42,7 @@ checkpoints/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+docs/presentation/
+docs/PROJECT_CONTEXT.md
+AGENTS.md

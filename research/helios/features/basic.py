@@ -247,3 +247,30 @@ def dollar_volume(bars: pd.DataFrame) -> pd.Series:
 def dollar_volume_zscore_168(bars: pd.DataFrame) -> pd.Series:
     """How unusual this bar's money flow is, against the last week of bars."""
     return rolling_zscore(pd.to_numeric(bars["quote_volume"], errors="coerce"), 168)
+
+
+@feature(name="taker_buy_ratio", lookback=1, units=Units.RATIO)
+def taker_buy_ratio(bars: pd.DataFrame) -> pd.Series:
+    """Share of this bar's base volume bought by takers (step 077).
+
+    `taker_buy_base / volume` is 0 for all taker sells, 0.5 for balanced flow, and 1
+    for all taker buys. Both amounts must use the base currency, not quote volume.
+    A bar without trades has no ratio. Missing, nonfinite or impossible amounts are
+    also NaN, never clipped into a plausible observation.
+    """
+    bought = pd.to_numeric(bars["taker_buy_base"], errors="coerce").astype("float64")
+    total = pd.to_numeric(bars["volume"], errors="coerce").astype("float64")
+    valid = np.isfinite(bought) & np.isfinite(total) & (total > 0) & (bought >= 0)
+    valid &= bought <= total
+    return pd.Series(bought.where(valid) / total.where(valid), index=bars.index, dtype="float64")
+
+
+@feature(name="taker_buy_ratio_zscore_168", lookback=168, units=Units.ZSCORE)
+def taker_buy_ratio_zscore_168(bars: pd.DataFrame) -> pd.Series:
+    """Taker-buy ratio against its last 168 bars, including the current bar.
+
+    Uses sample standard deviation, like the other activity z-scores. A full window
+    of valid ratios is required; a constant window has no scale and stays unavailable.
+    The window is in bars: a week on hourly data, 168 minutes on minute data.
+    """
+    return rolling_zscore(taker_buy_ratio(bars), 168)

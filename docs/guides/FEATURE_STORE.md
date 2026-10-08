@@ -68,4 +68,59 @@ and cause a nonzero exit code while other requested coins can still complete.
 
 The export does not evaluate alphas or consume TEST-access budgets. Any later evaluation
 must enforce its split, label, embargo and holdout-access policies before using these
-features. Step 084 is the separate notebook for visual feature inspection.
+features.
+
+## BTC visual inspection (step 084)
+
+`research/notebooks/01_feature_check.ipynb` checks the stored BTC hourly features
+against source bars using only the configured H-HOURLY TRAIN period. From the
+repository root in WSL, use the external environment documented for this project:
+
+```bash
+export UV_PROJECT_ENVIRONMENT=/home/abhi/.venvs/helios
+uv sync --group notebooks
+```
+
+Open the notebook in a notebook editor, select that environment's Python kernel,
+and Run All. The `notebooks` dependency group contains the plotting, kernel and
+execution tools; it is separate from the default development dependencies. The
+default figures cover January 2021 and a February 2018 data gap. Both windows are
+checked against TRAIN boundaries. Source and feature partition hashes, timestamp
+alignment, mask/NaN consistency, nonnegative volatility and taker-ratio bounds are
+checked before plotting. The notebook displays the original build lineage and
+feature units/lookbacks; it does not rebuild the store or read labels.
+
+For a reproducible headless execution from the repository root:
+
+```bash
+MPLBACKEND=module://matplotlib_inline.backend_inline uv run --group notebooks python - <<'PY'
+from pathlib import Path
+import nbformat
+from nbclient import NotebookClient
+
+source = Path("research/notebooks/01_feature_check.ipynb").resolve()
+notebook = nbformat.read(source, as_version=4)
+nbformat.validate(notebook)
+NotebookClient(
+    notebook, timeout=180, kernel_name="python3",
+    resources={"metadata": {"path": str(source.parent)}},
+).execute()
+output = Path("reports_out/feature_check/01_feature_check.executed.ipynb")
+output.parent.mkdir(parents=True, exist_ok=True)
+nbformat.write(notebook, output)
+PY
+```
+
+The notebook writes `btc_features.png` and `btc_availability.png` under ignored
+`reports_out/feature_check/`. Keep tracked notebook outputs cleared so stored
+observations cannot silently become stale. Missing hours remain gaps in plots;
+off-grid rows are counted without rounding their timestamps or filling data.
+
+On 2026-10-09, all four code cells executed successfully against the clean
+`255edd714a1194a3dbd2a2d46f13806fd5d5864f` feature build: five source/feature
+partition pairs verified, 43,705 TRAIN rows inspected. Visual review found mean
+distance and returns consistent with the displayed price movements, nonnegative
+volatility reacting to larger moves, volume bursts visible in z-scores, and taker
+fractions within bounds. The gap view showed 75 missing hourly timestamps and
+43 off-grid stored rows, with longer lookbacks recovering later. These are data
+sanity observations, not evidence of predictive value or trading performance.

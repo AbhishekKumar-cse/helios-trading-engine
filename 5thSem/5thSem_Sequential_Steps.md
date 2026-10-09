@@ -170,7 +170,7 @@ Follow the numbers in order.
 
 | ✓ | Step | What to do | Owner | Plan ID | Done when |
 |---|---|---|---|---|---|
-| [ ] | 088 | DSL evaluator for arithmetic (`+ - * /`, constants, feature names) | Q | 5E-02 | Tests |
+| [x] | 088 | DSL evaluator for arithmetic (`+ - * /`, constants, feature names) | Q | 5E-02 | Tests *(done locally 2026-10-09: research/helios/alpha/evaluator.py interprets whitelisted source directly with NumPy for binary arithmetic, unary signs, constants, feature columns and finite scalar parameters. AlphaSeries preserves symbol/timestamps/index with float64 values and boolean availability. Operand masks intersect; invalid inputs, zero division and overflow become NaN/false, never filled zero. Malformed alignment/types and unknown or ambiguous bindings fail explicitly. No eval/compile, function evaluation, clipping or P&L. 63 new tests cover hand calculations, masks, actual feature-runner warm-up/gap integration, input isolation, parameter binding and future perturbation/truncation. Docs updated in docs/guides/ALPHA_DSL.md; functions remain step 089 and final bounding 092. Changes left uncommitted on main.)* |
 | [ ] | 089 | DSL functions: `zscore`, `ts_mean`, `ts_std`, `rank_ts`, `lag(x, k)`, `sign`, `clip`, `where` | Q | 5E-02 | Tests per function |
 | [ ] | 090 | Safety checks: negative / zero lag, unknown function or feature, full-sample functions → error | Q | 5E-03 | Tests: forbidden expressions raise |
 | [ ] | 091 | Cross-sectional functions `cs_rank`, `cs_demean` across the universe on each timestamp | Q | 5E-04 | Tests |

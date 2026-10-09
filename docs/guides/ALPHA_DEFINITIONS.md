@@ -53,7 +53,9 @@ when the local PostgreSQL service is reachable.
 
 Loading does not execute expressions or load referenced models. Step 086 provides
 `helios.alpha.parser.parse_expression` for explicit structural whitelist validation;
-see `docs/guides/ALPHA_DSL.md`. Feature/parameter binding and evaluation remain steps 088–090.
+see `docs/guides/ALPHA_DSL.md`. Step 088 now provides explicit pointwise arithmetic
+evaluation with feature/scalar-parameter binding and availability masks. Function
+evaluation and remaining semantic safety checks are steps 089–090.
 Consequently successful YAML validation alone is not a causality or DSL safety
 certificate. These definitions are sketches awaiting that later validation.
 Pre-register experiments before measuring performance, enforce chronological splits,

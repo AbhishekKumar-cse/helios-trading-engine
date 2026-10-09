@@ -51,8 +51,9 @@ is invented to represent DRAFT. The Python registration helper leaves transactio
 commit/rollback to its caller. Examples are verified with rolled-back database tests
 when the local PostgreSQL service is reachable.
 
-Loading does not execute expressions or load referenced models. Parsing, whitelist
-checks, feature/parameter binding and evaluation belong to steps 086, 088–090.
+Loading does not execute expressions or load referenced models. Step 086 provides
+`helios.alpha.parser.parse_expression` for explicit structural whitelist validation;
+see `docs/guides/ALPHA_DSL.md`. Feature/parameter binding and evaluation remain steps 088–090.
 Consequently successful YAML validation alone is not a causality or DSL safety
 certificate. These definitions are sketches awaiting that later validation.
 Pre-register experiments before measuring performance, enforce chronological splits,

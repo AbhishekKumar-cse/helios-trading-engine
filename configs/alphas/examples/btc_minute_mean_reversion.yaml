@@ -1,0 +1,11 @@
+# Lookbacks/horizon_periods count bars of the declared family, not hours.
+alpha_id: example_btc_minute_mean_reversion
+version: 1
+name: BTC minute mean reversion example
+provenance: QUANT
+feature_set_version: v1
+horizon_family: H-MINUTE
+horizon_periods: 1
+params: {}
+expression: -close_over_mean_12
+author: helios_examples

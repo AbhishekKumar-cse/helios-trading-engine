@@ -1,0 +1,11 @@
+# Illustrative DRAFT only: no measured performance or selected trading parameters.
+alpha_id: example_btc_hourly_momentum
+version: 1
+name: BTC hourly momentum example
+provenance: QUANT
+feature_set_version: v1
+horizon_family: H-HOURLY
+horizon_periods: 24
+params: {}
+expression: sign(log_return_24)
+author: helios_examples

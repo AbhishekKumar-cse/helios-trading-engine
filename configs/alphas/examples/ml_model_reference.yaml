@@ -1,0 +1,13 @@
+# Placeholder reference, not a trained model or a claimed research result.
+# Registration does not load or execute this model.
+alpha_id: example_ml_hourly_model
+version: 1
+name: ML hourly model reference example
+provenance: ML
+feature_set_version: v1
+horizon_family: H-HOURLY
+horizon_periods: 1
+params:
+  seed: 42
+model_ref: example://untrained-model/v1
+author: helios_examples

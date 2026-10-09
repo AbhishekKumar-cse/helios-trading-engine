@@ -1,4 +1,4 @@
-"""Pointwise alpha arithmetic with explicit availability (step 088).
+"""Alpha arithmetic and trailing DSL functions with explicit availability (088–089).
 
 The only public evaluation entry point parses source itself. It never accepts a
 caller-mutated AST for Python execution, and never invokes eval or compile.
@@ -17,6 +17,8 @@ import numpy.typing as npt
 import pandas as pd
 
 from helios.alpha.parser import FUNCTION_ARITY, IDENTIFIER, parse_expression
+from helios.data.klines import KlineFormatError, interval_us
+from helios.features.helpers import rank_ts, zscore
 from helios.features.runner import FeatureFrame
 
 Values = npt.NDArray[np.float64]
@@ -89,11 +91,111 @@ def _masked(values: Values, available: Mask) -> tuple[Values, Mask]:
     return np.where(usable, values, np.nan), usable
 
 
-class _ArithmeticEvaluator:
-    def __init__(self, frame: FeatureFrame, params: dict[str, float]) -> None:
+class _Evaluator:
+    def __init__(self, frame: FeatureFrame, params: dict[str, float], interval: str | None) -> None:
         self.frame = frame
         self.params = params
         self.cache: dict[str, tuple[Values, Mask]] = {}
+        try:
+            self.period = None if interval is None else interval_us(interval)
+        except KlineFormatError as exc:
+            raise DSLEvaluationError(str(exc)) from exc
+        self.time_masks: dict[int, Mask] = {}
+
+    def scalar(self, node: ast.expr) -> float:
+        """Controls are constants/parameters, never feature-dependent or full-sample."""
+        if isinstance(node, ast.Constant):
+            value = float(cast(int | float, node.value))
+        elif isinstance(node, ast.Name) and node.id in self.params:
+            value = self.params[node.id]
+        elif isinstance(node, ast.UnaryOp):
+            value = self.scalar(node.operand)
+            if isinstance(node.op, ast.USub):
+                value = -value
+        elif isinstance(node, ast.BinOp):
+            left, right = self.scalar(node.left), self.scalar(node.right)
+            if isinstance(node.op, ast.Add):
+                value = left + right
+            elif isinstance(node.op, ast.Sub):
+                value = left - right
+            elif isinstance(node.op, ast.Mult):
+                value = left * right
+            elif isinstance(node.op, ast.Div) and right != 0:
+                value = left / right
+            else:
+                raise DSLEvaluationError("invalid scalar control arithmetic")
+        else:
+            raise DSLEvaluationError("function controls must use scalar constants or parameters")
+        if not math.isfinite(value):
+            raise DSLEvaluationError("function controls must be finite")
+        return value
+
+    def count(self, node: ast.expr, minimum: int) -> int:
+        value = self.scalar(node)
+        if not value.is_integer() or value < minimum or value >= 2**63:
+            raise DSLEvaluationError(
+                f"window/lag must be an integer value >= {minimum}, below 2**63"
+            )
+        return int(value)
+
+    def contiguous(self, window: int) -> Mask:
+        if self.period is None:
+            raise DSLEvaluationError("interval is required for rolling and lag functions")
+        if window not in self.time_masks:
+            times = self.frame.open_time.to_numpy(dtype=np.int64)
+            result = np.zeros(self.frame.rows, dtype=bool)
+            if window <= self.frame.rows:
+                breaks = np.concatenate(([0], np.cumsum(np.diff(times) != self.period)))
+                result[window - 1 :] = (
+                    breaks[window - 1 :] - breaks[: self.frame.rows - window + 1] == 0
+                ) & (times[window - 1 :] % self.period == 0)
+            self.time_masks[window] = result
+        return self.time_masks[window]
+
+    def call(self, node: ast.Call) -> tuple[Values, Mask]:
+        name = cast(ast.Name, node.func).id  # direct whitelisted calls only, checked by parser
+        values, available = self.visit(node.args[0])
+        if name == "sign":
+            return _masked(np.sign(values), available)
+        if name == "clip":
+            lower, upper = self.scalar(node.args[1]), self.scalar(node.args[2])
+            if lower > upper:
+                raise DSLEvaluationError("clip lower bound must not exceed upper bound")
+            return _masked(np.clip(values, lower, upper), available)
+        if name == "where":
+            yes, yes_available = self.visit(node.args[1])
+            no, no_available = self.visit(node.args[2])
+            choose_yes = values != 0
+            return _masked(
+                np.where(choose_yes, yes, no),
+                available & np.where(choose_yes, yes_available, no_available),
+            )
+        if name == "lag":
+            periods = self.count(node.args[1], 1)
+            contiguous = self.contiguous(periods + 1)
+            shifted = np.full(self.frame.rows, np.nan)
+            usable = np.zeros(self.frame.rows, dtype=bool)
+            if periods < self.frame.rows:
+                shifted[periods:] = values[:-periods]
+                usable[periods:] = available[:-periods]
+            return _masked(shifted, usable & contiguous)
+        if name in {"zscore", "ts_mean", "ts_std", "rank_ts"}:
+            window = self.count(node.args[1], 2 if name in {"zscore", "ts_std"} else 1)
+            contiguous = self.contiguous(window)
+            if window > self.frame.rows:
+                return np.full(self.frame.rows, np.nan), contiguous
+            series = pd.Series(values)
+            with np.errstate(divide="ignore", invalid="ignore", over="ignore", under="ignore"):
+                if name == "zscore":
+                    computed = zscore(series, window)
+                elif name == "rank_ts":
+                    computed = rank_ts(series, window)
+                elif name == "ts_mean":
+                    computed = series.rolling(window, min_periods=window).mean()
+                else:
+                    computed = series.rolling(window, min_periods=window).std(ddof=1)
+            return _masked(computed.to_numpy(dtype=np.float64), contiguous)
+        raise DSLEvaluationError(f"unsupported DSL function: {name!r}")
 
     def constant(self, value: float) -> tuple[Values, Mask]:
         return np.full(self.frame.rows, value, dtype=np.float64), np.ones(
@@ -150,23 +252,27 @@ class _ArithmeticEvaluator:
                     raise DSLEvaluationError("unsupported arithmetic operator")
             return _masked(values, available)
         if isinstance(node, ast.Call):
-            raise DSLEvaluationError("function calls are not supported by the arithmetic evaluator")
+            return self.call(node)
         raise DSLEvaluationError(f"unsupported arithmetic node: {type(node).__name__}")
 
 
 def evaluate_expression(
-    source: str, features: FeatureFrame, *, params: Mapping[str, object] | None = None
+    source: str,
+    features: FeatureFrame,
+    *,
+    params: Mapping[str, object] | None = None,
+    interval: str | None = None,
 ) -> AlphaSeries:
-    """Evaluate + - * /, unary signs, constants and feature/scalar-parameter names.
+    """Evaluate arithmetic and the eight DSL functions for one coin.
 
     Keep the source frame's row order, timestamps and symbol. Only referenced feature
     masks affect the result. No filling, sorting, alignment joins, normalization or
-    final clipping is performed. Function evaluation belongs to step 089.
+    final clipping is performed. Rolling/lag functions require an explicit interval.
     """
     tree = parse_expression(source)
     _check_frame(features)
     bindings = _parameters({} if params is None else params, features)
-    values, available = _ArithmeticEvaluator(features, bindings).visit(tree.body)
+    values, available = _Evaluator(features, bindings, interval).visit(tree.body)
     return AlphaSeries(
         symbol=features.symbol,
         open_time=features.open_time.copy(),

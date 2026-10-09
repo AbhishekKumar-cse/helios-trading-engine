@@ -185,9 +185,9 @@ def test_unknown_names_fail_instead_of_aliasing_or_zero_filling(source: str) -> 
         evaluate_expression(source, frame())
 
 
-@pytest.mark.parametrize("source", ["sign(x)", "lag(x, 1)", "zscore(x, 24)"])
-def test_functions_wait_for_step_089(source: str) -> None:
-    with pytest.raises(DSLEvaluationError, match="function calls"):
+@pytest.mark.parametrize("source", ["lag(x, 1)", "zscore(x, 24)"])
+def test_temporal_functions_require_explicit_interval(source: str) -> None:
+    with pytest.raises(DSLEvaluationError, match="interval is required"):
         evaluate_expression(source, frame())
 
 

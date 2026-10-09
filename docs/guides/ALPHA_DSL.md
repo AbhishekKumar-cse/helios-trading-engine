@@ -1,4 +1,4 @@
-# Alpha DSL parser and arithmetic evaluator (steps 086, 088)
+# Alpha DSL parser and evaluator (steps 086, 088–089)
 
 ```python
 from helios.alpha.parser import parse_expression
@@ -42,10 +42,10 @@ set or parameter mapping. In particular, the plan's `ret_1` is a syntactically v
 name, not a newly introduced alias for the registered `log_return_1`. Use actual
 registered feature names in runnable definitions. A successful parse does not mean
 a feature exists, a window is valid, or a lag is causal: `lag(x, -1)` passes this
-structural stage but must be rejected by step 090 before evaluation. Step 088 now
-implements arithmetic; step 089 implements functions and step 090 adds remaining
-semantic safety checks. The parser
-does not generate alpha values, simulation results or performance observations.
+structural stage but is rejected by the function evaluator before a result is
+returned. Steps 088–089 implement arithmetic/functions with the controls needed
+to evaluate safely; step 090 adds the dedicated semantic safety checks and suite.
+The parser does not generate alpha values, simulation results or performance observations.
 
 To parse a loaded step-085 QUANT definition:
 
@@ -81,8 +81,8 @@ The evaluator parses source through the whitelist itself and interprets numeric
 constants, names, unary signs and `+ - * /` directly with NumPy. It accepts source
 text, not a caller-supplied/mutated AST. There is no Python `eval` or executable
 compilation. A loaded definition's arithmetic expression and `params` can be
-passed in the same way. Function calls raise `DSLEvaluationError` until step 089,
-even though the structural parser recognizes their permitted syntax.
+passed in the same way. Step 089 also evaluates the eight whitelisted functions
+described below.
 
 The returned `AlphaSeries` carries the input coin symbol, copied UTC-microsecond
 timestamps, float64 `values` and boolean `available`. Row indexes and order are
@@ -112,7 +112,61 @@ warm-up and gap masks already supplied by the runner flow through unchanged or
 combine by intersection. Changing/truncating future inputs cannot rewrite earlier
 outputs. Inputs are not mutated and output series do not share their mutable data.
 
-These are **raw**, unbounded alpha values: no normalization, final clipping,
-strategy selection, costs, P&L or evaluation is performed. Step 092 will add final
+These are **raw**, unbounded alpha values: no automatic normalization, final clipping,
+strategy selection, costs, P&L or performance evaluation is performed. Step 092 will add final
 bounding. Step 088's tests use synthetic, hand-calculated data and do not claim
 market observations or predictive value.
+
+## DSL functions (step 089)
+
+```python
+alpha = evaluate_expression(
+    "clip(-zscore(log_return_1, window), -1, 1)",
+    features,
+    params={"window": 168},
+    interval="1h",
+)
+```
+
+Rolling functions and `lag` require an explicit supported candle `interval`.
+The evaluator never infers an interval from timestamp differences: missing bars
+could make an hourly series appear to have a longer decision interval. Pointwise
+arithmetic, `sign`, `clip` and `where` keep working without this argument.
+
+| Function | Value and availability contract |
+|---|---|
+| `ts_mean(x, w)` | Trailing mean including the current row; w >= 1. |
+| `ts_std(x, w)` | Trailing sample standard deviation (ddof=1); w >= 2. Constant windows return 0. |
+| `zscore(x, w)` | (current value − trailing mean) / trailing sample std; w >= 2. Zero variance is unavailable. Uses the existing feature helper. |
+| `rank_ts(x, w)` | Current value's ascending average-tie rank / w; w >= 1. Constant windows rank (w+1)/(2w). Uses the existing feature helper. |
+| `lag(x, k)` | Value/mask from k earlier rows; k >= 1, with k+1 consecutive timestamps. Current/intermediate x masks do not affect an otherwise valid lagged endpoint. |
+| `sign(x)` | −1, 0 or +1, retaining the operand mask. |
+| `clip(x, lower, upper)` | Explicit bounds with lower <= upper, retaining the operand mask. This is not automatic final bounding. |
+| `where(condition, yes, no)` | Finite nonzero condition selects yes, zero selects no. Requires a usable condition and only the selected branch's mask. |
+
+Rolling windows require **all w operand values available and finite**, plus w
+consecutive timestamps on the specified UTC candle grid. Warm-up, missing inputs,
+gaps or off-grid timestamps remain NaN/false; there is no filling. Nested functions
+carry their own warm-up/masks into outer windows. A lag is unavailable until k
+earlier rows exist and elapsed timestamps are contiguous; it cannot bridge a gap
+by treating the preceding stored row as the preceding period. A requested history
+longer than the supplied frame produces wholly unavailable output without padding.
+
+Window/lag counts and clip bounds use finite scalar literals, numeric parameters
+or arithmetic composed from them. Feature-dependent controls and function calls
+inside controls are refused. Counts must be integer-valued, at least the function's
+minimum and below 2**63; an integral scalar such as 3.0 is accepted as three bars.
+Zero/negative/fractional lags and inappropriate windows are rejected immediately.
+
+`where` uses numeric conditions because Python comparisons remain outside the
+parser whitelist. Negative values are nonzero/true. An unknown condition stays
+unavailable, even if both branches happen to have the same value. Branch expressions
+are both validated/evaluated; unknown names and invalid controls are errors even
+in an unselected branch. However, unavailable or non-finite **values** in an
+unselected branch do not poison a valid selected value.
+
+All eight functions are tested with hand calculations and future changes/truncation.
+The existing QUANT YAML examples now evaluate against a compatible feature frame.
+No alias is introduced for ret_1/ret_24, and no definitions/results are registered
+by evaluation. Step 090 remains unchecked, as do cross-sectional operations (091),
+automatic final clipping (092), parameter counting (093) and baseline registration (094).

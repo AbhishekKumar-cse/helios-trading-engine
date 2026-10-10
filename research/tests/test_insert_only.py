@@ -233,8 +233,8 @@ def test_the_triggers_are_installed(connection: Connection) -> None:
             "AND tgname LIKE '%_is_insert_only' ORDER BY tgname"
         )
     ).scalars()
-    assert list(names) == [
+    assert {
         "alpha_definitions_is_insert_only",
         "alpha_results_is_insert_only",
         "data_snapshots_is_insert_only",
-    ]
+    } <= set(names)

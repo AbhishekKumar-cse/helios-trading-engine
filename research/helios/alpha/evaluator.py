@@ -1,4 +1,4 @@
-"""Alpha arithmetic and trailing DSL functions with explicit availability (088–089).
+"""Alpha arithmetic/trailing functions with semantic preflight and masks (088–090).
 
 The only public evaluation entry point parses source itself. It never accepts a
 caller-mutated AST for Python execution, and never invokes eval or compile.
@@ -7,7 +7,6 @@ caller-mutated AST for Python execution, and never invokes eval or compile.
 from __future__ import annotations
 
 import ast
-import math
 from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import cast
@@ -16,17 +15,15 @@ import numpy as np
 import numpy.typing as npt
 import pandas as pd
 
-from helios.alpha.parser import FUNCTION_ARITY, IDENTIFIER, parse_expression
+from helios.alpha.errors import DSLEvaluationError
+from helios.alpha.parser import parse_expression
+from helios.alpha.safety import _count, _parameters, _scalar, _validate_tree
 from helios.data.klines import KlineFormatError, interval_us
 from helios.features.helpers import rank_ts, zscore
 from helios.features.runner import FeatureFrame
 
 Values = npt.NDArray[np.float64]
 Mask = npt.NDArray[np.bool_]
-
-
-class DSLEvaluationError(ValueError):
-    """An expression cannot be evaluated against the supplied features/parameters."""
 
 
 @dataclass(frozen=True)
@@ -67,25 +64,6 @@ def _check_frame(frame: FeatureFrame) -> None:
         raise DSLEvaluationError("timestamps must be unique chronological UTC microsecond integers")
 
 
-def _parameters(params: Mapping[str, object], frame: FeatureFrame) -> dict[str, float]:
-    result: dict[str, float] = {}
-    for name, value in params.items():
-        if not isinstance(name, str) or not IDENTIFIER.fullmatch(name) or "__" in name:
-            raise DSLEvaluationError("parameter names must be valid DSL identifiers")
-        if name in frame.values.columns or name in FUNCTION_ARITY:
-            raise DSLEvaluationError(f"parameter {name!r} collides with a feature or function name")
-        if type(value) not in (int, float):
-            raise DSLEvaluationError(f"parameter {name!r} must be a finite numeric scalar")
-        try:
-            number = float(cast(int | float, value))
-        except (OverflowError, ValueError) as exc:
-            raise DSLEvaluationError(f"parameter {name!r} is not representable as float64") from exc
-        if not math.isfinite(number):
-            raise DSLEvaluationError(f"parameter {name!r} must be finite")
-        result[name] = number
-    return result
-
-
 def _masked(values: Values, available: Mask) -> tuple[Values, Mask]:
     usable = available & np.isfinite(values)
     return np.where(usable, values, np.nan), usable
@@ -104,39 +82,10 @@ class _Evaluator:
 
     def scalar(self, node: ast.expr) -> float:
         """Controls are constants/parameters, never feature-dependent or full-sample."""
-        if isinstance(node, ast.Constant):
-            value = float(cast(int | float, node.value))
-        elif isinstance(node, ast.Name) and node.id in self.params:
-            value = self.params[node.id]
-        elif isinstance(node, ast.UnaryOp):
-            value = self.scalar(node.operand)
-            if isinstance(node.op, ast.USub):
-                value = -value
-        elif isinstance(node, ast.BinOp):
-            left, right = self.scalar(node.left), self.scalar(node.right)
-            if isinstance(node.op, ast.Add):
-                value = left + right
-            elif isinstance(node.op, ast.Sub):
-                value = left - right
-            elif isinstance(node.op, ast.Mult):
-                value = left * right
-            elif isinstance(node.op, ast.Div) and right != 0:
-                value = left / right
-            else:
-                raise DSLEvaluationError("invalid scalar control arithmetic")
-        else:
-            raise DSLEvaluationError("function controls must use scalar constants or parameters")
-        if not math.isfinite(value):
-            raise DSLEvaluationError("function controls must be finite")
-        return value
+        return _scalar(node, self.params)
 
     def count(self, node: ast.expr, minimum: int) -> int:
-        value = self.scalar(node)
-        if not value.is_integer() or value < minimum or value >= 2**63:
-            raise DSLEvaluationError(
-                f"window/lag must be an integer value >= {minimum}, below 2**63"
-            )
-        return int(value)
+        return _count(node, self.params, minimum)
 
     def contiguous(self, window: int) -> Mask:
         if self.period is None:
@@ -268,10 +217,13 @@ def evaluate_expression(
     Keep the source frame's row order, timestamps and symbol. Only referenced feature
     masks affect the result. No filling, sorting, alignment joins, normalization or
     final clipping is performed. Rolling/lag functions require an explicit interval.
+    All bindings and causal scalar controls are checked before evaluating any branch.
     """
     tree = parse_expression(source)
     _check_frame(features)
-    bindings = _parameters({} if params is None else params, features)
+    names = tuple(features.values.columns)
+    bindings = _parameters({} if params is None else params, names)
+    _validate_tree(tree, names, bindings, interval)
     values, available = _Evaluator(features, bindings, interval).visit(tree.body)
     return AlphaSeries(
         symbol=features.symbol,

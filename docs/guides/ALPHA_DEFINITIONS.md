@@ -56,8 +56,12 @@ Loading does not execute expressions or load referenced models. Step 086 provide
 see `docs/guides/ALPHA_DSL.md`. Step 088 now provides explicit pointwise arithmetic
 evaluation with feature/scalar-parameter binding and availability masks. Step 089
 adds the eight DSL functions, with explicit intervals for rolling/lag operations;
-the dedicated semantic safety suite remains step 090.
+step 090 adds `helios.alpha.safety.validate_expression` and a semantic preflight
+inside every evaluator call, checking all names, controls and branches before
+series computation. Standalone validation uses declared feature names and scalar
+parameters; it does not inspect data or load models.
 Consequently successful YAML validation alone is not a causality or DSL safety
-certificate. These definitions are sketches awaiting that later validation.
+certificate. Definitions must pass explicit DSL validation and later simulator
+evaluation before they can represent evaluated trading candidates.
 Pre-register experiments before measuring performance, enforce chronological splits,
 and preserve availability masks and result lineage during later evaluation.

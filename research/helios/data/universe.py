@@ -15,6 +15,7 @@ from __future__ import annotations
 from datetime import date
 
 from sqlalchemy import Connection, text
+from sqlalchemy.engine import ScalarResult
 
 
 class UniverseError(Exception):
@@ -51,7 +52,7 @@ def universe_on(
     full day of bars exists for it. Coins marked inactive are left out unless asked for,
     since a pair that no longer trades cannot be traded today.
     """
-    rows = connection.execute(
+    rows: ScalarResult[str] = connection.execute(
         text("""
         SELECT symbol
         FROM instruments

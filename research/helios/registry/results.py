@@ -246,7 +246,7 @@ def record_result(connection: Connection, result: AlphaResult) -> AlphaResult:
     """
     require_open_experiment(connection, result.experiment_id)
     try:
-        created_at = connection.execute(
+        created_at: datetime = connection.execute(
             INSERT,
             {
                 "run_id": result.run_id,

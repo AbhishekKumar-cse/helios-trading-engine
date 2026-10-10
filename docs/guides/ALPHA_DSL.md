@@ -1,4 +1,4 @@
-# Alpha DSL parser and evaluator (steps 086, 088–089)
+# Alpha DSL parser, safety and evaluator (steps 086, 088–090)
 
 ```python
 from helios.alpha.parser import parse_expression
@@ -44,8 +44,46 @@ registered feature names in runnable definitions. A successful parse does not me
 a feature exists, a window is valid, or a lag is causal: `lag(x, -1)` passes this
 structural stage but is rejected by the function evaluator before a result is
 returned. Steps 088–089 implement arithmetic/functions with the controls needed
-to evaluate safely; step 090 adds the dedicated semantic safety checks and suite.
+to evaluate safely; step 090 adds a data-independent semantic preflight and suite.
 The parser does not generate alpha values, simulation results or performance observations.
+
+## Semantic preflight (step 090)
+
+```python
+from helios.alpha.safety import validate_expression
+
+tree = validate_expression(
+    "clip(zscore(lag(log_return_1, k), window), -1, 1)",
+    feature_names=("log_return_1",),
+    params={"k": 1, "window": 24},
+    interval="1h",
+)
+```
+
+This checks the parser whitelist and every feature/parameter binding without
+reading a `FeatureFrame`, allocating series or computing statistics. It checks
+both `where` branches, even under a constant condition, and does not exempt
+names multiplied by zero or hidden inside a window longer than available history.
+Lag must be an integer >= 1; mean/rank windows >= 1, std/zscore windows >= 2.
+Controls must be finite scalar constants/parameters or their arithmetic, below
+2**63 for counts. Feature-derived windows/bounds, negative/zero/fractional lag,
+control zero division/overflow, reversed clip bounds and missing intervals fail.
+
+Unknown/full-sample functions (`mean`, `std`, `sum`, `rank`, `quantile`, `pca`,
+etc.) and attributes such as `x.mean()` are rejected structurally, with no
+fallback to pandas/Python execution. Trailing functions require an explicit
+finite window; a window exceeding history is valid but yields unavailable output,
+never shortened into an implicit full-sample reducer. Full-sample statistics
+cannot be used as expression controls. Callers remain responsible for parameters
+being chosen without held-out-data leakage; static validation cannot establish
+how externally supplied values were obtained.
+
+`evaluate_expression` performs the same semantic pass before computing any branch.
+It reparses source; it never accepts the returned tree as executable input.
+`DSLParseError` covers syntax/function whitelist failures; `DSLEvaluationError`
+covers bindings/control failures (the existing evaluator import remains supported).
+Standalone preflight trusts the declared feature schema; successful validation
+does not certify input feature causality, mask/data integrity or profitability.
 
 To parse a loaded step-085 QUANT definition:
 
@@ -168,5 +206,6 @@ unselected branch do not poison a valid selected value.
 All eight functions are tested with hand calculations and future changes/truncation.
 The existing QUANT YAML examples now evaluate against a compatible feature frame.
 No alias is introduced for ret_1/ret_24, and no definitions/results are registered
-by evaluation. Step 090 remains unchecked, as do cross-sectional operations (091),
-automatic final clipping (092), parameter counting (093) and baseline registration (094).
+by evaluation. Step 090 now checks these controls before any series computation.
+Cross-sectional operations (091), automatic final clipping (092), parameter counting
+(093) and baseline registration (094) remain pending.

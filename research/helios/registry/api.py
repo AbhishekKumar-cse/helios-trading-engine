@@ -118,7 +118,7 @@ def _to_definition(row: Any) -> AlphaDefinition:
 def register_definition(connection: Connection, definition: AlphaDefinition) -> AlphaDefinition:
     """Store one version of one alpha and return it with its stored creation time."""
     try:
-        created_at = connection.execute(
+        created_at: datetime = connection.execute(
             INSERT,
             {
                 "alpha_id": definition.alpha_id,
@@ -146,7 +146,7 @@ def register_definition(connection: Connection, definition: AlphaDefinition) -> 
 
 def next_version(connection: Connection, alpha_id: str) -> int:
     """The version number to use for the next registration of this alpha (1 if it is new)."""
-    highest = connection.execute(
+    highest: int | None = connection.execute(
         text("SELECT max(version) FROM alpha_definitions WHERE alpha_id = :alpha_id"),
         {"alpha_id": alpha_id},
     ).scalar_one()

@@ -23,3 +23,4 @@ memory, so nobody has to guess later why something is the way it is.
 | [003](ADR-003-horizon-families.md) | Horizon families and daily-aggregated Sharpe | Accepted | 2026-09-20 |
 | [004](ADR-004-split-dates.md) | Train / validation / test split dates | Accepted | 2026-09-20 |
 | [005](ADR-005-fees-and-slippage.md) | Trading fees and slippage assumptions | Accepted | 2026-09-20 |
+| [006](ADR-006-interfaces.md) | Core trading interfaces | Proposed | 2026-10-11 |

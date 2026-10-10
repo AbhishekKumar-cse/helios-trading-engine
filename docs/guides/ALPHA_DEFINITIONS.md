@@ -1,9 +1,11 @@
-# Alpha definitions (steps 085, 092–093)
+# Alpha definitions (steps 085, 092–094)
 
 `helios.alpha.definition.AlphaDefinition` is the YAML-facing model for an alpha idea.
 The examples in `configs/alphas/examples/` are illustrative DRAFTs, not selected
 strategies or measured results. Hourly momentum and minute mean reversion use
 registered feature names; the ML example is explicitly an untrained placeholder.
+Fixed hourly B0/B1/B2 definitions live in `configs/alphas/baselines/`; see
+`docs/guides/ALPHA_BASELINES.md` for their atomic DRAFT registration.
 
 From the repository root in the documented WSL environment:
 

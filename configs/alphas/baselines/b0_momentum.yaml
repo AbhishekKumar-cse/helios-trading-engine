@@ -1,0 +1,16 @@
+# Fixed comparison idea, initially DRAFT; no measured performance.
+alpha_id: baseline_b0
+version: 1
+name: B0 hourly 24-bar momentum sign
+provenance: QUANT
+feature_set_version: v1
+horizon_family: H-HOURLY
+horizon_periods: 1
+params: {}
+expression: sign(log_return_24)
+output:
+  convention: clip_unit_v1
+  lower: -1
+  upper: 1
+  position_scale: 1.0
+author: helios_baselines

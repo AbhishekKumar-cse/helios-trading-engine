@@ -209,7 +209,8 @@ All eight functions are tested with hand calculations and future changes/truncat
 The existing QUANT YAML examples now evaluate against a compatible feature frame.
 No alias is introduced for ret_1/ret_24, and no definitions/results are registered
 by evaluation. Step 090 now checks these controls before any series computation.
-Baseline registration (094) remains pending.
+Fixed B0/B1/B2 baseline definitions and registration are described in
+`docs/guides/ALPHA_BASELINES.md` (step 094).
 
 ## Cross-sectional functions (step 091)
 

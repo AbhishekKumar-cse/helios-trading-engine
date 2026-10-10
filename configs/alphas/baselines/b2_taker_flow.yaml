@@ -1,0 +1,16 @@
+# Fixed comparison idea, initially DRAFT; no measured performance.
+alpha_id: baseline_b2
+version: 1
+name: B2 hourly taker flow z-score
+provenance: QUANT
+feature_set_version: v1
+horizon_family: H-HOURLY
+horizon_periods: 1
+params: {}
+expression: zscore(taker_buy_ratio, 168)
+output:
+  convention: clip_unit_v1
+  lower: -1
+  upper: 1
+  position_scale: 1.0
+author: helios_baselines

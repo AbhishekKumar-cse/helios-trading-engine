@@ -1,4 +1,4 @@
-# Alpha DSL parser, safety and evaluator (steps 086, 088–091)
+# Alpha DSL parser, safety and evaluator (steps 086, 088–092)
 
 ```python
 from helios.alpha.parser import parse_expression
@@ -152,8 +152,9 @@ combine by intersection. Changing/truncating future inputs cannot rewrite earlie
 outputs. Inputs are not mutated and output series do not share their mutable data.
 
 These are **raw**, unbounded alpha values: no automatic normalization, final clipping,
-strategy selection, costs, P&L or performance evaluation is performed. Step 092 will add final
-bounding. Step 088's tests use synthetic, hand-calculated data and do not claim
+strategy selection, costs, P&L or performance evaluation is performed. Use the step-092
+definition evaluation API below for final bounded output. Step 088's tests use
+synthetic, hand-calculated data and do not claim
 market observations or predictive value.
 
 ## DSL functions (step 089)
@@ -208,8 +209,7 @@ All eight functions are tested with hand calculations and future changes/truncat
 The existing QUANT YAML examples now evaluate against a compatible feature frame.
 No alias is introduced for ret_1/ret_24, and no definitions/results are registered
 by evaluation. Step 090 now checks these controls before any series computation.
-Automatic final clipping (092), parameter counting (093) and baseline registration
-(094) remain pending.
+Parameter counting (093) and baseline registration (094) remain pending.
 
 ## Cross-sectional functions (step 091)
 
@@ -262,7 +262,8 @@ Time-series and cross-sectional functions can be nested. For example,
 operands using membership at the current timestamp. Rolling/lag calls still require
 an explicit interval and contiguous available history. Each returned `AlphaSeries`
 preserves its coin's existing timestamps, row indexes and order; inputs are copied
-or read without mutation. Final values remain unbounded until step 092.
+or read without mutation. This low-level expression API returns raw values; the
+definition evaluation API below applies final bounds after all cross operations.
 
 The single-coin `evaluate_expression` rejects cross-sectional calls anywhere in the
 formula, including unselected branches. Standalone semantic preflight accepts them
@@ -270,3 +271,47 @@ only with `cross_sectional=True`; that flag declares a context, but does not ver
 an actual universe or market data. The universe evaluator validates all frames,
 bindings and controls before computation. Tests use synthetic hand calculations,
 listing/missing-data cases and future perturbations, without claiming market results.
+
+## Final output and scale convention (step 092)
+
+```python
+from helios.alpha.definition import load_alpha_definition
+from helios.alpha.output import evaluate_definition
+
+idea = load_alpha_definition("configs/alphas/examples/btc_hourly_momentum.yaml")
+alpha = evaluate_definition(idea, features, interval="1h")
+assert alpha.output.convention == "clip_unit_v1"
+```
+
+`evaluate_definition` and `evaluate_universe_definition` complete the full formula
+through the raw evaluators, then clip finite available final values to [-1, 1].
+The universe variant takes the same symbol mapping and `listing_dates` as above.
+Intermediate arithmetic, rolling and cross-sectional values are never automatically
+clipped: clipping before subtraction or demeaning would change the formula.
+`bound_alpha(raw)` also exposes the finalization boundary for separately computed
+series. It checks row alignment, numeric values and masks, preserves timestamps,
+copies output data, and returns a `BoundedAlphaSeries` carrying its convention.
+NaN, infinity and false masks remain NaN/false; infinity never becomes a saturated
+position. Empty historical members stay empty, and warm-up masks stay unavailable.
+
+New definitions carry `output` metadata (defaults shown):
+
+```yaml
+output:
+  convention: clip_unit_v1
+  lower: -1
+  upper: 1
+  position_scale: 1.0
+```
+
+Bounds and convention are fixed in this version. `position_scale` must be finite,
+positive and numeric; it is reserved for step-095 position mapping
+`clip(alpha / position_scale, -1, 1)`. Finalization stores it without dividing by it,
+avoiding double scaling later. It is separate from an expression parameter named
+`scale`. Changes to this metadata affect the definition fingerprint and require a
+new registered version. The adapter stores it in insert-only `spec_json.output`,
+without migrating or editing old database rows. YAMLs omitting it receive explicit
+defaults when loaded; old stored rows do not acquire metadata silently.
+
+Model references require a separate inference pipeline and are rejected by these
+expression entry points. No model is loaded, simulator run or result registered.

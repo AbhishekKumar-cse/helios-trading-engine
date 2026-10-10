@@ -84,7 +84,11 @@ def test_invalid_definitions_fail_before_registration(changes: dict[str, object]
 
 def test_ml_accepts_a_model_or_generated_expression() -> None:
     model = definition(provenance="ML", expression=None, model_ref="example://model/v1")
-    assert model.to_registry().spec == {"model_ref": "example://model/v1", "params": {"scale": 0.5}}
+    assert model.to_registry().spec == {
+        "model_ref": "example://model/v1",
+        "params": {"scale": 0.5},
+        "output": model.output.model_dump(mode="json"),
+    }
     generated = definition(provenance="ML")
     assert generated.to_registry().provenance is Provenance.ML
 

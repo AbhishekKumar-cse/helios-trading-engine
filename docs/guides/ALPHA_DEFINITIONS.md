@@ -65,6 +65,13 @@ Step 091 adds `helios.alpha.cross_sectional.evaluate_universe_expression` for
 first-available dates. Single-coin evaluation rejects these calls; standalone
 semantic validation requires `cross_sectional=True`. See the DSL guide for membership,
 exact timestamp alignment and missing-peer availability rules.
+Step 092 stores a versioned `output` convention in each new definition and its
+registry spec: `clip_unit_v1`, fixed bounds [-1, 1], and a finite positive
+`position_scale` (default 1). `helios.alpha.output.evaluate_definition` and
+`evaluate_universe_definition` apply final bounds after the complete formula and
+return the convention with their output. Position mapping is deferred to step 095;
+the stored scale is not applied during final alpha clipping. Existing registered
+versions are never updated to add this metadata.
 Consequently successful YAML validation alone is not a causality or DSL safety
 certificate. Definitions must pass explicit DSL validation and later simulator
 evaluation before they can represent evaluated trading candidates.

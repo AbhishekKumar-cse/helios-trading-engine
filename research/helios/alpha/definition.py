@@ -15,6 +15,7 @@ from typing import Self
 from pydantic import ConfigDict, Field, JsonValue, StrictInt, field_validator, model_validator
 from sqlalchemy import Connection
 
+from helios.alpha.output import OutputConvention
 from helios.common.config import HeliosConfig, load_config
 from helios.common.lineage import git_commit
 from helios.common.project_config import HorizonFamily
@@ -42,6 +43,7 @@ class AlphaDefinition(HeliosConfig):
     horizon_family: HorizonFamily
     horizon_periods: StrictInt = Field(ge=1)
     params: dict[str, JsonValue] = Field(default_factory=dict)
+    output: OutputConvention = Field(default_factory=OutputConvention)
     expression: str | None = Field(default=None, min_length=1)
     model_ref: str | None = Field(default=None, min_length=1)
     author: str = Field(min_length=2)
@@ -81,7 +83,8 @@ class AlphaDefinition(HeliosConfig):
 
     def to_registry(self) -> RegistryDefinition:
         """Adapt without changing the insert-only registry schema or older definitions."""
-        spec = {"params": self.model_dump(mode="json")["params"]}
+        dumped = self.model_dump(mode="json")
+        spec = {"params": dumped["params"], "output": dumped["output"]}
         if self.expression is not None:
             spec["expression"] = self.expression
         else:

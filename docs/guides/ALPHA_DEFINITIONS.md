@@ -73,7 +73,7 @@ Step 092 stores a versioned `output` convention in each new definition and its
 registry spec: `clip_unit_v1`, fixed bounds [-1, 1], and a finite positive
 `position_scale` (default 1). `helios.alpha.output.evaluate_definition` and
 `evaluate_universe_definition` apply final bounds after the complete formula and
-return the convention with their output. Position mapping is deferred to step 095;
+return the convention with their output. Step 095 implements position mapping;
 the stored scale is not applied during final alpha clipping. Existing registered
 versions are never updated to add this metadata.
 Step 093 derives `free_parameter_count` and `parameter_count_convention` from the
@@ -83,6 +83,9 @@ once each; repeated named params count once per name. Overrides are refused. Mod
 references store null counts because fitted complexity is unknown. The DSL guide
 documents the counting rule and its limits; structural counting does not replace
 semantic preflight or actual evaluation.
+The gross simulator verifies a real open preregistered experiment before applying
+lagged positions; see `docs/guides/ALPHA_SIMULATOR.md`. It computes no costs or metrics
+and persists no result or promotion.
 Consequently successful YAML validation alone is not a causality or DSL safety
 certificate. Definitions must pass explicit DSL validation and later simulator
 evaluation before they can represent evaluated trading candidates.

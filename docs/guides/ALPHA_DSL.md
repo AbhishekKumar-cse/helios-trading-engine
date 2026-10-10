@@ -306,9 +306,9 @@ output:
 ```
 
 Bounds and convention are fixed in this version. `position_scale` must be finite,
-positive and numeric; it is reserved for step-095 position mapping
+positive and numeric; step-095 position mapping uses
 `clip(alpha / position_scale, -1, 1)`. Finalization stores it without dividing by it,
-avoiding double scaling later. It is separate from an expression parameter named
+avoiding double scaling in simulation. It is separate from an expression parameter named
 `scale`. Changes to this metadata affect the definition fingerprint and require a
 new registered version. The adapter stores it in insert-only `spec_json.output`,
 without migrating or editing old database rows. YAMLs omitting it receive explicit
@@ -354,3 +354,8 @@ complexity is unknown from a reference; it is never reported as zero. The regist
 CLI reports counts without measuring performance. Old registry rows remain intact;
 a new version is required to persist new metadata. Future metrics reporting can
 read these fields; no results or baseline registrations are created by this step.
+
+Step 095 provides `helios.sim.positions.simulate_gross` for preregistered,
+lagged-position gross simulation. See `docs/guides/ALPHA_SIMULATOR.md` for exact
+return timing, startup boundaries, scale mapping and availability. Costs and metrics
+remain later steps.

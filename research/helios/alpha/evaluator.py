@@ -40,8 +40,8 @@ class AlphaSeries:
         return len(self.values)
 
 
-def _check_frame(frame: FeatureFrame) -> None:
-    if frame.rows == 0:
+def _check_frame(frame: FeatureFrame, *, allow_empty: bool = False) -> None:
+    if frame.rows == 0 and not allow_empty:
         raise DSLEvaluationError("there are no feature rows to evaluate")
     if not frame.values.columns.is_unique or not frame.available.columns.equals(
         frame.values.columns

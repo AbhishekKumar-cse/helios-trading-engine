@@ -77,6 +77,8 @@ def _validate_tree(
     feature_names: Collection[str],
     params: Mapping[str, float],
     interval: str | None,
+    *,
+    cross_sectional: bool = False,
 ) -> None:
     """Internal semantic pass over a tree already checked by parse_expression."""
     if interval is not None:
@@ -97,6 +99,8 @@ def _validate_tree(
             pending.extend((node.left, node.right))
         elif isinstance(node, ast.Call):
             name = cast(ast.Name, node.func).id
+            if name in {"cs_rank", "cs_demean"} and not cross_sectional:
+                raise DSLEvaluationError("cross-sectional functions require a universe context")
             if name in {"lag", "zscore", "ts_mean", "ts_std", "rank_ts"}:
                 _count(node.args[1], params, 2 if name in {"zscore", "ts_std"} else 1)
                 if interval is None:
@@ -115,6 +119,7 @@ def validate_expression(
     feature_names: Collection[str],
     params: Mapping[str, object] | None = None,
     interval: str | None = None,
+    cross_sectional: bool = False,
 ) -> ast.Expression:
     """Check syntax, bindings and causal scalar controls without evaluating rows.
 
@@ -126,5 +131,5 @@ def validate_expression(
     """
     tree = parse_expression(source)
     bindings = _parameters({} if params is None else params, feature_names)
-    _validate_tree(tree, feature_names, bindings, interval)
+    _validate_tree(tree, feature_names, bindings, interval, cross_sectional=cross_sectional)
     return tree

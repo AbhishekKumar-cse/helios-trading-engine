@@ -1,4 +1,4 @@
-# Alpha DSL parser, safety and evaluator (steps 086, 088–090)
+# Alpha DSL parser, safety and evaluator (steps 086, 088–091)
 
 ```python
 from helios.alpha.parser import parse_expression
@@ -22,6 +22,7 @@ parentheses, binary `+ - * /`, unary `+ -`, and these direct positional calls:
 | `sign` | series |
 | `clip` | series, lower, upper |
 | `where` | condition, if_true, if_false |
+| `cs_rank`, `cs_demean` | series; requires a universe context |
 
 Names may contain digits and underscores after their first lowercase letter;
 private/dunder names are rejected. The whitelist and function arities are exposed
@@ -30,7 +31,7 @@ literals are rejected. So are statements, attribute/subscript access, containers
 comprehensions, lambdas, assignments, comparisons, boolean/bitwise operators,
 exponentiation, arbitrary calls, keyword arguments and argument unpacking.
 The current `where` grammar takes a numeric condition expression; Python comparison
-syntax is not part of this whitelist. Cross-sectional functions remain step 091.
+syntax is not part of this whitelist. Cross-sectional calls use the universe API below.
 
 Malformed, disallowed or excessive expressions raise `DSLParseError`. Bounds are
 4,096 source characters, 256 AST nodes and an AST depth of 32. Validation walks the
@@ -207,5 +208,65 @@ All eight functions are tested with hand calculations and future changes/truncat
 The existing QUANT YAML examples now evaluate against a compatible feature frame.
 No alias is introduced for ret_1/ret_24, and no definitions/results are registered
 by evaluation. Step 090 now checks these controls before any series computation.
-Cross-sectional operations (091), automatic final clipping (092), parameter counting
-(093) and baseline registration (094) remain pending.
+Automatic final clipping (092), parameter counting (093) and baseline registration
+(094) remain pending.
+
+## Cross-sectional functions (step 091)
+
+Given a mapping of declared symbols to their existing `FeatureFrame` objects:
+
+```python
+from helios.alpha.cross_sectional import evaluate_universe_expression
+from helios.common.db import get_engine
+from helios.data.universe import listing_dates
+
+with get_engine().connect() as connection:
+    catalog = listing_dates(connection)
+
+alphas = evaluate_universe_expression(
+    "cs_demean(cs_rank(log_return_24))",
+    frames_by_symbol,
+    listing_dates=catalog,
+    interval="1h",
+)
+```
+
+The symbol mapping declares the universe up front; use the planned BTCUSDT,
+ETHUSDT, SOLUSDT, BNBUSDT and XRPUSDT frames for the five-coin research universe.
+Supply a first-available `date` for every declared symbol, from the existing catalog
+or a recorded historical snapshot. Extra catalog symbols do not expand the mapping.
+The catalog includes later-inactive instruments; callers must retain historical
+members rather than filter them by today's active flag. Dates represent earliest
+observed data, not a claim about exchange listing history.
+
+Membership starts at inclusive UTC midnight on that date. All pre-membership
+output is NaN/false, including constants, and pre-membership history cannot enter
+rolling windows. Empty frames can represent members without data in the supplied
+period. An empty universe is rejected. The evaluator performs no database writes.
+
+Each cross-sectional call aligns operands by exact UTC-microsecond timestamp,
+independently of their source row indexes. Every listed member must have a finite,
+available operand at that timestamp. A missing row, false mask, non-finite value
+or shifted timestamp makes the entire cross-section unavailable. Unlisted members
+are excluded. No smaller universe is silently substituted, and no nearest-time
+matching, filling or fabricated output rows occurs.
+
+`cs_rank(x)` returns ascending average-tie rank divided by the eligible count.
+Five equal operands therefore rank 0.6 each. `cs_demean(x)` subtracts the equal-weight
+mean of eligible same-time operands. One eligible member ranks 1 and demeans to 0;
+the minimum-five rule for cross-sectional IC metrics is separate from these transforms.
+Ordinary floating-point rounding applies, and non-finite results remain unavailable.
+
+Time-series and cross-sectional functions can be nested. For example,
+`lag(cs_rank(x), 1)` lags earlier ranks while `cs_rank(lag(x, 1))` ranks lagged
+operands using membership at the current timestamp. Rolling/lag calls still require
+an explicit interval and contiguous available history. Each returned `AlphaSeries`
+preserves its coin's existing timestamps, row indexes and order; inputs are copied
+or read without mutation. Final values remain unbounded until step 092.
+
+The single-coin `evaluate_expression` rejects cross-sectional calls anywhere in the
+formula, including unselected branches. Standalone semantic preflight accepts them
+only with `cross_sectional=True`; that flag declares a context, but does not verify
+an actual universe or market data. The universe evaluator validates all frames,
+bindings and controls before computation. Tests use synthetic hand calculations,
+listing/missing-data cases and future perturbations, without claiming market results.

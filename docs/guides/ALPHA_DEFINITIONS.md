@@ -60,6 +60,11 @@ step 090 adds `helios.alpha.safety.validate_expression` and a semantic preflight
 inside every evaluator call, checking all names, controls and branches before
 series computation. Standalone validation uses declared feature names and scalar
 parameters; it does not inspect data or load models.
+Step 091 adds `helios.alpha.cross_sectional.evaluate_universe_expression` for
+`cs_rank` and `cs_demean`, using explicitly declared per-symbol frames and historical
+first-available dates. Single-coin evaluation rejects these calls; standalone
+semantic validation requires `cross_sectional=True`. See the DSL guide for membership,
+exact timestamp alignment and missing-peer availability rules.
 Consequently successful YAML validation alone is not a causality or DSL safety
 certificate. Definitions must pass explicit DSL validation and later simulator
 evaluation before they can represent evaluated trading candidates.

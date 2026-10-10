@@ -42,6 +42,8 @@ FUNCTION_ARITY = MappingProxyType(
         "sign": 1,
         "clip": 3,
         "where": 3,
+        "cs_rank": 1,
+        "cs_demean": 1,
     }
 )
 IDENTIFIER = re.compile(r"[a-z][a-z0-9_]*", flags=re.ASCII)
@@ -87,7 +89,7 @@ def _validate_node(node: ast.AST, source: str) -> None:
 def parse_expression(source: str) -> ast.Expression:
     """Parse a single whitelisted formula without executing Python or accessing data.
 
-    Only +, -, *, /, unary +/- and the eight declared DSL functions are accepted.
+    Only +, -, *, /, unary +/- and the declared DSL functions are accepted.
     Calls take positional arguments. Names remain unresolved, so ret_1 in the plan's
     example is accepted syntactically without inventing a feature alias. Consumers
     must interpret this tree through the DSL evaluator, never Python evaluation.

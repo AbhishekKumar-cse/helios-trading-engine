@@ -97,7 +97,7 @@ def test_wrong_function_arity_is_rejected(function: str, arity: int) -> None:
         "open('file')",
         "eval(x)",
         "mean(x)",
-        "cs_rank(x)",
+        "future_rank(x)",
         "(lambda x: x)(1)",
         "sign(x)(1)",
         "sign(*x)",

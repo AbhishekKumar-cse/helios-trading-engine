@@ -1,4 +1,4 @@
-# Alpha DSL parser, safety and evaluator (steps 086, 088–092)
+# Alpha DSL parser, safety and evaluator (steps 086, 088–093)
 
 ```python
 from helios.alpha.parser import parse_expression
@@ -97,9 +97,9 @@ if idea.expression is not None:
     tree = parse_expression(idea.expression)
 ```
 
-YAML loading and registration still validate definition metadata only. This parser
-is a separate explicit stage; it neither changes registered definitions nor edits
-their immutable version history.
+Since step 093, YAML loading also parses expression structure to derive parameter
+counts. It does not run semantic preflight or evaluate data. Explicit validation
+remains necessary; no immutable registered version is changed.
 
 ## Pointwise arithmetic (step 088)
 
@@ -209,7 +209,7 @@ All eight functions are tested with hand calculations and future changes/truncat
 The existing QUANT YAML examples now evaluate against a compatible feature frame.
 No alias is introduced for ret_1/ret_24, and no definitions/results are registered
 by evaluation. Step 090 now checks these controls before any series computation.
-Parameter counting (093) and baseline registration (094) remain pending.
+Baseline registration (094) remains pending.
 
 ## Cross-sectional functions (step 091)
 
@@ -315,3 +315,41 @@ defaults when loaded; old stored rows do not acquire metadata silently.
 
 Model references require a separate inference pipeline and are rejected by these
 expression entry points. No model is loaded, simulator run or result registered.
+
+## Parameter accounting (step 093)
+
+```python
+from helios.alpha.complexity import count_free_parameters
+
+count = count_free_parameters(
+    "weight * zscore(log_return_1, window) + weight * 0.5",
+    params={"weight": 0.25, "window": 168},
+)
+assert count.numeric_constants == 1
+assert count.named_parameters == ("weight", "window")
+assert count.total == 3
+```
+
+The stored `dsl_syntax_v1` convention is a conservative formula count: every
+numeric literal occurrence counts once, including window sizes, lags, clip bounds
+and constants in unselected branches. A literal window is not counted again as a
+window, and unary signs add no parameters. Repeated equal-valued literals remain
+separate occurrences; repeated uses of the same named numeric scalar count once.
+Unused params, feature names, function names, horizon metadata and the separate
+output/position convention do not count. Referenced parameters must be finite
+numeric scalars. No simplification removes apparently redundant terms or branches.
+
+`AlphaDefinition.free_parameter_count` and `parameter_count_convention` are derived
+read-only fields included in dumps/fingerprints and new registry specs. YAML cannot
+supply an override. Counts are recomputed from the current expression/params, so a
+copied revision cannot retain stale metadata. Loading expression definitions now
+uses the parser whitelist and rejects arbitrary Python syntax without executing it.
+This structural accounting does not resolve missing feature names, certify causal
+controls, count search trials, or estimate independent statistical degrees of
+freedom. Use semantic preflight and the full evaluation pipeline separately.
+
+Model-reference definitions store null count/convention because fitted model
+complexity is unknown from a reference; it is never reported as zero. The registration
+CLI reports counts without measuring performance. Old registry rows remain intact;
+a new version is required to persist new metadata. Future metrics reporting can
+read these fields; no results or baseline registrations are created by this step.

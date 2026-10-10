@@ -1,4 +1,4 @@
-# Alpha definitions (step 085)
+# Alpha definitions (steps 085, 092–093)
 
 `helios.alpha.definition.AlphaDefinition` is the YAML-facing model for an alpha idea.
 The examples in `configs/alphas/examples/` are illustrative DRAFTs, not selected
@@ -21,7 +21,8 @@ older definitions and their results remain readable.
 The fields are `alpha_id`, positive integer `version`, `name`, `provenance` (QUANT
 or ML), `feature_set_version`, `horizon_family`, positive integer `horizon_periods`,
 `params`, `author`, and exactly one `expression` or `model_ref`. QUANT requires an
-expression; ML may declare a model reference or a generated expression. Parameters
+expression; ML may declare a model reference or a generated expression. The optional
+`output` field holds the step-092 scale convention. Parameters
 must be finite JSON values, including any nested values. Unknown fields, blank
 identifiers/text, boolean or fractional version/horizon counts, and invalid commit
 hashes fail validation. `code_commit` defaults to the current full Git commit.
@@ -51,7 +52,8 @@ is invented to represent DRAFT. The Python registration helper leaves transactio
 commit/rollback to its caller. Examples are verified with rolled-back database tests
 when the local PostgreSQL service is reachable.
 
-Loading does not execute expressions or load referenced models. Step 086 provides
+Loading does not execute expressions or load referenced models. Since step 093 it
+also uses the parser whitelist to derive parameter counts. Step 086 provides
 `helios.alpha.parser.parse_expression` for explicit structural whitelist validation;
 see `docs/guides/ALPHA_DSL.md`. Step 088 now provides explicit pointwise arithmetic
 evaluation with feature/scalar-parameter binding and availability masks. Step 089
@@ -72,6 +74,13 @@ registry spec: `clip_unit_v1`, fixed bounds [-1, 1], and a finite positive
 return the convention with their output. Position mapping is deferred to step 095;
 the stored scale is not applied during final alpha clipping. Existing registered
 versions are never updated to add this metadata.
+Step 093 derives `free_parameter_count` and `parameter_count_convention` from the
+expression and its referenced scalar params, stores them in each new registry spec,
+and displays them in the CLI. Numeric literal occurrences (including windows) count
+once each; repeated named params count once per name. Overrides are refused. Model
+references store null counts because fitted complexity is unknown. The DSL guide
+documents the counting rule and its limits; structural counting does not replace
+semantic preflight or actual evaluation.
 Consequently successful YAML validation alone is not a causality or DSL safety
 certificate. Definitions must pass explicit DSL validation and later simulator
 evaluation before they can represent evaluated trading candidates.

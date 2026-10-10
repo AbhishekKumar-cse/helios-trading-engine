@@ -29,7 +29,11 @@ def main(argv: list[str] | None = None) -> int:
         print(f"error: {exc}", file=sys.stderr)
         return 2
     if args.check_only:
-        print(f"valid definition: {definition.alpha_id}@{definition.version} (not registered)")
+        print(
+            f"valid definition: {definition.alpha_id}@{definition.version} (not registered); "
+            f"free parameters: {definition.free_parameter_count} "
+            f"({definition.parameter_count_convention or 'unknown model complexity'})"
+        )
         return 0
     try:
         with get_engine().begin() as connection:
@@ -40,7 +44,11 @@ def main(argv: list[str] | None = None) -> int:
     except Exception as exc:  # never expose connection URLs or secrets in driver messages
         print(f"error: database registration failed ({type(exc).__name__})", file=sys.stderr)
         return 2
-    print(f"registered DRAFT: {stored.alpha_id}@{stored.version}")
+    print(
+        f"registered DRAFT: {stored.alpha_id}@{stored.version}; "
+        f"free parameters: {definition.free_parameter_count} "
+        f"({definition.parameter_count_convention or 'unknown model complexity'})"
+    )
     return 0
 
 

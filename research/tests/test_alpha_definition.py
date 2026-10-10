@@ -88,6 +88,8 @@ def test_ml_accepts_a_model_or_generated_expression() -> None:
         "model_ref": "example://model/v1",
         "params": {"scale": 0.5},
         "output": model.output.model_dump(mode="json"),
+        "free_parameter_count": None,
+        "parameter_count_convention": None,
     }
     generated = definition(provenance="ML")
     assert generated.to_registry().provenance is Provenance.ML
@@ -105,9 +107,9 @@ def test_model_is_frozen_and_adapter_does_not_share_params() -> None:
 def test_no_expression_is_executed(tmp_path: Path) -> None:
     marker = tmp_path / "must_not_exist"
     expression = f"__import__('pathlib').Path({str(marker)!r}).touch()"
-    idea = definition(expression=expression)
-    assert idea.to_registry().spec["expression"] == expression
-    assert not marker.exists()  # static DSL rejection belongs to subsequent steps
+    with pytest.raises(ValidationError):
+        definition(expression=expression)
+    assert not marker.exists()  # counting parses the whitelist; it never executes source
 
 
 def test_stable_fingerprint_and_parameter_changes() -> None:
@@ -125,12 +127,15 @@ def test_bad_yaml_has_a_config_error(tmp_path: Path, contents: str) -> None:
         load_alpha_definition(path)
 
 
-def test_check_only_cli_does_not_open_database(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_check_only_cli_does_not_open_database(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
     def forbidden() -> None:
         pytest.fail("check-only must not contact PostgreSQL")
 
     monkeypatch.setitem(main.__globals__, "get_engine", forbidden)
     assert main(["--file", str(EXAMPLES / "btc_hourly_momentum.yaml"), "--check-only"]) == 0
+    assert "free parameters: 0 (dsl_syntax_v1)" in capsys.readouterr().out
 
 
 def test_cli_missing_file_is_an_error(tmp_path: Path) -> None:

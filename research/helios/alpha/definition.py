@@ -2,7 +2,8 @@
 
 The registry record is deliberately unchanged: expression/model reference and params
 live in spec_json. QUANT maps to its existing 'human' provenance and ML to 'ml'.
-Loading validates the definition only; parsing/evaluating expressions is step 086 onward.
+Loading validates metadata and parses expression structure for derived parameter counts.
+Semantic preflight and evaluation remain explicit, separate stages.
 """
 
 from __future__ import annotations
@@ -12,9 +13,18 @@ from enum import StrEnum
 from pathlib import Path
 from typing import Self
 
-from pydantic import ConfigDict, Field, JsonValue, StrictInt, field_validator, model_validator
+from pydantic import (
+    ConfigDict,
+    Field,
+    JsonValue,
+    StrictInt,
+    computed_field,
+    field_validator,
+    model_validator,
+)
 from sqlalchemy import Connection
 
+from helios.alpha.complexity import PARAMETER_COUNT_CONVENTION, count_free_parameters
 from helios.alpha.output import OutputConvention
 from helios.common.config import HeliosConfig, load_config
 from helios.common.lineage import git_commit
@@ -79,12 +89,32 @@ class AlphaDefinition(HeliosConfig):
             raise ValueError("provide exactly one expression or model_ref")
         if self.provenance is AlphaProvenance.QUANT and self.expression is None:
             raise ValueError("QUANT definitions require an expression")
+        if self.expression is not None:
+            count_free_parameters(self.expression, params=self.params)
         return self
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def free_parameter_count(self) -> int | None:
+        """Derived from the current formula; model-ref complexity remains unknown."""
+        if self.expression is None:
+            return None
+        return count_free_parameters(self.expression, params=self.params).total
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def parameter_count_convention(self) -> str | None:
+        return None if self.expression is None else PARAMETER_COUNT_CONVENTION
 
     def to_registry(self) -> RegistryDefinition:
         """Adapt without changing the insert-only registry schema or older definitions."""
         dumped = self.model_dump(mode="json")
-        spec = {"params": dumped["params"], "output": dumped["output"]}
+        spec = {
+            "params": dumped["params"],
+            "output": dumped["output"],
+            "free_parameter_count": dumped["free_parameter_count"],
+            "parameter_count_convention": dumped["parameter_count_convention"],
+        }
         if self.expression is not None:
             spec["expression"] = self.expression
         else:

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from datetime import date, timedelta
 from enum import StrEnum
+from math import isfinite
 from pathlib import Path
 from typing import Literal, Self
 
@@ -86,15 +87,15 @@ class FeesConfig(HeliosConfig):
     source_url: str
     checked_on: date
     tier: str
-    maker_fee_bps: float = Field(ge=0)
-    taker_fee_bps: float = Field(ge=0)
+    maker_fee_bps: float = Field(ge=0, allow_inf_nan=False)
+    taker_fee_bps: float = Field(ge=0, allow_inf_nan=False)
     slippage_bps: dict[str, float]
 
     @model_validator(mode="after")
     def _slippage_non_negative(self) -> Self:
-        bad = [s for s, v in self.slippage_bps.items() if v < 0]
+        bad = [s for s, v in self.slippage_bps.items() if v < 0 or not isfinite(v)]
         if bad:
-            raise ValueError(f"slippage must be >= 0 for {bad}")
+            raise ValueError(f"slippage must be >= 0 and finite for {bad}")
         return self
 
     def cost_bps(self, symbol: str) -> float:

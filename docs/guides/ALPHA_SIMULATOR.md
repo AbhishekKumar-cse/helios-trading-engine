@@ -92,6 +92,24 @@ do not share mutable data.
 The returned `GrossSimulation` carries the verified experiment ID, frozen position
 config and hash, starting code commit/dirty state, optional experiment snapshot ID,
 symbol and table. It is an in-memory computation, not a persisted AlphaResult.
-No measured profitability, costs, metrics, validation/test scores or promotion are
+No measured profitability, metrics, validation/test scores or promotion are
 claimed. Synthetic tests cover timing, exact alignment, scales, delays, gaps, invalid
 inputs, future perturbation/truncation and real open/closed experiment checks.
+
+## Fees and net returns (step 096)
+
+`helios.sim.costs.simulate_net` accepts the same registered experiment and position
+inputs. `apply_costs` can also consume an existing `GrossSimulation` in memory.
+The default configuration is `configs/fees.yaml`, unchanged from ADR-005:
+`cost = turnover * (taker_fee_bps + slippage_bps[symbol]) / 10000`.
+There is no half-turnover factor or extra round-trip multiplier. A position flip
+from +1 to -1 has turnover 2. Maker fees are not used in this taker model.
+
+The returned `NetSimulation` preserves gross lineage, a canonical fee JSON snapshot,
+its SHA-256 hash, effective per-side basis points, and an isolated table containing
+`cost`, `cost_available`, `net_return`, and `net_available` alongside gross columns.
+Unknown costs or gross returns make net returns unavailable, without zero filling.
+Initial entry costs are charged on the explicit accounting boundary. No synthetic
+terminal liquidation is charged. For the five-bar example above, BTC costs are
+`[0.0012, 0.0024, 0.0018, 0.0006, 0.0012]`, and net returns are
+`[-0.0012, 0.0976, 0.0982, -0.0006, -0.0012]`.

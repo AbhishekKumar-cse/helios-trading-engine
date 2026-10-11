@@ -99,3 +99,24 @@ calibration results, not evidence about a real alpha or market profitability.
 
 CI has an explicit noise-control step; the main test invocation excludes this
 file to avoid running the same controls twice in that workflow.
+
+## Deliberate future-peek calibration (110 / SIM-015)
+
+`test_sim_future_peek.py` constructs the deliberately illegal test-only signal
+`alpha[t] = close[t+1]/close[t]-1` on the same independent synthetic return
+generator. With scale one and zero costs, the actual lag-one simulator must earn
+exactly `return[t+1]**2` on each forward interval. Its measured annual Sharpe is
+66.92960539, above the predeclared >50 threshold. This impossible forecasting
+advantage is expected only because the control deliberately reads the future.
+
+One extra execution lag produces consecutive-return products instead of squared
+returns; measured annual Sharpe falls to 0.88050703, within the predeclared
+three-null-SE tolerance. The opposite signal produces exactly negative squared
+returns and Sharpe below -50. Changing the final decision cannot change the last
+return already earned. The default final decision is explicitly flat, not an
+invented next-return label. Four tests cover these alignment identities.
+
+These controls live only under `research/tests`, run explicitly in CI and require
+neither a database nor GPU. They do not add a future-reading feature or alpha to
+the production pipeline, authorize TEST access, establish profitability or prove
+all leakage checks. Step 111 still implements the broader required leakage suite.

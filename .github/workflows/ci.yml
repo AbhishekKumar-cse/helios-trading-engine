@@ -43,7 +43,13 @@ jobs:
         run: uv run mypy research/helios
 
       - name: Pytest
-        run: uv run pytest -v --ignore=research/tests/test_sim_noise.py
+        run: >-
+          uv run pytest -v
+          --ignore=research/tests/test_sim_noise.py
+          --ignore=research/tests/test_sim_future_peek.py
 
       - name: Simulator noise calibration (20 fixed seeds)
         run: uv run pytest -v research/tests/test_sim_noise.py
+
+      - name: Simulator future-peek alignment calibration
+        run: uv run pytest -v research/tests/test_sim_future_peek.py

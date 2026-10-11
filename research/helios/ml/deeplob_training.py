@@ -6,6 +6,7 @@ No validation/test events are used to fit normalization or to train the model.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
@@ -153,7 +154,10 @@ def _measure_loss(model: DeepLOB, loader: DataLoader[tuple[Tensor, Tensor]], dev
 
 
 def train_deeplob(
-    dataset: LOBWindowDataset, config: DeepLOBTrainingConfig
+    dataset: LOBWindowDataset,
+    config: DeepLOBTrainingConfig,
+    *,
+    progress: Callable[[int, float], None] | None = None,
 ) -> tuple[DeepLOB, TrainingMetrics]:
     """Train every selected window once per epoch, deterministically and in order.
 
@@ -199,6 +203,8 @@ def train_deeplob(
                 count += len(labels)
                 steps += 1
             losses.append(total / count)
+            if progress is not None:
+                progress(len(losses), losses[-1])
         after = _measure_loss(model, loader, config.device)
         return model, TrainingMetrics(before, after, tuple(losses), steps, len(dataset))
     finally:

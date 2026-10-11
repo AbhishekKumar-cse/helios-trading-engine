@@ -70,3 +70,54 @@ TRAIN eval cross-entropy fell from **1.0921491794 to 1.0267122071**. Training to
 The measured record is
 `reports_out/deeplob/20261009T053345Z-fdb3e290fc2f/smoke.json`. This loss decrease
 shows the optimizer path works; it is not evidence of held-out predictive quality.
+
+## Full-data three-seed training (step 099)
+
+`scripts/fi2010_deeplob_full.py` runs seeds 0, 1 and 2 without retries or best-seed
+selection. Defaults are k=10, five fixed epochs, Adam learning rate 0.001, batch
+128, chronological batches and deterministic algorithms. `max_windows=None`
+uses every eligible TRAIN window. The final epoch is evaluated without tuning on
+the held-out scores. "Full" means the full eligible TRAIN partition, not a claim
+of convergence or reproduction of the paper's training schedule.
+
+```bash
+python scripts/fi2010_deeplob_full.py --device cuda --epochs 5 --batch-size 128
+```
+
+TRAIN is the first 80% of the days 1–7 member. The remaining 20% is VALID; days
+8–10 TEST members are not parsed. Both partitions purge their final ten endpoint
+labels. VALID windows start entirely within VALID, so their first 99 events form
+history rather than evaluation endpoints. VALID inputs use the already fitted
+TRAIN mean/std; they never fit a separate scaler. These are packaged, pre-normalised
+FI-2010 observations, not raw crypto market data. The archive does not expose enough
+stock/day boundary metadata to claim that windows cannot cross such boundaries.
+
+The expected full archive has 254,750 source events, cutoff 203,800, 203,691 TRAIN
+windows and 50,841 VALID windows. The final TRAIN label's future endpoint is 203,799.
+Reported accuracy and macro-F1 concern VALID classification only; no TEST, trading
+profitability, gate or baseline superiority claim follows from them. Macro-F1 always
+averages all three classes, with undefined class F1 set to zero, and each seed records
+a confusion matrix for independent checking.
+
+Each unique output directory stores `protocol.json` before any model training,
+then `seed_N.json` and `seed_N.pt`. The protocol records all fixed settings, the
+archive hash, runtime Python/PyTorch/GPU versions, source lineage and selection rule.
+Per-seed records include config/protocol/checkpoint hashes, actual losses and fit
+times. Checkpoints contain model weights and TRAIN normalization, not resumable
+optimizer state. Copy outputs out of Colab's temporary storage before disconnection;
+local `reports_out/` remains ignored by Git.
+
+For a notebook without a Git checkout, `scripts/build_deeplob_gpu_bundle.py` exports
+only ten required source files and `source_manifest.json`. It excludes `.env`, Git
+credentials and datasets. The full runner verifies every source checksum before
+training. Pass `--source-manifest source_manifest.json` after extracting the bundle
+and set `PYTHONPATH` to its `research` directory. The manifest retains the original
+commit and dirty flag: a run made before committing these changes is development
+evidence, even when it uses full data. Do not relabel it as a clean published run.
+Colab's preinstalled CUDA PyTorch may differ from the pinned local CPU environment;
+record its actual version and verify compatibility, rather than installing the local
+CPU wheel into a GPU session.
+
+The completed 2026-10-12 recovery run and its verified three-seed VALID scores,
+confusion matrices, checkpoint hashes and infrastructure recovery history are in
+[the full-data research record](../research/fi2010_deeplob_full_k10.md).

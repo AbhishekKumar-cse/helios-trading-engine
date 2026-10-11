@@ -52,3 +52,30 @@ all-splits evaluation exists. Loading and feature construction remain trusted
 caller responsibilities; this API cannot undo a caller's earlier unauthorized
 inspection of a dataset. PostgreSQL tests run reservation checks in rolled-back
 fixtures; separate orchestration tests check commit-before-load ordering.
+
+## Selection gates (108)
+
+`gate_decisions(...)` is the pure comparison kernel. `evaluate_gates(split_result,
+fitness=..., stability=..., costs=...)` checks matching source/config lineage and
+returns immutable G1–G6 PASS/FAIL outcomes, measured values, thresholds, comparison
+rules, reasons, exact gate JSON/hash and base simulation lineage. It rechecks actual
+simulation bounds and diagnostics, verifies TEST's matching reservation and
+recalculates Fitness from the recorded gate settings. Evidence from another split,
+snapshot, fee assumption or configuration is refused.
+
+Accepted defaults are strict: G1 annual net Sharpe > 1; G2 Fitness > 1;
+G3 0.01 < mean turnover < 0.70; G4 VALID or TEST; G5 positive monthly fraction
+> 0.5; G6 annual Sharpe at 2x assumed costs > 0. Exact boundaries fail.
+Missing or undefined evidence fails closed; non-finite evidence/settings are
+contract errors. A configured alternative stress multiplier uses its exact curve
+point; absence of that point fails G6. G5 requires every observed month's Sharpe
+to be defined, preventing omission of undefined months from improving selection.
+Weekly evidence is not implemented by the monthly report, so a recorded weekly
+configuration fails G5 rather than silently using months.
+
+INVALID alpha remains INVALID with its original validity reasons; gates are marked
+failed with `invalid_alpha` without treating the attempt as performance evidence.
+A valid alpha failing any gate is REJECTED. All gates passing yields EVALUATED,
+never automatic PROMOTED: clean lineage and registry lifecycle authorization remain
+separate requirements. A recorded `require_out_of_sample=false` is visible in G4's
+reason and changed config hash. No accepted configuration file is changed here.

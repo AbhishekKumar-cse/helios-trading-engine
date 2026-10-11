@@ -110,3 +110,38 @@ the five net totals are 0.1964, 0.1928, 0.1856, 0.1784 and 0.1712. Tests also
 cover zero turnover, immutable input/config snapshots and invalid/unknown data.
 Sharpe itself is not asserted to decline monotonically: cost changes can affect
 both the mean and variance.
+
+## Monthly and volatility stability (105)
+
+`stability_report(net, features, regime_fit)` reports net return moments and
+annual family Sharpe for each observed UTC calendar month. It folds the initial
+entry expense into the first real interval once, consistently with step 100.
+Each month records its actual count, expected calendar count and incomplete-month
+flag. Undefined monthly Sharpes remain visible. Mean, minimum and fraction of
+positive months use only defined monthly Sharpes, with their denominator recorded
+as `n_defined_months`; no defined months yields N/A. Missing months are not filled.
+
+`fit_volatility_regimes(features, calibration_start_us=..., calibration_end_us=...)`
+fits linear one-third/two-thirds quantiles on available volatility observations
+inside an explicit half-open calibration window. The caller must provide an
+authorized earlier calibration window, normally TRAIN. Its end cannot extend
+past the simulation's initial boundary. Evaluation observations never refit the
+thresholds. At least three distinct available values and two distinct cuts are
+required; degenerate calibration fails explicitly.
+
+The default feature is `volatility_24`. Supply causal features produced by the
+feature pipeline: this helper validates values and availability, but cannot prove
+the provenance of arbitrary caller-created features. An interval ending at `t`
+uses volatility available at `t-1`, when its exposure starts. Low is at or below
+the lower cut, middle is above the lower and at or below the upper, and high is
+above the upper. Missing volatility remains unclassified, with an explicit count;
+it is never replaced with zero. Regime metrics are conditional return moments
+and extrapolated annual Sharpe, not a continuous regime-only portfolio or its
+drawdown. Empty regimes yield N/A.
+
+The immutable report retains simulation lineage, calibration bounds/counts,
+thresholds, configuration JSON/hash, calibration-only input hash and evaluation
+feature hash. It does not write registered results, grant TEST access or issue a
+promotion verdict. Tests cover calendar boundaries, entry costs, deterministic
+ties, missing regimes, undefined months, invalid calibration, and future-value
+perturbations that leave earlier fitted thresholds and classifications unchanged.

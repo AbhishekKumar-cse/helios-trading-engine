@@ -39,3 +39,19 @@ does not establish positive net profitability.
 Pure kernels and the wrapper are covered by hand-calculated drawdown episodes,
 the existing five-bar entry/flip/exit example, hourly/minute daily equivalence,
 missing-day/gap cases, insufficient samples and invalid-input tests.
+
+## Fitness (102)
+
+`fitness_result(diagnostics)` uses the family's **annual net Sharpe**, arithmetic
+annual net return and mean turnover. ADR-002 fixes
+`Fitness = Sharpe * sqrt(abs(annual_return) / max(turnover, floor))`.
+The default floor remains 0.125 from `configs/gates_v1.yaml`; the sign comes from
+Sharpe. Zero turnover uses the floor. Missing prerequisite metrics yield N/A,
+while negative turnover, non-finite settings and arithmetic overflow fail.
+
+The result retains the complete simulation diagnostics, denominator, versioned
+formula/floor JSON and hash, and the exact gate configuration JSON/hash. Passing
+an explicit alternative configuration records its different hashes; it does not
+change or approve the accepted default. This is a calculation, not a promotion
+or gate verdict. Four tests reproduce ADR-002's A/B/C/D examples exactly; further
+tests cover zero/missing values, sign, overflow and configured lineage.

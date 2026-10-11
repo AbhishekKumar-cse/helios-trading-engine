@@ -4,7 +4,8 @@
 an explicit interval and an execution lag of at least one decision interval.
 It verifies a real open preregistered experiment through the caller's PostgreSQL
 connection before computation. No result, experiment, promotion or trade is created
-by the simulator. Costs/net returns, metrics, splits and gates remain later steps.
+by the simulator. Costs/net returns and basic metrics are described below; split
+access, persisted results and gates remain later steps.
 
 ```python
 from helios.alpha.output import evaluate_definition
@@ -92,8 +93,8 @@ do not share mutable data.
 The returned `GrossSimulation` carries the verified experiment ID, frozen position
 config and hash, starting code commit/dirty state, optional experiment snapshot ID,
 symbol and table. It is an in-memory computation, not a persisted AlphaResult.
-No measured profitability, metrics, validation/test scores or promotion are
-claimed. Synthetic tests cover timing, exact alignment, scales, delays, gaps, invalid
+No measured profitability, validation/test scores or promotion are claimed.
+Synthetic tests cover timing, exact alignment, scales, delays, gaps, invalid
 inputs, future perturbation/truncation and real open/closed experiment checks.
 
 ## Fees and net returns (step 096)
@@ -113,3 +114,57 @@ Initial entry costs are charged on the explicit accounting boundary. No syntheti
 terminal liquidation is charged. For the five-bar example above, BTC costs are
 `[0.0012, 0.0024, 0.0018, 0.0006, 0.0012]`, and net returns are
 `[-0.0012, 0.0976, 0.0982, -0.0006, -0.0012]`.
+
+## Return, volatility and Sharpe (step 100)
+
+`helios.sim.metrics.simulation_metrics(net)` calculates an immutable in-memory
+summary of a complete `NetSimulation`. Its horizon comes from the recorded
+position interval: `1h` uses H-HOURLY (8,760 periods/year), `1m` uses H-MINUTE
+(525,600). Values come from `configs/splits.yaml` and the complete config hash is
+recorded. Unsupported or unconfigured horizons fail explicitly.
+
+The pure `return_metrics(returns, periods_per_year=...)` kernel accepts only finite,
+real, one-dimensional observed-period net P&L. Fractions retain the simulator's
+reference exposure convention: **total return is the sum**, without reinvesting
+or compounding. Following ADR-002/003:
+
+- Mean return = total / observed periods; annual return = mean × periods/year.
+- Per-period volatility = sample standard deviation (`ddof=1`); annual volatility
+  = per-period volatility × sqrt(periods/year).
+- Per-period Sharpe = mean / per-period volatility, with risk-free rate zero;
+  annual Sharpe = per-period Sharpe × sqrt(periods/year).
+
+Zero variance gives a defined zero volatility and undefined (`None`) Sharpe, even
+for constant positive returns. With one observed period, sample volatility and
+Sharpe are undefined. Non-finite values and arithmetic overflow are refused.
+Tiny returns are scaled before variance calculation to avoid false zero variance
+from squaring underflow. No epsilon changes the denominator.
+
+The first table row is an accounting boundary, not an observed interval. For
+moments, its net entry expense is added to the first actual interval's net P&L;
+this is recorded as `entry_cost_in_first_interval_v1`. Thus the five-row example
+has **four observations**, `[0.0964, 0.0982, -0.0006, -0.0012]`, and total net
+return **0.1928**. No fee is discarded, and no extra starting-zero observation or
+terminal exit is fabricated. A table containing only the initial boundary has
+its actual total entry expense, zero observed periods and undefined period/annual
+metrics. This convention concerns the simulator's reference exposure accounting;
+it is not compounded portfolio NAV or executable fill accounting.
+
+The wrapper requires chronological, unique timestamps and every interval present
+on the UTC grid, a single first-row boundary, boolean availability masks and
+finite available net values. Missing periods or unknown net P&L fail; they are
+never dropped, zero-filled or forward-filled. Known flat startup periods remain
+actual observations. Split selection and warm-up validity remain later work.
+
+`SimulationMetrics` records the metric config JSON/hash, splits hash, symbol,
+experiment/snapshot, position and fee hashes, source commit and dirty flag. Its
+numeric summary is isolated from later table mutations. The wrapper creates no
+persisted result, gate decision or TEST authorization. Family Sharpe values
+must not be compared across horizons: daily aggregation and other metrics belong
+to step 101.
+
+For the synthetic observed series `[0.01, -0.02, 0.03, 0.01]` and four periods/year,
+total and annual return are both 0.03, sample variance is 0.000425, period
+volatility is sqrt(0.000425), and annual Sharpe is `0.015 / sqrt(0.000425)`.
+These hand calculations and the entry-fee example are covered by unit tests;
+they imply no actual market performance.

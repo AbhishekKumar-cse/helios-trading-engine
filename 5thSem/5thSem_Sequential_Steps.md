@@ -191,7 +191,7 @@ Follow the numbers in order.
 
 | ✓ | Step | What to do | Owner | Plan ID | Done when |
 |---|---|---|---|---|---|
-| [ ] | 100 | Metrics: total/annual return, volatility, per-period Sharpe | Q | 5F-03 | Tests on a known series |
+| [x] | 100 | Metrics: total/annual return, volatility, per-period Sharpe | Q | 5F-03 | Done 2026-10-12: sim/metrics.py computes arithmetic total/annual net P&L, sample per-period and annual volatility, per-period and annual Sharpe with risk-free rate zero. Hourly/minute scaling comes from recorded splits config; metric conventions and simulation/fee/source lineage retained. Initial entry expense joins the first realized interval without adding an observation; lone boundary has total only. Unknown net values, gaps, invalid masks/numbers and overflow refused; constant/single-period undefined ratios remain None. 32 known-series, boundary, scaling, lineage and failure tests passed. Full regression 1361 passed, 1 slow deselected, 15 existing warnings; Ruff lint/format and strict mypy passed. Daily aggregation and other metrics remain step 101. |
 | [ ] | 101 | Metrics: **daily-aggregated Sharpe**, turnover, max drawdown + duration, hit rate | Q | 5F-03 | Tests |
 | [ ] | 102 | Fitness from ADR-002 | Q | 5F-04 | Test reproduces the ADR's worked example |
 | [ ] | 103 | IC: time-series IC per coin; cross-sectional IC over 5 coins; IC-IR | Q | 5F-05 | Tests |

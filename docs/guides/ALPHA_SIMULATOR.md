@@ -168,3 +168,6 @@ total and annual return are both 0.03, sample variance is 0.000425, period
 volatility is sqrt(0.000425), and annual Sharpe is `0.015 / sqrt(0.000425)`.
 These hand calculations and the entry-fee example are covered by unit tests;
 they imply no actual market performance.
+
+Daily Sharpe, turnover, drawdown and directional hit rate are implemented in step
+101; see [simulator diagnostics](SIMULATOR_DIAGNOSTICS.md) for their conventions.

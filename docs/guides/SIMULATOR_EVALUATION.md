@@ -79,3 +79,23 @@ A valid alpha failing any gate is REJECTED. All gates passing yields EVALUATED,
 never automatic PROMOTED: clean lineage and registry lifecycle authorization remain
 separate requirements. A recorded `require_out_of_sample=false` is visible in G4's
 reason and changed config hash. No accepted configuration file is changed here.
+
+## Noise calibration (109 / SIM-014)
+
+`test_sim_noise.py` runs all 20 fixed signal seeds (0–19) on 20,000 independent
+synthetic hourly return intervals from a separate fixed market generator. Signals
+pass through bounding, the actual lagged-position kernel, costs and metrics.
+Nothing is fitted, selected or omitted by score; no database or market data is
+needed, so the control runs in CI.
+
+The zero-cost null requires the mean annual Sharpe to be within three standard
+errors of zero, both from the a priori null scaling sqrt(8760/(20000*20)) and
+the observed variation across seeds. The measured synthetic mean is 0.05430368,
+null SE 0.14798649 and observed SE 0.14210222. Individual noise seeds need not
+have zero Sharpe. A companion 20-seed test applies accepted fee/slippage settings
+and verifies negative average net returns and actual cost subtraction. Zero
+expected gross edge does not imply zero net edge after costs. These are simulator
+calibration results, not evidence about a real alpha or market profitability.
+
+CI has an explicit noise-control step; the main test invocation excludes this
+file to avoid running the same controls twice in that workflow.

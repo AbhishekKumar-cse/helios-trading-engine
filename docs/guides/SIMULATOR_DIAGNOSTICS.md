@@ -55,3 +55,36 @@ an explicit alternative configuration records its different hashes; it does not
 change or approve the accepted default. This is a calculation, not a promotion
 or gate verdict. Four tests reproduce ADR-002's A/B/C/D examples exactly; further
 tests cover zero/missing values, sign, overflow and configured lineage.
+
+## Predictive IC and IC-IR (103)
+
+`information_coefficients(alphas, bars, config=ICConfig(...))` accepts a declared
+coin-to-`AlphaSeries` mapping and matching per-coin bars. It aligns signals by
+exact UTC timestamps, independently of row labels. The forward outcome is
+`close[t+h] / close[t] - 1`; it is an evaluation label, never a trading feature.
+The positive integer horizon counts actual intervals. Missing intervals spanning
+a label, unknown endpoint prices/signals and the final h endpoints are unavailable.
+Each coin records total/paired/unavailable counts; nothing is filled or fabricated.
+
+Both Spearman (default, average ranks for ties) and Pearson are supported.
+Constant inputs and fewer than two pairs give N/A. Overall time-series IC is
+reported per coin. Monthly IC uses UTC calendar months and purges labels ending
+in another month. Time-series IC-IR is mean of defined monthly ICs divided by
+their sample standard deviation, without annualization. Undefined months remain
+in the report; fewer than two defined months or zero variance gives N/A.
+
+Cross-sectional IC uses only same-timestamp, available signal/outcome pairs,
+requiring at least **five** instruments at that timestamp (QNT-008). Smaller
+universes, constant cross-sections and timestamps with insufficient pairs remain
+N/A with explicit point-level symbols and a report-level reason. `cross_mean` is
+the mean of defined timestamp ICs. Cross-sectional IC-IR uses the series of UTC
+monthly mean ICs, with crossing label windows purged, rather than pretending every
+timestamp is an independent subperiod.
+
+The result stores immutable tuples, config JSON/hash, hashes of the exact input
+timestamps/prices/signals/masks, and an optional caller-supplied snapshot ID.
+The snapshot ID is not invented or independently verified by this pure kernel.
+The later registered-result pipeline attaches experiment/code lineage and must
+provide only authorized split data; this helper does not load or grant TEST access.
+Tests cover perfect/inverse signals, tied ranks, constants, five-coin availability,
+gaps, monthly purging/IR, timestamp alignment and future-price perturbation.

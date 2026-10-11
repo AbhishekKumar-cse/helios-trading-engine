@@ -88,3 +88,25 @@ The later registered-result pipeline attaches experiment/code lineage and must
 provide only authorized split data; this helper does not load or grant TEST access.
 Tests cover perfect/inverse signals, tied ranks, constants, five-coin availability,
 gaps, monthly purging/IR, timestamp alignment and future-price perturbation.
+
+## Cost sensitivity (104)
+
+`cost_sensitivity(gross)` returns five immutable points for cost multipliers
+0.5, 1, 2, 3 and 4. It snapshots the same gross execution table and split settings
+once, then scales the fee/slippage basis points and recalculates net P&L and
+step-100 metrics. The taker cost model remains unchanged: no extra round-trip
+factor, new execution, terminal liquidation or position remapping occurs.
+
+The original fee JSON/hash is retained; every point records its multiplier,
+effective one-side basis points, total cost, scaled fee JSON/hash and complete
+simulation metric lineage. The accepted default fee file is not modified.
+`cost_stress_sharpe` returns the annual family Sharpe at 2x cost, as ADR-002/005
+require. Undefined Sharpe remains N/A. A custom curve must have at least five
+positive, finite, unique ascending multipliers; absence of a 2x point yields N/A
+for that property. The curve is returned, not written as an authorized result.
+
+The synthetic five-bar example has gross total 0.2 and base total cost 0.0072:
+the five net totals are 0.1964, 0.1928, 0.1856, 0.1784 and 0.1712. Tests also
+cover zero turnover, immutable input/config snapshots and invalid/unknown data.
+Sharpe itself is not asserted to decline monotonically: cost changes can affect
+both the mean and variance.

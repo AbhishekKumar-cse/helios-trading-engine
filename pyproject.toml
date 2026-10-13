@@ -48,6 +48,7 @@ testpaths = ["research/tests"]
 addopts = "--tb=short -m 'not slow'"
 markers = [
     "slow: reads the full FI-2010 dataset (~25 s); run with `uv run pytest -m slow`",
+    "leakage: required simulator causality and calibration controls",
 ]
 
 # ---- ruff: code style + lint (step 018) ----

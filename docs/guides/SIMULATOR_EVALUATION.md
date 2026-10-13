@@ -120,3 +120,18 @@ These controls live only under `research/tests`, run explicitly in CI and requir
 neither a database nor GPU. They do not add a future-reading feature or alpha to
 the production pipeline, authorize TEST access, establish profitability or prove
 all leakage checks. Step 111 still implements the broader required leakage suite.
+
+## Required leakage suite (111)
+
+`pytest -m leakage --strict-markers` selects the noise/future-peek controls plus
+constant-alpha INVALID and a causal shifted-feature control. The latter uses a
+fixed synthetic AR(1) process: the sign of the already observed return predicts
+the next interval; delaying it one bar must degrade Sharpe. It does not assert
+that delaying every real-market feature always makes performance worse.
+
+CI runs these controls in the separate `leakage (required)` job. Main's required
+status checks were configured through authenticated Ubuntu WSL on 2026-10-13:
+`lint, types, tests` and `leakage (required)`, with strict up-to-date checks.
+Administrator enforcement remains off to preserve the requested direct-main
+owner workflow; ordinary merges are blocked by a failing required check. No
+additional PR approval requirement was introduced. Eight marked controls pass.

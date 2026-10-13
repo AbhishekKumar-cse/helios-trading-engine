@@ -3,7 +3,10 @@
 from math import sqrt
 
 import numpy as np
+import pytest
 from sim_controls import N_PERIODS, N_SEEDS, market_returns, run_control
+
+pytestmark = pytest.mark.leakage
 
 
 def test_twenty_noise_seeds_have_mean_sharpe_consistent_with_zero() -> None:

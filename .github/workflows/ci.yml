@@ -43,13 +43,19 @@ jobs:
         run: uv run mypy research/helios
 
       - name: Pytest
-        run: >-
-          uv run pytest -v
-          --ignore=research/tests/test_sim_noise.py
-          --ignore=research/tests/test_sim_future_peek.py
+        run: uv run pytest -v -m "not slow and not leakage"
 
-      - name: Simulator noise calibration (20 fixed seeds)
-        run: uv run pytest -v research/tests/test_sim_noise.py
-
-      - name: Simulator future-peek alignment calibration
-        run: uv run pytest -v research/tests/test_sim_future_peek.py
+  leakage:
+    name: leakage (required)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.1.0
+        with:
+          version: "0.12.13"
+          enable-cache: true
+      - name: Install locked dependencies
+        run: uv sync --locked
+      - name: Required leakage controls
+        run: uv run pytest -v -m leakage --strict-markers

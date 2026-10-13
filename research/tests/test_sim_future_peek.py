@@ -4,10 +4,13 @@ from math import sqrt
 
 import numpy as np
 import pandas as pd
+import pytest
 from sim_controls import N_PERIODS, market_returns, run_control
 
 from helios.alpha.evaluator import AlphaSeries
 from helios.sim.validity import alpha_validity
+
+pytestmark = pytest.mark.leakage
 
 
 def test_next_return_alpha_has_exact_squared_pnl_and_implausible_sharpe() -> None:

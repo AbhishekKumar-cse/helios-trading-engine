@@ -83,7 +83,7 @@ def test_all_tables_visible(connection: Connection) -> None:
     assert TABLES <= set(inspect(connection).get_table_names())
     assert (
         connection.execute(text("SELECT version_num FROM alembic_version")).scalar_one()
-        == "b41f09700500"
+        == "c11600000600"
     )
 
 

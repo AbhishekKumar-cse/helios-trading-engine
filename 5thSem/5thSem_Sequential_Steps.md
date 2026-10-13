@@ -214,7 +214,7 @@ Follow the numbers in order.
 
 | ✓ | Step | What to do | Owner | Plan ID | Done when |
 |---|---|---|---|---|---|
-| [ ] | 116 | `helios/sim/evaluate.py`: `evaluate(alpha_id, split, experiment_id)` → metrics → gates → `record_result` with lineage | Q | 5F-13 | One call stores a result row |
+| [x] | 116 | `helios/sim/evaluate.py`: `evaluate(alpha_id, split, experiment_id)` → metrics → gates → `record_result` with lineage | Q | 5F-13 | Done 2026-10-13: one registered hourly expression evaluation verifies snapshot/feature provenance, composes guarded simulation/metrics/Fitness/IC/stability/costs/gates and stores an insert-only result with hash-bound JSON evidence. Clean code required for reported runs; invalid/gapped attempts retain NULL metrics and reasons via additive migration 006. TEST reservation reused once, unique DB linkage enforced; no promotion/orders. Four composed PostgreSQL tests plus legacy checks: 109 passed; strict mypy 61 files and lint passed. |
 | [ ] | 117 | `scripts/evaluate_alphas.py`: many alphas in a process pool | Q | 5F-14 | 3 baselines evaluated in one command |
 | [ ] | 118 | Report generator → `reports_out/<alpha_id>/report.html`: equity, drawdown, cost curve, monthly stability, gate table | Q | 5F-15 | Report opens in browser |
 | [ ] | 119 | Evaluate B0–B2 on TRAIN + VALID (hourly); read the reports | Q | 5G-01 | 3 results stored |

@@ -34,7 +34,7 @@ from decimal import Decimal
 from enum import StrEnum
 from typing import Any, Self
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, JsonValue, field_validator, model_validator
 from sqlalchemy import Connection, text
 from sqlalchemy.exc import IntegrityError
 
@@ -61,6 +61,7 @@ class Status(StrEnum):
     PROMOTED = "PROMOTED"
     REJECTED = "REJECTED"
     ARCHIVED = "ARCHIVED"
+    INVALID = "INVALID"
 
 
 class AlphaResult(BaseModel):
@@ -77,11 +78,12 @@ class AlphaResult(BaseModel):
     gate_config_id: str = Field(min_length=3)
 
     # metrics, all net of costs
-    sharpe: Decimal
-    annual_return: Decimal
-    turnover: Decimal = Field(ge=0)
-    fitness: Decimal
-    periods: int = Field(ge=1)
+    sharpe: Decimal | None
+    annual_return: Decimal | None
+    turnover: Decimal | None = Field(ge=0)
+    fitness: Decimal | None
+    periods: int = Field(ge=0)
+    evaluation_json: dict[str, JsonValue] | None = None
     max_drawdown: Decimal | None = Field(default=None, le=0)
     hit_rate: Decimal | None = Field(default=None, ge=0, le=1)
     cost_stress_sharpe: Decimal | None = None
@@ -123,8 +125,20 @@ class AlphaResult(BaseModel):
 
     @model_validator(mode="after")
     def _promotion_is_earned(self) -> Self:
+        if self.status is Status.INVALID:
+            if self.evaluation_json is None or self.evaluation_json.get("status") != "INVALID":
+                raise ValueError("INVALID requires recorded validity evidence")
+            if any(
+                v is not None
+                for v in (self.sharpe, self.annual_return, self.turnover, self.fitness)
+            ):
+                raise ValueError("INVALID must not carry performance metrics")
+        elif self.periods < 1 or self.annual_return is None or self.turnover is None:
+            raise ValueError("valid results require observed periods and defined accounting")
         if self.status is not Status.PROMOTED:
             return self
+        if self.sharpe is None or self.fitness is None:
+            raise ValueError("cannot promote undefined Sharpe/Fitness")
         failed = sorted(name for name, passed in self.gate_results.items() if not passed)
         if failed:
             raise ValueError(f"cannot promote: {failed} did not pass")
@@ -184,13 +198,13 @@ INSERT INTO alpha_results
     (run_id, experiment_id, alpha_id, version, split, snapshot_id, gate_config_id,
      sharpe, annual_return, turnover, fitness, max_drawdown, hit_rate,
      cost_stress_sharpe, stability_positive_fraction, periods, gate_results, status,
-     code_commit, config_hash, seed, dirty, runtime_seconds)
+     code_commit, config_hash, seed, dirty, runtime_seconds, evaluation_json)
 VALUES
     (:run_id, :experiment_id, :alpha_id, :version, :split, :snapshot_id, :gate_config_id,
      :sharpe, :annual_return, :turnover, :fitness, :max_drawdown, :hit_rate,
      :cost_stress_sharpe, :stability_positive_fraction, :periods,
      CAST(:gate_results AS jsonb), :status,
-     :code_commit, :config_hash, :seed, :dirty, :runtime_seconds)
+     :code_commit, :config_hash, :seed, :dirty, :runtime_seconds, CAST(:evaluation_json AS jsonb))
 RETURNING created_at
 """)
 
@@ -198,7 +212,7 @@ SELECT = """
 SELECT run_id, experiment_id, alpha_id, version, split, snapshot_id, gate_config_id,
        sharpe, annual_return, turnover, fitness, max_drawdown, hit_rate,
        cost_stress_sharpe, stability_positive_fraction, periods, gate_results, status,
-       code_commit, config_hash, seed, dirty, runtime_seconds, created_at
+       code_commit, config_hash, seed, dirty, runtime_seconds, created_at, evaluation_json
 FROM alpha_results
 """
 
@@ -228,6 +242,7 @@ def _to_result(row: Any) -> AlphaResult:
         seed=row.seed,
         dirty=row.dirty,
         runtime_seconds=row.runtime_seconds,
+        evaluation_json=row.evaluation_json,
         created_at=row.created_at,
     )
 
@@ -272,6 +287,9 @@ def record_result(connection: Connection, result: AlphaResult) -> AlphaResult:
                 "seed": result.seed,
                 "dirty": result.dirty,
                 "runtime_seconds": result.runtime_seconds,
+                "evaluation_json": None
+                if result.evaluation_json is None
+                else json.dumps(result.evaluation_json, allow_nan=False),
             },
         ).scalar_one()
     except IntegrityError as exc:

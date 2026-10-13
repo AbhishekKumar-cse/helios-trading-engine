@@ -21,7 +21,7 @@ from helios.registry.test_access import TestSetAccess, record_test_access
 from helios.sim.costs import NetSimulation, simulate_net
 from helios.sim.diagnostics import SimulationDiagnostics, simulation_diagnostics
 from helios.sim.positions import SimulationError, _times
-from helios.sim.validity import ValidityConfig, ValidityResult, alpha_validity
+from helios.sim.validity import InvalidReason, ValidityConfig, ValidityResult, alpha_validity
 
 
 @dataclass(frozen=True)
@@ -197,6 +197,15 @@ def evaluate_split(
     # The reservation transaction has committed. Do not expose data before this point.
     alpha, bars = _split_inputs(*load_inputs(window), window)
     validity = alpha_validity(alpha, config=policy)
+    observed = bars.iloc[policy.warmup_rows :]
+    times = _times(observed.open_time)
+    reasons = list(validity.reasons)
+    if len(times) > 1 and (np.diff(times) != interval_us(interval)).any():
+        reasons.append(InvalidReason.DATA_GAPS)
+    if "close" not in observed or not np.isfinite(observed.close.to_numpy(dtype=float)).all():
+        reasons.append(InvalidReason.NON_FINITE_PRICES)
+    if reasons:
+        validity = replace(validity, status="INVALID", reasons=tuple(reasons))
     if not validity.valid:
         return SplitEvaluation(window, alpha_id, version, validity, None, None, access)
     offset = policy.warmup_rows

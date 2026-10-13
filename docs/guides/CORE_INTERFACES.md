@@ -32,3 +32,19 @@ read representation. MarketEvent currently aliases Bar for the fifth-semester
 bar path, without claiming implemented LOB events. ADR-006 remains Proposed;
 these types implement the existing architecture shape without inventing approval
 or claiming a running strategy, risk engine or venue.
+
+## Structural interfaces (113)
+
+`helios.common.interfaces` implements MarketDataSource, AlphaModel, Strategy,
+RiskEngine and ExecutionVenue as runtime-checkable typing.Protocol contracts.
+Signatures retain architecture section 8: ordered event iterator, read-only alpha
+definition and typed feature input, consistent strategy state views, synchronous
+risk decisions, and venue submit/cancel/amend, report callbacks, open-order snapshots
+and venue identity. Ack is command acceptance, not a Fill.
+
+Adapters need not inherit from these interfaces. Strict mypy checks input/output
+compatibility; tests accept a correctly typed fail-closed risk adapter and reject
+one returning a string instead of RiskDecision. Runtime isinstance checks only
+member presence, not signatures, causality, availability, idempotency or risk
+routing. Those guarantees require the later concrete implementations and their
+conformance tests. No real venue or network order endpoint is introduced.

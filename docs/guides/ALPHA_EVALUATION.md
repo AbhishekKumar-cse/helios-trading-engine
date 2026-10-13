@@ -51,3 +51,22 @@ Requests are declared in advance, duplicates refused and outputs restored to
 request order. A failed worker returns a visible error type and no invented result;
 the command exits nonzero on any failure. Completed/invalid attempts remain
 registered independently rather than rolling successful workers back.
+
+## Hash-verified reports (118)
+
+`python scripts/report_alpha.py RUN_ID` writes reports_out/ALPHA_ID/report.html
+after verifying the registered artifact's SHA-256, status and snapshot. Valid
+simulations show reference equity (1 + additive net P&L, not compounded NAV),
+additive drawdown, actual cost curve, monthly/regime tables, gates and lineage.
+Display-only curve sampling does not alter any metric. INVALID reports show
+reasons and N/A rather than fake zero returns or invented equity curves.
+
+Every rendered HTML version is archived by run ID/content hash; report.html is
+only the replaceable latest presentation. Original JSON/DB evidence stays intact.
+Text is HTML-escaped and identifiers validated against path traversal. No remote
+chart libraries are needed. `python scripts/serve_alpha_reports.py` serves only
+the generated HTML views on localhost:8766; it exposes no arbitrary files or write
+routes. The three actual step-117 VALID runs under experiment 4252 are retained
+as INVALID due to DATA_GAPS and UNAVAILABLE_AFTER_WARMUP: B0 has 24 affected
+post-warm-up signals, B1/B2 have 168 each. These are data-validity findings, not
+measured losing/profitable strategies. All used clean source 163491f and no TEST.

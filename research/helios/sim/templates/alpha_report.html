@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HELIOS · $alpha</title>
+<style>
+body{margin:0;background:#eef2f6;color:#162a3e;font:15px/1.6 system-ui}
+main{max-width:1100px;margin:auto;padding:32px 20px}
+h1{font-size:30px;margin:10px 0}h2{margin:0 0 10px;font-size:21px}
+section{background:white;border:1px solid #d8e0e8;border-radius:13px;
+padding:23px;margin:20px 0;overflow:auto}
+.brand{letter-spacing:3px;color:#168d77;font-weight:bold}
+.badge{display:inline-block;background:#173449;color:white;padding:5px 12px;border-radius:20px}
+.notice{border-left:4px solid #d9a248;background:#fff5e2;padding:16px}
+.muted{color:#63768b}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.card{background:white;border:1px solid #d8e0e8;padding:17px;border-radius:10px}
+.value{font-size:25px;font-weight:bold}table{width:100%;border-collapse:collapse}
+th,td{text-align:left;border-bottom:1px solid #e2e8ee;padding:10px}
+th{font-size:12px;color:#63768b}svg{width:100%;height:230px}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}
+@media(max-width:700px){.cards{grid-template-columns:repeat(2,1fr)}}
+</style></head><body><main>
+<div class="brand">HELIOS · BACKTEST RESEARCH</div><h1>$alpha · version $version</h1>
+<span class="badge">$split · $status</span>
+<p class="muted">Run $run_id · $symbol · $n_rows input rows</p>
+<p class="notice">$notice</p>
+<div class="cards">
+<div class="card">Annual net Sharpe<div class="value">$sharpe</div></div>
+<div class="card">Total net reference P&amp;L<div class="value">$total</div></div>
+<div class="card">Fitness<div class="value">$fitness</div></div>
+<div class="card">Mean turnover<div class="value">$turnover</div></div>
+</div>
+<section><h2>Reference equity curve</h2>
+<p class="muted">1 + cumulative additive net P&amp;L; not self-financing portfolio NAV.
+Display sampling does not change metrics.</p>$equity_plot</section>
+<section><h2>Additive drawdown</h2>$drawdown_plot</section>
+<section><h2>Cost sensitivity</h2>$costs</section>
+<section><h2>Monthly stability</h2>$months</section>
+<section><h2>Volatility regimes</h2>$regimes</section>
+<section><h2>Selection gates</h2>$gates
+<p class="muted">INVALID outcomes are unavailable evidence, not performance rejection.
+All-pass would mean EVALUATED, never automatic promotion.</p></section>
+<section><h2>Availability and lineage</h2><pre>$lineage</pre>
+<details><summary>Recorded evaluation protocol</summary><pre>$protocol</pre></details></section>
+</main></body></html>

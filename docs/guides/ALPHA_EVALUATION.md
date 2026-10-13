@@ -39,3 +39,15 @@ The existing reservation ID is retained and checked before result insertion,
 without calling record_test_result and charging another access. A unique index
 prevents two new result rows from reusing one reservation. Actor and purpose are
 required. No real TEST observations were used in implementation tests.
+
+## Isolated batch evaluation (117)
+
+`python scripts/evaluate_alphas.py --experiment-id ID --alphas baseline_b0
+baseline_b1 baseline_b2 --splits valid --workers 2` evaluates the fixed registered
+definitions against the already preregistered experiment. It defaults to VALID,
+not TEST, and requires clean reported-run source. Each job uses a spawn-isolated
+process with its own engine/config/state; no connection is shared across workers.
+Requests are declared in advance, duplicates refused and outputs restored to
+request order. A failed worker returns a visible error type and no invented result;
+the command exits nonzero on any failure. Completed/invalid attempts remain
+registered independently rather than rolling successful workers back.

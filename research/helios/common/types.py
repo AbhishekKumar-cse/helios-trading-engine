@@ -96,6 +96,7 @@ class DecisionLineage(Record):
     code_commit: Annotated[str, Field(pattern=r"^[0-9a-f]{40}$")]
     config_hash: Hash
     snapshot_id: Identifier
+
     seed: Annotated[int, Field(strict=True, ge=0, le=2**32 - 1)]
     model_hash: Hash | None = None
 
@@ -113,11 +114,29 @@ class Bar(Record):
     close: Price
     volume: NonNegative
     snapshot_id: Identifier
+    recorded_close_time: Timestamp | None = None
+    close_time_resolution_us: Literal[1, 1000] = 1
+
+    @field_validator("close_time_resolution_us", mode="before")
+    @classmethod
+    def _precision(cls, value: object) -> object:
+        if type(value) is not int or value not in (1, 1000):
+            raise ValueError("close timestamp precision must be 1 or 1000 microseconds")
+        return value
 
     @property
     def close_time(self) -> int:
         """Exclusive bar end; decision is available only after the interval closes."""
-        return self.open_time + interval_us(self.interval)
+        return (
+            self.open_time + interval_us(self.interval)
+            if self.recorded_close_time is None
+            else self.recorded_close_time + self.close_time_resolution_us
+        )
+
+    @property
+    def is_complete_interval(self) -> bool:
+        period = interval_us(self.interval)
+        return self.open_time % period == 0 and self.close_time - self.open_time == period
 
     @model_validator(mode="after")
     def _bar(self) -> Self:
@@ -129,6 +148,8 @@ class Bar(Record):
             raise ValueError("OHLC prices must lie inside low/high")
         if self.close_time >= 2**63 or self.ingest_time < self.close_time:
             raise ValueError("bar ingest must be at/after its representable closing boundary")
+        if self.close_time <= self.open_time:
+            raise ValueError("recorded bar end must follow its opening time")
         return self
 
 

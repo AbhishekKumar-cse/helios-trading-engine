@@ -143,3 +143,21 @@ Creation produces CREATED with zero fills and full remaining quantity. There is
 no venue ACK, execution or P&L side effect. This in-memory book does not claim
 cross-process retry durability; database-backed runner/persistence is step 149,
 and the simulated ExecutionVenue is steps 141–142.
+
+## OMS state and execution evidence (134)
+
+Local `mark_pending` moves CREATED to PENDING_NEW; `request_cancel` moves an
+accepted/partial order to PENDING_CANCEL. `on_report` applies external reports:
+PENDING_NEW can ACK or reject; accepted/partial orders can partially fill, fully
+fill, cancel or expire. A cancellation race can still deliver a partial/full fill.
+Terminal orders cannot reopen. Quantity changes require a matching, unique Fill
+with the correct order/client/symbol/side/mode, delta quantity and causal time.
+
+Reports must advance by one sequence after the first received sequence. A gap
+requires reconciliation, not guessed intermediate outcomes. Exact known duplicates
+return the current order without rewinding or adding another fill; conflicting
+duplicates, reused fill IDs, backwards clocks and illegal transitions are rejected
+atomically. All arithmetic uses the full numeric(38,18) domain. Cancellation and
+expiry retain the unfilled residual for `filled + remaining = requested quantity`;
+terminal residuals do not count as working orders. These are reference state
+updates from supplied evidence, not a claim that a venue or P&L ledger has run.

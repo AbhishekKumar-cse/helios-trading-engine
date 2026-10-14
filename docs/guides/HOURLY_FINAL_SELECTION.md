@@ -20,3 +20,18 @@ Current round-one evidence has eight INVALID candidate measurements; none is
 eligible. Step 139 therefore completes the selection/TEST decision with a
 documented skip. A genuine TEST measurement remains conditional on a future
 valid candidate and cannot be claimed for this round.
+
+Step 140 records a separate deployment selection in `audit_events`, action
+`ALPHA_SELECTION_DECISION`, keyed by round and alpha version with a PostgreSQL
+transaction lock. Exact repeated evidence returns the original decision; changed
+evidence is refused for that round. `get_selection` verifies the payload hash.
+Original alpha_results and definitions remain immutable. INVALID measurements
+produce REJECTED selection with NO_PERFORMANCE_CONCLUSION. A PROMOTED decision
+requires complete accepted VALID and matching TEST gates, verified artifacts,
+matching alpha/version/snapshot and a recorded TEST reservation within budget.
+Global audit hash chaining remains the later audit implementation.
+
+`scripts/finalize_hourly_round.py --test-plan PLAN_JSON` verifies retained outcomes
+for every shortlisted candidate before recording all eight decisions atomically.
+It requires clean source and saves a separate decision manifest. The round-one
+research note is `docs/research/hourly_round1.md`.

@@ -18,10 +18,10 @@ from helios.sim.gates import gate_decisions
 from helios.sim.report import verified_evidence
 
 
-def eligibility(result: AlphaResult) -> tuple[str, ...]:
+def eligibility(result: AlphaResult, required_split: Split = Split.VALID) -> tuple[str, ...]:
     reasons = []
-    if result.split is not Split.VALID:
-        reasons.append("NOT_VALID_SPLIT")
+    if result.split is not required_split:
+        reasons.append(f"NOT_{required_split.value.upper()}_SPLIT")
     if result.status not in (Status.EVALUATED, Status.PROMOTED):
         reasons.append(
             "INVALID_MEASUREMENT" if result.status is Status.INVALID else "VALID_GATES_FAILED"

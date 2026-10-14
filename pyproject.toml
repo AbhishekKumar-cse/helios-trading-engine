@@ -11,6 +11,7 @@ authors = [
 dependencies = [
     "alembic>=1.20.0",
     "duckdb>=1.5.5",
+    "lightgbm>=4.7.0",
     "numpy>=2.5.3",
     "pandas>=3.0.5",
     "psycopg[binary]>=3.3.5",

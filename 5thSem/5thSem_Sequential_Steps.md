@@ -251,7 +251,7 @@ Follow the numbers in order.
 | ✓ | Step | What to do | Owner | Plan ID | Done when |
 |---|---|---|---|---|---|
 | [x] | 138 | Search-effort summary: how many tried, best vs baselines | Q | 5G-05 | Done 2026-10-15: complete hash-verified registry inventory, 11 fixed definitions/17 simulation attempts including nine baseline checks and eight candidates; all INVALID, so best vs baseline is N/A. Separate three-model predictive diagnostics and single calibration/transform counted honestly. Table docs/research/hourly_search_effort.md; three tests/types pass, TEST counts unchanged. |
-| [ ] | 139 | TEST run for at most 2–3 best candidates (the counter enforces ≤ 2 accesses) | Q | 5G-06 | TEST results stored |
+| [x] | 139 | TEST run for at most 2–3 best candidates (the counter enforces ≤ 2 accesses) | Q | 5G-06 | Done 2026-10-15: frozen clean VALID shortlist, complete accepted G1-G6 recomputation, at most two selected, atomic reservation before TEST loader and no automatic retest. Current eight candidates all INVALID: SKIPPED_NO_ELIGIBLE_CANDIDATES, no fabricated TEST rows, counters remain zero. Genuine TEST measurement is conditional on a future eligible candidate; policy/counter/split regression passes. |
 | [ ] | 140 | Set PROMOTED / REJECTED; write `docs/research/hourly_round1.md` including failures and honest limits | Q | 5G-07 | Note merged |
 | [ ] | 141 | Paper venue part 1: implements `ExecutionVenue`; market order fills at next bar open ± slippage bps; `is_simulated = True` | S | 5H-09 | Tests |
 | [ ] | 142 | Paper venue part 2: limit order fills only if the next bar **trades through** the limit price; maker vs taker fee | S | 5H-09 | Tests |

@@ -3,7 +3,14 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 
-from helios.common.types import AuthorisedOrder, OrderAction, ReasonCode, RiskDecision, RiskState
+from helios.common.types import (
+    AuthorisedOrder,
+    CancelOrder,
+    OrderAction,
+    ReasonCode,
+    RiskDecision,
+    RiskState,
+)
 
 
 @dataclass(frozen=True)
@@ -25,7 +32,7 @@ class CheckChain:
             clock = state.timestamp
             if clock < action.timestamp:
                 reason = ReasonCode.STALE_MARKET_DATA
-            elif state.halted:
+            elif state.halted and not isinstance(action, CancelOrder):
                 reason = ReasonCode.HALTED
             elif state.limits_hash is None or not self.checks:
                 reason = ReasonCode.MISSING_LIMITS

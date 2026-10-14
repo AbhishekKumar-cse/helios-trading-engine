@@ -74,7 +74,8 @@ check requires price inside median times (1 ± configured fraction), inclusively
 LIMIT/AMEND use their requested price and MARKET uses the latest reference. The
 median uses the last configured number of available observations, not future bars.
 Cancels require the matching limit snapshot but no price history, since they add
-no exposure. Existing halted-state guards still apply.
+no exposure. Halted-state guards block new/amend actions while permitting
+limits-bound cancellation for cleanup.
 
 This adapter covers size/price checks, not portfolio position, gross exposure,
 daily loss, kill switch or OMS lifecycle. Those are later steps. It creates no
@@ -100,3 +101,27 @@ orders and marks for both checks; missing, future, duplicated or mismatched
 snapshot state fails closed. Existing over-limit exposure cannot be assumed to
 disappear because an offsetting order has merely been requested. Cancels add no
 exposure. No fills, position updates or performance observations are created here.
+
+## Daily loss and manual kill (132)
+
+`DailyRisk` composes portfolio checks with an authoritative daily P&L snapshot and
+`DailyRiskLimits`. A loss equal to or beyond the configured cap trips the scope;
+subsequent new/amend actions reject HALTED even if P&L improves or the day changes.
+The ledger is responsible for supplying UTC daily P&L, including applicable fees
+and unrealized P&L. No automatic reset or unreviewed rearm exists.
+
+Manual `trip(timestamp, actor)` sets a local thread-safe latch before accessing
+the journal, independently of strategy and price providers. `PostgresTripStore`
+commits an append-only KILL_SWITCH_TRIPPED row to risk_events, linked to the
+registered full limits hash; an advisory transaction lock prevents duplicate
+scope trips. Persisted scope latches survive a new guard instance and limit
+versions. Journal read/write errors reject authorization; a failed write leaves
+the current process latched and is not claimed as a successful durable trip.
+Risk limits must already be registered for the event's foreign key.
+
+The guard checks for a concurrent trip again before returning approval. Cancels
+remain available for cleanup under validated state and the matching limits hash;
+they do not create exposure. Actual venue routing must still check current risk,
+since an older authorization is not an enduring right to trade. PostgreSQL tests
+write synthetic events inside rolled-back transactions; no actual market loss,
+fill or real-money execution is claimed.

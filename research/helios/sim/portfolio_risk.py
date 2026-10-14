@@ -55,7 +55,7 @@ class PortfolioRisk:
         prices: Callable[[str], tuple[PriceObservation, ...]],
         portfolio: Callable[[], PortfolioSnapshot],
     ) -> None:
-        self.config = PortfolioLimits.model_validate(config.model_dump())
+        self.config = type(config).model_validate(config.model_dump())
         self.state, self.prices, self.portfolio = state, prices, portfolio
         self.limits_hash = SizePriceRisk(self.config, state, prices).limits_hash
 

@@ -125,3 +125,21 @@ they do not create exposure. Actual venue routing must still check current risk,
 since an older authorization is not an enduring right to trade. PostgreSQL tests
 write synthetic events inside rolled-back transactions; no actual market loss,
 fill or real-money execution is claimed.
+
+## OMS creation and retries (133)
+
+`OrderManagementSystem(scope, mode, risk)` is a session-scoped reference order
+book. Creation accepts only an AuthorisedOrder containing a NEW request in the
+configured simulated mode, then performs a fresh risk check. Old authorization
+cannot bypass a later kill trip. New IDs combine mode, readable scope and UUID;
+generator collisions fail without replacing an existing order.
+
+A client_order_id identifies one immutable request within this OMS session.
+Identical retries return the existing order; conflicting symbol, quantity,
+strategy, lineage or other payload fields are rejected. A lock serializes
+concurrent retries so they create one order and perform one initial risk check.
+A retry lookup does not route or resubmit an order, even if risk has since halted.
+Creation produces CREATED with zero fills and full remaining quantity. There is
+no venue ACK, execution or P&L side effect. This in-memory book does not claim
+cross-process retry durability; database-backed runner/persistence is step 149,
+and the simulated ExecutionVenue is steps 141–142.

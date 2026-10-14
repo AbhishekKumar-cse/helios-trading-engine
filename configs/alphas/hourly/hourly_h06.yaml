@@ -1,0 +1,15 @@
+alpha_id: hourly_h06
+version: 1
+name: Taker flow blend
+provenance: QUANT
+feature_set_version: v1
+horizon_family: H-HOURLY
+horizon_periods: 1
+params: {}
+output:
+  convention: clip_unit_v1
+  lower: -1
+  upper: 1
+  position_scale: 1.0
+expression: sign(log_return_4 + 0.001 * taker_buy_ratio_zscore_168)
+author: helios_hourly

@@ -1,8 +1,11 @@
+from dataclasses import replace
+
 import pytest
 from sqlalchemy import text
 from test_experiments import SNAPSHOT_ID
 from test_experiments import registry as _registry_fixture
 
+from helios.alpha import hourly_hypotheses
 from helios.alpha.hourly_hypotheses import HOURLY_HYPOTHESES, preregister_hourly
 from helios.alpha.safety import validate_expression
 from helios.features.registry import REGISTRY
@@ -20,7 +23,12 @@ def test_eight_fixed_semantically_valid_definitions():
         assert definition.version == 1 and len(candidate.hypothesis) > 10
 
 
-def test_preregister_all_before_results_and_refuse_duplicates(registry):
+def test_preregister_all_before_results_and_refuse_duplicates(registry, monkeypatch):
+    monkeypatch.setattr(
+        hourly_hypotheses,
+        "HOURLY_HYPOTHESES",
+        tuple(replace(h, alpha_id="t_plan_" + h.alpha_id) for h in HOURLY_HYPOTHESES),
+    )
     rows = preregister_hourly(registry, SNAPSHOT_ID)
     assert len(rows) == 8
     assert all(row.pre_registered_at and row.params["test_access"] is False for row in rows)

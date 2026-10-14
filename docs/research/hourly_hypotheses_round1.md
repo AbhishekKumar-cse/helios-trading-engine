@@ -15,3 +15,10 @@ warm-up rows, accepted splits/fees/gates, VALID only, no parameter search.
 All outcomes, including INVALID and poor scores, must be retained. No promotion
 is automatic. TEST remains untouched. Later YAML registration must match each
 preregistered definition exactly except its separately recorded source commit.
+
+Actual preregistration: experiments **4482–4489**, respectively hourly_h01–h08,
+were written from clean source `1da809b` before YAML registration or any candidate
+measurement. `configs/alphas/hourly/` contains the eight version-1 definitions.
+The loader rejects missing, extra or changed YAMLs; registration verifies the
+database preregistration and inserts all definitions in one transaction. Fixture
+tests use separate identifiers so they do not modify actual research records.

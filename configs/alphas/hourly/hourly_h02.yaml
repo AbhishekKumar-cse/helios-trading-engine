@@ -1,0 +1,15 @@
+alpha_id: hourly_h02
+version: 1
+name: Momentum blend
+provenance: QUANT
+feature_set_version: v1
+horizon_family: H-HOURLY
+horizon_periods: 1
+params: {}
+output:
+  convention: clip_unit_v1
+  lower: -1
+  upper: 1
+  position_scale: 1.0
+expression: sign(log_return_4 + log_return_24)
+author: helios_hourly

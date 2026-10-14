@@ -96,3 +96,9 @@ notebooks = [
 [[tool.mypy.overrides]]
 module = ["sklearn.*"]
 ignore_missing_imports = true
+
+# Calibration plot generation uses the optional notebooks group. Core CI does
+# not install plotting packages; keep strict checks on HELIOS code in both cases.
+[[tool.mypy.overrides]]
+module = ["matplotlib", "matplotlib.*"]
+ignore_missing_imports = true

@@ -48,7 +48,8 @@ constraints belong to the subsequent risk implementations.
 `RiskEngine.check`. Each check returns `None` to continue or a rejection
 `ReasonCode` to stop. The first rejection wins; later checks never run. All-pass
 returns the exact action wrapped with the current limits hash. An empty chain,
-missing limits, halted state or state older than the command cannot authorize it.
+missing limits or state older than the command cannot authorize it. Halted state
+blocks new/amend requests; cancellation still requires the matching limits.
 Provider/check exceptions and malformed return values reject with INTERNAL_ERROR,
 without exposing private exception text. State is read and validated once per
 decision. Checks must be distinct, ordered and named.
@@ -161,3 +162,18 @@ atomically. All arithmetic uses the full numeric(38,18) domain. Cancellation and
 expiry retain the unfilled residual for `filled + remaining = requested quantity`;
 terminal residuals do not count as working orders. These are reference state
 updates from supplied evidence, not a claim that a venue or P&L ledger has run.
+
+## Generated OMS conservation checks (135)
+
+The Hypothesis state machine explores 200 generated cases with up to 40 operations
+each and quantities spanning the numeric(38,18) domain, down to 1e-18. It combines
+partial/full fills, pending cancellation, cancellation/expiry, duplicated reports,
+client retries and illegal transitions. After every operation it checks exact
+`filled + remaining = requested quantity`, nonnegative residuals, monotonic fills
+and unchanged state after rejected reports. Arithmetic is checked at 80-digit
+precision so large quantities with small residuals cannot hide rounding loss.
+
+A separate integration check obtains authorization from the actual DailyRisk
+adapter, trips it, then verifies the OMS rejects the previously authorized new
+request while allowing a duplicate lookup of the already created order. These
+are generated synthetic fixtures; no venue execution or measured P&L is invented.

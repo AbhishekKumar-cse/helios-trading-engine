@@ -57,3 +57,27 @@ This framework requires callers to install the concrete checks. It does not
 replace the later instrument, size, price-band, projected position, exposure,
 daily loss or kill-switch implementations. No permissive production chain is
 constructed here; successful fixture checks demonstrate only framework behavior.
+
+## Order size and price band (130)
+
+`SizePriceRisk` implements inline checks bound to a hash of immutable per-symbol
+`SizePriceLimits`. State must identify that exact limits snapshot. Each invocation
+reads and validates the state once and the price history once. History must be
+unique, chronological, already available, fresh, long enough for the configured
+median window, and from the action's symbol/snapshot. Unknown instruments, missing
+limits, stale data and internal provider errors fail closed with stable reasons.
+
+Maximum order notional is quantity times the larger of the requested limit price
+and latest available reference price; MARKET uses the latest reference. AMEND uses
+its new total quantity conservatively. Equality at the limit passes. The next
+check requires price inside median times (1 ± configured fraction), inclusively;
+LIMIT/AMEND use their requested price and MARKET uses the latest reference. The
+median uses the last configured number of available observations, not future bars.
+Cancels require the matching limit snapshot but no price history, since they add
+no exposure. Existing halted-state guards still apply.
+
+This adapter covers size/price checks, not portfolio position, gross exposure,
+daily loss, kill switch or OMS lifecycle. Those are later steps. It creates no
+fills and records no fabricated market observations. Tests cover threshold edges,
+market spikes, amend quantities, incomplete/future/stale history, hash binding,
+first-failure ordering and single-read consistency.

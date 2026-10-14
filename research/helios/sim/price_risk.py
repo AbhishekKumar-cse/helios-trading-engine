@@ -61,11 +61,13 @@ class SizePriceRisk:
         state: Callable[[], RiskState],
         prices: Callable[[str], tuple[PriceObservation, ...]],
     ) -> None:
-        self.config = SizePriceLimits.model_validate(config.model_dump())
+        self.config = type(config).model_validate(config.model_dump())
         self.limits_hash = config_hash(self.config)
         self.state, self.prices = state, prices
 
-    def check(self, action: OrderAction) -> RiskDecision:
+    def check(
+        self, action: OrderAction, *, additional_checks: tuple[RiskCheck, ...] = ()
+    ) -> RiskDecision:
         reference: (
             tuple[InstrumentOrderLimits | None, Decimal | None, Decimal | None, ReasonCode | None]
             | None
@@ -138,6 +140,7 @@ class SizePriceRisk:
                 RiskCheck("limits_snapshot", binding),
                 RiskCheck("max_order_notional", size),
                 RiskCheck("median_price_band", band),
-            ),
+            )
+            + additional_checks,
             self.state,
         ).check(action)

@@ -81,3 +81,22 @@ daily loss, kill switch or OMS lifecycle. Those are later steps. It creates no
 fills and records no fabricated market observations. Tests cover threshold edges,
 market spikes, amend quantities, incomplete/future/stale history, hash binding,
 first-failure ordering and single-read consistency.
+
+## Projected portfolio limits (131)
+
+`PortfolioRisk` adds per-instrument position caps and a gross exposure cap after
+the size/price checks, bound to the complete immutable `PortfolioLimits` hash.
+For each coin it considers both bounds of current quantity plus possible remaining
+BUY and SELL fills. Opposing orders cannot offset each other before they fill;
+pending cancellation still counts. The worst absolute bound is marked using the
+available price, conservatively using the larger requested price for the target.
+Gross exposure sums absolute worst-case notionals across coins.
+
+The 1,800 current + 150 working + 200 new example exceeds 2,000 and is rejected;
+equality passes. AMEND replaces the original remaining quantity with new total
+minus already filled quantity, rather than counting both versions. Unknown or
+invalid amend targets are rejected. One portfolio snapshot supplies positions,
+orders and marks for both checks; missing, future, duplicated or mismatched
+snapshot state fails closed. Existing over-limit exposure cannot be assumed to
+disappear because an offsetting order has merely been requested. Cancels add no
+exposure. No fills, position updates or performance observations are created here.

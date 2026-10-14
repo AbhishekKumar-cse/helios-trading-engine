@@ -232,7 +232,7 @@ Follow the numbers in order.
 
 | ✓ | Step | What to do | Owner | Plan ID | Done when |
 |---|---|---|---|---|---|
-| [ ] | 127 | Pre-register 8–10 hourly hypotheses with `register_experiment` **before** running anything | Q | 5G-02 | Rows in `experiments` |
+| [x] | 127 | Pre-register 8–10 hourly hypotheses with `register_experiment` **before** running anything | Q | 5G-02 | Done 2026-10-14: eight fixed BTC hourly hypotheses with exact definitions/protocol, explicit prior VALID exposure and all-outcome retention. Atomic preregistration and duplicate guard tested; eight actual experiment rows created from the clean committed plan before YAML registration/evaluation. docs/research/hourly_hypotheses_round1.md. |
 | [ ] | 128 | Write them as DSL YAML files in `configs/alphas/hourly/` | Q | 5G-03 | Files merged |
 | [ ] | 129 | Evaluate all on VALID; change only on VALID; every version stored (including bad ones) | Q | 5G-04 | Registry shows all versions |
 | [ ] | 130 | Risk v1 part 2: max order size + price band vs trailing median price | S | 5H-06 | Tests with reason codes |

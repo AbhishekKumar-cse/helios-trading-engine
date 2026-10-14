@@ -41,3 +41,19 @@ symbols/mode/snapshot or duplicate working orders are errors. Commands preserve
 alpha lineage and request simulated MARKET/IOC execution; this strategy neither
 authorizes an action nor modifies positions. Gross portfolio risk and instrument
 constraints belong to the subsequent risk implementations.
+
+## Ordered risk framework (124)
+
+`CheckChain(tuple_of_RiskCheck, state_provider)` implements synchronous
+`RiskEngine.check`. Each check returns `None` to continue or a rejection
+`ReasonCode` to stop. The first rejection wins; later checks never run. All-pass
+returns the exact action wrapped with the current limits hash. An empty chain,
+missing limits, halted state or state older than the command cannot authorize it.
+Provider/check exceptions and malformed return values reject with INTERNAL_ERROR,
+without exposing private exception text. State is read and validated once per
+decision. Checks must be distinct, ordered and named.
+
+This framework requires callers to install the concrete checks. It does not
+replace the later instrument, size, price-band, projected position, exposure,
+daily loss or kill-switch implementations. No permissive production chain is
+constructed here; successful fixture checks demonstrate only framework behavior.

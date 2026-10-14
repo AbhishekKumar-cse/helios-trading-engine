@@ -24,3 +24,20 @@ must be positive and weight in (0, 1]. Stale/unavailable alpha returns no target
 not a zero target. Exact Decimal arithmetic rounds toward zero at 18 decimal
 places. Negative targets describe simulated short exposure; this allocation alone
 does not authorize shorting or approve portfolio gross exposure.
+
+## Rebalance intents (123)
+
+`BarStrategy` implements the shared Strategy protocol. Its reference price is the
+current bid/ask midpoint. Target base quantity minus current position and signed
+remaining working orders determines the requested change. Pending cancellation
+still counts until confirmed. Changes smaller than capital times
+`rebalance_threshold` produce no order; equality is actionable. Decimal quantities
+round toward zero at 18 places. Same inputs produce the same command ID, including
+the strategy configuration, alpha lineage and sorted working orders.
+
+Stale/unavailable alpha, halted/missing-limit risk state, stale or missing quotes,
+future state and inconsistent decision timestamps produce no order. Mismatched
+symbols/mode/snapshot or duplicate working orders are errors. Commands preserve
+alpha lineage and request simulated MARKET/IOC execution; this strategy neither
+authorizes an action nor modifies positions. Gross portfolio risk and instrument
+constraints belong to the subsequent risk implementations.

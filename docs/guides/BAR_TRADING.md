@@ -1,0 +1,17 @@
+# Bar trading components
+
+## Decision clock (121)
+
+`BarEventLoop.run(source, decide, act)` constructs a historical timeline from the
+typed source. Completed bars are delivered to `decide` at ingest availability;
+intents can reach `act` only at a subsequent bar's opening, at or after that
+decision clock. Equal-time closes precede opens, with symbol ordering. Delayed
+ingest cannot cause retroactive execution. Opening callbacks receive `BarOpen`
+(symbol, timestamp, opening price and snapshot), never future OHLC fields.
+
+The loop rejects gaps, incomplete intervals, inconsistent snapshots, backwards
+source ordering, duplicate command identifiers and mismatched intent lineage,
+clock, symbol or mode. Unexecuted tail intents are returned. It materializes the
+historical timeline; it is not a live streaming clock. `act` is an intent handoff,
+not a fill. A caller must route through risk and OMS before any simulated venue;
+those concrete execution and ledger components remain later checklist steps.

@@ -22,3 +22,12 @@ measurement. `configs/alphas/hourly/` contains the eight version-1 definitions.
 The loader rejects missing, extra or changed YAMLs; registration verifies the
 database preregistration and inserts all definitions in one transaction. Fixture
 tests use separate identifiers so they do not modify actual research records.
+
+`scripts/evaluate_hourly.py` binds each YAML and immutable registry version to its
+own experiment, enforces the fixed VALID configuration, and rejects a repeated
+round once attempts are retained. Eight isolated process jobs use the existing
+strict simulator. An immutable outcome manifest links every attempt to its
+database result and hashed JSON evidence. Measurement starts after committing the
+verified runner so reported source lineage is clean. There is no parameter change
+or v2 selection in this round. INVALID is a retained data-validity outcome, not an
+invented low score or evidence of profitability.

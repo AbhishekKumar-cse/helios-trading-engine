@@ -68,7 +68,6 @@ def main() -> None:
             connection,
             args.experiment_id,
             ExperimentStatus.FINISHED,
-            notes=f"VALID-only calibration evidence: {path}; SHA256 {sha256_file(path)}",
         )
     print(path)
 

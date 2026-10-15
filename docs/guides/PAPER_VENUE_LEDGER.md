@@ -13,6 +13,10 @@ executed notional. The bar scheduler makes close-t decisions eligible only at
 the next opening; a late decision cannot act at an earlier opening. Submission
 after an opening was processed cannot retroactively fill there. No closing-bar
 high, low or close is passed to market execution.
+OMS handoff uses the pending order's timestamp, including any delay after the
+original decision. Commands, openings and completed bars advance one clock per
+symbol; stale commands reject and backwards replay raises before state changes.
+Identical retries return the original acknowledgement without advancing time.
 
 Client retries preserve identity and never generate another fill; conflicting
 payloads reject. Cancellation retains unfilled residual quantity. Amendment

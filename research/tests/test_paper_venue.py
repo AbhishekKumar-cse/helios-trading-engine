@@ -35,12 +35,12 @@ def test_market_next_open_slippage_fees_and_no_fill_on_ack(side, price):
     assert isinstance(venue, ExecutionVenue) and venue.venue_info().is_simulated is True
     reports = []
     venue.subscribe_reports(reports.append)
+    venue.on_open(opening(9))
     action = market(side=side)
     ack = venue.submit(action)
     assert isinstance(ack, Ack) and not reports
     venue.dispatch_reports()
     assert reports[-1].state is OrderState.ACCEPTED and reports[-1].fill is None
-    venue.on_open(opening(9))
     assert len(reports) == 1
     venue.on_open(opening(11))
     fill = reports[-1].fill
@@ -95,3 +95,50 @@ def test_bad_open_is_atomic():
     venue.on_open(opening())
     with pytest.raises(ValueError, match="advance"):
         venue.on_open(opening())
+
+
+def test_delayed_oms_handoff_cannot_backdate_acknowledgement_or_fill():
+    class LaterRisk(Risk):
+        def check(self, action):
+            return super().check(action).model_copy(update={"timestamp": action.timestamp + 2})
+
+    oms = OrderManagementSystem("late", Mode.BACKTEST, LaterRisk())
+    created = oms.submit(auth(order_type=OrderType.MARKET, price=None))
+    pending = oms.mark_pending(created.order_id, 12)
+    venue = BarPaperVenue(Mode.BACKTEST)
+    venue.subscribe_reports(oms.on_report)
+    ack = venue.submit_order(pending)
+    assert ack.timestamp == 12
+    venue.dispatch_reports()
+    assert oms.get(created.order_id).timestamp == 12
+    with pytest.raises(ValueError, match="clock"):
+        venue.on_open(opening(11))
+    venue.on_open(opening(12))
+    assert oms.get(created.order_id).state is OrderState.FILLED
+    assert venue.submit_order(pending) == ack
+
+
+def test_future_cancel_cannot_be_applied_then_rewind_to_an_earlier_open():
+    venue = BarPaperVenue(Mode.BACKTEST)
+    action = market()
+    ack = venue.submit(action)
+    cancel = CancelOrder(
+        request_id="future",
+        order_id=ack.order_id,
+        symbol=action.symbol,
+        timestamp=20,
+        lineage=action.lineage,
+        mode=action.mode,
+    )
+    assert isinstance(venue.cancel(cancel), Ack)
+    with pytest.raises(ValueError, match="clock"):
+        venue.on_open(opening(11))
+
+
+def test_stale_commands_reject_after_completed_bar_availability():
+    from test_event_loop import H, bars
+
+    venue = BarPaperVenue(Mode.BACKTEST)
+    venue.on_open(opening(H))
+    venue.on_bar(bars()[1].model_copy(update={"open": D(100)}))
+    assert isinstance(venue.submit(market(timestamp=H + 1)), Reject)

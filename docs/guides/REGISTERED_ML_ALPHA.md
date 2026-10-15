@@ -44,6 +44,10 @@ result/artifact references, and marks the experiment FINISHED after all five.
 Existing manifests/results and RUNNING/FINISHED experiments prevent automatic
 reruns. Partial failures retain completed rows and progress for explicit recovery.
 
+Experiment 5146 is now FINISHED. All five actual rows are INVALID, with NULL
+performance metrics and zero TEST accesses. Verified results and lineage:
+[frozen hourly ML evaluation](../research/hourly_ml_alpha_evaluation.md).
+
 Tests use synthetic linked artifacts and rolled-back PostgreSQL rows. They cover
 hash tampering, causal unavailable VALID signals and a post-calibration synthetic
 TEST case that reaches metrics and all six gates. That case remains REJECTED

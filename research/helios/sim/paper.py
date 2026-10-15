@@ -58,6 +58,7 @@ class BarPaperVenue:
         self.fees_hash = config_hash(self._fees)
         self._orders: dict[str, Order] = {}
         self._clients: dict[str, str] = {}
+        self._acks: dict[str, Ack] = {}
         self._sequence: dict[str, int] = {}
         self._opens: dict[str, BarOpen] = {}
         self._callbacks: list[Callable[[ExecutionReport], None]] = []
@@ -65,6 +66,7 @@ class BarPaperVenue:
         self._cancels: dict[str, tuple[CancelOrder, Ack]] = {}
         self._resting: dict[str, BarOpen] = {}
         self._closed: dict[str, int] = {}
+        self._clock: dict[str, int] = {}
 
     def venue_info(self) -> VenueInfo:
         return self._info
@@ -96,22 +98,27 @@ class BarPaperVenue:
         order = Order.model_validate(order.model_dump())
         if order.state is not OrderState.PENDING_NEW:
             raise ValueError("venue handoff requires PENDING_NEW")
-        return self._submit(order.request, order.order_id)
+        return self._submit(order.request, order.order_id, order.timestamp)
 
-    def _submit(self, o: NewOrder, order_id: str | None) -> Ack | Reject:
+    def _submit(
+        self, o: NewOrder, order_id: str | None, received_at: int | None = None
+    ) -> Ack | Reject:
         o = NewOrder.model_validate(o.model_dump())
+        timestamp = o.timestamp if received_at is None else received_at
         prior_id = self._clients.get(o.client_order_id)
         if prior_id is not None:
             prior = self._orders[prior_id]
             if prior.request != o or (order_id is not None and prior_id != order_id):
                 return self._reject(o.client_order_id, o.timestamp)
-            return Ack(request_id=o.client_order_id, order_id=prior_id, timestamp=o.timestamp)
+            return self._acks[prior_id]
         opening = self._opens.get(o.symbol)
         if (
             o.mode != self.mode
             or o.symbol not in self._fees.slippage_bps
             or not o.symbol.endswith("USDT")
-            or (opening is not None and o.timestamp <= opening.timestamp)
+            or timestamp < self._clock.get(o.symbol, 0)
+            or timestamp < o.timestamp
+            or (opening is not None and timestamp <= opening.timestamp)
         ):
             return self._reject(o.client_order_id, o.timestamp)
         identifier = (
@@ -127,12 +134,15 @@ class BarPaperVenue:
             state=OrderState.ACCEPTED,
             filled_quantity=Decimal(0),
             remaining_quantity=o.quantity,
-            timestamp=o.timestamp,
+            timestamp=timestamp,
         )
         self._clients[o.client_order_id] = identifier
         self._orders[identifier] = order
+        self._clock[o.symbol] = timestamp
         self._report(order)
-        return Ack(request_id=o.client_order_id, order_id=identifier, timestamp=o.timestamp)
+        ack = Ack(request_id=o.client_order_id, order_id=identifier, timestamp=timestamp)
+        self._acks[identifier] = ack
+        return ack
 
     def _report(self, order: Order, fill: Fill | None = None) -> None:
         sequence = self._sequence.get(order.order_id, -1) + 1
@@ -164,6 +174,7 @@ class BarPaperVenue:
             or c.symbol != order.request.symbol
             or c.lineage != order.request.lineage
             or c.timestamp < order.timestamp
+            or c.timestamp < self._clock.get(c.symbol, 0)
             or (opening is not None and c.timestamp < opening.timestamp)
             or (
                 c.order_id in self._resting
@@ -176,6 +187,7 @@ class BarPaperVenue:
             order.model_dump() | dict(state=OrderState.CANCELLED, timestamp=c.timestamp)
         )
         self._report(changed)
+        self._clock[c.symbol] = c.timestamp
         self._resting.pop(c.order_id, None)
         ack = Ack(request_id=c.request_id, order_id=c.order_id, timestamp=c.timestamp)
         self._cancels[c.request_id] = (c, ack)
@@ -237,6 +249,8 @@ class BarPaperVenue:
         """Only opening price is visible; no high/low/close enters market fills."""
         TypeAdapter(Price).validate_python(opening.price)
         TypeAdapter(Timestamp).validate_python(opening.timestamp)
+        if opening.timestamp < self._clock.get(opening.symbol, 0):
+            raise ValueError("opening clock precedes an observed command or bar")
         old = self._opens.get(opening.symbol)
         if old is not None and (
             opening.timestamp <= old.timestamp or opening.snapshot_id != old.snapshot_id
@@ -282,6 +296,7 @@ class BarPaperVenue:
                 price = min(price, limit) if direction == 1 else max(price, limit)
             fills.append(self._filled(order, price, opening.timestamp))
         self._opens[opening.symbol] = opening
+        self._clock[opening.symbol] = opening.timestamp
         self._resting.update({key: opening for key in resting})
         for order in expired:
             self._report(order)
@@ -303,6 +318,7 @@ class BarPaperVenue:
             or (bar.open_time, bar.open, bar.snapshot_id)
             != (opening.timestamp, opening.price, opening.snapshot_id)
             or bar.ingest_time <= self._closed.get(bar.symbol, -1)
+            or bar.ingest_time < self._clock.get(bar.symbol, 0)
         ):
             raise ValueError("completed bar must match the unprocessed opening and advance clock")
         keys = [key for key, op in self._resting.items() if op.symbol == bar.symbol]
@@ -317,6 +333,7 @@ class BarPaperVenue:
         for key in keys:
             self._resting.pop(key)
         self._closed[bar.symbol] = bar.ingest_time
+        self._clock[bar.symbol] = bar.ingest_time
         for changed, fill in fills:
             self._report(changed, fill)
         self.dispatch_reports()

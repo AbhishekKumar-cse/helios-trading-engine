@@ -9,10 +9,12 @@ From the repository root in the documented WSL environment:
 ```
 
 Open `http://localhost:8501`. Database settings come from the existing local
-environment; passwords and connection exceptions are not rendered. The dashboard
+environment; passwords and connection exceptions are not rendered. The registry page
 uses repeatable-read, read-only transactions. There are no fit, evaluate, promote,
 TEST-access or order controls. Derived HTML files are isolated under ignored
 `reports_out/dashboard/<run UUID>/`; original evidence is not changed.
+The separate [PAPER page](PAPER_DASHBOARD.md) adds live checkpoint viewing and a
+local, audited halt control for running simulated PAPER sessions (161–162).
 
 All registered versions appear, including DRAFT and explicitly marked synthetic
 definitions. Measurement status and the separate round-one selection decision

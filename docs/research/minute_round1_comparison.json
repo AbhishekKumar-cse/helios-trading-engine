@@ -1,0 +1,885 @@
+{
+  "attempts": [
+    {
+      "alpha_id": "baseline_b0",
+      "artifact_sha256": "fc8671b56f934c35cbe4e3488a041c2a5d89f1ec92438a38ca25160b09da8853",
+      "config_hash": "344849f0e9307ba667071fe4166d9ecc28244ea91e1bfb687f13168429fed097",
+      "daily_sharpe": null,
+      "experiment_id": 4252,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "69c77247-0ece-4bf5-9914-6934e6fd6e20",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "2af11410a3c23ea8918b7e0ef5b92ea8a5497a7b",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "baseline_b0",
+      "artifact_sha256": "1c4d5bc31d5ee4ab54c4ab486dfa9c210596b8bbf078ca4a219eadb7e3c2b467",
+      "config_hash": "dcafb79f419029434b8ef9e9d6b25d8600b5e7ef286dd341a30401630832f76b",
+      "daily_sharpe": null,
+      "experiment_id": 4252,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "7a121c5e-f0a6-4ef3-a9b6-bbb8643ac65c",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "2af11410a3c23ea8918b7e0ef5b92ea8a5497a7b",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "train",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "baseline_b0",
+      "artifact_sha256": "e7718edaa4ac40f3d24969adb8b5260c52ee87f99df601716b7f31a45d047a8b",
+      "config_hash": "344849f0e9307ba667071fe4166d9ecc28244ea91e1bfb687f13168429fed097",
+      "daily_sharpe": null,
+      "experiment_id": 4252,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "99dab638-3358-46c0-8287-a1038c84e8e4",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "163491fe7e9bded987a95a71c41067979e1bdccd",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "baseline_b1",
+      "artifact_sha256": "09d41a9e6546e85fdf12285d92ad58643c815dfce12289f15b5a6b5aa0ca6ade",
+      "config_hash": "518f3e08ade047e73aca111da3208636574ed2f81c57e42131c1f0dca7f95f34",
+      "daily_sharpe": null,
+      "experiment_id": 4252,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "2dfbae8f-85ec-4b82-99d6-7bd1c4458f64",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "2af11410a3c23ea8918b7e0ef5b92ea8a5497a7b",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "baseline_b1",
+      "artifact_sha256": "538761ff8bbdd6be7e1311331b5542c1174224504db641ea996cad8cf8e73a03",
+      "config_hash": "46dcac6e42a8bc3079bb3ba9d74ff035e90b8e6e1cb080894045b4526935a17f",
+      "daily_sharpe": null,
+      "experiment_id": 4252,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "47498b7a-b412-4d42-af36-fd2142131f08",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "2af11410a3c23ea8918b7e0ef5b92ea8a5497a7b",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "train",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "baseline_b1",
+      "artifact_sha256": "accf8e331a404af3132fa39d94b3dcef71903e6dbbb2e841e7ce94bab7c1ab2e",
+      "config_hash": "518f3e08ade047e73aca111da3208636574ed2f81c57e42131c1f0dca7f95f34",
+      "daily_sharpe": null,
+      "experiment_id": 4252,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "709d47b3-8c69-4109-be46-2a1bebc38ff7",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "163491fe7e9bded987a95a71c41067979e1bdccd",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "baseline_b2",
+      "artifact_sha256": "d695744b1eb7d5dae6420524869531aa5be496967e05aa5624b303edce299bc7",
+      "config_hash": "6af3f0f7ea6d87a7e69112c74f82ffa93ef2b3764e225af8919a40ca263e2a9b",
+      "daily_sharpe": null,
+      "experiment_id": 4252,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "0cc76be3-29ef-45b5-8c4d-8e7eb5e1aaa8",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "163491fe7e9bded987a95a71c41067979e1bdccd",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "baseline_b2",
+      "artifact_sha256": "7748a76dad2af0394aaeb989b3419748a227423d8a9a86e5f698041e77a01a53",
+      "config_hash": "6af3f0f7ea6d87a7e69112c74f82ffa93ef2b3764e225af8919a40ca263e2a9b",
+      "daily_sharpe": null,
+      "experiment_id": 4252,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "0d0b9b4e-d96f-4b90-83c8-8ff4dcf53d17",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "2af11410a3c23ea8918b7e0ef5b92ea8a5497a7b",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "baseline_b2",
+      "artifact_sha256": "66f2221b1fb319b505d654313587c005e2289cb7388d3c78e92a197d2e088f88",
+      "config_hash": "acf120106c88c172ed38296b09735a3bb1c312608b376d2ca5df6726e032c6b2",
+      "daily_sharpe": null,
+      "experiment_id": 4252,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "3a2c832f-63d5-4199-8e26-f3bd24ced59a",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "2af11410a3c23ea8918b7e0ef5b92ea8a5497a7b",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "train",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h01",
+      "artifact_sha256": "8de2da1010757a98a93d6d877b189b7f0fd310a171def27ddded1ad93b7ffc9d",
+      "config_hash": "ef628e4728c6a33f76b7be546039e1432a2db9306c58bd650f70f8901c2e741c",
+      "daily_sharpe": null,
+      "experiment_id": 4482,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "de9d791d-d8fc-4950-aace-08123bbd4d35",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "e34bc248a8ca43884471d3cefb9582299c452509",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h02",
+      "artifact_sha256": "b5fb469db2e9b9e574ac0cf82bcf5a3d908b41594725b7d782b738e307226ec7",
+      "config_hash": "03e436b3c449bc8e0a50688681833d2efe4e869ac2abeb1ad1449ad8b92a9254",
+      "daily_sharpe": null,
+      "experiment_id": 4483,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "ce71b70a-b689-4795-ae09-659f97c5287a",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "e34bc248a8ca43884471d3cefb9582299c452509",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h03",
+      "artifact_sha256": "2f9d283f8df1e12d2555d33b71970be7cd68e937aa7b18645de08f0426f93359",
+      "config_hash": "6ff14bdbfaa780fd0c5337613bad5cbaecba7e0682226932370af1a12d26162a",
+      "daily_sharpe": null,
+      "experiment_id": 4484,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "b2959a86-8524-499e-9132-d77e1d941aa6",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "e34bc248a8ca43884471d3cefb9582299c452509",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h04",
+      "artifact_sha256": "4c3f7bd6a77b73361c5ef476d932c6214b18d68ad557325515f7787ea404b31c",
+      "config_hash": "c7b7c883cc46b2e0d4c291223a032aad381e9f08d9d8e3eb3221b34733f3ae06",
+      "daily_sharpe": null,
+      "experiment_id": 4485,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "e8f7916a-094c-448b-a2fd-7c1c5273d610",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "e34bc248a8ca43884471d3cefb9582299c452509",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h05",
+      "artifact_sha256": "16bb3108561ce57c37eef7345e37255e6c74d914e64bb325d8aad8e17720664c",
+      "config_hash": "00cb7337427a819e1600217d8f9d534ac153ca5ed4cf60c33c57bad84e35626a",
+      "daily_sharpe": null,
+      "experiment_id": 4486,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "d2d4d070-75d5-4250-8a77-f3569f453111",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "e34bc248a8ca43884471d3cefb9582299c452509",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h06",
+      "artifact_sha256": "9d2e6dff512ec73a3a7fc0bd6a93219a7d7517e1e8518ad6e552614e97eed30f",
+      "config_hash": "c917c275a95cbfbe1dfebecd38b13fd3e8166527f11e1d7d2de68f5989535b97",
+      "daily_sharpe": null,
+      "experiment_id": 4487,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "40ad929e-043a-4e45-9ed8-3d616311f7cb",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "e34bc248a8ca43884471d3cefb9582299c452509",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h07",
+      "artifact_sha256": "45e2459891bcfe8bd76ca323b64ced6c132eaa335dd00b6e9506cb5013f8c57d",
+      "config_hash": "aed3dc2c1504ab857f900e8abe1aff2dc02d205428fe5494f04885e19cc11c95",
+      "daily_sharpe": null,
+      "experiment_id": 4488,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "cff9a9a5-c1ca-43c6-9573-835b0c42c47b",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "e34bc248a8ca43884471d3cefb9582299c452509",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h08",
+      "artifact_sha256": "4706eada2811293681dbcf141e81933fd4630c2e175748654567bc504454cf94",
+      "config_hash": "8b143833f4e578430a0fa7af73c8e68776f199a80a9d6749db2fb62a89f04bbc",
+      "daily_sharpe": null,
+      "experiment_id": 4489,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "aad3717e-3ee6-421b-b367-98d66115c9ba",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "e34bc248a8ca43884471d3cefb9582299c452509",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_ml_v1",
+      "artifact_sha256": "0d0561f2572a653525d51800170a1cab3cb807a2ad5152bf6570ffc14cc6ed28",
+      "config_hash": "1e4c9768434fe1c6ec113c0092a1a4ba0d6102bc8876a123940d9f86747b14c4",
+      "daily_sharpe": null,
+      "experiment_id": 5146,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "690ce5bb-7e33-40ee-a530-52da0e4edafc",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "ba6ead5720572dc123143b056598fc707d5e7bb1",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_ml_v1",
+      "artifact_sha256": "3786848fb764decf548a8ae8e4a82d411556db2972436e31d6e0cbed39beb222",
+      "config_hash": "f4511cd5fd8fc692457329cccbd418ed908a55ca32292e93a254e350f873822b",
+      "daily_sharpe": null,
+      "experiment_id": 5146,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "708fbbcf-74cb-46b0-8e1d-6f58dfce52b0",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "ba6ead5720572dc123143b056598fc707d5e7bb1",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_ml_v1",
+      "artifact_sha256": "712fc0a24cc67aad30262bd62d795f1886186f0f278ce5cf01602b8c25cb3229",
+      "config_hash": "1f37c5ff66e168368872e72c7c8295fa950e17ed555a2cf5c3cd4cfb51ee3b31",
+      "daily_sharpe": null,
+      "experiment_id": 5146,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "a067c011-e0b3-46d0-86a0-fb43a67d0c12",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "ba6ead5720572dc123143b056598fc707d5e7bb1",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_ml_v1",
+      "artifact_sha256": "f610210e913c3bc2a217a0dac85be30d85fc80bfab3ef617e6670b20aab0618e",
+      "config_hash": "6997ebf79c6ce1db926ec23808085ede126c23bedec5ca9a34a07cf4d5aed5f3",
+      "daily_sharpe": null,
+      "experiment_id": 5146,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "add8a54f-9b6a-49a2-872c-1d641c447fc1",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "ba6ead5720572dc123143b056598fc707d5e7bb1",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_ml_v1",
+      "artifact_sha256": "a9784f50be9d7b2d2988afd02abefa696e2427c5903ae220b0aff22d5cd7c9be",
+      "config_hash": "721e0730c30f4a5671c2bd4c12ac9dca4751b5ceb4ec895a6a850ad93e12f4f0",
+      "daily_sharpe": null,
+      "experiment_id": 5146,
+      "family": "H-HOURLY",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "bc905650-40b3-45c3-9db8-ef6c8d35ef71",
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "source": {
+        "commit": "ba6ead5720572dc123143b056598fc707d5e7bb1",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP",
+        "DATA_GAPS"
+      ],
+      "version": 1
+    },
+    {
+      "alpha_id": "minute_b0",
+      "artifact_sha256": "fb3cb96d959de351ffd8cb4bc444ce8e3bcda417df719255ba6f6efe93c57cd2",
+      "config_hash": "a5561282df5d5ae4b862f540e2ed1d26e035ca624bf4bec24e20c76a5fa44aee",
+      "daily_sharpe": -102.06244501361408,
+      "diagnostic_config_hash": "cfb25f4db81be96f79c54152134b8816cba9ab6515248ac5e2e234b019b4a286",
+      "experiment_id": 5598,
+      "family": "H-MINUTE",
+      "first_day": "2025-09-02",
+      "independent_daily_sharpe": -102.06244501361245,
+      "last_day": "2026-02-28",
+      "observed_days": 180,
+      "observed_periods": 259031,
+      "partial_days": 1,
+      "run_id": "1d99f090-1ef0-4294-8e7f-befcb22b008f",
+      "saved_daily_sha256": "095f0c746f62b8cca2e8bfe6074564ee247614fc75e2f0b5abba2e371fb33bb0",
+      "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+      "source": {
+        "commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "REJECTED",
+      "validity_reasons": [],
+      "version": 1
+    },
+    {
+      "alpha_id": "minute_b1",
+      "artifact_sha256": "ff4eccc41e28318cfa271b25fe64f31e4ae9d06ab97aac64980fb8ba3594ff95",
+      "config_hash": "b2b786d2ee814f6ab4b4a383a57602b46ffdf571d8a40b8f7c00874ca680c0f9",
+      "daily_sharpe": -250.16750047618626,
+      "diagnostic_config_hash": "cfb25f4db81be96f79c54152134b8816cba9ab6515248ac5e2e234b019b4a286",
+      "experiment_id": 5599,
+      "family": "H-MINUTE",
+      "first_day": "2025-09-02",
+      "independent_daily_sharpe": -250.16750047618493,
+      "last_day": "2026-02-28",
+      "observed_days": 180,
+      "observed_periods": 259031,
+      "partial_days": 1,
+      "run_id": "2d8b2c11-032e-420e-997c-d5cacbb1e2df",
+      "saved_daily_sha256": "c4cb60072e4f776c671f023fc0beabfbba85598f1f17468638bfe351f82b41cf",
+      "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+      "source": {
+        "commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "REJECTED",
+      "validity_reasons": [],
+      "version": 1
+    },
+    {
+      "alpha_id": "minute_b2",
+      "artifact_sha256": "e87cafc8149de8d8a223f64f09bf08f1ec643c8dc316bb1766935a40cdf6152f",
+      "config_hash": "0f3fe1969ab272ebf122b7aa88e4f4cc39c305ba8485d80316cd5d59b47637b7",
+      "daily_sharpe": -346.73091543278105,
+      "diagnostic_config_hash": "cfb25f4db81be96f79c54152134b8816cba9ab6515248ac5e2e234b019b4a286",
+      "experiment_id": 5600,
+      "family": "H-MINUTE",
+      "first_day": "2025-09-02",
+      "independent_daily_sharpe": -346.7309154327798,
+      "last_day": "2026-02-28",
+      "observed_days": 180,
+      "observed_periods": 259031,
+      "partial_days": 1,
+      "run_id": "04e44ffb-946c-4402-b8e3-227570ea535c",
+      "saved_daily_sha256": "3dc46843a4e04e3f9126ff59386bad825404b919a2455d23830bcc2821e54195",
+      "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+      "source": {
+        "commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "REJECTED",
+      "validity_reasons": [],
+      "version": 1
+    },
+    {
+      "alpha_id": "minute_h01",
+      "artifact_sha256": "14255caa1c92ac830964c836c300497e5bbab4106213a8a5011bfae2b50a34a6",
+      "config_hash": "01096b29682f5102f32aa14fc3e9d65b274475ba380275ef14d78734893f9968",
+      "daily_sharpe": -209.10578479797988,
+      "diagnostic_config_hash": "cfb25f4db81be96f79c54152134b8816cba9ab6515248ac5e2e234b019b4a286",
+      "experiment_id": 5601,
+      "family": "H-MINUTE",
+      "first_day": "2025-09-02",
+      "independent_daily_sharpe": -209.10578479797616,
+      "last_day": "2026-02-28",
+      "observed_days": 180,
+      "observed_periods": 259031,
+      "partial_days": 1,
+      "run_id": "3c2ef3de-bd46-4c2b-947d-86496c6ed7c6",
+      "saved_daily_sha256": "3529d9dbde833e65deac798af023334878635b70e68952bc0ac04da28323484a",
+      "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+      "source": {
+        "commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "REJECTED",
+      "validity_reasons": [],
+      "version": 1
+    },
+    {
+      "alpha_id": "minute_h02",
+      "artifact_sha256": "d67aeacfacd6a2e61ae6165b8ef3209f98ec2515cea28831a9903a2dd7cb8b90",
+      "config_hash": "5bda34f21adac9d57fffac52eca9acf2a6cae189c8f26127509308b2d21b2aa4",
+      "daily_sharpe": -121.05278774203435,
+      "diagnostic_config_hash": "cfb25f4db81be96f79c54152134b8816cba9ab6515248ac5e2e234b019b4a286",
+      "experiment_id": 5602,
+      "family": "H-MINUTE",
+      "first_day": "2025-09-02",
+      "independent_daily_sharpe": -121.052787742034,
+      "last_day": "2026-02-28",
+      "observed_days": 180,
+      "observed_periods": 259031,
+      "partial_days": 1,
+      "run_id": "cccfd0fd-69b5-4783-b1c3-223b5c668f99",
+      "saved_daily_sha256": "ce86676efe7d4c98366aa7f88f0fdfdef7271286c1dbf6c802fca833b1277610",
+      "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+      "source": {
+        "commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "REJECTED",
+      "validity_reasons": [],
+      "version": 1
+    },
+    {
+      "alpha_id": "minute_h03",
+      "artifact_sha256": "9cdd3905e61417e645b0ec1704b5f2c29f0ec280fd9ba6394fdf76f8d0126a7d",
+      "config_hash": "f1499b7c84a1a4ec17d34281ae8c61bc743b24713b7467172aec4af0a2f6f56c",
+      "daily_sharpe": -111.96206496746211,
+      "diagnostic_config_hash": "cfb25f4db81be96f79c54152134b8816cba9ab6515248ac5e2e234b019b4a286",
+      "experiment_id": 5603,
+      "family": "H-MINUTE",
+      "first_day": "2025-09-02",
+      "independent_daily_sharpe": -111.96206496745991,
+      "last_day": "2026-02-28",
+      "observed_days": 180,
+      "observed_periods": 259031,
+      "partial_days": 1,
+      "run_id": "0a7be02f-dcde-4620-8471-46337a3248de",
+      "saved_daily_sha256": "492384586dff9172aa708402aa6901e07115f2edb48635e102a1693a39db4b07",
+      "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+      "source": {
+        "commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "REJECTED",
+      "validity_reasons": [],
+      "version": 1
+    },
+    {
+      "alpha_id": "minute_h04",
+      "artifact_sha256": "9bd4b168faa24838be4dc4bd905be3c6a088f4f7e34b135f29ca8fd39d54943b",
+      "config_hash": "6068af20baa41ba8ebfd94eeb29642875f61e72daf08a69172ca2663c970ac74",
+      "daily_sharpe": -478.1264528760319,
+      "diagnostic_config_hash": "cfb25f4db81be96f79c54152134b8816cba9ab6515248ac5e2e234b019b4a286",
+      "experiment_id": 5604,
+      "family": "H-MINUTE",
+      "first_day": "2025-09-02",
+      "independent_daily_sharpe": -478.1264528760266,
+      "last_day": "2026-02-28",
+      "observed_days": 180,
+      "observed_periods": 259031,
+      "partial_days": 1,
+      "run_id": "08f33d8a-5c8e-47ef-a8da-cd98c9f725db",
+      "saved_daily_sha256": "5686b966724f98ed29aa4163099adf48781d75c913a0b042414165d6cc02a9db",
+      "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+      "source": {
+        "commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "REJECTED",
+      "validity_reasons": [],
+      "version": 1
+    },
+    {
+      "alpha_id": "minute_h05",
+      "artifact_sha256": "0ae4cfd0abc31a5bc836f8b3daf00da6a680c569a787595752b4093c5c0bed06",
+      "config_hash": "d936f985bdc9bda2f8a86de5699d9ad30afe9fdec8dbcbfecefe308b591ea500",
+      "daily_sharpe": -146.43673785009398,
+      "diagnostic_config_hash": "cfb25f4db81be96f79c54152134b8816cba9ab6515248ac5e2e234b019b4a286",
+      "experiment_id": 5605,
+      "family": "H-MINUTE",
+      "first_day": "2025-09-02",
+      "independent_daily_sharpe": -146.43673785009332,
+      "last_day": "2026-02-28",
+      "observed_days": 180,
+      "observed_periods": 259031,
+      "partial_days": 1,
+      "run_id": "51fd2cd6-c04a-4cd9-aa55-dd318498f858",
+      "saved_daily_sha256": "e73fe646b15808386ed763fd62bb8aa500e824f510fed6def44c578a93e045e9",
+      "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+      "source": {
+        "commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "REJECTED",
+      "validity_reasons": [],
+      "version": 1
+    },
+    {
+      "alpha_id": "minute_h06",
+      "artifact_sha256": "143d02c53ad5b86884ff2e1142e069e74fbc10c9eb16addd9f7ec508e1a74e0c",
+      "config_hash": "03aa6c40d921ac00204491fbe45806e4b6adb3f254aabeed831c2b1bc14225dd",
+      "daily_sharpe": -162.08705709151457,
+      "diagnostic_config_hash": "cfb25f4db81be96f79c54152134b8816cba9ab6515248ac5e2e234b019b4a286",
+      "experiment_id": 5606,
+      "family": "H-MINUTE",
+      "first_day": "2025-09-02",
+      "independent_daily_sharpe": -162.08705709151386,
+      "last_day": "2026-02-28",
+      "observed_days": 180,
+      "observed_periods": 259031,
+      "partial_days": 1,
+      "run_id": "3806ad1f-d6da-4c18-83bf-5db1615b6f68",
+      "saved_daily_sha256": "f59b221f2f11646190f66ffd479cb7e0e87cd149de5d36ef239902372f8b5b63",
+      "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+      "source": {
+        "commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "REJECTED",
+      "validity_reasons": [],
+      "version": 1
+    },
+    {
+      "alpha_id": "minute_h07",
+      "artifact_sha256": "ceeccc7531449bd01be52c24184a357ffbeadf2287874242ec928f9c22999411",
+      "config_hash": "33fa99bae6a04fc2537eed904db64bf5acb1b7beae4239e2e850048a835f51bf",
+      "daily_sharpe": -143.52861640912897,
+      "diagnostic_config_hash": "cfb25f4db81be96f79c54152134b8816cba9ab6515248ac5e2e234b019b4a286",
+      "experiment_id": 5607,
+      "family": "H-MINUTE",
+      "first_day": "2025-09-02",
+      "independent_daily_sharpe": -143.5286164091299,
+      "last_day": "2026-02-28",
+      "observed_days": 180,
+      "observed_periods": 259031,
+      "partial_days": 1,
+      "run_id": "c35c5490-00fe-4f14-90be-6d8c949e34ff",
+      "saved_daily_sha256": "56917a86e6e15c9eeddb30bc01fd654e3f6ad116ee6ab9ea7a4dbdd0f9bd3d6f",
+      "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+      "source": {
+        "commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "REJECTED",
+      "validity_reasons": [],
+      "version": 1
+    },
+    {
+      "alpha_id": "minute_h08",
+      "artifact_sha256": "7a10110afb2c45668f3f6631d69d178e74d167edd5d39cbde0b31b706f93b709",
+      "config_hash": "93201c1ba828ff5bf52c87140fb3ad7edb5817e1c6dcf5728f66137f53a4ad8b",
+      "daily_sharpe": -220.7412977356677,
+      "diagnostic_config_hash": "cfb25f4db81be96f79c54152134b8816cba9ab6515248ac5e2e234b019b4a286",
+      "experiment_id": 5608,
+      "family": "H-MINUTE",
+      "first_day": "2025-09-02",
+      "independent_daily_sharpe": -220.74129773566554,
+      "last_day": "2026-02-28",
+      "observed_days": 180,
+      "observed_periods": 259031,
+      "partial_days": 1,
+      "run_id": "4f6b533e-7290-4d68-bc75-8d63afbdb76a",
+      "saved_daily_sha256": "fbbc74982c995314698a61d68a607278aef03738741e027f312a5139b2b90e70",
+      "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+      "source": {
+        "commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "REJECTED",
+      "validity_reasons": [],
+      "version": 1
+    },
+    {
+      "alpha_id": "minute_ml_v1",
+      "artifact_sha256": "f6120a83e948ea6e3b9985a849ee2772c52b3df96b0279661b64ac2b14562705",
+      "config_hash": "f46d66efd6c7da4d2c197e21a9db99df31bb0151e060ebfd436498172ea8a4cc",
+      "daily_sharpe": null,
+      "experiment_id": 5628,
+      "family": "H-MINUTE",
+      "observed_days": null,
+      "observed_periods": null,
+      "partial_days": null,
+      "run_id": "efec729e-e04f-4d7c-b726-c3b99b307b12",
+      "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+      "source": {
+        "commit": "2f45359ac272cc39ac7db3f412be6f9774dd0d5c",
+        "dirty": false,
+        "seed": 0
+      },
+      "split": "valid",
+      "status": "INVALID",
+      "validity_reasons": [
+        "UNAVAILABLE_AFTER_WARMUP"
+      ],
+      "version": 1
+    }
+  ],
+  "basis": "Saved UTC daily additive net reference P&L; mean/sample std * sqrt(365); zero risk-free",
+  "candidates_reevaluated": false,
+  "dirty": false,
+  "interpretation": "No matched hourly/minute performance comparison: hourly INVALID and VALID windows differ",
+  "observations_loaded": false,
+  "selection_review_sha256": "6d8c640e0a75d063c128fecc080efa013706ba5ecb2c46e5900d209dc8526702",
+  "source_commit": "d53bda36c8b0a61eaedefee784d0f69a1509dc4e",
+  "step": 165,
+  "test_accesses": 0,
+  "verifier_sha256": "3c222ba0345f37afeb5f82bde8721bc6add05a419042db53bbcf3f921ddd4f8a"
+}

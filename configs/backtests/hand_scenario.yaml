@@ -1,0 +1,49 @@
+# Synthetic correctness fixture. No market performance claim or TEST access.
+version: bar_backtest_v1
+mode: BACKTEST
+run_id: hand_20261015
+experiment_id: null
+alpha_id: hand_bar_fixture_v1
+alpha_version: 1
+snapshot_id: 2a23eb3a41cc7060c0f1400d029127ff385be0a155f248683385ea502038cd90
+seed: 0
+symbol: BTCUSDT
+interval: 1h
+split: train
+data_kind: synthetic_csv
+csv_path: research/tests/fixtures/backtest/ten_bars_three_trades.csv
+csv_sha256: a9a4d66f1ee4cd882a1b3c2f90e222f564aab37167d9b4d85e36159dd058cf5c
+start_us: 1609459200000000
+end_us: 1609495200000000
+strategy:
+  capital: '1000'
+  max_weight: '0.5'
+  strategy_id: hand_20261015
+  rebalance_threshold: '0'
+  mode: BACKTEST
+risk:
+  instruments:
+  - symbol: BTCUSDT
+    max_order_notional: '1000'
+    price_band_fraction: '1'
+    median_window: 1
+    max_price_age_us: 0
+    max_position_notional: '1000'
+  max_gross_exposure: '2000'
+  scope: hand_20261015
+  daily_loss_limit: '500'
+fees:
+  version: fees_v1
+  exchange: binance_spot
+  source_url: https://www.binance.com/en/fee/schedule
+  checked_on: '2026-09-20'
+  tier: VIP 0, no BNB discount
+  maker_fee_bps: 10.0
+  taker_fee_bps: 10.0
+  slippage_bps:
+    BTCUSDT: 2.0
+    ETHUSDT: 2.0
+    SOLUSDT: 5.0
+    BNBUSDT: 5.0
+    XRPUSDT: 5.0
+mark_reference: bar_close_proxy

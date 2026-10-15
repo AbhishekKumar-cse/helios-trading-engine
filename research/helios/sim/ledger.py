@@ -38,7 +38,7 @@ class LedgerConfig(HeliosConfig):
     initial_cash: Money
     mode: Mode
     quote_asset: Literal["USDT"] = "USDT"
-    mark: Literal["contemporaneous_book_mid"] = "contemporaneous_book_mid"
+    mark: Literal["contemporaneous_book_mid", "bar_close_proxy"] = "contemporaneous_book_mid"
     accounting: Literal["exact_average_cost_v1"] = "exact_average_cost_v1"
     rounding: Literal["half_even_18_decimals"] = "half_even_18_decimals"
     reconciliation_tolerance: Literal["0.000000000000000002"] = "0.000000000000000002"
@@ -64,7 +64,16 @@ class PnLLedger:
     records round half-even to 18 decimals; caller Decimal precision has no effect.
     """
 
-    def __init__(self, initial_cash: Decimal, mode: Mode, quote_asset: str = "USDT") -> None:
+    def __init__(
+        self,
+        initial_cash: Decimal,
+        mode: Mode,
+        quote_asset: str = "USDT",
+        *,
+        mark_reference: Literal[
+            "contemporaneous_book_mid", "bar_close_proxy"
+        ] = "contemporaneous_book_mid",
+    ) -> None:
         initial_cash = TypeAdapter(Money).validate_python(initial_cash)
         if initial_cash <= 0 or quote_asset != "USDT":
             raise LedgerError("positive initial cash and USDT quote are required")
@@ -77,7 +86,9 @@ class PnLLedger:
         self._fills: dict[str, Fill] = {}
         self._clock = 0
         self._halted = False
-        self.config_hash = config_hash(LedgerConfig(initial_cash=initial_cash, mode=self.mode))
+        self.config_hash = config_hash(
+            LedgerConfig(initial_cash=initial_cash, mode=self.mode, mark=mark_reference)
+        )
 
     def position(self, symbol: str) -> Position:
         lot = self._lots.get(symbol, _Lot())

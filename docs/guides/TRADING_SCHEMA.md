@@ -36,3 +36,10 @@ alpha promotion, complete result lineage or fill-to-market attribution by themse
 
 Synthetic database tests roll back their rows. Migration downgrade removes these
 nine tables and their contents; use it only when their data can be discarded.
+
+Migration 007 (`d14900000700`, step 149) adds BACKTEST mode, dirty/config/evidence
+fields to backtest_runs and nullable run ownership FKs on orders and position/P&L
+snapshots, preserving existing rows. Fills join through orders. Terminal run
+metadata rejects update/delete; downgrade refuses discarding owned run evidence.
+The runner persists outcomes atomically and stores complete immutable JSON evidence.
+See [bar backtest runner](BAR_BACKTEST_RUNNER.md) for execution and limitations.

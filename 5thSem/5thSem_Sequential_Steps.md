@@ -297,7 +297,7 @@ Follow the numbers in order.
 | ✓ | Step | What to do | Owner | Plan ID | Done when |
 |---|---|---|---|---|---|
 | [x] | 163 | TEST for the best 2 minute candidates; promote / reject | Q | 5I-06 | Closed 2026-10-16 with verified SKIPPED_NO_ELIGIBLE_CANDIDATES: all 11 quantitative VALID candidates fail gates, ML INVALID; clean-source artifact/lineage review and 12 append-only REJECTED selection decisions stored. No TEST observations loaded or accesses consumed; global count 0. Evidence minute_selection_review.json and note minute_final_test.md. |
-| [ ] | 164 | Backtest the best minute alpha | Q+S | 5I-06 | Report |
+| [x] | 164 | Backtest the best minute alpha | Q+S | 5I-06 | Closed 2026-10-16 with verified SKIPPED_NO_ELIGIBLE_CANDIDATES report: fresh read-only artifact/lineage review confirms 12 REJECTED decisions, no eligible/promoted best minute alpha. No candidate execution or invented P&L; TEST remains 0 and existing execution rows unchanged. Note minute_bar_backtest.md and checksum-bound JSON/local HTML report. |
 | [ ] | 165 | `docs/research/minute_round1.md`: hourly vs minute comparison using daily-aggregated Sharpe | Q | 5I-07 | Note merged |
 | [ ] | 166 | Run the PAPER runner on an always-on machine (spare PC or small VM) with `docker compose` | S | 5J-03 | Runs unattended for 24 h |
 | [ ] | 167 | Start the **7-day** paper run with the promoted minute (or hourly) alpha | S | 5J-07 | Day 1 records present |

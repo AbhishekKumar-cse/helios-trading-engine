@@ -9,8 +9,9 @@ import pandas as pd
 from sqlalchemy import Engine
 
 from helios.common.project_config import SplitsConfig, load_splits
+from helios.data.klines import interval_us
 from helios.features.runner import FeatureFrame
-from helios.ml.dataset import HOUR_US, DatasetConfig, DatasetError, HourlyDataset, build_dataset
+from helios.ml.dataset import DatasetConfig, DatasetError, HourlyDataset, build_dataset
 from helios.registry.experiments import require_open_experiment
 from helios.registry.results import Split
 from helios.registry.test_access import TestSetAccess
@@ -60,7 +61,9 @@ def dataset_for_split(
             raise DatasetError("TEST partition requires its matching access reservation")
     kept, outside, purged = [], 0, 0
     for sample in dataset.samples:
-        if sample.label_end_time - sample.open_time != dataset.config.horizon * HOUR_US:
+        if sample.label_end_time - sample.open_time != dataset.config.horizon * interval_us(
+            dataset.config.interval
+        ):
             raise DatasetError("sample label window does not match the configured horizon")
         if not window.start_us <= sample.open_time < window.end_us:
             outside += 1

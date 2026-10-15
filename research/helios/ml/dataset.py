@@ -17,6 +17,7 @@ from pydantic import Field, StrictInt, model_validator
 
 from helios.alpha.evaluator import _check_frame
 from helios.common.config import HeliosConfig, canonical_json, config_hash
+from helios.data.klines import interval_us
 from helios.data.loader import TimeLike, to_micros
 from helios.features.runner import FeatureFrame
 from helios.features.store import AVAILABILITY_PREFIX, DEFAULT_FEATURE_DIR
@@ -30,7 +31,7 @@ class DatasetError(ValueError):
 
 
 class DatasetConfig(HeliosConfig):
-    interval: Literal["1h"] = "1h"
+    interval: Literal["1h", "1m"] = "1h"
     features: tuple[str, ...] = Field(min_length=1)
     feature_set_version: str = Field(default="v1", pattern=r"^[a-zA-Z0-9_-]+$")
     horizon: StrictInt = Field(default=1, ge=1, lt=2**63 // HOUR_US)
@@ -119,7 +120,7 @@ def load_feature_frame(
     root = (
         feature_dir
         / f"feature_set={selected.feature_set_version}"
-        / "interval=1h"
+        / f"interval={selected.interval}"
         / f"symbol={symbol}"
     )
     columns = [
@@ -164,6 +165,7 @@ def build_dataset(
     Features must be causal outputs of the existing feature pipeline.
     """
     selected = DatasetConfig.model_validate(config.model_dump())
+    period = interval_us(selected.interval)
     if not features or set(features) != set(bars):
         raise DatasetError("features and bars require the same nonempty symbol universe")
     samples, counts, hashes = [], [], []
@@ -175,8 +177,10 @@ def build_dataset(
         if not prices.columns.is_unique or not {"open_time", "close"}.issubset(prices):
             raise DatasetError("bars require unique timestamp and close columns")
         times, ftimes = _times(prices.open_time), _times(fv.open_time)
-        if (times % HOUR_US != 0).any() or (ftimes % HOUR_US != 0).any():
-            raise DatasetError("dataset timestamps must lie on the hourly UTC grid")
+        if (times % period != 0).any() or (ftimes % period != 0).any():
+            raise DatasetError(
+                "dataset timestamps must lie on the configured hourly/minute UTC grid"
+            )
         if not np.isin(ftimes, times).all():
             raise DatasetError("feature timestamps must belong to supplied bars")
         close = _numeric(prices.close)
@@ -204,7 +208,7 @@ def build_dataset(
         h = selected.horizon
         if h < len(times):
             contiguous = np.asarray(
-                [int(b) - int(a) == h * HOUR_US for a, b in zip(times[:-h], times[h:], strict=True)]
+                [int(b) - int(a) == h * period for a, b in zip(times[:-h], times[h:], strict=True)]
             )
             known = contiguous & np.isfinite(close[:-h]) & np.isfinite(close[h:])
             with np.errstate(over="ignore", divide="ignore", invalid="ignore"):

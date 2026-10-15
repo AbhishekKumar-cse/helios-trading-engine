@@ -24,6 +24,7 @@ from helios.common.lineage import RunContext
 from helios.common.project_config import HorizonFamily, load_fees, load_gates, load_splits
 from helios.data.bars import DEFAULT_OUT_DIR
 from helios.data.binance import sha256_file
+from helios.data.klines import interval_us
 from helios.data.loader import load_bars, to_micros
 from helios.data.snapshots import load_manifest
 from helios.features import basic  # noqa: F401
@@ -41,13 +42,14 @@ from helios.sim.fitness import fitness_result
 from helios.sim.gates import evaluate_gates
 from helios.sim.ic import ICConfig, information_coefficients
 from helios.sim.splits import SplitWindow, evaluate_split
-from helios.sim.stability import fit_volatility_regimes, stability_report
+from helios.sim.stability import StabilityConfig, fit_volatility_regimes, stability_report
 from helios.sim.validity import ValidityConfig
 
 REPORT_DIR = Path(__file__).resolve().parents[3] / "reports_out" / "evaluations"
 
 
 class EvaluationConfig(HeliosConfig):
+    interval: Literal["1h", "1m"] = "1h"
     symbol: str = Field(default="BTCUSDT", pattern=r"^[A-Z0-9]+$")
     version: StrictInt = Field(default=1, ge=1)
     warmup_rows: StrictInt = Field(default=168, ge=0)
@@ -106,7 +108,9 @@ def stored_inputs(
     window: SplitWindow, definition: AlphaDefinition, *, symbol: str
 ) -> EvaluationInputs:
     config = DatasetConfig(
-        features=tuple(REGISTRY.names()), feature_set_version=definition.feature_set_version
+        interval=window.interval,
+        features=tuple(REGISTRY.names()),
+        feature_set_version=definition.feature_set_version,
     )
     # Existing causal feature store already includes prior history; no refitting.
     features = load_feature_frame(symbol, window.start_us, window.end_us - 1, config=config)
@@ -118,7 +122,7 @@ def stored_inputs(
         else (family.train.start, family.train.end)
     )
     calibration = load_feature_frame(symbol, start, end, config=config)
-    on_grid = calibration.open_time % 3_600_000_000 == 0
+    on_grid = calibration.open_time % interval_us(window.interval) == 0
     calibration = replace(
         calibration,
         open_time=calibration.open_time.loc[on_grid].copy(),
@@ -161,10 +165,17 @@ def evaluate(
         stored_gate = get_gate_config(connection, gates.version)
         if stored_gate.config_hash != config_hash(gates):
             raise RegistryError("stored gate settings do not match accepted configuration")
-    if definition.horizon_family is not HorizonFamily.HOURLY or (
+    family = {"1h": HorizonFamily.HOURLY, "1m": HorizonFamily.MINUTE}[selected.interval]
+    if definition.horizon_family is not family or (
         definition.expression is None and definition.provenance is not AlphaProvenance.ML
     ):
-        raise RegistryError("this evaluator requires an hourly expression or frozen ML reference")
+        raise RegistryError(
+            "evaluator interval must match the registered expression or frozen ML family"
+        )
+    if selected.interval == "1m" and split is Split.TRAIN:
+        raise RegistryError(
+            "minute TRAIN regime evaluation needs a separate earlier calibration policy"
+        )
     protocol = {
         "evaluation": selected.model_dump(mode="json"),
         "definition": definition.model_dump(mode="json"),
@@ -173,7 +184,9 @@ def evaluate(
         "fees": fees.model_dump(mode="json"),
         "gates": gates.model_dump(mode="json"),
         "calibration": "pre-TRAIN December 2017 for TRAIN; TRAIN for VALID/TEST; "
-        "on-grid calibration only",
+        "on-grid calibration only"
+        if selected.interval == "1h"
+        else "TRAIN-only minute regime calibration",
     }
     context = RunContext.capture(selected, experiment.snapshot_id, selected.seed, reported=reported)
     used: list[EvaluationInputs] = []
@@ -183,10 +196,13 @@ def evaluate(
     def loader(window: SplitWindow) -> tuple[BoundedAlphaSeries, pd.DataFrame]:
         if load_inputs is None:
             snapshot = load_manifest(experiment.snapshot_id or "")
-            if selected.symbol not in snapshot.symbols or snapshot.interval != "1h":
+            if selected.symbol not in snapshot.symbols or snapshot.interval != selected.interval:
                 raise RegistryError("snapshot does not contain the requested symbol/interval")
             # Verify snapshot bytes without parsing observations in unrequested splits.
-            years = range(2017, pd.Timestamp(window.end_us - 1, unit="us").year + 1)
+            first_year = (
+                2017 if selected.interval == "1h" else splits.families[family].train.start.year
+            )
+            years = range(first_year, pd.Timestamp(window.end_us - 1, unit="us").year + 1)
             for file in snapshot.files:
                 if f"symbol={selected.symbol}/" in file.path and any(
                     f"year={year}/" in file.path for year in years
@@ -194,12 +210,14 @@ def evaluate(
                     if sha256_file(DEFAULT_OUT_DIR / file.path) != file.sha256:
                         raise RegistryError("bar snapshot checksum mismatch")
             feature_config = DatasetConfig(
-                features=tuple(REGISTRY.names()), feature_set_version=definition.feature_set_version
+                interval=selected.interval,
+                features=tuple(REGISTRY.names()),
+                feature_set_version=definition.feature_set_version,
             )
             root = (
                 DEFAULT_FEATURE_DIR
                 / f"feature_set={feature_config.feature_set_version}"
-                / "interval=1h"
+                / f"interval={selected.interval}"
                 / f"symbol={selected.symbol}"
             )
             manifest_path = root / "manifest.json"
@@ -229,7 +247,7 @@ def evaluate(
             )
             feature_provenance["ml"] = ml_evidence
         else:
-            alpha = evaluate_definition(definition, inputs.features, interval="1h")
+            alpha = evaluate_definition(definition, inputs.features, interval=selected.interval)
         computed_alpha.append(alpha)
         return alpha, inputs.bars
 
@@ -239,7 +257,7 @@ def evaluate(
         alpha_id=alpha_id,
         version=selected.version,
         split=split,
-        interval="1h",
+        interval=selected.interval,
         horizon_periods=definition.horizon_periods,
         load_inputs=loader,
         validity_config=ValidityConfig(
@@ -268,6 +286,7 @@ def evaluate(
             inputs.calibration,
             calibration_start_us=inputs.calibration_start_us,
             calibration_end_us=inputs.calibration_end_us,
+            config=StabilityConfig(interval=selected.interval),
         )
         stability = stability_report(evaluation.simulation, inputs.features, regime, splits=splits)
         costs = cost_sensitivity(evaluation.simulation.gross, fees=fees, splits=splits)
@@ -302,7 +321,7 @@ def evaluate(
                     inputs.bars.open_time >= int(table.open_time.iloc[0])
                 ]
             },
-            config=ICConfig(horizon=definition.horizon_periods),
+            config=ICConfig(interval=selected.interval, horizon=definition.horizon_periods),
             snapshot_id=experiment.snapshot_id,
         )
     else:

@@ -38,3 +38,18 @@ An unresolved resting order can be cancelled at its opening boundary; a later
 cancel is refused until `on_bar` resolves the range. This avoids guessing whether
 an intrabar cancellation preceded a trade-through. Late submissions cannot use
 the current bar's range. Zero-volume bars cannot produce passive fills.
+
+`helios.sim.ledger.PnLLedger(initial_cash, mode)` owns one USDT accounting scope.
+Send accepted fill reports to `on_report`, or fills to `book`; acknowledgements
+and cancellations have no accounting effect. Identical fill retries are no-ops;
+conflicting IDs, foreign modes/currencies and backwards clocks fail atomically.
+Average cost follows SRS 24.5 for long/short opens, adds, reductions, flattening
+and flips. Cash includes trade notional and fees; realized P&L excludes fees.
+Exact rational cost basis avoids drift from repeating weighted-average decimals.
+Public records round half-even to numeric(38,18); overflow is refused.
+
+For `snapshot(timestamp, marks)`, supply a fresh, nonstale `BookView` for every
+nonflat instrument at that exact timestamp. The declared mark is the two-sided
+midpoint. Snapshot marking changes unrealized P&L only, never cash, realized P&L,
+inventory or fees. Ledger config/mark/rounding policy is hash-bound. Initial cash
+is fixed; deposits, withdrawals and non-USDT fee conversion are unsupported.

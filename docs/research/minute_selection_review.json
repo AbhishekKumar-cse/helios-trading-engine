@@ -1,0 +1,568 @@
+{
+  "decisions": [
+    {
+      "actor": "helios_minute_selection",
+      "alpha_id": "minute_b0",
+      "code_commit": "8b7c7d394db28aedc128fbb8244fdce34b9195bb",
+      "evidence_hashes": {
+        "1d99f090-1ef0-4294-8e7f-befcb22b008f": "fb3cb96d959de351ffd8cb4bc444ce8e3bcda417df719255ba6f6efe93c57cd2"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "VALID_GATES_FAILED",
+        "INCOMPLETE_OR_FAILED_GATES",
+        "METRICS_DO_NOT_PASS_GATES"
+      ],
+      "round_id": "minute_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "1d99f090-1ef0-4294-8e7f-befcb22b008f",
+      "version": 1
+    },
+    {
+      "actor": "helios_minute_selection",
+      "alpha_id": "minute_b1",
+      "code_commit": "8b7c7d394db28aedc128fbb8244fdce34b9195bb",
+      "evidence_hashes": {
+        "2d8b2c11-032e-420e-997c-d5cacbb1e2df": "ff4eccc41e28318cfa271b25fe64f31e4ae9d06ab97aac64980fb8ba3594ff95"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "VALID_GATES_FAILED",
+        "INCOMPLETE_OR_FAILED_GATES",
+        "METRICS_DO_NOT_PASS_GATES"
+      ],
+      "round_id": "minute_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "2d8b2c11-032e-420e-997c-d5cacbb1e2df",
+      "version": 1
+    },
+    {
+      "actor": "helios_minute_selection",
+      "alpha_id": "minute_b2",
+      "code_commit": "8b7c7d394db28aedc128fbb8244fdce34b9195bb",
+      "evidence_hashes": {
+        "04e44ffb-946c-4402-b8e3-227570ea535c": "e87cafc8149de8d8a223f64f09bf08f1ec643c8dc316bb1766935a40cdf6152f"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "VALID_GATES_FAILED",
+        "INCOMPLETE_OR_FAILED_GATES",
+        "METRICS_DO_NOT_PASS_GATES"
+      ],
+      "round_id": "minute_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "04e44ffb-946c-4402-b8e3-227570ea535c",
+      "version": 1
+    },
+    {
+      "actor": "helios_minute_selection",
+      "alpha_id": "minute_h01",
+      "code_commit": "8b7c7d394db28aedc128fbb8244fdce34b9195bb",
+      "evidence_hashes": {
+        "3c2ef3de-bd46-4c2b-947d-86496c6ed7c6": "14255caa1c92ac830964c836c300497e5bbab4106213a8a5011bfae2b50a34a6"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "VALID_GATES_FAILED",
+        "INCOMPLETE_OR_FAILED_GATES",
+        "METRICS_DO_NOT_PASS_GATES"
+      ],
+      "round_id": "minute_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "3c2ef3de-bd46-4c2b-947d-86496c6ed7c6",
+      "version": 1
+    },
+    {
+      "actor": "helios_minute_selection",
+      "alpha_id": "minute_h02",
+      "code_commit": "8b7c7d394db28aedc128fbb8244fdce34b9195bb",
+      "evidence_hashes": {
+        "cccfd0fd-69b5-4783-b1c3-223b5c668f99": "d67aeacfacd6a2e61ae6165b8ef3209f98ec2515cea28831a9903a2dd7cb8b90"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "VALID_GATES_FAILED",
+        "INCOMPLETE_OR_FAILED_GATES",
+        "METRICS_DO_NOT_PASS_GATES"
+      ],
+      "round_id": "minute_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "cccfd0fd-69b5-4783-b1c3-223b5c668f99",
+      "version": 1
+    },
+    {
+      "actor": "helios_minute_selection",
+      "alpha_id": "minute_h03",
+      "code_commit": "8b7c7d394db28aedc128fbb8244fdce34b9195bb",
+      "evidence_hashes": {
+        "0a7be02f-dcde-4620-8471-46337a3248de": "9cdd3905e61417e645b0ec1704b5f2c29f0ec280fd9ba6394fdf76f8d0126a7d"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "VALID_GATES_FAILED",
+        "INCOMPLETE_OR_FAILED_GATES",
+        "METRICS_DO_NOT_PASS_GATES"
+      ],
+      "round_id": "minute_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "0a7be02f-dcde-4620-8471-46337a3248de",
+      "version": 1
+    },
+    {
+      "actor": "helios_minute_selection",
+      "alpha_id": "minute_h04",
+      "code_commit": "8b7c7d394db28aedc128fbb8244fdce34b9195bb",
+      "evidence_hashes": {
+        "08f33d8a-5c8e-47ef-a8da-cd98c9f725db": "9bd4b168faa24838be4dc4bd905be3c6a088f4f7e34b135f29ca8fd39d54943b"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "VALID_GATES_FAILED",
+        "INCOMPLETE_OR_FAILED_GATES",
+        "METRICS_DO_NOT_PASS_GATES"
+      ],
+      "round_id": "minute_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "08f33d8a-5c8e-47ef-a8da-cd98c9f725db",
+      "version": 1
+    },
+    {
+      "actor": "helios_minute_selection",
+      "alpha_id": "minute_h05",
+      "code_commit": "8b7c7d394db28aedc128fbb8244fdce34b9195bb",
+      "evidence_hashes": {
+        "51fd2cd6-c04a-4cd9-aa55-dd318498f858": "0ae4cfd0abc31a5bc836f8b3daf00da6a680c569a787595752b4093c5c0bed06"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "VALID_GATES_FAILED",
+        "INCOMPLETE_OR_FAILED_GATES",
+        "METRICS_DO_NOT_PASS_GATES"
+      ],
+      "round_id": "minute_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "51fd2cd6-c04a-4cd9-aa55-dd318498f858",
+      "version": 1
+    },
+    {
+      "actor": "helios_minute_selection",
+      "alpha_id": "minute_h06",
+      "code_commit": "8b7c7d394db28aedc128fbb8244fdce34b9195bb",
+      "evidence_hashes": {
+        "3806ad1f-d6da-4c18-83bf-5db1615b6f68": "143d02c53ad5b86884ff2e1142e069e74fbc10c9eb16addd9f7ec508e1a74e0c"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "VALID_GATES_FAILED",
+        "INCOMPLETE_OR_FAILED_GATES",
+        "METRICS_DO_NOT_PASS_GATES"
+      ],
+      "round_id": "minute_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "3806ad1f-d6da-4c18-83bf-5db1615b6f68",
+      "version": 1
+    },
+    {
+      "actor": "helios_minute_selection",
+      "alpha_id": "minute_h07",
+      "code_commit": "8b7c7d394db28aedc128fbb8244fdce34b9195bb",
+      "evidence_hashes": {
+        "c35c5490-00fe-4f14-90be-6d8c949e34ff": "ceeccc7531449bd01be52c24184a357ffbeadf2287874242ec928f9c22999411"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "VALID_GATES_FAILED",
+        "INCOMPLETE_OR_FAILED_GATES",
+        "METRICS_DO_NOT_PASS_GATES"
+      ],
+      "round_id": "minute_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "c35c5490-00fe-4f14-90be-6d8c949e34ff",
+      "version": 1
+    },
+    {
+      "actor": "helios_minute_selection",
+      "alpha_id": "minute_h08",
+      "code_commit": "8b7c7d394db28aedc128fbb8244fdce34b9195bb",
+      "evidence_hashes": {
+        "4f6b533e-7290-4d68-bc75-8d63afbdb76a": "7a10110afb2c45668f3f6631d69d178e74d167edd5d39cbde0b31b706f93b709"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "VALID_GATES_FAILED",
+        "INCOMPLETE_OR_FAILED_GATES",
+        "METRICS_DO_NOT_PASS_GATES"
+      ],
+      "round_id": "minute_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "4f6b533e-7290-4d68-bc75-8d63afbdb76a",
+      "version": 1
+    },
+    {
+      "actor": "helios_minute_selection",
+      "alpha_id": "minute_ml_v1",
+      "code_commit": "8b7c7d394db28aedc128fbb8244fdce34b9195bb",
+      "evidence_hashes": {
+        "efec729e-e04f-4d7c-b726-c3b99b307b12": "f6120a83e948ea6e3b9985a849ee2772c52b3df96b0279661b64ac2b14562705"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "INVALID_VALID_MEASUREMENT",
+        "NO_PERFORMANCE_CONCLUSION"
+      ],
+      "round_id": "minute_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "efec729e-e04f-4d7c-b726-c3b99b307b12",
+      "version": 1
+    }
+  ],
+  "dirty": false,
+  "observations_loaded": false,
+  "review": {
+    "decision": "SKIPPED_NO_ELIGIBLE_CANDIDATES",
+    "global_test_accesses": 0,
+    "maximum_candidates": 2,
+    "policy": "Latest clean VALID, accepted G1-G6, Fitness rank; freeze before TEST",
+    "reviewed": [
+      {
+        "alpha_id": "minute_b0",
+        "artifact_sha256": "fb3cb96d959de351ffd8cb4bc444ce8e3bcda417df719255ba6f6efe93c57cd2",
+        "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "config_hash": "a5561282df5d5ae4b862f540e2ed1d26e035ca624bf4bec24e20c76a5fa44aee",
+        "experiment_id": 5598,
+        "gate_results": {
+          "G1": false,
+          "G2": false,
+          "G3": true,
+          "G4": true,
+          "G5": false,
+          "G6": false
+        },
+        "reasons": [
+          "VALID_GATES_FAILED",
+          "INCOMPLETE_OR_FAILED_GATES",
+          "METRICS_DO_NOT_PASS_GATES"
+        ],
+        "retained_valid_attempts": 1,
+        "seed": 0,
+        "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+        "status": "REJECTED",
+        "test_accesses": 0,
+        "valid_run_id": "1d99f090-1ef0-4294-8e7f-befcb22b008f",
+        "version": 1
+      },
+      {
+        "alpha_id": "minute_b1",
+        "artifact_sha256": "ff4eccc41e28318cfa271b25fe64f31e4ae9d06ab97aac64980fb8ba3594ff95",
+        "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "config_hash": "b2b786d2ee814f6ab4b4a383a57602b46ffdf571d8a40b8f7c00874ca680c0f9",
+        "experiment_id": 5599,
+        "gate_results": {
+          "G1": false,
+          "G2": false,
+          "G3": false,
+          "G4": true,
+          "G5": false,
+          "G6": false
+        },
+        "reasons": [
+          "VALID_GATES_FAILED",
+          "INCOMPLETE_OR_FAILED_GATES",
+          "METRICS_DO_NOT_PASS_GATES"
+        ],
+        "retained_valid_attempts": 1,
+        "seed": 0,
+        "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+        "status": "REJECTED",
+        "test_accesses": 0,
+        "valid_run_id": "2d8b2c11-032e-420e-997c-d5cacbb1e2df",
+        "version": 1
+      },
+      {
+        "alpha_id": "minute_b2",
+        "artifact_sha256": "e87cafc8149de8d8a223f64f09bf08f1ec643c8dc316bb1766935a40cdf6152f",
+        "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "config_hash": "0f3fe1969ab272ebf122b7aa88e4f4cc39c305ba8485d80316cd5d59b47637b7",
+        "experiment_id": 5600,
+        "gate_results": {
+          "G1": false,
+          "G2": false,
+          "G3": false,
+          "G4": true,
+          "G5": false,
+          "G6": false
+        },
+        "reasons": [
+          "VALID_GATES_FAILED",
+          "INCOMPLETE_OR_FAILED_GATES",
+          "METRICS_DO_NOT_PASS_GATES"
+        ],
+        "retained_valid_attempts": 1,
+        "seed": 0,
+        "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+        "status": "REJECTED",
+        "test_accesses": 0,
+        "valid_run_id": "04e44ffb-946c-4402-b8e3-227570ea535c",
+        "version": 1
+      },
+      {
+        "alpha_id": "minute_h01",
+        "artifact_sha256": "14255caa1c92ac830964c836c300497e5bbab4106213a8a5011bfae2b50a34a6",
+        "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "config_hash": "01096b29682f5102f32aa14fc3e9d65b274475ba380275ef14d78734893f9968",
+        "experiment_id": 5601,
+        "gate_results": {
+          "G1": false,
+          "G2": false,
+          "G3": true,
+          "G4": true,
+          "G5": false,
+          "G6": false
+        },
+        "reasons": [
+          "VALID_GATES_FAILED",
+          "INCOMPLETE_OR_FAILED_GATES",
+          "METRICS_DO_NOT_PASS_GATES"
+        ],
+        "retained_valid_attempts": 1,
+        "seed": 0,
+        "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+        "status": "REJECTED",
+        "test_accesses": 0,
+        "valid_run_id": "3c2ef3de-bd46-4c2b-947d-86496c6ed7c6",
+        "version": 1
+      },
+      {
+        "alpha_id": "minute_h02",
+        "artifact_sha256": "d67aeacfacd6a2e61ae6165b8ef3209f98ec2515cea28831a9903a2dd7cb8b90",
+        "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "config_hash": "5bda34f21adac9d57fffac52eca9acf2a6cae189c8f26127509308b2d21b2aa4",
+        "experiment_id": 5602,
+        "gate_results": {
+          "G1": false,
+          "G2": false,
+          "G3": true,
+          "G4": true,
+          "G5": false,
+          "G6": false
+        },
+        "reasons": [
+          "VALID_GATES_FAILED",
+          "INCOMPLETE_OR_FAILED_GATES",
+          "METRICS_DO_NOT_PASS_GATES"
+        ],
+        "retained_valid_attempts": 1,
+        "seed": 0,
+        "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+        "status": "REJECTED",
+        "test_accesses": 0,
+        "valid_run_id": "cccfd0fd-69b5-4783-b1c3-223b5c668f99",
+        "version": 1
+      },
+      {
+        "alpha_id": "minute_h03",
+        "artifact_sha256": "9cdd3905e61417e645b0ec1704b5f2c29f0ec280fd9ba6394fdf76f8d0126a7d",
+        "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "config_hash": "f1499b7c84a1a4ec17d34281ae8c61bc743b24713b7467172aec4af0a2f6f56c",
+        "experiment_id": 5603,
+        "gate_results": {
+          "G1": false,
+          "G2": false,
+          "G3": true,
+          "G4": true,
+          "G5": false,
+          "G6": false
+        },
+        "reasons": [
+          "VALID_GATES_FAILED",
+          "INCOMPLETE_OR_FAILED_GATES",
+          "METRICS_DO_NOT_PASS_GATES"
+        ],
+        "retained_valid_attempts": 1,
+        "seed": 0,
+        "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+        "status": "REJECTED",
+        "test_accesses": 0,
+        "valid_run_id": "0a7be02f-dcde-4620-8471-46337a3248de",
+        "version": 1
+      },
+      {
+        "alpha_id": "minute_h04",
+        "artifact_sha256": "9bd4b168faa24838be4dc4bd905be3c6a088f4f7e34b135f29ca8fd39d54943b",
+        "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "config_hash": "6068af20baa41ba8ebfd94eeb29642875f61e72daf08a69172ca2663c970ac74",
+        "experiment_id": 5604,
+        "gate_results": {
+          "G1": false,
+          "G2": false,
+          "G3": false,
+          "G4": true,
+          "G5": false,
+          "G6": false
+        },
+        "reasons": [
+          "VALID_GATES_FAILED",
+          "INCOMPLETE_OR_FAILED_GATES",
+          "METRICS_DO_NOT_PASS_GATES"
+        ],
+        "retained_valid_attempts": 1,
+        "seed": 0,
+        "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+        "status": "REJECTED",
+        "test_accesses": 0,
+        "valid_run_id": "08f33d8a-5c8e-47ef-a8da-cd98c9f725db",
+        "version": 1
+      },
+      {
+        "alpha_id": "minute_h05",
+        "artifact_sha256": "0ae4cfd0abc31a5bc836f8b3daf00da6a680c569a787595752b4093c5c0bed06",
+        "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "config_hash": "d936f985bdc9bda2f8a86de5699d9ad30afe9fdec8dbcbfecefe308b591ea500",
+        "experiment_id": 5605,
+        "gate_results": {
+          "G1": false,
+          "G2": false,
+          "G3": true,
+          "G4": true,
+          "G5": false,
+          "G6": false
+        },
+        "reasons": [
+          "VALID_GATES_FAILED",
+          "INCOMPLETE_OR_FAILED_GATES",
+          "METRICS_DO_NOT_PASS_GATES"
+        ],
+        "retained_valid_attempts": 1,
+        "seed": 0,
+        "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+        "status": "REJECTED",
+        "test_accesses": 0,
+        "valid_run_id": "51fd2cd6-c04a-4cd9-aa55-dd318498f858",
+        "version": 1
+      },
+      {
+        "alpha_id": "minute_h06",
+        "artifact_sha256": "143d02c53ad5b86884ff2e1142e069e74fbc10c9eb16addd9f7ec508e1a74e0c",
+        "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "config_hash": "03aa6c40d921ac00204491fbe45806e4b6adb3f254aabeed831c2b1bc14225dd",
+        "experiment_id": 5606,
+        "gate_results": {
+          "G1": false,
+          "G2": false,
+          "G3": false,
+          "G4": true,
+          "G5": false,
+          "G6": false
+        },
+        "reasons": [
+          "VALID_GATES_FAILED",
+          "INCOMPLETE_OR_FAILED_GATES",
+          "METRICS_DO_NOT_PASS_GATES"
+        ],
+        "retained_valid_attempts": 1,
+        "seed": 0,
+        "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+        "status": "REJECTED",
+        "test_accesses": 0,
+        "valid_run_id": "3806ad1f-d6da-4c18-83bf-5db1615b6f68",
+        "version": 1
+      },
+      {
+        "alpha_id": "minute_h07",
+        "artifact_sha256": "ceeccc7531449bd01be52c24184a357ffbeadf2287874242ec928f9c22999411",
+        "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "config_hash": "33fa99bae6a04fc2537eed904db64bf5acb1b7beae4239e2e850048a835f51bf",
+        "experiment_id": 5607,
+        "gate_results": {
+          "G1": false,
+          "G2": false,
+          "G3": true,
+          "G4": true,
+          "G5": false,
+          "G6": false
+        },
+        "reasons": [
+          "VALID_GATES_FAILED",
+          "INCOMPLETE_OR_FAILED_GATES",
+          "METRICS_DO_NOT_PASS_GATES"
+        ],
+        "retained_valid_attempts": 1,
+        "seed": 0,
+        "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+        "status": "REJECTED",
+        "test_accesses": 0,
+        "valid_run_id": "c35c5490-00fe-4f14-90be-6d8c949e34ff",
+        "version": 1
+      },
+      {
+        "alpha_id": "minute_h08",
+        "artifact_sha256": "7a10110afb2c45668f3f6631d69d178e74d167edd5d39cbde0b31b706f93b709",
+        "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+        "config_hash": "93201c1ba828ff5bf52c87140fb3ad7edb5817e1c6dcf5728f66137f53a4ad8b",
+        "experiment_id": 5608,
+        "gate_results": {
+          "G1": false,
+          "G2": false,
+          "G3": true,
+          "G4": true,
+          "G5": false,
+          "G6": false
+        },
+        "reasons": [
+          "VALID_GATES_FAILED",
+          "INCOMPLETE_OR_FAILED_GATES",
+          "METRICS_DO_NOT_PASS_GATES"
+        ],
+        "retained_valid_attempts": 1,
+        "seed": 0,
+        "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+        "status": "REJECTED",
+        "test_accesses": 0,
+        "valid_run_id": "4f6b533e-7290-4d68-bc75-8d63afbdb76a",
+        "version": 1
+      },
+      {
+        "alpha_id": "minute_ml_v1",
+        "artifact_sha256": "f6120a83e948ea6e3b9985a849ee2772c52b3df96b0279661b64ac2b14562705",
+        "code_commit": "2f45359ac272cc39ac7db3f412be6f9774dd0d5c",
+        "config_hash": "f46d66efd6c7da4d2c197e21a9db99df31bb0151e060ebfd436498172ea8a4cc",
+        "experiment_id": 5628,
+        "gate_results": {
+          "G1": false,
+          "G2": false,
+          "G3": false,
+          "G4": false,
+          "G5": false,
+          "G6": false
+        },
+        "reasons": [
+          "INVALID_MEASUREMENT",
+          "INCOMPLETE_OR_FAILED_GATES",
+          "METRICS_DO_NOT_PASS_GATES"
+        ],
+        "retained_valid_attempts": 1,
+        "seed": 0,
+        "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+        "status": "INVALID",
+        "test_accesses": 0,
+        "valid_run_id": "efec729e-e04f-4d7c-b726-c3b99b307b12",
+        "version": 1
+      }
+    ],
+    "selected": []
+  },
+  "source_commit": "8b7c7d394db28aedc128fbb8244fdce34b9195bb",
+  "test_executed": false
+}

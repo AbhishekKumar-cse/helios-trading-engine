@@ -266,7 +266,7 @@ Follow the numbers in order.
 
 | ✓ | Step | What to do | Owner | Plan ID | Done when |
 |---|---|---|---|---|---|
-| [ ] | 147 | Hand-verified scenario: 10 bars, 3 trades calculated in a spreadsheet (commit the sheet as CSV) | S | 5H-11 | CSV merged |
+| [x] | 147 | Hand-verified scenario: 10 bars, 3 trades calculated in a spreadsheet (commit the sheet as CSV) | S | 5H-11 | Done 2026-10-15: independent spreadsheet-authored fixed CSV with ten synthetic bars, BUY 1/BUY 1/SELL 3 at following opens, accepted BTC costs, long add/short flip and all cash/average-cost/realized/unrealized/equity rows. Formula/render checks and independent Decimal cash-flow reconciliation pass; final net 19.340022 USDT is a fixture, not market performance. docs/guides/HAND_BACKTEST_SCENARIO.md. |
 | [ ] | 148 | Test: backtest of that scenario equals the spreadsheet exactly | S | 5H-11 | Test passes |
 | [ ] | 149 | Backtest runner: config → run → `backtest_runs`, orders, fills, P&L in DB; mode = BACKTEST | S | 5H-12 | One command runs a backtest |
 | [ ] | 150 | Backtest report: gross/net P&L, drawdown, exposure, trades, fees, per-coin P&L | S | 5H-13 | Report generated |

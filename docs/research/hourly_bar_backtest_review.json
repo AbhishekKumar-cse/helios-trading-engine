@@ -1,0 +1,971 @@
+{
+  "attempts": [
+    {
+      "alpha_id": "baseline_b0",
+      "artifact_sha256": "1c4d5bc31d5ee4ab54c4ab486dfa9c210596b8bbf078ca4a219eadb7e3c2b467",
+      "code_commit": "2af11410a3c23ea8918b7e0ef5b92ea8a5497a7b",
+      "config_hash": "dcafb79f419029434b8ef9e9d6b25d8600b5e7ef286dd341a30401630832f76b",
+      "dirty": false,
+      "experiment_id": 4252,
+      "fitness": null,
+      "run_id": "7a121c5e-f0a6-4ef3-a9b6-bbb8643ac65c",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "train",
+      "status": "INVALID",
+      "symbol": "BTCUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "83cdc1cbce58e71c9e7813af80652b65b5079291eb3bacdfc2b80e8caf6e3924",
+        "n_periods": 43536,
+        "n_rows": 43705,
+        "n_unavailable_after_warmup": 643,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BTCUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "baseline_b0",
+      "artifact_sha256": "fc8671b56f934c35cbe4e3488a041c2a5d89f1ec92438a38ca25160b09da8853",
+      "code_commit": "2af11410a3c23ea8918b7e0ef5b92ea8a5497a7b",
+      "config_hash": "344849f0e9307ba667071fe4166d9ecc28244ea91e1bfb687f13168429fed097",
+      "dirty": false,
+      "experiment_id": 4252,
+      "fitness": null,
+      "run_id": "69c77247-0ece-4bf5-9914-6934e6fd6e20",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "BTCUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "be7c89b90f86693e285980d16603f8fb36c7b2fde1001a613b2fc3988f222c9d",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 24,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BTCUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "baseline_b0",
+      "artifact_sha256": "e7718edaa4ac40f3d24969adb8b5260c52ee87f99df601716b7f31a45d047a8b",
+      "code_commit": "163491fe7e9bded987a95a71c41067979e1bdccd",
+      "config_hash": "344849f0e9307ba667071fe4166d9ecc28244ea91e1bfb687f13168429fed097",
+      "dirty": false,
+      "experiment_id": 4252,
+      "fitness": null,
+      "run_id": "99dab638-3358-46c0-8287-a1038c84e8e4",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "BTCUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "be7c89b90f86693e285980d16603f8fb36c7b2fde1001a613b2fc3988f222c9d",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 24,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BTCUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "baseline_b1",
+      "artifact_sha256": "538761ff8bbdd6be7e1311331b5542c1174224504db641ea996cad8cf8e73a03",
+      "code_commit": "2af11410a3c23ea8918b7e0ef5b92ea8a5497a7b",
+      "config_hash": "46dcac6e42a8bc3079bb3ba9d74ff035e90b8e6e1cb080894045b4526935a17f",
+      "dirty": false,
+      "experiment_id": 4252,
+      "fitness": null,
+      "run_id": "47498b7a-b412-4d42-af36-fd2142131f08",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "train",
+      "status": "INVALID",
+      "symbol": "BTCUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "10895f8c8d36733aa03cb81ecbadee122a16a2508dc0258f63c043c6a7512d72",
+        "n_periods": 43536,
+        "n_rows": 43705,
+        "n_unavailable_after_warmup": 4028,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BTCUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "baseline_b1",
+      "artifact_sha256": "09d41a9e6546e85fdf12285d92ad58643c815dfce12289f15b5a6b5aa0ca6ade",
+      "code_commit": "2af11410a3c23ea8918b7e0ef5b92ea8a5497a7b",
+      "config_hash": "518f3e08ade047e73aca111da3208636574ed2f81c57e42131c1f0dca7f95f34",
+      "dirty": false,
+      "experiment_id": 4252,
+      "fitness": null,
+      "run_id": "2dfbae8f-85ec-4b82-99d6-7bd1c4458f64",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "BTCUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "d7df160b7e67075ea797bbe2aea8e1a6af221f6a1f99e71c310da25c5651bb6d",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 168,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BTCUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "baseline_b1",
+      "artifact_sha256": "accf8e331a404af3132fa39d94b3dcef71903e6dbbb2e841e7ce94bab7c1ab2e",
+      "code_commit": "163491fe7e9bded987a95a71c41067979e1bdccd",
+      "config_hash": "518f3e08ade047e73aca111da3208636574ed2f81c57e42131c1f0dca7f95f34",
+      "dirty": false,
+      "experiment_id": 4252,
+      "fitness": null,
+      "run_id": "709d47b3-8c69-4109-be46-2a1bebc38ff7",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "BTCUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "d7df160b7e67075ea797bbe2aea8e1a6af221f6a1f99e71c310da25c5651bb6d",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 168,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BTCUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "baseline_b2",
+      "artifact_sha256": "66f2221b1fb319b505d654313587c005e2289cb7388d3c78e92a197d2e088f88",
+      "code_commit": "2af11410a3c23ea8918b7e0ef5b92ea8a5497a7b",
+      "config_hash": "acf120106c88c172ed38296b09735a3bb1c312608b376d2ca5df6726e032c6b2",
+      "dirty": false,
+      "experiment_id": 4252,
+      "fitness": null,
+      "run_id": "3a2c832f-63d5-4199-8e26-f3bd24ced59a",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "train",
+      "status": "INVALID",
+      "symbol": "BTCUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "4d3bddfeec19e5688e31a7ba63929c2ebac9613bae83ee87a25d15a2f4598417",
+        "n_periods": 43536,
+        "n_rows": 43705,
+        "n_unavailable_after_warmup": 4176,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BTCUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "baseline_b2",
+      "artifact_sha256": "d695744b1eb7d5dae6420524869531aa5be496967e05aa5624b303edce299bc7",
+      "code_commit": "163491fe7e9bded987a95a71c41067979e1bdccd",
+      "config_hash": "6af3f0f7ea6d87a7e69112c74f82ffa93ef2b3764e225af8919a40ca263e2a9b",
+      "dirty": false,
+      "experiment_id": 4252,
+      "fitness": null,
+      "run_id": "0cc76be3-29ef-45b5-8c4d-8e7eb5e1aaa8",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "BTCUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "414fa205b0f83f9fd05440d5538a38736e3c98f2c5d99fb4d4c06616160bb410",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 168,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BTCUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "baseline_b2",
+      "artifact_sha256": "7748a76dad2af0394aaeb989b3419748a227423d8a9a86e5f698041e77a01a53",
+      "code_commit": "2af11410a3c23ea8918b7e0ef5b92ea8a5497a7b",
+      "config_hash": "6af3f0f7ea6d87a7e69112c74f82ffa93ef2b3764e225af8919a40ca263e2a9b",
+      "dirty": false,
+      "experiment_id": 4252,
+      "fitness": null,
+      "run_id": "0d0b9b4e-d96f-4b90-83c8-8ff4dcf53d17",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "BTCUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "414fa205b0f83f9fd05440d5538a38736e3c98f2c5d99fb4d4c06616160bb410",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 168,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BTCUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h01",
+      "artifact_sha256": "8de2da1010757a98a93d6d877b189b7f0fd310a171def27ddded1ad93b7ffc9d",
+      "code_commit": "e34bc248a8ca43884471d3cefb9582299c452509",
+      "config_hash": "ef628e4728c6a33f76b7be546039e1432a2db9306c58bd650f70f8901c2e741c",
+      "dirty": false,
+      "experiment_id": 4482,
+      "fitness": null,
+      "run_id": "de9d791d-d8fc-4950-aace-08123bbd4d35",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "BTCUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "6b6a953b2e9d9f8d0464b2ef3a12725453efd691195b6fcf52a1a69d9c4f3a56",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 4,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BTCUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h02",
+      "artifact_sha256": "b5fb469db2e9b9e574ac0cf82bcf5a3d908b41594725b7d782b738e307226ec7",
+      "code_commit": "e34bc248a8ca43884471d3cefb9582299c452509",
+      "config_hash": "03e436b3c449bc8e0a50688681833d2efe4e869ac2abeb1ad1449ad8b92a9254",
+      "dirty": false,
+      "experiment_id": 4483,
+      "fitness": null,
+      "run_id": "ce71b70a-b689-4795-ae09-659f97c5287a",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "BTCUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "2f79c9387e24e92c059b561d1972aee3217e4d4d9988b8bdda6fe8eaaaa0cff3",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 24,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BTCUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h03",
+      "artifact_sha256": "2f9d283f8df1e12d2555d33b71970be7cd68e937aa7b18645de08f0426f93359",
+      "code_commit": "e34bc248a8ca43884471d3cefb9582299c452509",
+      "config_hash": "6ff14bdbfaa780fd0c5337613bad5cbaecba7e0682226932370af1a12d26162a",
+      "dirty": false,
+      "experiment_id": 4484,
+      "fitness": null,
+      "run_id": "b2959a86-8524-499e-9132-d77e1d941aa6",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "BTCUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "e13710003783a29fe3818d22c1484b1428d551b3c24dc50b72dff719e9896fbd",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 24,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BTCUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h04",
+      "artifact_sha256": "4c3f7bd6a77b73361c5ef476d932c6214b18d68ad557325515f7787ea404b31c",
+      "code_commit": "e34bc248a8ca43884471d3cefb9582299c452509",
+      "config_hash": "c7b7c883cc46b2e0d4c291223a032aad381e9f08d9d8e3eb3221b34733f3ae06",
+      "dirty": false,
+      "experiment_id": 4485,
+      "fitness": null,
+      "run_id": "e8f7916a-094c-448b-a2fd-7c1c5273d610",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "BTCUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "9d3e18e7a2c1c6162eaeb345e5a06c998fed8a5e5cb7d5f8aed4e801759d498a",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 1,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BTCUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h05",
+      "artifact_sha256": "16bb3108561ce57c37eef7345e37255e6c74d914e64bb325d8aad8e17720664c",
+      "code_commit": "e34bc248a8ca43884471d3cefb9582299c452509",
+      "config_hash": "00cb7337427a819e1600217d8f9d534ac153ca5ed4cf60c33c57bad84e35626a",
+      "dirty": false,
+      "experiment_id": 4486,
+      "fitness": null,
+      "run_id": "d2d4d070-75d5-4250-8a77-f3569f453111",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "BTCUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "21a765af267316006bcd5524f6d6eeb717addcfb690edd0f28d3a89f159651c5",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 47,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BTCUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h06",
+      "artifact_sha256": "9d2e6dff512ec73a3a7fc0bd6a93219a7d7517e1e8518ad6e552614e97eed30f",
+      "code_commit": "e34bc248a8ca43884471d3cefb9582299c452509",
+      "config_hash": "c917c275a95cbfbe1dfebecd38b13fd3e8166527f11e1d7d2de68f5989535b97",
+      "dirty": false,
+      "experiment_id": 4487,
+      "fitness": null,
+      "run_id": "40ad929e-043a-4e45-9ed8-3d616311f7cb",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "BTCUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "b6e28a94d179bb9290f287d4e52dea7a8ebe3c4a028e79216ff23c1edc22290c",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 168,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BTCUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h07",
+      "artifact_sha256": "45e2459891bcfe8bd76ca323b64ced6c132eaa335dd00b6e9506cb5013f8c57d",
+      "code_commit": "e34bc248a8ca43884471d3cefb9582299c452509",
+      "config_hash": "aed3dc2c1504ab857f900e8abe1aff2dc02d205428fe5494f04885e19cc11c95",
+      "dirty": false,
+      "experiment_id": 4488,
+      "fitness": null,
+      "run_id": "cff9a9a5-c1ca-43c6-9573-835b0c42c47b",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "BTCUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "d4ae251a86c78dcd4c7642d77f7ff483b9c78d42ee63e086d02f8860c59c8e1d",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 167,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BTCUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h08",
+      "artifact_sha256": "4706eada2811293681dbcf141e81933fd4630c2e175748654567bc504454cf94",
+      "code_commit": "e34bc248a8ca43884471d3cefb9582299c452509",
+      "config_hash": "8b143833f4e578430a0fa7af73c8e68776f199a80a9d6749db2fb62a89f04bbc",
+      "dirty": false,
+      "experiment_id": 4489,
+      "fitness": null,
+      "run_id": "aad3717e-3ee6-421b-b367-98d66115c9ba",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "BTCUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "116f45a606d8c00206320aabd9de8e60bae58b43d3c57e30a558d9464582495d",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 168,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BTCUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_ml_v1",
+      "artifact_sha256": "0d0561f2572a653525d51800170a1cab3cb807a2ad5152bf6570ffc14cc6ed28",
+      "code_commit": "ba6ead5720572dc123143b056598fc707d5e7bb1",
+      "config_hash": "1e4c9768434fe1c6ec113c0092a1a4ba0d6102bc8876a123940d9f86747b14c4",
+      "dirty": false,
+      "experiment_id": 5146,
+      "fitness": null,
+      "run_id": "690ce5bb-7e33-40ee-a530-52da0e4edafc",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "BNBUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "add42894d1b5dba482efe2e4d1e0f3223bedff34d67d19dd105effb175e48602",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 12791,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BNBUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_ml_v1",
+      "artifact_sha256": "3786848fb764decf548a8ae8e4a82d411556db2972436e31d6e0cbed39beb222",
+      "code_commit": "ba6ead5720572dc123143b056598fc707d5e7bb1",
+      "config_hash": "f4511cd5fd8fc692457329cccbd418ed908a55ca32292e93a254e350f873822b",
+      "dirty": false,
+      "experiment_id": 5146,
+      "fitness": null,
+      "run_id": "708fbbcf-74cb-46b0-8e1d-6f58dfce52b0",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "SOLUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "84edcf66d7a2a69af952c432167fe74e8ae4f7bb4fd52ea20321d206f5466116",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 12791,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "SOLUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_ml_v1",
+      "artifact_sha256": "712fc0a24cc67aad30262bd62d795f1886186f0f278ce5cf01602b8c25cb3229",
+      "code_commit": "ba6ead5720572dc123143b056598fc707d5e7bb1",
+      "config_hash": "1f37c5ff66e168368872e72c7c8295fa950e17ed555a2cf5c3cd4cfb51ee3b31",
+      "dirty": false,
+      "experiment_id": 5146,
+      "fitness": null,
+      "run_id": "a067c011-e0b3-46d0-86a0-fb43a67d0c12",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "XRPUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "68dd52f56e4fb9834aafe4444972430f996dccd29782260a9e3dd827600075bf",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 12791,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "XRPUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_ml_v1",
+      "artifact_sha256": "f610210e913c3bc2a217a0dac85be30d85fc80bfab3ef617e6670b20aab0618e",
+      "code_commit": "ba6ead5720572dc123143b056598fc707d5e7bb1",
+      "config_hash": "6997ebf79c6ce1db926ec23808085ede126c23bedec5ca9a34a07cf4d5aed5f3",
+      "dirty": false,
+      "experiment_id": 5146,
+      "fitness": null,
+      "run_id": "add8a54f-9b6a-49a2-872c-1d641c447fc1",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "BTCUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "8479e0ef27dd4641db47f71fe20c0d6ade178be4b6d25e41749e0fe05d66ccb2",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 12791,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "BTCUSDT"
+      },
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_ml_v1",
+      "artifact_sha256": "a9784f50be9d7b2d2988afd02abefa696e2427c5903ae220b0aff22d5cd7c9be",
+      "code_commit": "ba6ead5720572dc123143b056598fc707d5e7bb1",
+      "config_hash": "721e0730c30f4a5671c2bd4c12ac9dca4751b5ceb4ec895a6a850ad93e12f4f0",
+      "dirty": false,
+      "experiment_id": 5146,
+      "fitness": null,
+      "run_id": "bc905650-40b3-45c3-9db8-ef6c8d35ef71",
+      "seed": 0,
+      "sharpe": null,
+      "snapshot_id": "9d75c8de86a8e981a9af61b17f76d1a7efc225f3d554366a152ba8f03968824f",
+      "split": "valid",
+      "status": "INVALID",
+      "symbol": "ETHUSDT",
+      "validity": {
+        "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+        "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+        "input_hash": "0ec24ccee1eef23017c0449e070675a169bf4396bc9991fcbc9d4336483129b4",
+        "n_periods": 12790,
+        "n_rows": 12959,
+        "n_unavailable_after_warmup": 12791,
+        "reasons": [
+          "UNAVAILABLE_AFTER_WARMUP",
+          "DATA_GAPS"
+        ],
+        "status": "INVALID",
+        "symbol": "ETHUSDT"
+      },
+      "version": 1
+    }
+  ],
+  "backtest_executed": false,
+  "backtest_run_id": null,
+  "comparison_policy": "INVALID metrics remain null. Predictive accuracy, unavailable-row counts, identifiers and synthetic fixture PnL are not selection scores.",
+  "decision": "SKIPPED_NO_ELIGIBLE_CANDIDATES",
+  "definitions": [
+    {
+      "alpha_id": "baseline_b0",
+      "attempts": 3,
+      "group": "baseline",
+      "test_accesses": 0,
+      "valid_attempts": 2,
+      "version": 1
+    },
+    {
+      "alpha_id": "baseline_b1",
+      "attempts": 3,
+      "group": "baseline",
+      "test_accesses": 0,
+      "valid_attempts": 2,
+      "version": 1
+    },
+    {
+      "alpha_id": "baseline_b2",
+      "attempts": 3,
+      "group": "baseline",
+      "test_accesses": 0,
+      "valid_attempts": 2,
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h01",
+      "attempts": 1,
+      "group": "candidate",
+      "test_accesses": 0,
+      "valid_attempts": 1,
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h02",
+      "attempts": 1,
+      "group": "candidate",
+      "test_accesses": 0,
+      "valid_attempts": 1,
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h03",
+      "attempts": 1,
+      "group": "candidate",
+      "test_accesses": 0,
+      "valid_attempts": 1,
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h04",
+      "attempts": 1,
+      "group": "candidate",
+      "test_accesses": 0,
+      "valid_attempts": 1,
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h05",
+      "attempts": 1,
+      "group": "candidate",
+      "test_accesses": 0,
+      "valid_attempts": 1,
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h06",
+      "attempts": 1,
+      "group": "candidate",
+      "test_accesses": 0,
+      "valid_attempts": 1,
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h07",
+      "attempts": 1,
+      "group": "candidate",
+      "test_accesses": 0,
+      "valid_attempts": 1,
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_h08",
+      "attempts": 1,
+      "group": "candidate",
+      "test_accesses": 0,
+      "valid_attempts": 1,
+      "version": 1
+    },
+    {
+      "alpha_id": "hourly_ml_v1",
+      "attempts": 5,
+      "group": "candidate",
+      "test_accesses": 0,
+      "valid_attempts": 5,
+      "version": 1
+    }
+  ],
+  "execution_limitations": [
+    "No market data loaded or gap policy changed.",
+    "No model or candidate refitted, reevaluated or promoted.",
+    "No new experiment, order, fill or PnL snapshot created.",
+    "TEST observations were not accessed; counters remain zero.",
+    "The completed ten-bar synthetic fixture is correctness evidence only."
+  ],
+  "existing_backtests": [
+    {
+      "artifact_sha256": "9e47df8e46c810eadbfc831b85b8ae5d084a05d1ddc418fc6da356a9c0b2738b",
+      "bt_run_id": "hand_20261015",
+      "mode": "BACKTEST",
+      "status": "finished"
+    }
+  ],
+  "fitness": null,
+  "mode": "BACKTEST",
+  "next_requirement": "A separately preregistered valid candidate/data-quality policy and unchanged chronological splits are required before a candidate backtest can be performed.",
+  "pnl": null,
+  "reason": "All retained hourly research measurements are INVALID; no promoted or rankable best candidate exists. User selected a verified skip instead of an unranked diagnostic.",
+  "schema": "hourly_bar_backtest_review_v1",
+  "scope": "All 12 registered non-synthetic hourly research definitions, including baselines, eight quantitative candidates and frozen ML.",
+  "selected_alpha": null,
+  "selection_decisions": [
+    {
+      "actor": "helios_hourly",
+      "alpha_id": "hourly_h01",
+      "code_commit": "0a76318e68e483c137aadf0675aaf4446ee19229",
+      "evidence_hashes": {
+        "de9d791d-d8fc-4950-aace-08123bbd4d35": "8de2da1010757a98a93d6d877b189b7f0fd310a171def27ddded1ad93b7ffc9d"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "INVALID_VALID_MEASUREMENT",
+        "NO_PERFORMANCE_CONCLUSION"
+      ],
+      "round_id": "hourly_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "de9d791d-d8fc-4950-aace-08123bbd4d35",
+      "version": 1
+    },
+    {
+      "actor": "helios_hourly",
+      "alpha_id": "hourly_h02",
+      "code_commit": "0a76318e68e483c137aadf0675aaf4446ee19229",
+      "evidence_hashes": {
+        "ce71b70a-b689-4795-ae09-659f97c5287a": "b5fb469db2e9b9e574ac0cf82bcf5a3d908b41594725b7d782b738e307226ec7"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "INVALID_VALID_MEASUREMENT",
+        "NO_PERFORMANCE_CONCLUSION"
+      ],
+      "round_id": "hourly_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "ce71b70a-b689-4795-ae09-659f97c5287a",
+      "version": 1
+    },
+    {
+      "actor": "helios_hourly",
+      "alpha_id": "hourly_h03",
+      "code_commit": "0a76318e68e483c137aadf0675aaf4446ee19229",
+      "evidence_hashes": {
+        "b2959a86-8524-499e-9132-d77e1d941aa6": "2f9d283f8df1e12d2555d33b71970be7cd68e937aa7b18645de08f0426f93359"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "INVALID_VALID_MEASUREMENT",
+        "NO_PERFORMANCE_CONCLUSION"
+      ],
+      "round_id": "hourly_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "b2959a86-8524-499e-9132-d77e1d941aa6",
+      "version": 1
+    },
+    {
+      "actor": "helios_hourly",
+      "alpha_id": "hourly_h04",
+      "code_commit": "0a76318e68e483c137aadf0675aaf4446ee19229",
+      "evidence_hashes": {
+        "e8f7916a-094c-448b-a2fd-7c1c5273d610": "4c3f7bd6a77b73361c5ef476d932c6214b18d68ad557325515f7787ea404b31c"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "INVALID_VALID_MEASUREMENT",
+        "NO_PERFORMANCE_CONCLUSION"
+      ],
+      "round_id": "hourly_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "e8f7916a-094c-448b-a2fd-7c1c5273d610",
+      "version": 1
+    },
+    {
+      "actor": "helios_hourly",
+      "alpha_id": "hourly_h05",
+      "code_commit": "0a76318e68e483c137aadf0675aaf4446ee19229",
+      "evidence_hashes": {
+        "d2d4d070-75d5-4250-8a77-f3569f453111": "16bb3108561ce57c37eef7345e37255e6c74d914e64bb325d8aad8e17720664c"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "INVALID_VALID_MEASUREMENT",
+        "NO_PERFORMANCE_CONCLUSION"
+      ],
+      "round_id": "hourly_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "d2d4d070-75d5-4250-8a77-f3569f453111",
+      "version": 1
+    },
+    {
+      "actor": "helios_hourly",
+      "alpha_id": "hourly_h06",
+      "code_commit": "0a76318e68e483c137aadf0675aaf4446ee19229",
+      "evidence_hashes": {
+        "40ad929e-043a-4e45-9ed8-3d616311f7cb": "9d2e6dff512ec73a3a7fc0bd6a93219a7d7517e1e8518ad6e552614e97eed30f"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "INVALID_VALID_MEASUREMENT",
+        "NO_PERFORMANCE_CONCLUSION"
+      ],
+      "round_id": "hourly_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "40ad929e-043a-4e45-9ed8-3d616311f7cb",
+      "version": 1
+    },
+    {
+      "actor": "helios_hourly",
+      "alpha_id": "hourly_h07",
+      "code_commit": "0a76318e68e483c137aadf0675aaf4446ee19229",
+      "evidence_hashes": {
+        "cff9a9a5-c1ca-43c6-9573-835b0c42c47b": "45e2459891bcfe8bd76ca323b64ced6c132eaa335dd00b6e9506cb5013f8c57d"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "INVALID_VALID_MEASUREMENT",
+        "NO_PERFORMANCE_CONCLUSION"
+      ],
+      "round_id": "hourly_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "cff9a9a5-c1ca-43c6-9573-835b0c42c47b",
+      "version": 1
+    },
+    {
+      "actor": "helios_hourly",
+      "alpha_id": "hourly_h08",
+      "code_commit": "0a76318e68e483c137aadf0675aaf4446ee19229",
+      "evidence_hashes": {
+        "aad3717e-3ee6-421b-b367-98d66115c9ba": "4706eada2811293681dbcf141e81933fd4630c2e175748654567bc504454cf94"
+      },
+      "gate_config_hash": "722b1a9f2b5c94a39814082137d3230fd8d432e608ba4e4fc45070f6719b68a1",
+      "reasons": [
+        "INVALID_VALID_MEASUREMENT",
+        "NO_PERFORMANCE_CONCLUSION"
+      ],
+      "round_id": "hourly_round1",
+      "status": "REJECTED",
+      "test_run_id": null,
+      "valid_run_id": "aad3717e-3ee6-421b-b367-98d66115c9ba",
+      "version": 1
+    }
+  ],
+  "sharpe": null,
+  "source": {
+    "commit": "e9f65c31ec9e85941f5ad81da8b3b473d349b6fb",
+    "dirty": false,
+    "verifier_sha256": "fb569b71c335e9043f862c921d219b13fc873b5f6cc19d31c39aa22a9c36cf46"
+  },
+  "step": 151,
+  "verification": {
+    "definitions_sha256": "6ee34af512a1f9e566527fc318822206294569d25163a6b81b5b435a409e5770",
+    "original_definitions": 12,
+    "original_results": 22,
+    "results_sha256": "4844fe5db36219f2f4adab0a9a18fe84e190d45ca73a6d34958f79846f17221d",
+    "test_accesses": 0
+  }
+}

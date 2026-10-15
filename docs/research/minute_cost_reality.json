@@ -1,0 +1,565 @@
+{
+  "manifest_sha256": "a4fdc1b4309041247d2de9e76f49dea8d4ac6b762ca26fe2f8ab6d1fcdd1042c",
+  "rows": [
+    {
+      "status": "REJECTED",
+      "n_paired": 259032,
+      "gross": -0.045378776828555005,
+      "cost": 58.05479999999999,
+      "net": -58.10017877682855,
+      "cost_bps": 12.0,
+      "gross_bps_per_turnover": -0.009379850106152464,
+      "curve": [
+        {
+          "multiplier": 0.5,
+          "cost_bps": 6.0,
+          "total_cost": 29.027399999999997,
+          "annual_sharpe": -99.4973249977478,
+          "total_return": -29.0727787768285
+        },
+        {
+          "multiplier": 1.0,
+          "cost_bps": 12.0,
+          "total_cost": 58.05479999999999,
+          "annual_sharpe": -152.95584874611532,
+          "total_return": -58.1001787768285
+        },
+        {
+          "multiplier": 2.0,
+          "cost_bps": 24.0,
+          "total_cost": 116.10959999999999,
+          "annual_sharpe": -194.8583364304123,
+          "total_return": -116.1549787768285
+        },
+        {
+          "multiplier": 3.0,
+          "cost_bps": 36.0,
+          "total_cost": 174.1644,
+          "annual_sharpe": -209.61786118814052,
+          "total_return": -174.2097787768285
+        },
+        {
+          "multiplier": 4.0,
+          "cost_bps": 48.0,
+          "total_cost": 232.21919999999997,
+          "annual_sharpe": -216.55237553768058,
+          "total_return": -232.26457877682847
+        }
+      ],
+      "alpha_id": "minute_b0",
+      "run_id": "1d99f090-1ef0-4294-8e7f-befcb22b008f",
+      "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+      "artifact_sha256": "fb3cb96d959de351ffd8cb4bc444ce8e3bcda417df719255ba6f6efe93c57cd2"
+    },
+    {
+      "status": "REJECTED",
+      "n_paired": 259032,
+      "gross": -0.606094420461036,
+      "cost": 227.72914314119828,
+      "net": -228.33523756165957,
+      "cost_bps": 12.0,
+      "gross_bps_per_turnover": -0.03193764726468448,
+      "curve": [
+        {
+          "multiplier": 0.5,
+          "cost_bps": 6.0,
+          "total_cost": 113.86457157059927,
+          "annual_sharpe": -806.9594179497999,
+          "total_return": -114.47066599106026
+        },
+        {
+          "multiplier": 1.0,
+          "cost_bps": 12.0,
+          "total_cost": 227.72914314119853,
+          "annual_sharpe": -1168.384705620053,
+          "total_return": -228.3352375616595
+        },
+        {
+          "multiplier": 2.0,
+          "cost_bps": 24.0,
+          "total_cost": 455.45828628239707,
+          "annual_sharpe": -1126.7520642250313,
+          "total_return": -456.06438070285805
+        },
+        {
+          "multiplier": 3.0,
+          "cost_bps": 36.0,
+          "total_cost": 683.1874294235956,
+          "annual_sharpe": -1069.4692625244613,
+          "total_return": -683.7935238440566
+        },
+        {
+          "multiplier": 4.0,
+          "cost_bps": 48.0,
+          "total_cost": 910.9165725647941,
+          "annual_sharpe": -1036.6872569417767,
+          "total_return": -911.5226669852551
+        }
+      ],
+      "alpha_id": "minute_b1",
+      "run_id": "2d8b2c11-032e-420e-997c-d5cacbb1e2df",
+      "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+      "artifact_sha256": "ff4eccc41e28318cfa271b25fe64f31e4ae9d06ab97aac64980fb8ba3594ff95"
+    },
+    {
+      "status": "REJECTED",
+      "n_paired": 259032,
+      "gross": 0.605382398270415,
+      "cost": 246.3327669725716,
+      "net": -245.72738457430145,
+      "cost_bps": 12.0,
+      "gross_bps_per_turnover": 0.0294909559476262,
+      "curve": [
+        {
+          "multiplier": 0.5,
+          "cost_bps": 6.0,
+          "total_cost": 123.16638348628585,
+          "annual_sharpe": -467.74913834372705,
+          "total_return": -122.56100108801556
+        },
+        {
+          "multiplier": 1.0,
+          "cost_bps": 12.0,
+          "total_cost": 246.3327669725717,
+          "annual_sharpe": -647.8223963430736,
+          "total_return": -245.7273845743014
+        },
+        {
+          "multiplier": 2.0,
+          "cost_bps": 24.0,
+          "total_cost": 492.6655339451434,
+          "annual_sharpe": -772.9714250547635,
+          "total_return": -492.0601515468731
+        },
+        {
+          "multiplier": 3.0,
+          "cost_bps": 36.0,
+          "total_cost": 738.9983009177151,
+          "annual_sharpe": -818.1757333983333,
+          "total_return": -738.3929185194448
+        },
+        {
+          "multiplier": 4.0,
+          "cost_bps": 48.0,
+          "total_cost": 985.3310678902868,
+          "annual_sharpe": -840.8127490700743,
+          "total_return": -984.7256854920165
+        }
+      ],
+      "alpha_id": "minute_b2",
+      "run_id": "04e44ffb-946c-4402-b8e3-227570ea535c",
+      "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+      "artifact_sha256": "e87cafc8149de8d8a223f64f09bf08f1ec643c8dc316bb1766935a40cdf6152f"
+    },
+    {
+      "status": "REJECTED",
+      "n_paired": 259032,
+      "gross": 0.817261363597062,
+      "cost": 144.6564,
+      "net": -143.83913863640294,
+      "cost_bps": 12.0,
+      "gross_bps_per_turnover": 0.06779607651762898,
+      "curve": [
+        {
+          "multiplier": 0.5,
+          "cost_bps": 6.0,
+          "total_cost": 72.3282,
+          "annual_sharpe": -205.96420227399355,
+          "total_return": -71.51093863640274
+        },
+        {
+          "multiplier": 1.0,
+          "cost_bps": 12.0,
+          "total_cost": 144.6564,
+          "annual_sharpe": -288.5838446551284,
+          "total_return": -143.83913863640274
+        },
+        {
+          "multiplier": 2.0,
+          "cost_bps": 24.0,
+          "total_cost": 289.3128,
+          "annual_sharpe": -345.1197411780188,
+          "total_return": -288.4955386364027
+        },
+        {
+          "multiplier": 3.0,
+          "cost_bps": 36.0,
+          "total_cost": 433.9692,
+          "annual_sharpe": -364.96722841921877,
+          "total_return": -433.15193863640275
+        },
+        {
+          "multiplier": 4.0,
+          "cost_bps": 48.0,
+          "total_cost": 578.6256,
+          "annual_sharpe": -374.7140885825164,
+          "total_return": -577.8083386364027
+        }
+      ],
+      "alpha_id": "minute_h01",
+      "run_id": "3c2ef3de-bd46-4c2b-947d-86496c6ed7c6",
+      "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+      "artifact_sha256": "14255caa1c92ac830964c836c300497e5bbab4106213a8a5011bfae2b50a34a6"
+    },
+    {
+      "status": "REJECTED",
+      "n_paired": 259032,
+      "gross": 0.186064043451479,
+      "cost": 81.258,
+      "net": -81.07193595654851,
+      "cost_bps": 12.0,
+      "gross_bps_per_turnover": 0.027477522476774572,
+      "curve": [
+        {
+          "multiplier": 0.5,
+          "cost_bps": 6.0,
+          "total_cost": 40.629,
+          "annual_sharpe": -128.89053981803727,
+          "total_return": -40.442935956548496
+        },
+        {
+          "multiplier": 1.0,
+          "cost_bps": 12.0,
+          "total_cost": 81.258,
+          "annual_sharpe": -190.49225978900816,
+          "total_return": -81.0719359565485
+        },
+        {
+          "multiplier": 2.0,
+          "cost_bps": 24.0,
+          "total_cost": 162.516,
+          "annual_sharpe": -236.33490892061727,
+          "total_return": -162.3299359565485
+        },
+        {
+          "multiplier": 3.0,
+          "cost_bps": 36.0,
+          "total_cost": 243.774,
+          "annual_sharpe": -252.6547652457788,
+          "total_return": -243.5879359565485
+        },
+        {
+          "multiplier": 4.0,
+          "cost_bps": 48.0,
+          "total_cost": 325.032,
+          "annual_sharpe": -260.5590142262526,
+          "total_return": -324.8459359565485
+        }
+      ],
+      "alpha_id": "minute_h02",
+      "run_id": "cccfd0fd-69b5-4783-b1c3-223b5c668f99",
+      "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+      "artifact_sha256": "d67aeacfacd6a2e61ae6165b8ef3209f98ec2515cea28831a9903a2dd7cb8b90"
+    },
+    {
+      "status": "REJECTED",
+      "n_paired": 259032,
+      "gross": -0.17290918935829003,
+      "cost": 52.70891477501534,
+      "net": -52.88182396437342,
+      "cost_bps": 12.0,
+      "gross_bps_per_turnover": -0.039365452336784075,
+      "curve": [
+        {
+          "multiplier": 0.5,
+          "cost_bps": 6.0,
+          "total_cost": 26.354457387507697,
+          "annual_sharpe": -116.09659927323774,
+          "total_return": -26.5273665768659
+        },
+        {
+          "multiplier": 1.0,
+          "cost_bps": 12.0,
+          "total_cost": 52.708914775015394,
+          "annual_sharpe": -208.16021349979363,
+          "total_return": -52.8818239643736
+        },
+        {
+          "multiplier": 2.0,
+          "cost_bps": 24.0,
+          "total_cost": 105.41782955003079,
+          "annual_sharpe": -324.93396293386826,
+          "total_return": -105.590738739389
+        },
+        {
+          "multiplier": 3.0,
+          "cost_bps": 36.0,
+          "total_cost": 158.1267443250462,
+          "annual_sharpe": -385.60174604487867,
+          "total_return": -158.29965351440438
+        },
+        {
+          "multiplier": 4.0,
+          "cost_bps": 48.0,
+          "total_cost": 210.83565910006158,
+          "annual_sharpe": -419.2296485358133,
+          "total_return": -211.00856828941977
+        }
+      ],
+      "alpha_id": "minute_h03",
+      "run_id": "0a7be02f-dcde-4620-8471-46337a3248de",
+      "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+      "artifact_sha256": "9cdd3905e61417e645b0ec1704b5f2c29f0ec280fd9ba6394fdf76f8d0126a7d"
+    },
+    {
+      "status": "REJECTED",
+      "n_paired": 259032,
+      "gross": -1.494379477818184,
+      "cost": 308.40599999999995,
+      "net": -309.90037947781815,
+      "cost_bps": 12.0,
+      "gross_bps_per_turnover": -0.058145930149926424,
+      "curve": [
+        {
+          "multiplier": 0.5,
+          "cost_bps": 6.0,
+          "total_cost": 154.20299999999997,
+          "annual_sharpe": -790.6715425159773,
+          "total_return": -155.6973794778183
+        },
+        {
+          "multiplier": 1.0,
+          "cost_bps": 12.0,
+          "total_cost": 308.40599999999995,
+          "annual_sharpe": -949.0796216088638,
+          "total_return": -309.90037947781826
+        },
+        {
+          "multiplier": 2.0,
+          "cost_bps": 24.0,
+          "total_cost": 616.8119999999999,
+          "annual_sharpe": -873.4985565020098,
+          "total_return": -618.3063794778183
+        },
+        {
+          "multiplier": 3.0,
+          "cost_bps": 36.0,
+          "total_cost": 925.218,
+          "annual_sharpe": -832.0517583148231,
+          "total_return": -926.7123794778182
+        },
+        {
+          "multiplier": 4.0,
+          "cost_bps": 48.0,
+          "total_cost": 1233.6239999999998,
+          "annual_sharpe": -810.0402010616612,
+          "total_return": -1235.1183794778183
+        }
+      ],
+      "alpha_id": "minute_h04",
+      "run_id": "08f33d8a-5c8e-47ef-a8da-cd98c9f725db",
+      "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+      "artifact_sha256": "9bd4b168faa24838be4dc4bd905be3c6a088f4f7e34b135f29ca8fd39d54943b"
+    },
+    {
+      "status": "REJECTED",
+      "n_paired": 259032,
+      "gross": 0.023464240104433997,
+      "cost": 46.925999999999995,
+      "net": -46.902535759895564,
+      "cost_bps": 12.0,
+      "gross_bps_per_turnover": 0.006000317121706686,
+      "curve": [
+        {
+          "multiplier": 0.5,
+          "cost_bps": 6.0,
+          "total_cost": 23.462999999999997,
+          "annual_sharpe": -99.76844344872022,
+          "total_return": -23.43953575989542
+        },
+        {
+          "multiplier": 1.0,
+          "cost_bps": 12.0,
+          "total_cost": 46.925999999999995,
+          "annual_sharpe": -167.4070175668236,
+          "total_return": -46.902535759895414
+        },
+        {
+          "multiplier": 2.0,
+          "cost_bps": 24.0,
+          "total_cost": 93.85199999999999,
+          "annual_sharpe": -208.73267010364245,
+          "total_return": -93.82853575989542
+        },
+        {
+          "multiplier": 3.0,
+          "cost_bps": 36.0,
+          "total_cost": 140.778,
+          "annual_sharpe": -215.0844011827487,
+          "total_return": -140.75453575989542
+        },
+        {
+          "multiplier": 4.0,
+          "cost_bps": 48.0,
+          "total_cost": 187.70399999999998,
+          "annual_sharpe": -215.69883851769382,
+          "total_return": -187.6805357598954
+        }
+      ],
+      "alpha_id": "minute_h05",
+      "run_id": "51fd2cd6-c04a-4cd9-aa55-dd318498f858",
+      "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+      "artifact_sha256": "0ae4cfd0abc31a5bc836f8b3daf00da6a680c569a787595752b4093c5c0bed06"
+    },
+    {
+      "status": "REJECTED",
+      "n_paired": 259032,
+      "gross": 1.268673468609842,
+      "cost": 224.85959999999997,
+      "net": -223.59092653139012,
+      "cost_bps": 12.0,
+      "gross_bps_per_turnover": 0.06770483280819722,
+      "curve": [
+        {
+          "multiplier": 0.5,
+          "cost_bps": 6.0,
+          "total_cost": 112.42979999999999,
+          "annual_sharpe": -296.9483321087053,
+          "total_return": -111.16112653139014
+        },
+        {
+          "multiplier": 1.0,
+          "cost_bps": 12.0,
+          "total_cost": 224.85959999999997,
+          "annual_sharpe": -403.1454610506731,
+          "total_return": -223.59092653139012
+        },
+        {
+          "multiplier": 2.0,
+          "cost_bps": 24.0,
+          "total_cost": 449.71919999999994,
+          "annual_sharpe": -473.45244390459084,
+          "total_return": -448.4505265313901
+        },
+        {
+          "multiplier": 3.0,
+          "cost_bps": 36.0,
+          "total_cost": 674.5788,
+          "annual_sharpe": -498.23259939015935,
+          "total_return": -673.3101265313901
+        },
+        {
+          "multiplier": 4.0,
+          "cost_bps": 48.0,
+          "total_cost": 899.4383999999999,
+          "annual_sharpe": -510.5461060139,
+          "total_return": -898.1697265313901
+        }
+      ],
+      "alpha_id": "minute_h06",
+      "run_id": "3806ad1f-d6da-4c18-83bf-5db1615b6f68",
+      "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+      "artifact_sha256": "143d02c53ad5b86884ff2e1142e069e74fbc10c9eb16addd9f7ec508e1a74e0c"
+    },
+    {
+      "status": "REJECTED",
+      "n_paired": 259032,
+      "gross": -0.10311601185944799,
+      "cost": 38.50538760164717,
+      "net": -38.6085036135065,
+      "cost_bps": 12.0,
+      "gross_bps_per_turnover": -0.03213555866817045,
+      "curve": [
+        {
+          "multiplier": 0.5,
+          "cost_bps": 6.0,
+          "total_cost": 19.252693800823625,
+          "annual_sharpe": -169.83880536321487,
+          "total_return": -19.355809812683106
+        },
+        {
+          "multiplier": 1.0,
+          "cost_bps": 12.0,
+          "total_cost": 38.50538760164725,
+          "annual_sharpe": -259.3014964366992,
+          "total_return": -38.60850361350673
+        },
+        {
+          "multiplier": 2.0,
+          "cost_bps": 24.0,
+          "total_cost": 77.0107752032945,
+          "annual_sharpe": -324.57522805343166,
+          "total_return": -77.11389121515397
+        },
+        {
+          "multiplier": 3.0,
+          "cost_bps": 36.0,
+          "total_cost": 115.51616280494174,
+          "annual_sharpe": -345.5687841922279,
+          "total_return": -115.61927881680123
+        },
+        {
+          "multiplier": 4.0,
+          "cost_bps": 48.0,
+          "total_cost": 154.021550406589,
+          "annual_sharpe": -354.84369647522965,
+          "total_return": -154.12466641844847
+        }
+      ],
+      "alpha_id": "minute_h07",
+      "run_id": "c35c5490-00fe-4f14-90be-6d8c949e34ff",
+      "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+      "artifact_sha256": "ceeccc7531449bd01be52c24184a357ffbeadf2287874242ec928f9c22999411"
+    },
+    {
+      "status": "REJECTED",
+      "n_paired": 259032,
+      "gross": -0.595106046869374,
+      "cost": 99.198,
+      "net": -99.79310604686937,
+      "cost_bps": 12.0,
+      "gross_bps_per_turnover": -0.0719900861149669,
+      "curve": [
+        {
+          "multiplier": 0.5,
+          "cost_bps": 6.0,
+          "total_cost": 49.599,
+          "annual_sharpe": -278.5852260804836,
+          "total_return": -50.19410604686944
+        },
+        {
+          "multiplier": 1.0,
+          "cost_bps": 12.0,
+          "total_cost": 99.198,
+          "annual_sharpe": -343.26857668432064,
+          "total_return": -99.79310604686944
+        },
+        {
+          "multiplier": 2.0,
+          "cost_bps": 24.0,
+          "total_cost": 198.396,
+          "annual_sharpe": -349.5761035873741,
+          "total_return": -198.99110604686945
+        },
+        {
+          "multiplier": 3.0,
+          "cost_bps": 36.0,
+          "total_cost": 297.594,
+          "annual_sharpe": -345.6836868464463,
+          "total_return": -298.1891060468694
+        },
+        {
+          "multiplier": 4.0,
+          "cost_bps": 48.0,
+          "total_cost": 396.792,
+          "annual_sharpe": -342.6897809520134,
+          "total_return": -397.3871060468694
+        }
+      ],
+      "alpha_id": "minute_h08",
+      "run_id": "4f6b533e-7290-4d68-bc75-8d63afbdb76a",
+      "code_commit": "68d66a1012f4c0916e4ce3664406fb2e2ae6d090",
+      "artifact_sha256": "7a10110afb2c45668f3f6631d69d178e74d167edd5d39cbde0b31b706f93b709"
+    }
+  ],
+  "convention": "arithmetic reference P&L; paired gross/net periods, not compounded wealth",
+  "limitations": [
+    "Single coin, VALID development evidence, all candidates rejected.",
+    "No resimulation, search, selection, TEST access or promotion.",
+    "Curves use every retained 0.5/1/2/3/4x stress point."
+  ],
+  "plot_sha256": {
+    "minute_cost_reality.svg": "e9a1a34fe0b5241c32ac4f5d2c8fbd78a041f09013e2ac706c7addf56937598f",
+    "minute_cost_reality.png": "1bf98181e0a3209d392c407043a7039a5ddd70707211486375dfa54ac0bb632c"
+  }
+}

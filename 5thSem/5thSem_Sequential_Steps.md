@@ -283,7 +283,7 @@ Follow the numbers in order.
 | ✓ | Step | What to do | Owner | Plan ID | Done when |
 |---|---|---|---|---|---|
 | [x] | 156 | Pre-register and evaluate minute baselines + 6–8 hypotheses on VALID | Q | 5I-03 | Done 2026-10-15: eleven preregistered BTCUSDT/1m/VALID experiments5598–5608 (three baselines, eight fixed hypotheses), clean68d66a1 source, all FINISHED/REJECTED with immutable hashed evidence and unchanged G1–G6/costs. No tuning, promotion or TEST; original research/features preserved. docs/guides/MINUTE_RESEARCH.md and minute_round1_results.json. |
-| [ ] | 157 | Cost reality check: gross edge vs fees; cost-sensitivity curves for minute alphas | Q | 5I-05 | Plot saved |
+| [x] | 157 | Cost reality check: gross edge vs fees; cost-sensitivity curves for minute alphas | Q | 5I-05 | Done 2026-10-15: all eleven hash-verified VALID artifacts reconciled gross-cost=net; saved SVG/JSON compare gross edge per turnover with12bps accepted BTC cost and every retained0.5/1/2/3/4x stress point. Every half-cost net return is negative. No resimulation, tuning, TEST or promotion. docs/research/minute_cost_reality.md. |
 | [ ] | 158 | ML minute alpha through the same pipeline | M | 5I-04 | ML minute result stored |
 | [ ] | 159 | Live data part 2: reconnect on disconnect + gap detection on live bars | S | 5J-01 | Pull network cable test → reconnects, gap logged |
 | [ ] | 160 | PAPER runner: live bars → same strategy / risk / OMS / paper venue as backtest; mode = PAPER | S | 5J-02 | Paper orders + fills appear in DB |

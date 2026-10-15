@@ -15,7 +15,7 @@ from typing import Literal, Self
 
 from pydantic import Field, model_validator
 
-from helios.common.config import HeliosConfig, load_config
+from helios.common.config import HeliosConfig, config_hash, load_config
 
 # research/helios/common/project_config.py -> parents[3] is the project root
 CONFIG_DIR = Path(__file__).resolve().parents[3] / "configs"
@@ -170,3 +170,27 @@ def load_fees(path: Path = CONFIG_DIR / "fees.yaml") -> FeesConfig:
 
 def load_splits(path: Path = CONFIG_DIR / "splits.yaml") -> SplitsConfig:
     return load_config(path, SplitsConfig)
+
+
+class MinuteStageConfig(HeliosConfig):
+    """Resolved minute profile; accepted splits/gates cannot drift in a copied YAML."""
+
+    version: Literal["minute_stage_v1"]
+    horizon_family: Literal[HorizonFamily.MINUTE]
+    interval: Literal["1m"]
+    feature_set_version: Literal["v1"]
+    splits: FamilySplits
+    gates: GatesConfig
+
+    @model_validator(mode="after")
+    def _accepted_policy(self) -> Self:
+        accepted = load_splits().families[HorizonFamily.MINUTE]
+        if self.splits.periods_per_year != 525_600 or self.splits != accepted:
+            raise ValueError("minute stage must retain ADR-003/004 annualization and splits")
+        if config_hash(self.gates) != config_hash(load_gates()):
+            raise ValueError("minute stage must retain the accepted gate configuration")
+        return self
+
+
+def load_minute_stage(path: Path = CONFIG_DIR / "stages/minute.yaml") -> MinuteStageConfig:
+    return load_config(path, MinuteStageConfig)

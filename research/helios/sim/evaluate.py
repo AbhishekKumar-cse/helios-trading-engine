@@ -31,6 +31,7 @@ from helios.features.registry import REGISTRY
 from helios.features.runner import FeatureFrame
 from helios.features.store import DEFAULT_FEATURE_DIR
 from helios.ml.dataset import DatasetConfig, load_feature_frame
+from helios.ml.registered_alpha import frozen_ml_series
 from helios.registry.api import Provenance, RegistryError, get_alpha
 from helios.registry.experiments import require_open_experiment
 from helios.registry.gates import get_gate_config
@@ -160,8 +161,10 @@ def evaluate(
         stored_gate = get_gate_config(connection, gates.version)
         if stored_gate.config_hash != config_hash(gates):
             raise RegistryError("stored gate settings do not match accepted configuration")
-    if definition.horizon_family is not HorizonFamily.HOURLY or definition.expression is None:
-        raise RegistryError("this evaluator supports registered hourly expression alphas only")
+    if definition.horizon_family is not HorizonFamily.HOURLY or (
+        definition.expression is None and definition.provenance is not AlphaProvenance.ML
+    ):
+        raise RegistryError("this evaluator requires an hourly expression or frozen ML reference")
     protocol = {
         "evaluation": selected.model_dump(mode="json"),
         "definition": definition.model_dump(mode="json"),
@@ -175,6 +178,7 @@ def evaluate(
     context = RunContext.capture(selected, experiment.snapshot_id, selected.seed, reported=reported)
     used: list[EvaluationInputs] = []
     feature_provenance: dict[str, Any] = {}
+    computed_alpha: list[BoundedAlphaSeries] = []
 
     def loader(window: SplitWindow) -> tuple[BoundedAlphaSeries, pd.DataFrame]:
         if load_inputs is None:
@@ -219,7 +223,15 @@ def evaluate(
         else:
             inputs = load_inputs(window, definition)
         used.append(inputs)
-        return evaluate_definition(definition, inputs.features, interval="1h"), inputs.bars
+        if definition.expression is None:
+            alpha, ml_evidence = frozen_ml_series(
+                definition, window, symbol=selected.symbol, snapshot_id=experiment.snapshot_id or ""
+            )
+            feature_provenance["ml"] = ml_evidence
+        else:
+            alpha = evaluate_definition(definition, inputs.features, interval="1h")
+        computed_alpha.append(alpha)
+        return alpha, inputs.bars
 
     evaluation = evaluate_split(
         engine,
@@ -275,7 +287,7 @@ def evaluate(
                 orient="records", double_precision=15
             )
         )
-        alpha = evaluate_definition(definition, inputs.features, interval="1h")
+        alpha = computed_alpha[0]
         keep = alpha.open_time >= int(table.open_time.iloc[0])
         alpha = replace(
             alpha,

@@ -1,12 +1,18 @@
 """PAPER page rendering is invoked explicitly, never at worker import time."""
 
 from datetime import UTC, datetime
+from decimal import Decimal
 
 import pandas as pd
 import streamlit as st
 
 from helios.dashboard.control import kill_paper
 from helios.dashboard.paper import read_paper
+
+
+def display_value(value: object) -> object:
+    # Arrow/grid numeric formatting can round 18-place database accounting values.
+    return str(value) if isinstance(value, Decimal) else value
 
 
 def render_paper() -> None:
@@ -74,9 +80,13 @@ def render_paper() -> None:
             ):
                 column.metric(label, str(pnl[key]))
         st.subheader("Latest positions")
-        st.dataframe(pd.DataFrame(view["positions"]), hide_index=True, width="stretch")
+        st.dataframe(
+            pd.DataFrame(view["positions"]).map(display_value), hide_index=True, width="stretch"
+        )
         st.subheader("Open simulated orders")
-        st.dataframe(pd.DataFrame(view["orders"]), hide_index=True, width="stretch")
+        st.dataframe(
+            pd.DataFrame(view["orders"]).map(display_value), hide_index=True, width="stretch"
+        )
         if not view["orders"]:
             st.caption("No persisted working orders for this session.")
 

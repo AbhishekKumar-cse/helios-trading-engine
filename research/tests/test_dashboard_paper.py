@@ -78,6 +78,9 @@ def test_paper_page_refreshes_and_renders_simulation_and_missing_data(session, c
         app.run()
         assert not app.exception and len(app.metric) == 4
         assert len(app.dataframe[1].value) == 1
+        assert app.dataframe[1].value.iloc[0]["qty"] == str(
+            runtime.oms.snapshot()[0].request.quantity
+        )
         assert any("stale" in w.value for w in app.warning)
 
 

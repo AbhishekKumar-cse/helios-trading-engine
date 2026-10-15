@@ -10,11 +10,11 @@ import pandas as pd
 from pydantic import Field, StrictInt, model_validator
 
 from helios.common.config import HeliosConfig, config_hash
-from helios.common.project_config import FeesConfig
+from helios.common.project_config import FeesConfig, HorizonFamily
 from helios.common.types import AlphaStatus, AlphaValue, DecisionLineage
 from helios.features.helpers import zscore
 from helios.ml.calibration import IsotonicMap
-from helios.ml.dataset import HOUR_US, DatasetError
+from helios.ml.dataset import DatasetError
 from helios.ml.splits import SplitDataset, dataset_for_split
 from helios.registry.results import Split
 
@@ -90,6 +90,10 @@ def prediction_to_alpha(
     predictions: pd.DataFrame, policy: MLAlphaPolicy, lineage: DecisionLineage
 ) -> MLAlphaSeries:
     policy = MLAlphaPolicy.model_validate(policy.model_dump())
+    periods = {HorizonFamily.HOURLY: 3_600_000_000, HorizonFamily.MINUTE: 60_000_000}
+    if lineage.horizon_family not in periods:
+        raise DatasetError("ML transform requires an hourly or minute family")
+    period = periods[lineage.horizon_family]
     if (
         lineage.config_hash != config_hash(policy)
         or lineage.snapshot_id != policy.calibration.snapshot_id
@@ -103,9 +107,9 @@ def prediction_to_alpha(
         not pd.api.types.is_integer_dtype(predictions.open_time)
         or pd.api.types.is_bool_dtype(predictions.open_time)
         or predictions.open_time.isna().any()
-        or (predictions.open_time % HOUR_US != 0).any()
+        or (predictions.open_time % period != 0).any()
     ):
-        raise DatasetError("ML timestamps must be integer hourly UTC microseconds")
+        raise DatasetError("ML timestamps must be integer family-grid UTC microseconds")
     keys = list(zip(predictions.open_time, predictions.symbol, strict=True))
     if keys != sorted(keys) or len(set(keys)) != len(keys):
         raise DatasetError("ML predictions require chronological unique time/symbol keys")
@@ -127,7 +131,7 @@ def prediction_to_alpha(
         net = np.sign(gross) * np.maximum(np.abs(gross) - cost, 0)
         times = out.open_time.to_numpy(dtype=np.int64)
         # A window crossing any absent interval is unavailable. No gaps are filled.
-        steps = pd.Series(times).diff().eq(HOUR_US)
+        steps = pd.Series(times).diff().eq(period)
         consecutive = steps.rolling(policy.window - 1, min_periods=policy.window - 1).sum()
         continuous = consecutive.eq(policy.window - 1).to_numpy()
         score = zscore(pd.Series(net), policy.window).to_numpy()
@@ -135,7 +139,7 @@ def prediction_to_alpha(
         value = np.where(usable, np.clip(score, -1, 1), np.nan)
         # Normalisation must not create trades inside cost or reverse the expected edge.
         value = np.where(usable & ((net == 0) | (np.sign(value) != np.sign(net))), 0, value)
-        out["decision_time"] = times + HOUR_US
+        out["decision_time"] = times + period
         out["probability_calibrated"] = calibrated
         out["gross_edge_bps"] = gross
         out["expected_cost_bps"] = cost

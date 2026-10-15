@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from unittest.mock import MagicMock
 
+import pandas as pd
 import pytest
 from registry_sql import SNAPSHOT
 from sqlalchemy import Engine, text
@@ -12,8 +13,10 @@ from test_sim_evaluate import inputs
 
 from helios.alpha.definition import register_alpha_definition
 from helios.common.config import config_hash
+from helios.common.project_config import HorizonFamily
 from helios.common.types import AlphaStatus
 from helios.data.binance import sha256_file
+from helios.data.klines import interval_us
 from helios.ml.dataset import DatasetConfig, DatasetError
 from helios.ml.prediction_alpha import prediction_to_alpha
 from helios.ml.registered_alpha import (
@@ -35,10 +38,16 @@ def write_json(path, value):
     path.write_text(json.dumps(value, sort_keys=True) + "\n")
 
 
-def artifact_fixture(tmp_path, split=Split.VALID):
-    policy, lineage, predictions = fixture(ready=split_window(Split.VALID, interval="1h").end_us)
-    window = split_window(split, interval="1h")
+def artifact_fixture(tmp_path, split=Split.VALID, interval="1h"):
+    policy, lineage, predictions = fixture(
+        ready=split_window(Split.VALID, interval=interval).end_us
+    )
+    window = split_window(split, interval=interval)
     source_inputs = inputs(window, None)
+    if interval == "1m":
+        source_inputs.features.open_time[:] = pd.Series(
+            [window.start_us + (24 + i) * interval_us(interval) for i in range(7)]
+        )
     predictions = predictions.iloc[:7].copy()
     predictions["open_time"] = source_inputs.features.open_time
     model = tmp_path / "model"
@@ -52,12 +61,12 @@ def artifact_fixture(tmp_path, split=Split.VALID):
     base_lineage = dict(
         code_commit="a" * 40, config_hash="b" * 64, data_snapshot_id=snapshot, dirty=False, seed=0
     )
-    dataset = DatasetConfig(features=("log_return_1",))
+    dataset = DatasetConfig(features=("log_return_1",), interval=interval)
     write_json(
         model / "metrics.json",
         dict(
             protocol=dict(
-                version="hourly_lightgbm_v1",
+                version="minute_lightgbm_v1" if interval == "1m" else "hourly_lightgbm_v1",
                 test_access=False,
                 config=dict(dataset=dataset.model_dump(mode="json")),
             ),
@@ -97,7 +106,7 @@ def artifact_fixture(tmp_path, split=Split.VALID):
             payoffs=policy.payoffs.model_copy(
                 update=dict(
                     snapshot_id=snapshot,
-                    available_after_us=split_window(Split.TRAIN, interval="1h").end_us,
+                    available_after_us=split_window(Split.TRAIN, interval=interval).end_us,
                 )
             ),
         )
@@ -109,6 +118,7 @@ def artifact_fixture(tmp_path, split=Split.VALID):
             code_commit="a" * 40,
             config_hash=config_hash(policy),
             model_hash=frozen.model_sha256,
+            horizon_family=HorizonFamily.MINUTE if interval == "1m" else HorizonFamily.HOURLY,
         )
     )
     output = prediction_to_alpha(predictions, policy, lineage)

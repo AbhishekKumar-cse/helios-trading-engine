@@ -9,11 +9,12 @@ import pandas as pd
 
 from helios.data.bars import DEFAULT_OUT_DIR
 from helios.data.binance import sha256_file
+from helios.data.klines import interval_us
 from helios.data.loader import load_bars
 from helios.data.snapshots import compute_snapshot_id, load_manifest
 from helios.features.runner import FeatureFrame
 from helios.features.store import DEFAULT_FEATURE_DIR
-from helios.ml.dataset import HOUR_US, DatasetError, build_dataset, load_feature_frame
+from helios.ml.dataset import DatasetError, build_dataset, load_feature_frame
 from helios.ml.hourly_baselines import HourlyBaselineConfig
 from helios.ml.splits import SplitDataset, dataset_for_split
 from helios.registry.results import Split
@@ -21,11 +22,12 @@ from helios.sim.splits import split_window
 
 
 def eligible_rows(
-    features: FeatureFrame, bars: pd.DataFrame
+    features: FeatureFrame, bars: pd.DataFrame, interval: str = "1h"
 ) -> tuple[FeatureFrame, pd.DataFrame, dict[str, int]]:
     resolution = np.where(bars.close_time.to_numpy() % 1000 == 0, 1000, 1)
-    on_grid = bars.open_time % HOUR_US == 0
-    complete = bars.close_time + resolution == bars.open_time + HOUR_US
+    period = interval_us(interval)
+    on_grid = bars.open_time % period == 0
+    complete = bars.close_time + resolution == bars.open_time + period
     selected = bars.loc[on_grid & complete].copy()
     mask = features.open_time.isin(selected.open_time)
     filtered = replace(
@@ -54,12 +56,14 @@ def load_hourly_pair(
         not snapshot.files
         or compute_snapshot_id(snapshot.files) != snapshot_id
         or snapshot.snapshot_id != snapshot_id
-        or snapshot.interval != "1h"
+        or snapshot.interval != config.dataset.interval
         or not set(config.symbols).issubset(snapshot.symbols)
     ):
         raise DatasetError("ML snapshot identity, universe or interval mismatch")
     windows = [
-        split_window(split, interval="1h", horizon_periods=config.dataset.horizon)
+        split_window(
+            split, interval=config.dataset.interval, horizon_periods=config.dataset.horizon
+        )
         for split in (Split.TRAIN, Split.VALID)
     ]
     years = range(
@@ -82,7 +86,7 @@ def load_hourly_pair(
         root = (
             DEFAULT_FEATURE_DIR
             / f"feature_set={config.dataset.feature_set_version}"
-            / "interval=1h"
+            / f"interval={config.dataset.interval}"
             / f"symbol={symbol}"
         )
         path = root / "manifest.json"
@@ -108,8 +112,10 @@ def load_hourly_pair(
             frame = load_feature_frame(
                 symbol, window.start_us, window.end_us - 1, config=config.dataset
             )
-            bars = load_bars(symbol, "1h", window.start_us, window.end_us - 1)
-            features[symbol], prices[symbol], counts[symbol] = eligible_rows(frame, bars)
+            bars = load_bars(symbol, config.dataset.interval, window.start_us, window.end_us - 1)
+            features[symbol], prices[symbol], counts[symbol] = eligible_rows(
+                frame, bars, config.dataset.interval
+            )
         parent = build_dataset(features, prices, config=config.dataset, snapshot_id=snapshot_id)
         parts.append(dataset_for_split(parent, window))
         exclusions[window.split.name] = counts

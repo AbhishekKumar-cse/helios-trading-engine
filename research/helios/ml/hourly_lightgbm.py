@@ -32,7 +32,7 @@ class LightGBMConfig(HourlyBaselineConfig):
 def lightgbm_protocol(config: LightGBMConfig) -> dict[str, object]:
     protocol = fixed_protocol(config)
     protocol.update(
-        version="hourly_lightgbm_v1",
+        version="minute_lightgbm_v1" if config.dataset.interval == "1m" else "hourly_lightgbm_v1",
         scaler="none; tree inputs retain original units",
         selection="fixed binary-logloss early stopping on VALID; VALID is not an independent test",
         deterministic=True,

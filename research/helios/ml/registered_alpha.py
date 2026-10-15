@@ -13,8 +13,9 @@ from helios.common.config import config_hash
 from helios.common.project_config import HorizonFamily, load_fees, load_gates, load_splits
 from helios.common.types import AlphaStatus, AlphaValue
 from helios.data.binance import sha256_file
+from helios.data.klines import interval_us
 from helios.ml.calibration import IsotonicMap, verified_source
-from helios.ml.dataset import HOUR_US, DatasetConfig, DatasetError
+from helios.ml.dataset import DatasetConfig, DatasetError
 from helios.ml.prediction_alpha import MLAlphaPolicy, prediction_to_alpha
 from helios.registry.results import Split
 from helios.sim.splits import SplitWindow, split_window
@@ -76,8 +77,9 @@ def read_frozen_ml(path: Path, model_ref: str | None = None) -> FrozenMLArtifact
     if (
         report["lineage"]["config_hash"] != config_hash(policy)
         or config_hash(policy.fees) != config_hash(load_fees())
-        or frozen.available_after_us < split_window(Split.VALID, interval="1h").end_us
-        or policy.payoffs.available_after_us < split_window(Split.TRAIN, interval="1h").end_us
+        or frozen.available_after_us < split_window(Split.VALID, interval=dataset.interval).end_us
+        or policy.payoffs.available_after_us
+        < split_window(Split.TRAIN, interval=dataset.interval).end_us
         or report["protocol"]["post_calibration_only"] is not True
         or report["protocol"]["window"] != policy.window
         or report["protocol"]["cost_sides"] != policy.cost_sides
@@ -92,7 +94,8 @@ def read_frozen_ml(path: Path, model_ref: str | None = None) -> FrozenMLArtifact
         lineage.code_commit != report["lineage"]["code_commit"]
         or lineage.seed != report["lineage"]["seed"]
         or lineage.feature_set_version != dataset.feature_set_version
-        or lineage.horizon_family is not HorizonFamily.HOURLY
+        or lineage.horizon_family
+        is not (HorizonFamily.MINUTE if dataset.interval == "1m" else HorizonFamily.HOURLY)
         or any(value.lineage != lineage for value in values)
     ):
         raise DatasetError("frozen ML typed signal lineage mismatch")
@@ -110,10 +113,14 @@ def frozen_definition(artifact: FrozenMLArtifact) -> AlphaDefinition:
     return AlphaDefinition(
         alpha_id=lineage.alpha_id,
         version=lineage.alpha_version,
-        name="Frozen calibrated hourly LightGBM alpha",
+        name=(
+            "Frozen calibrated minute LightGBM alpha"
+            if artifact.dataset.interval == "1m"
+            else "Frozen calibrated hourly LightGBM alpha"
+        ),
         provenance=AlphaProvenance.ML,
         feature_set_version=artifact.dataset.feature_set_version,
-        horizon_family=HorizonFamily.HOURLY,
+        horizon_family=lineage.horizon_family,
         horizon_periods=artifact.dataset.horizon,
         model_ref=artifact.model_ref,
         params={
@@ -122,7 +129,7 @@ def frozen_definition(artifact: FrozenMLArtifact) -> AlphaDefinition:
             "model_sha256": artifact.policy.calibration.model_sha256,
             "transform_commit": lineage.code_commit,
         },
-        author="helios_step145",
+        author="helios_step158" if artifact.dataset.interval == "1m" else "helios_step145",
     )
 
 
@@ -145,17 +152,20 @@ def frozen_ml_series(
         or definition.feature_set_version != expected.feature_set_version
         or definition.horizon_periods != artifact.dataset.horizon
         or snapshot_id != artifact.policy.calibration.snapshot_id
-        or window.family is not HorizonFamily.HOURLY
+        or window.family is not expected.horizon_family
+        or definition.horizon_family is not expected.horizon_family
+        or window.interval != artifact.dataset.interval
     ):
         raise DatasetError("registered ML definition/snapshot does not match frozen signals")
+    period = interval_us(artifact.dataset.interval)
     selected = [
         v
         for v in artifact.values
-        if v.symbol == symbol and window.start_us <= v.timestamp - HOUR_US < window.end_us
+        if v.symbol == symbol and window.start_us <= v.timestamp - period < window.end_us
     ]
     alpha = BoundedAlphaSeries(
         symbol,
-        pd.Series([v.timestamp - HOUR_US for v in selected], dtype="int64"),
+        pd.Series([v.timestamp - period for v in selected], dtype="int64"),
         pd.Series([float("nan") if v.value is None else v.value for v in selected], dtype=float),
         pd.Series([v.status is AlphaStatus.OK for v in selected], dtype=bool),
         definition.output,
@@ -169,7 +179,7 @@ def frozen_ml_series(
         selected_rows=len(selected),
         available_rows=int(alpha.available.sum()),
         timestamp_mapping=(
-            "typed close decision time minus one hour to originating bar; common lag=1"
+            f"typed close decision time minus {artifact.dataset.interval} to originating bar; lag=1"
         ),
     )
 

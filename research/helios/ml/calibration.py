@@ -20,7 +20,8 @@ from sklearn.metrics import brier_score_loss, log_loss
 from helios.common.config import HeliosConfig
 from helios.common.project_config import SplitsConfig
 from helios.data.binance import sha256_file
-from helios.ml.dataset import HOUR_US, DatasetError
+from helios.data.klines import interval_us
+from helios.ml.dataset import DatasetError
 from helios.registry.results import Split
 from helios.sim.splits import SplitWindow, split_window
 
@@ -79,6 +80,7 @@ def validate_predictions(frame: pd.DataFrame, window: SplitWindow) -> None:
     if not frame.symbol.map(lambda s: isinstance(s, str) and s.isalnum() and s.isupper()).all():
         raise DatasetError("invalid prediction symbol")
     times = frame.open_time.to_numpy(dtype=np.int64)
+    period = interval_us(window.interval)
     ends = frame.label_end_time.to_numpy(dtype=np.int64)
     keys = list(zip(times, frame.symbol, strict=True))
     if keys != sorted(keys) or len(set(keys)) != len(keys):
@@ -86,8 +88,8 @@ def validate_predictions(frame: pd.DataFrame, window: SplitWindow) -> None:
     if (
         (times < window.start_us).any()
         or (ends >= window.end_us).any()
-        or (times % HOUR_US != 0).any()
-        or (ends - times != window.horizon_periods * HOUR_US).any()
+        or (times % period != 0).any()
+        or (ends - times != window.horizon_periods * period).any()
     ):
         raise DatasetError("prediction labels cross the selected split boundary")
     target = frame.target.to_numpy(dtype=float)
@@ -178,7 +180,9 @@ def fit_valid_calibration(
 
 def verified_source(metrics_path: Path) -> tuple[dict[str, Any], pd.DataFrame]:
     report: dict[str, Any] = json.loads(metrics_path.read_text())
-    if report["protocol"]["version"] != "hourly_lightgbm_v1":
+    interval = report["protocol"]["config"]["dataset"].get("interval", "1h")
+    expected = {"1h": "hourly_lightgbm_v1", "1m": "minute_lightgbm_v1"}.get(interval)
+    if expected is None or report["protocol"]["version"] != expected:
         raise DatasetError("calibration source must be the fixed LightGBM run")
     for name in ("lightgbm.joblib", "valid_predictions.parquet"):
         if sha256_file(metrics_path.parent / name) != report["artifact_hashes"][name]:

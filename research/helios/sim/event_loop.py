@@ -33,6 +33,9 @@ class BarEventLoop:
         source: MarketDataSource,
         decide: Callable[[Bar], list[OrderAction]],
         act: Callable[[OrderAction, BarOpen], None],
+        *,
+        opened: Callable[[BarOpen], None] | None = None,
+        closed: Callable[[Bar], None] | None = None,
     ) -> tuple[ScheduledAction, ...]:
         """Materialize a historical timeline; expose only opening prices at opens.
 
@@ -67,6 +70,8 @@ class BarEventLoop:
         seen: set[str] = set()
         for clock, phase, symbol, bar in sorted(timeline, key=lambda item: item[:3]):
             if phase == 0:
+                if closed is not None:
+                    closed(bar)
                 actions = decide(bar)
                 staged = []
                 for action in actions:
@@ -100,4 +105,6 @@ class BarEventLoop:
                 pending = [p for p in pending if p not in ready]
                 for intent in ready:
                     act(intent.action, opening)
+                if opened is not None:
+                    opened(opening)
         return tuple(pending)

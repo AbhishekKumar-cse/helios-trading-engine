@@ -40,3 +40,11 @@ All ten cash/equity/position/average-cost/P&L rows reconcile independently.
 The CSV records six decimal places because these chosen inputs yield terminating
 values at that precision. The implementation comparison uses exact Decimal
 equality against the project's 18-place record boundary, with no float tolerance.
+
+Step 148's `test_hand_backtest.py` passes only the input columns to the real
+BarStrategy, DailyRisk, OMS, BarPaperVenue and PnLLedger through BarEventLoop.
+Every saved expected field and fill is compared exactly. Changing a later bar
+cannot change earlier reports or accounting. Optional `opened`/`closed` clock
+callbacks let the venue see each opening and resolve completed ranges before
+the next decision, without exposing that bar's high/low/close at the opening.
+The test is in memory; config-driven database persistence follows in step 149.

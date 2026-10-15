@@ -267,7 +267,7 @@ Follow the numbers in order.
 | ✓ | Step | What to do | Owner | Plan ID | Done when |
 |---|---|---|---|---|---|
 | [x] | 147 | Hand-verified scenario: 10 bars, 3 trades calculated in a spreadsheet (commit the sheet as CSV) | S | 5H-11 | Done 2026-10-15: independent spreadsheet-authored fixed CSV with ten synthetic bars, BUY 1/BUY 1/SELL 3 at following opens, accepted BTC costs, long add/short flip and all cash/average-cost/realized/unrealized/equity rows. Formula/render checks and independent Decimal cash-flow reconciliation pass; final net 19.340022 USDT is a fixture, not market performance. docs/guides/HAND_BACKTEST_SCENARIO.md. |
-| [ ] | 148 | Test: backtest of that scenario equals the spreadsheet exactly | S | 5H-11 | Test passes |
+| [x] | 148 | Test: backtest of that scenario equals the spreadsheet exactly | S | 5H-11 | Done 2026-10-15: real BarStrategy/DailyRisk/OMS/BarPaperVenue/PnLLedger replay compares all ten fixed CSV accounting rows and three next-open fills by exact Decimal equality. Later-bar perturbation preserves earlier results. Optional opening/completed-bar scheduler hooks retain timing boundaries; nine integration/clock tests and strict typing pass. |
 | [ ] | 149 | Backtest runner: config → run → `backtest_runs`, orders, fills, P&L in DB; mode = BACKTEST | S | 5H-12 | One command runs a backtest |
 | [ ] | 150 | Backtest report: gross/net P&L, drawdown, exposure, trades, fees, per-coin P&L | S | 5H-13 | Report generated |
 | [ ] | 151 | Backtest the promoted hourly alpha (or best candidate if none passed) | S+Q | 5H-14 | Report + short note |

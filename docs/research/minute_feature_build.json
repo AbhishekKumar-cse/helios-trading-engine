@@ -1,0 +1,146 @@
+{
+  "interval": "1m",
+  "total_rows": 5256000,
+  "coins": [
+    {
+      "symbol": "BTCUSDT",
+      "rows": 1051200,
+      "features": 21,
+      "partitions": 3,
+      "first_open_us": 1725148800000000,
+      "last_open_us": 1788220740000000,
+      "off_grid_rows": 0,
+      "manifest_sha256": "2aa2dc70391bdf3407fa8453a47ae77df283cc416ab67fb123292ff8991fb0ec",
+      "input_snapshot_id": "1b00c4263025d1b17d4a0900ac8758a82e7e0335373f874dc645b794883eece9",
+      "config_hash": "62ca5b9fc9ece0521f5a7b3a984e28429ce8ec941831b995cc2cd6edf42fdf40",
+      "source_commit": "75022f44eb26dd4f78a7aa2372504d840637e07d",
+      "dirty": false,
+      "files": [
+        {
+          "path": "year=2024/features.parquet",
+          "sha256": "88fa942f6a9b0749e1f2a674d11666655ca5aa8ab27b7e3ec030130eaecc48bd"
+        },
+        {
+          "path": "year=2025/features.parquet",
+          "sha256": "898584b33864874f9dc6dce908833201d7bc393c8202369df01e196946e4492c"
+        },
+        {
+          "path": "year=2026/features.parquet",
+          "sha256": "42f64fba5882ddbc598344387772df94293ca86808bac0b8ff24d2771c084368"
+        }
+      ]
+    },
+    {
+      "symbol": "ETHUSDT",
+      "rows": 1051200,
+      "features": 21,
+      "partitions": 3,
+      "first_open_us": 1725148800000000,
+      "last_open_us": 1788220740000000,
+      "off_grid_rows": 0,
+      "manifest_sha256": "0ec28e36073b6701b5e5352df2405e7953a2dd953958d364368367336f8cad76",
+      "input_snapshot_id": "7c957ecbd87d3fa1cf2430783200d030cc40d02046122ffeb9eb4963c14d161a",
+      "config_hash": "62ca5b9fc9ece0521f5a7b3a984e28429ce8ec941831b995cc2cd6edf42fdf40",
+      "source_commit": "75022f44eb26dd4f78a7aa2372504d840637e07d",
+      "dirty": false,
+      "files": [
+        {
+          "path": "year=2024/features.parquet",
+          "sha256": "cb1725128be57bb2c8c6ac66ee6fb481ecab5ada22d8af65b619bb8b6286648c"
+        },
+        {
+          "path": "year=2025/features.parquet",
+          "sha256": "d5c5af1da001f7170c4c02098bf123b53dcbddb663556dc467199649bcf2e2ca"
+        },
+        {
+          "path": "year=2026/features.parquet",
+          "sha256": "6d4a6d75ee51cbb156024a54fdaeeb75db38ed13bbce472f81628908118b6b6e"
+        }
+      ]
+    },
+    {
+      "symbol": "SOLUSDT",
+      "rows": 1051200,
+      "features": 21,
+      "partitions": 3,
+      "first_open_us": 1725148800000000,
+      "last_open_us": 1788220740000000,
+      "off_grid_rows": 0,
+      "manifest_sha256": "324f593d1276a24b1419e3f1ed9e735de681f9d9ed27e57a704592c23093493a",
+      "input_snapshot_id": "e6f56a87b3df2809c14334051bfc7406846b5528f7e56de8261649ecb8fd45a9",
+      "config_hash": "62ca5b9fc9ece0521f5a7b3a984e28429ce8ec941831b995cc2cd6edf42fdf40",
+      "source_commit": "75022f44eb26dd4f78a7aa2372504d840637e07d",
+      "dirty": false,
+      "files": [
+        {
+          "path": "year=2024/features.parquet",
+          "sha256": "5bdd0d36fcdf65335ff6debab82512c9201307ab24e1e86ef9e7aee7ce7b4dfe"
+        },
+        {
+          "path": "year=2025/features.parquet",
+          "sha256": "e4746d19a1d5fc654f500450fa28dbef762fc8bb75be365815b9e73ad0f42a26"
+        },
+        {
+          "path": "year=2026/features.parquet",
+          "sha256": "185e0465437eed21909e813f71b33f7152fc2a80856dd7558099ee2e85f2ea52"
+        }
+      ]
+    },
+    {
+      "symbol": "BNBUSDT",
+      "rows": 1051200,
+      "features": 21,
+      "partitions": 3,
+      "first_open_us": 1725148800000000,
+      "last_open_us": 1788220740000000,
+      "off_grid_rows": 0,
+      "manifest_sha256": "a03c536d0ed8d1b902963506821d290b911b3bc899951de3477899996b3c278b",
+      "input_snapshot_id": "52115537901d91f1f608f2c20e205b33edbc4f63d5446de17b10fdb293a77bba",
+      "config_hash": "62ca5b9fc9ece0521f5a7b3a984e28429ce8ec941831b995cc2cd6edf42fdf40",
+      "source_commit": "75022f44eb26dd4f78a7aa2372504d840637e07d",
+      "dirty": false,
+      "files": [
+        {
+          "path": "year=2024/features.parquet",
+          "sha256": "485f9aa7948998c8983c7ed40ac6b53a2daec54e449299823f5c152789210abe"
+        },
+        {
+          "path": "year=2025/features.parquet",
+          "sha256": "824c3fe304b9e318a0486649e38b763686167724b2e07ff786e59b770e8b839b"
+        },
+        {
+          "path": "year=2026/features.parquet",
+          "sha256": "b3ca424262bc74b789fedb1925a078c449de431aa93d7d0ecb0be3dba6b21b48"
+        }
+      ]
+    },
+    {
+      "symbol": "XRPUSDT",
+      "rows": 1051200,
+      "features": 21,
+      "partitions": 3,
+      "first_open_us": 1725148800000000,
+      "last_open_us": 1788220740000000,
+      "off_grid_rows": 0,
+      "manifest_sha256": "157cc191e60b0801332bba93db5eb60d5ff1170b17a8535957c320d44c1a7f87",
+      "input_snapshot_id": "708d9ecdba800b697cb891c09cc180d8935bfaed234e91fe9306fb5d6e7de192",
+      "config_hash": "62ca5b9fc9ece0521f5a7b3a984e28429ce8ec941831b995cc2cd6edf42fdf40",
+      "source_commit": "75022f44eb26dd4f78a7aa2372504d840637e07d",
+      "dirty": false,
+      "files": [
+        {
+          "path": "year=2024/features.parquet",
+          "sha256": "29ce3a50064c18ed2e8208a2f926ed3a0eeaf072f5b23992cce81e8aa9b52dcf"
+        },
+        {
+          "path": "year=2025/features.parquet",
+          "sha256": "3ca7103ae64021ee1e37525f61c75698a54e770087746d1a00c9b16346f450a2"
+        },
+        {
+          "path": "year=2026/features.parquet",
+          "sha256": "7de9457419fd5c61b25a4cf33eb9320333c0f926521c368d837dce62224cf632"
+        }
+      ]
+    }
+  ]
+}

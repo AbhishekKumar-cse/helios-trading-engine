@@ -47,3 +47,15 @@ never touches TEST, changes a split or promotes a candidate. A clean-source
 result is not a deployment approval; the retained gates and later selection
 policy remain authoritative. The following step's cost-reality note records
 measured outcomes without rerunning or optimizing candidates.
+
+## Retained outcome (2026-10-15)
+
+All eleven attempts finished from clean source
+`68d66a1012f4c0916e4ce3664406fb2e2ae6d090`. Every candidate is **REJECTED**;
+none is promoted. The companion
+[`minute_round1_results.json`](../research/minute_round1_results.json) records
+each experiment/run ID, measured metrics, gate outcomes and artifact checksum.
+The large evaluation artifacts remain outside Git. Hash verification also checks
+preregistration preceded measurement, the minute annualization and TRAIN-only
+regime calibration. TEST access remains zero. The original hourly research and
+all existing feature files remain unchanged.

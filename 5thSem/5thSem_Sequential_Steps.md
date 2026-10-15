@@ -282,7 +282,7 @@ Follow the numbers in order.
 
 | ✓ | Step | What to do | Owner | Plan ID | Done when |
 |---|---|---|---|---|---|
-| [ ] | 156 | Pre-register and evaluate minute baselines + 6–8 hypotheses on VALID | Q | 5I-03 | Results stored |
+| [x] | 156 | Pre-register and evaluate minute baselines + 6–8 hypotheses on VALID | Q | 5I-03 | Done 2026-10-15: eleven preregistered BTCUSDT/1m/VALID experiments5598–5608 (three baselines, eight fixed hypotheses), clean68d66a1 source, all FINISHED/REJECTED with immutable hashed evidence and unchanged G1–G6/costs. No tuning, promotion or TEST; original research/features preserved. docs/guides/MINUTE_RESEARCH.md and minute_round1_results.json. |
 | [ ] | 157 | Cost reality check: gross edge vs fees; cost-sensitivity curves for minute alphas | Q | 5I-05 | Plot saved |
 | [ ] | 158 | ML minute alpha through the same pipeline | M | 5I-04 | ML minute result stored |
 | [ ] | 159 | Live data part 2: reconnect on disconnect + gap detection on live bars | S | 5J-01 | Pull network cable test → reconnects, gap logged |

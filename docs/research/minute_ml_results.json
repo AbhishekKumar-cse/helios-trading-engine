@@ -1,0 +1,87 @@
+{
+  "experiment_id": 5628,
+  "run_id": "efec729e-e04f-4d7c-b726-c3b99b307b12",
+  "status": "INVALID",
+  "code_commit": "2f45359ac272cc39ac7db3f412be6f9774dd0d5c",
+  "snapshot_id": "b1799dbee6c68d72e55a8461f9701bf62744816db7dc859ebb2c5995a237277f",
+  "test_accesses": 0,
+  "stages": {
+    "fit": {
+      "path": "reports_out/minute_ml/experiment-5628/model/fce56f56-4ec3-430f-813f-245613465197/metrics.json",
+      "sha256": "b16747d75318e5ec8209ea158cca2116329d20cc87bcd3acda04738abe0a5be2"
+    },
+    "calibration": {
+      "path": "reports_out/minute_ml/experiment-5628/calibration/9500866d-b29b-4eac-a502-136ba06c9495/metrics.json",
+      "sha256": "e6bf38afb63c0696d66589214b027a17e1818b5fe5aa87375e5e0a6fa3cae9a9"
+    },
+    "alpha": {
+      "path": "reports_out/minute_ml/experiment-5628/alpha/metrics.json",
+      "sha256": "93d9f45427ededee204e4580f968a2f4372bf2cec68b9bb1a184b27c110bf9c7"
+    }
+  },
+  "best_iteration": 73,
+  "datasets": {
+    "TRAIN": {
+      "availability": [
+        {
+          "n_feature_unavailable": 167,
+          "n_label_unavailable": 1,
+          "n_rows": 525600,
+          "n_usable": 525432,
+          "symbol": "BTCUSDT"
+        }
+      ],
+      "input_hashes": {
+        "BTCUSDT": "81a0efb5fc8693f57eadd222439f1c17fe2a25f3ccd52b9eae1a0e60362c46ff"
+      },
+      "n_purged_labels": 0,
+      "n_samples": 525432,
+      "sample_sha256": "a984ec3f290164625dbd2c2d90ab05c5524b98bdd4e844897db5f2439f2a4b77"
+    },
+    "VALID": {
+      "availability": [
+        {
+          "n_feature_unavailable": 0,
+          "n_label_unavailable": 1,
+          "n_rows": 259200,
+          "n_usable": 259199,
+          "symbol": "BTCUSDT"
+        }
+      ],
+      "input_hashes": {
+        "BTCUSDT": "24a146501c3e922d0214dfb18bbef39f1ae995bd1e6f5db69c1b809d7ce27848"
+      },
+      "n_purged_labels": 0,
+      "n_samples": 259199,
+      "sample_sha256": "0fafdc01478e7d1a8dea3e27afc8d523983f9aa2962b5b4520d365a2e32715b1"
+    }
+  },
+  "predictive_valid_metrics": {
+    "accuracy": 0.5228068009521641,
+    "log_loss": 0.6890321057338447,
+    "macro_f1": 0.5065383586770278,
+    "majority_accuracy": 0.5190606445240915,
+    "roc_auc": 0.5345697362389733
+  },
+  "n_alpha_rows": 259199,
+  "n_available": 0,
+  "n_diagnostic": 0,
+  "evaluation_sha256": "f6120a83e948ea6e3b9985a849ee2772c52b3df96b0279661b64ac2b14562705",
+  "validity": {
+    "config_hash": "16e0da5e37bdb0a887e53f8b1dffa1d246e16de87c759ff72b9ca30e0b51187a",
+    "config_json": "{\"convention\":\"explicit_warmup_complete_v1\",\"min_periods\":2,\"warmup_rows\":168}",
+    "input_hash": "4b09de360a9a244098f30b0ee6bbd11a813fc6f9834e0c7e44590547f50a6743",
+    "n_periods": 259031,
+    "n_rows": 259200,
+    "n_unavailable_after_warmup": 259032,
+    "reasons": [
+      "UNAVAILABLE_AFTER_WARMUP"
+    ],
+    "status": "INVALID",
+    "symbol": "BTCUSDT"
+  },
+  "limitations": [
+    "Historical VALID predates the fitted map: typed values unavailable.",
+    "Diagnostic alpha is retrospective; it cannot replace typed availability."
+  ]
+}

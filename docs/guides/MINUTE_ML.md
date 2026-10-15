@@ -30,3 +30,22 @@ No TEST data, promotion or real order route is used.
 The shared hourly policy schema and hashes are preserved. Tests cover minute
 calibration bounds, the frozen minute-to-bar timestamp mapping, rejection of
 family mismatches, and the existing hourly calibration/alpha regressions.
+
+## Retained outcome (2026-10-15)
+
+The clean `2f45359ac272cc39ac7db3f412be6f9774dd0d5c` attempt finished and
+stored run `efec729e-e04f-4d7c-b726-c3b99b307b12`, **INVALID** with
+`UNAVAILABLE_AFTER_WARMUP`. TRAIN has 525,432 usable samples, VALID 259,199.
+The fixed stopping rule selected iteration 73. Predictive VALID accuracy is
+0.522807 versus TRAIN-majority accuracy 0.519061; macro-F1 is 0.506538 and AUC
+0.534570. These are development metrics, without an independent performance claim.
+
+All 259,199 typed values are UNAVAILABLE; zero diagnostic alpha values are
+finite. Calibration availability is enforced, and the fixed cost-adjusted
+transform supplies no usable trading series. No retrospective signals are
+substituted. No trading performance, gate pass or promotion is claimed. The
+companion [`minute_ml_results.json`](../research/minute_ml_results.json) records
+the source/model/calibration/alpha/evaluation hashes and precise validity counts.
+Verification confirmed clean lineage, preregistration before measurement, all
+child artifact hashes and zero global TEST accesses. The 38 focused ML tests and
+strict package typing pass.

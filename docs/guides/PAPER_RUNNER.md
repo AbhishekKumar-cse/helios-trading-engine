@@ -57,3 +57,27 @@ Runtime tests cover delayed fill timing, exact shared costs/accounting, explicit
 unavailability, stale/gap/clock/intent guards, cancellation, mode refusal and
 incremental PostgreSQL persistence. Matplotlib is now a base dependency because
 the minute cost and ML pipeline CLIs generate required plot artifacts.
+
+## Verified public session (2026-10-15)
+
+`paper_20261015_a1`, infrastructure experiment **5793**, finished from clean
+`f928b909c16a195867183a1797e06145821144ea`. The 240-second bounded request
+recorded **241.007713194 monotonic elapsed seconds**, including shutdown,
+115 public updates, three closed bars, **one order/one simulated fill** and four
+P&L/position snapshots. The recorded system-clock span is 232.841878 seconds;
+both clocks are retained, without attributing their difference to a known cause.
+There was one connection, no disconnect and no detected gap. No claim of four
+closed bars, a 24-hour soak or a profitable candidate is made.
+
+The fill price and fee were independently recomputed from its captured later
+in-progress price. A fresh ledger replay matched every saved snapshot and
+position. Database ownership, PAPER/simulated mode, terminal artifact hash,
+single latched kill event and order/fill/snapshot counts match the artifact.
+The bounded stop left the strategy HALTED and recorded its paper position.
+Original 22 hourly results/12 definitions and all 71 feature files were
+reverified unchanged; global TEST accesses remain zero.
+
+The committed [`public_paper_smoke.json`](../research/public_paper_smoke.json)
+records the source and observation/artifact hashes. Full observations and typed
+execution evidence remain outside Git under `reports_out/paper/paper_20261015_a1/`.
+Retain this directory and run ID; it must not be reused for a repeat observation.

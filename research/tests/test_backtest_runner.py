@@ -129,9 +129,11 @@ def test_loss_trip_blocks_new_exposure_and_input_gaps_refuse():
         )
 
 
+@pytest.mark.parametrize("dirty", [False, True])
 def test_run_persists_owned_orders_fills_snapshots_and_immutable_lineage(
-    engine, connection, tmp_path
+    engine, connection, tmp_path, monkeypatch, dirty
 ):
+    monkeypatch.setattr("helios.common.lineage.git_is_dirty", lambda *_: dirty)
     selected = preregister(config(), engine=engine, reported=False)
     path = run_backtest(selected, engine=engine, output_dir=tmp_path, reported=False)
     artifact = BacktestArtifact.model_validate_json(path.read_text())
@@ -139,7 +141,9 @@ def test_run_persists_owned_orders_fills_snapshots_and_immutable_lineage(
     row = connection.execute(
         text("SELECT * FROM backtest_runs WHERE bt_run_id=:id"), {"id": selected.run_id}
     ).one()
-    assert row.mode == "BACKTEST" and row.status == "finished" and row.dirty
+    assert row.mode == "BACKTEST" and row.status == "finished"
+    assert row.dirty is artifact.context.dirty is dirty
+    assert row.code_commit == artifact.context.code_commit
     assert row.artifact_sha256 == sha256_file(path)
     for table, count in (("orders", 3), ("positions_snapshot", 10), ("pnl_snapshots", 10)):
         assert (

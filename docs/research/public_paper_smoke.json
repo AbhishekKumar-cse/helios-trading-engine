@@ -1,0 +1,39 @@
+{
+  "run_id": "paper_20261015_a1",
+  "experiment_id": 5793,
+  "status": "FINISHED",
+  "mode": "PAPER",
+  "is_simulated": true,
+  "code_commit": "f928b909c16a195867183a1797e06145821144ea",
+  "dirty": false,
+  "artifact_sha256": "586e3a2e3acb6220b64726f0bb539e466efec140bf5b97da845915858e8e1a64",
+  "observations_sha256": "d8f6747d3edad0ba4f0bba990c5068b4e679879600138e5030a6abb6ddee04c9",
+  "stream_identity_sha256": "a1b36c540217a4bc66827bb877e13b82f1315b96bfaf5171a9cd676b399f435c",
+  "n_closed_bars": 3,
+  "n_orders": 1,
+  "n_fills": 1,
+  "n_snapshots": 4,
+  "stream_summary": {
+    "started_time": 1792087261506238,
+    "finished_time": 1792087494348116,
+    "elapsed_seconds": 241.00771319400155,
+    "connections": 1,
+    "disconnects": 0,
+    "received_updates": 115,
+    "closed_bars": {
+      "BTCUSDT": 3
+    }
+  },
+  "test_accesses": 0,
+  "latched_kill_events": 1,
+  "all_fill_prices_and_fees_verified": true,
+  "all_snapshots_independently_reconciled": true,
+  "limitations": [
+    "Operational integration only: the fixed minute_h04 candidate was rejected on VALID.",
+    "Public last price and close marks are proxies, not bid/ask quotes or real fills.",
+    "Full simulated market fills with fees/slippage; no queue, impact or borrow model.",
+    "Prices strictly follow the submitted intent; no backdated opening fills.",
+    "Feed failures, stale data, clock regression or expired intents stop and latch risk.",
+    "No TEST, promotion, real account/order routing or restart reconciliation."
+  ]
+}

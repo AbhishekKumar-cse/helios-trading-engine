@@ -6,6 +6,7 @@ from test_common_types import lineage, request
 from test_portfolio_risk import risk
 from test_schema_trading import trading as _trading_fixture
 
+from helios.common.config import config_hash
 from helios.common.types import CancelOrder, Mode, ReasonCode
 from helios.sim.loss_risk import DailyRisk, DailyRiskLimits, RiskTrip, record_trip, tripped
 
@@ -100,6 +101,14 @@ def test_actual_risk_event_insert_is_idempotent_and_scope_latched(trading):
     record_trip(trading, event)
     record_trip(trading, event)
     assert tripped(trading, event.scope)
+    audit = trading.execute(
+        text(
+            "SELECT actor,payload,after_hash FROM audit_events "
+            "WHERE action='KILL_SWITCH_TRIPPED' AND subject='t_daily_scope'"
+        )
+    ).one()
+    assert audit.actor == event.actor and audit.after_hash == config_hash(event)
+    assert audit.payload == event.model_dump(mode="json")
     assert (
         trading.execute(
             text("SELECT count(*) FROM risk_events WHERE subject_ref='t_daily_scope' ")

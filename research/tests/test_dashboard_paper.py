@@ -3,6 +3,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
+from sqlalchemy import text
 from streamlit.testing.v1 import AppTest
 from test_paper_runtime import BASE, bar, definition, raw
 from test_paper_store import paper_engine as _paper_engine
@@ -10,9 +11,10 @@ from test_paper_store import paper_engine as _paper_engine
 from helios.alpha.definition import register_alpha_definition
 from helios.common.config import config_hash
 from helios.common.lineage import RunContext
+from helios.dashboard.control import kill_paper
 from helios.dashboard.paper import paper_rows
 from helios.paper.config import smoke_config
-from helios.paper.runtime import PaperRuntime
+from helios.paper.runtime import PaperRuntime, PaperSafetyStop
 from helios.paper.store import PaperStore
 from helios.sim.loss_risk import PostgresTripStore
 
@@ -90,3 +92,84 @@ def test_paper_database_error_is_sanitized():
         app.sidebar.radio[0].set_value("Paper trading").run()
         assert not app.exception and app.error
         assert "secret" not in app.error[0].value
+
+
+def test_dashboard_press_commits_audit_blocks_orders_and_cancels_pending(
+    session, paper_engine, connection
+):
+    config, store, runtime = session
+    runtime.closed(bar(0, "100"))
+    runtime.closed(bar(1, "101"))
+    store.save(runtime)
+    pending = runtime.oms.snapshot()[0].request
+    with (
+        patch("helios.dashboard.registry.read_registry", return_value=([], [])),
+        patch(
+            "helios.dashboard.paper_page.read_paper",
+            side_effect=lambda *_: paper_rows(connection, config.run_id),
+        ),
+        patch(
+            "helios.dashboard.paper_page.kill_paper",
+            side_effect=lambda *args: kill_paper(*args, engine=paper_engine),
+        ),
+    ):
+        app = AppTest.from_file(
+            str(Path("dashboards/streamlit/app.py").resolve()), default_timeout=30
+        ).run()
+        app.sidebar.radio[0].set_value("Paper trading").run()
+        app.text_input[0].set_value("fixture_operator")
+        app.text_input[1].set_value("Synthetic dashboard halt verification")
+        app.button[0].click().run()
+        assert not app.exception and "committed and audited" in app.success[0].value
+    assert runtime.risk.check(pending).reason.value == "HALTED"
+    assert not kill_paper(
+        config.run_id, "fixture_operator", "Repeated request", engine=paper_engine
+    )
+    rows = connection.execute(
+        text(
+            "SELECT action,actor,justification FROM audit_events "
+            "WHERE subject=:id ORDER BY audit_id"
+        ),
+        dict(id=config.run_id),
+    ).all()
+    assert [r.action for r in rows] == [
+        "KILL_SWITCH_TRIPPED",
+        "PAPER_KILL_REQUEST",
+        "PAPER_KILL_REQUEST",
+    ]
+    assert all(r.actor == "fixture_operator" for r in rows)
+    with pytest.raises(PaperSafetyStop, match="halted_pending"):
+        runtime.message(raw(2, closed=False, close="102"), (BASE + 120_000) * 1000 + 2_010_000)
+    store.save(runtime)
+    assert runtime.oms.snapshot()[0].state.value == "CANCELLED"
+    assert not any(r.fill for r in runtime.reports)
+    assert paper_rows(connection, config.run_id)["halted"]
+
+
+def test_audit_failure_rolls_back_the_entire_kill(session, paper_engine, connection):
+    config, _, _ = session
+    execute = connection.execute
+
+    def fail_audit(statement, *args, **kwargs):
+        if "INSERT INTO audit_events" in str(statement):
+            raise RuntimeError("injected audit failure")
+        return execute(statement, *args, **kwargs)
+
+    with patch.object(connection, "execute", side_effect=fail_audit):
+        with pytest.raises(RuntimeError, match="injected"):
+            kill_paper(config.run_id, "operator", "Atomic rollback check", engine=paper_engine)
+    assert not paper_rows(connection, config.run_id)["halted"]
+
+
+def test_control_rejects_terminal_unknown_and_missing_operator(session, paper_engine, connection):
+    config, _, _ = session
+    with pytest.raises(ValueError, match="operator"):
+        kill_paper(config.run_id, " ", "check", engine=paper_engine)
+    with pytest.raises(ValueError, match="running"):
+        kill_paper("hand_20261015", "operator", "check", engine=paper_engine)
+    connection.execute(
+        text("UPDATE paper_runs SET status='finished' WHERE paper_run_id=:id"),
+        dict(id=config.run_id),
+    )
+    with pytest.raises(ValueError, match="running"):
+        kill_paper(config.run_id, "operator", "check", engine=paper_engine)

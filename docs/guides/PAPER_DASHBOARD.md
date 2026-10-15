@@ -25,3 +25,34 @@ checkpoints; the view follows updates without mixing backtest rows. Streamlit
 AppTest covers page navigation, unavailable values, stale warnings and badges.
 Existing registry and spawned-worker regressions remain applicable. Rendering
 and database reads only occur when explicitly invoked by guarded `main()`.
+
+## Local halt control (162)
+
+Running PAPER sessions offer **Halt this PAPER session**, with a required local
+operator name and justification. These are operator-supplied audit labels, not an
+authenticated identity; keep the app bound to loopback. Terminal sessions have
+no control, and the server rejects unknown, backtest and terminal run IDs even
+if the display is stale. No reset or limit-edit control is provided.
+
+The handler locks and validates the running PAPER session/configuration, then
+uses the existing shared durable kill primitive. Each newly latched trip writes
+one `risk_events` row and one hash-bound `KILL_SWITCH_TRIPPED` audit row in the
+same transaction. This also covers future daily-loss and runner trips through
+that primitive; historical events are not backfilled. Every accepted dashboard
+request additionally records `PAPER_KILL_REQUEST`, including justification and
+whether the scope was already halted. Repeated presses do not duplicate trips.
+Audit failure rolls back the control transaction; the UI never confirms success
+before commit. Request audit rows are append-only; journal-wide hash chaining is
+not implemented by this change.
+
+The risk engine checks the durable scope on order authorisation. A pending
+simulated intent is cancelled before a later price can fill it, when the runner
+next processes data (or during bounded shutdown). This does not flatten an
+existing position or guarantee a stalled runner has processed cancellation.
+The view follows persisted order/risk updates on its next two-second refresh.
+
+Verification presses the actual Streamlit form against a transactional PostgreSQL
+fixture with the real risk/OMS/venue stack: new intent rejected HALTED, pending
+intent cancelled, zero fills. Other cases verify repeat-request idempotence,
+required operator fields, terminal/foreign-scope rejection, and atomic rollback
+when the audit insert fails. Fixture rows are rolled back after each test.

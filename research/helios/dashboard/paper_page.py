@@ -5,6 +5,7 @@ from datetime import UTC, datetime
 import pandas as pd
 import streamlit as st
 
+from helios.dashboard.control import kill_paper
 from helios.dashboard.paper import read_paper
 
 
@@ -35,6 +36,21 @@ def render_paper() -> None:
             f"Read at {datetime.now(UTC).isoformat()}; historical sessions remain historical."
         )
         st.json(run["config_json"]["risk"], expanded=False)
+        if run["status"] == "running":
+            with st.form(f"kill:{run_id}"):
+                actor = st.text_input("Local operator", max_chars=80)
+                reason = st.text_input("Halt justification", max_chars=500)
+                pressed = st.form_submit_button("Halt this PAPER session", type="primary")
+            if pressed:
+                try:
+                    kill_paper(run_id, actor, reason)
+                except ValueError as exc:
+                    st.error(str(exc))
+                except Exception:
+                    st.error("Halt could not be confirmed. Check the local risk journal.")
+                else:
+                    st.success("PAPER halt committed and audited. New orders are blocked.")
+                    st.caption("Pending intents are cancelled when the runner next processes data.")
         if pnl is None:
             st.warning("No P&L checkpoint yet. Performance and positions are unavailable.")
         else:

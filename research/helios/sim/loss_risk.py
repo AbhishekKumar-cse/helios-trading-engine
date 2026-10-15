@@ -8,7 +8,7 @@ from uuid import uuid4
 from pydantic import Field
 from sqlalchemy import Connection, Engine, text
 
-from helios.common.config import config_hash
+from helios.common.config import canonical_json, config_hash
 from helios.common.types import (
     CancelOrder,
     Hash,
@@ -70,6 +70,19 @@ def record_trip(connection: Connection, event: RiskTrip) -> None:
             scope=event.scope,
             hash=event.limits_hash,
             actor=event.actor,
+        ),
+    )
+    connection.execute(
+        text("""INSERT INTO audit_events
+        (ts,actor,action,subject,after_hash,justification,payload)
+        VALUES (:ts,:actor,'KILL_SWITCH_TRIPPED',:scope,:hash,:reason,CAST(:payload AS jsonb))"""),
+        dict(
+            ts=event.timestamp,
+            actor=event.actor,
+            scope=event.scope,
+            hash=config_hash(event),
+            reason=event.reason.value,
+            payload=canonical_json(event),
         ),
     )
 

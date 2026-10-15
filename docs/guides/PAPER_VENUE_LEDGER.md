@@ -23,3 +23,18 @@ This bar model assumes complete fills, unlimited liquidity and no market impact.
 It does not model queues, volume participation or transport latency. It is not
 the future L2 execution model. Session state is in memory; durable runner/order
 persistence is later work.
+
+Limits crossing strictly beyond the opening price execute as takers, with adverse
+slippage capped at the limit. Equality alone never fills. Other GTC limits rest
+for the following complete bar: BUY requires low strictly below the limit; SELL
+requires high strictly above it, with positive volume. These fill at the limit
+with maker fees. Call `on_bar` when that bar is observed, before its next opening.
+Passive fills use the bar ingest time because OHLC does not identify a trade's
+intrabar timestamp. Uncrossed IOC/FOK limits expire at the opening under the
+full-liquidity assumption. GTC orders remain eligible on later bars until cancelled.
+
+Complete a resting-order bar before processing another opening for that symbol.
+An unresolved resting order can be cancelled at its opening boundary; a later
+cancel is refused until `on_bar` resolves the range. This avoids guessing whether
+an intrabar cancellation preceded a trade-through. Late submissions cannot use
+the current bar's range. Zero-volume bars cannot produce passive fills.

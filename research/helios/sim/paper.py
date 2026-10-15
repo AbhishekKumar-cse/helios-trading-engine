@@ -6,6 +6,7 @@ acknowledge acceptance only; report delivery is an explicit event-loop operation
 
 from collections.abc import Callable
 from decimal import ROUND_HALF_EVEN, Decimal, localcontext
+from typing import Literal
 from uuid import NAMESPACE_URL, uuid5
 
 from pydantic import TypeAdapter
@@ -15,6 +16,7 @@ from helios.common.project_config import FeesConfig, load_fees
 from helios.common.types import (
     Ack,
     AmendOrder,
+    Bar,
     CancelOrder,
     ExecutionReport,
     Fill,
@@ -22,11 +24,11 @@ from helios.common.types import (
     NewOrder,
     Order,
     OrderState,
-    OrderType,
     Price,
     ReasonCode,
     Reject,
     Side,
+    TimeInForce,
     Timestamp,
     VenueInfo,
 )
@@ -61,6 +63,8 @@ class BarPaperVenue:
         self._callbacks: list[Callable[[ExecutionReport], None]] = []
         self._outbox: list[ExecutionReport] = []
         self._cancels: dict[str, tuple[CancelOrder, Ack]] = {}
+        self._resting: dict[str, BarOpen] = {}
+        self._closed: dict[str, int] = {}
 
     def venue_info(self) -> VenueInfo:
         return self._info
@@ -105,7 +109,6 @@ class BarPaperVenue:
         opening = self._opens.get(o.symbol)
         if (
             o.mode != self.mode
-            or o.order_type is not OrderType.MARKET
             or o.symbol not in self._fees.slippage_bps
             or not o.symbol.endswith("USDT")
             or (opening is not None and o.timestamp <= opening.timestamp)
@@ -162,12 +165,18 @@ class BarPaperVenue:
             or c.lineage != order.request.lineage
             or c.timestamp < order.timestamp
             or (opening is not None and c.timestamp < opening.timestamp)
+            or (
+                c.order_id in self._resting
+                and opening is not None
+                and c.timestamp > opening.timestamp
+            )
         ):
             return self._reject(c.request_id, c.timestamp)
         changed = Order.model_validate(
             order.model_dump() | dict(state=OrderState.CANCELLED, timestamp=c.timestamp)
         )
         self._report(changed)
+        self._resting.pop(c.order_id, None)
         ack = Ack(request_id=c.request_id, order_id=c.order_id, timestamp=c.timestamp)
         self._cancels[c.request_id] = (c, ack)
         return ack
@@ -178,11 +187,26 @@ class BarPaperVenue:
             request_id=a.request_id, timestamp=a.timestamp, reason=ReasonCode.UNSUPPORTED_AMEND
         )
 
-    def _filled(self, order: Order, price: Decimal, timestamp: int) -> tuple[Order, Fill]:
+    def _filled(
+        self,
+        order: Order,
+        price: Decimal,
+        timestamp: int,
+        liquidity: Literal["MAKER", "TAKER"] = "TAKER",
+    ) -> tuple[Order, Fill]:
         with localcontext() as context:
             context.prec = 100
             fee = rounded(
-                price * order.remaining_quantity * Decimal(str(self._fees.taker_fee_bps)) / 10000
+                price
+                * order.remaining_quantity
+                * Decimal(
+                    str(
+                        self._fees.maker_fee_bps
+                        if liquidity == "MAKER"
+                        else self._fees.taker_fee_bps
+                    )
+                )
+                / 10000
             )
         fill = Fill(
             fill_id=f"{order.order_id}:fill",
@@ -195,7 +219,7 @@ class BarPaperVenue:
             fee_asset="USDT",
             timestamp=timestamp,
             venue_id=self._info.venue_id,
-            liquidity="TAKER",
+            liquidity=liquidity,
             mode=self.mode,
         )
         changed = Order.model_validate(
@@ -218,6 +242,10 @@ class BarPaperVenue:
             opening.timestamp <= old.timestamp or opening.snapshot_id != old.snapshot_id
         ):
             raise ValueError("opening clock must advance within one snapshot")
+        if any(self._orders[key].request.symbol == opening.symbol for key in self._resting):
+            raise ValueError("complete the previous resting-order bar before another opening")
+        if opening.timestamp < self._closed.get(opening.symbol, 0):
+            raise ValueError("opening precedes completed-bar availability")
         ready = [
             o
             for o in self.snapshot_open_orders()
@@ -226,14 +254,69 @@ class BarPaperVenue:
         if any(o.request.lineage.snapshot_id != opening.snapshot_id for o in ready):
             raise ValueError("opening and order snapshot mismatch")
         fills = []
+        resting = []
+        expired = []
         for order in ready:
             with localcontext() as context:
                 context.prec = 100
                 slip = Decimal(str(self._fees.slippage_bps[opening.symbol])) / 10000
                 direction = 1 if order.request.side is Side.BUY else -1
                 price = rounded(opening.price * (1 + direction * slip))
+            limit = order.request.price
+            if limit is not None:
+                crosses = opening.price < limit if direction == 1 else opening.price > limit
+                if not crosses:
+                    if order.request.time_in_force is TimeInForce.GTC:
+                        resting.append(order.order_id)
+                    else:
+                        expired.append(
+                            Order.model_validate(
+                                order.model_dump()
+                                | dict(
+                                    state=OrderState.EXPIRED,
+                                    timestamp=opening.timestamp,
+                                )
+                            )
+                        )
+                    continue
+                price = min(price, limit) if direction == 1 else max(price, limit)
             fills.append(self._filled(order, price, opening.timestamp))
         self._opens[opening.symbol] = opening
+        self._resting.update({key: opening for key in resting})
+        for order in expired:
+            self._report(order)
+        for changed, fill in fills:
+            self._report(changed, fill)
+        self.dispatch_reports()
+
+    def on_bar(self, bar: Bar) -> None:
+        """Resolve passive fills only after a complete bar's range is available.
+
+        No intrabar path or touch timestamp is inferred. Midbar cancellation is
+        refused while range execution is unresolved; cancel at a known boundary.
+        """
+        bar = Bar.model_validate(bar.model_dump())
+        opening = self._opens.get(bar.symbol)
+        if (
+            opening is None
+            or not bar.is_complete_interval
+            or (bar.open_time, bar.open, bar.snapshot_id)
+            != (opening.timestamp, opening.price, opening.snapshot_id)
+            or bar.ingest_time <= self._closed.get(bar.symbol, -1)
+        ):
+            raise ValueError("completed bar must match the unprocessed opening and advance clock")
+        keys = [key for key, op in self._resting.items() if op.symbol == bar.symbol]
+        fills = []
+        for key in keys:
+            order = self._orders[key]
+            limit = order.request.price
+            assert limit is not None
+            through = bar.low < limit if order.request.side is Side.BUY else bar.high > limit
+            if through and bar.volume > 0:
+                fills.append(self._filled(order, limit, bar.ingest_time, "MAKER"))
+        for key in keys:
+            self._resting.pop(key)
+        self._closed[bar.symbol] = bar.ingest_time
         for changed, fill in fills:
             self._report(changed, fill)
         self.dispatch_reports()

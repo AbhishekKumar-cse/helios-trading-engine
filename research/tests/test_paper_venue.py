@@ -86,9 +86,8 @@ def test_cancel_retry_conflicts_and_late_commands():
     assert isinstance(venue.submit(market(mode=Mode.PAPER, client_order_id="mode")), Reject)
 
 
-def test_bad_open_is_atomic_and_unsupported_limit_rejected():
+def test_bad_open_is_atomic():
     venue = BarPaperVenue(Mode.BACKTEST)
-    assert isinstance(venue.submit(request()), Reject)
     venue.submit(market())
     with pytest.raises(ValueError, match="snapshot"):
         venue.on_open(opening(snapshot_id="other"))

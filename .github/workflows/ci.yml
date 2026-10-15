@@ -57,5 +57,5 @@ jobs:
           enable-cache: true
       - name: Install locked dependencies
         run: uv sync --locked
-      - name: Required leakage controls
+      - name: Required leakage controls (including shuffled ML labels)
         run: uv run pytest -v -m leakage --strict-markers

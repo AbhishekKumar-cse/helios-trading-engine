@@ -1,0 +1,76 @@
+{
+  "capture_path": "reports_out/step154_stream_attempt2.jsonl",
+  "capture_sha256": "8ac6a662be4495f86a1a83e395161d7b347a4b132a391f4e6941d3ebdba3d272",
+  "coins": [
+    {
+      "closed_bars": 9,
+      "first_open_us": 1792050000000000,
+      "last_open_us": 1792050480000000,
+      "symbol": "BTCUSDT"
+    },
+    {
+      "closed_bars": 9,
+      "first_open_us": 1792050000000000,
+      "last_open_us": 1792050480000000,
+      "symbol": "ETHUSDT"
+    },
+    {
+      "closed_bars": 9,
+      "first_open_us": 1792050000000000,
+      "last_open_us": 1792050480000000,
+      "symbol": "SOLUSDT"
+    },
+    {
+      "closed_bars": 9,
+      "first_open_us": 1792050000000000,
+      "last_open_us": 1792050480000000,
+      "symbol": "BNBUSDT"
+    },
+    {
+      "closed_bars": 9,
+      "first_open_us": 1792050000000000,
+      "last_open_us": 1792050480000000,
+      "symbol": "XRPUSDT"
+    }
+  ],
+  "connection": {
+    "connected_seconds": 600.003856194,
+    "duration_clock": "monotonic",
+    "finished_utc": "2026-10-15T07:49:38.286031+00:00",
+    "received_updates": 1316,
+    "started_utc": "2026-10-15T07:40:03.159846+00:00",
+    "url": "wss://stream.binance.com:443/stream?streams=btcusdt@kline_1m/ethusdt@kline_1m/solusdt@kline_1m/bnbusdt@kline_1m/xrpusdt@kline_1m",
+    "wall_clock_elapsed_seconds": 575.126185
+  },
+  "execution_enabled": false,
+  "limitations": [
+    "Read-only observation; no order, PnL, model or TEST evaluation.",
+    "Development source dirty state is explicit; exact observed code bytes are hash-bound.",
+    "System-clock elapsed time differs from monotonic duration; both are retained. Nine closed bars per coin were observed, not ten.",
+    "No reconnect or 24-hour reliability claim; step 159 remains separate."
+  ],
+  "market_data": "observed_public",
+  "observation": "public_minute_stream_10min_v1",
+  "prior_attempt": {
+    "capture_path": "reports_out/step154_stream_attempt1.jsonl",
+    "capture_sha256": "d35d619a8e912e39907157152e29c3107e972888ed29cadd389aa5453bb82d3a",
+    "closed_bars": {
+      "BNBUSDT": 8,
+      "BTCUSDT": 8,
+      "ETHUSDT": 8,
+      "SOLUSDT": 8,
+      "XRPUSDT": 8
+    },
+    "error": "public stream stalled for 15 seconds",
+    "not_counted_as_completed": true,
+    "status": "FAILED_STREAM_STALL"
+  },
+  "source": {
+    "cli_sha256": "93289fa70e85567cd3a1afaa470750b6a9ca19c85c25fa5a9c060a836e4bb86f",
+    "client_sha256": "f819bbeae2b5e8253ef2d43421659cd6023676f228160ff5fba94c5b83b9421a",
+    "code_commit": "3f995b069126ad7cf264d497372c50b02266cff3",
+    "dirty": true
+  },
+  "status": "COMPLETED",
+  "total_closed_bars": 45
+}

@@ -22,6 +22,7 @@ dependencies = [
     "scikit-learn>=1.9.1",
     "sqlalchemy>=2.0.52",
     "torch>=2.14.0",
+    "websockets>=17.2",
 ]
 
 # PyTorch, from the CPU-only wheels. The default wheels bundle CUDA (about 2.5 GB) for GPUs

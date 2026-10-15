@@ -17,6 +17,7 @@ from helios.data.live_klines import (
     observe_closed_klines,
     stream_url,
 )
+from helios.data.resilient_klines import observe_resilient_klines
 
 
 def main() -> int:
@@ -26,6 +27,9 @@ def main() -> int:
     )
     parser.add_argument("--seconds", type=float, default=600)
     parser.add_argument("--endpoint", choices=sorted(ENDPOINTS), default="data")
+    parser.add_argument(
+        "--reconnect", action="store_true", help="retry transport failures; log gaps"
+    )
     args = parser.parse_args()
     symbols = tuple(resolve_symbols(args.symbol or ["universe"]))
     try:
@@ -45,19 +49,34 @@ def main() -> int:
                     dirty=git_is_dirty(),
                     client_sha256=sha256_file(module),
                     cli_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                    reconnect_enabled=args.reconnect,
+                    reconnect_client_sha256=sha256_file(module.with_name("resilient_klines.py"))
+                    if args.reconnect
+                    else None,
                 ),
                 allow_nan=False,
             ),
             flush=True,
         )
-        summary = asyncio.run(
-            observe_closed_klines(
-                symbols,
-                args.seconds,
-                lambda bar: print(bar.model_dump_json(), flush=True),
-                endpoint=args.endpoint,
+        if args.reconnect:
+            summary = asyncio.run(
+                observe_resilient_klines(
+                    symbols,
+                    args.seconds,
+                    lambda bar: print(bar.model_dump_json(), flush=True),
+                    lambda event: print(json.dumps(event), flush=True),
+                    endpoint=args.endpoint,
+                )
             )
-        )
+        else:
+            summary = asyncio.run(
+                observe_closed_klines(
+                    symbols,
+                    args.seconds,
+                    lambda bar: print(bar.model_dump_json(), flush=True),
+                    endpoint=args.endpoint,
+                )
+            )
         print(json.dumps(dict(event="SESSION_END", **summary.model_dump())), flush=True)
         if not all(summary.closed_bars.values()):
             raise KlineStreamError("no closed bar observed for every requested symbol")

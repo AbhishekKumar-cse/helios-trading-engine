@@ -1,0 +1,101 @@
+{
+  "summary": {
+    "started_time": 1792085590535203,
+    "finished_time": 1792085590103409,
+    "elapsed_seconds": 0.35455256899876986,
+    "connections": 2,
+    "disconnects": 1,
+    "received_updates": 4,
+    "closed_bars": {
+      "BTCUSDT": 2
+    }
+  },
+  "events": [
+    {
+      "event": "CONNECTED",
+      "connection": 1,
+      "received_time": 1792085590539808
+    },
+    {
+      "event": "DISCONNECTED",
+      "error_type": "ConnectionClosedError",
+      "received_time": 1792085590540618,
+      "retry_delay": 0.01
+    },
+    {
+      "event": "CONNECTED",
+      "connection": 2,
+      "received_time": 1792085590554381
+    },
+    {
+      "event": "DUPLICATE",
+      "symbol": "BTCUSDT",
+      "open_time": 1700000040000000,
+      "received_time": 1792085590554416
+    },
+    {
+      "event": "GAP",
+      "symbol": "BTCUSDT",
+      "expected_open_time": 1700000100000000,
+      "observed_open_time": 1700000220000000,
+      "missing_bars": 2,
+      "received_time": 1792085590554679
+    },
+    {
+      "event": "OUT_OF_ORDER",
+      "symbol": "BTCUSDT",
+      "open_time": 1700000100000000,
+      "received_time": 1792085590554773
+    }
+  ],
+  "bars": [
+    {
+      "source": "binance_public_kline_1m",
+      "symbol": "BTCUSDT",
+      "interval": "1m",
+      "open_time": 1700000040000000,
+      "recorded_close_time": 1700000099999000,
+      "event_time": 1700000100001000,
+      "received_time": 1792085590539850,
+      "open": "100.00",
+      "high": "103.00",
+      "low": "99.00",
+      "close": "102.25",
+      "volume": "10",
+      "quote_volume": "1000",
+      "trades": 12,
+      "taker_buy_base": "4",
+      "taker_buy_quote": "400"
+    },
+    {
+      "source": "binance_public_kline_1m",
+      "symbol": "BTCUSDT",
+      "interval": "1m",
+      "open_time": 1700000220000000,
+      "recorded_close_time": 1700000279999000,
+      "event_time": 1700000280001000,
+      "received_time": 1792085590554679,
+      "open": "100.00",
+      "high": "103.00",
+      "low": "99.00",
+      "close": "102.25",
+      "volume": "10",
+      "quote_volume": "1000",
+      "trades": 12,
+      "taker_buy_base": "4",
+      "taker_buy_quote": "400"
+    }
+  ],
+  "is_synthetic": true,
+  "transport": "real loopback WebSocket; server-forced close1011",
+  "limitations": [
+    "No physical network cable was disconnected.",
+    "This bounded fault test is not a 24-hour live soak or a market result."
+  ],
+  "code_commit": "8fd0143bed988223e9d48c224275a27429ed2521",
+  "dirty": true,
+  "source_sha256": {
+    "research/helios/data/resilient_klines.py": "930fa8e2068dbde44d0cfa1778e096bc21cd07fd499650afc83d0931bc9f7976",
+    "research/tests/test_resilient_klines.py": "d10ef3012cdf0d8f1d8bcdf6459eb356c2657d2b116da2721347b72220fee5ed"
+  }
+}

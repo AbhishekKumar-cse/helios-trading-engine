@@ -25,7 +25,10 @@ def registry_rows(connection: Connection) -> tuple[list[dict[str, Any]], list[di
             raise ValueError("registry view must not silently truncate retained attempts")
         latest = results[0] if results else None
         selection = get_selection(
-            connection, definition.alpha_id, definition.version, "hourly_round1"
+            connection,
+            definition.alpha_id,
+            definition.version,
+            "minute_round1" if definition.horizon_family.value == "H-MINUTE" else "hourly_round1",
         )
         definitions.append(
             dict(

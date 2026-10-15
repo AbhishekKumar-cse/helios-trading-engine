@@ -30,6 +30,9 @@ plus the synthetic fixture), all 22 retained INVALID attempts, and the original
 `hourly_h01` VALID report with unavailable performance and its original lineage.
 Four dashboard/database/AppTest cases cover DRAFT inclusion, filtering, unsafe
 report paths and sanitized connection errors; strict typing also passes.
+Two additional regressions cover inert spawn reimport and a real worker with the
+dashboard entrypoint and invalid database settings. Page rendering lives behind
+guarded `main()` so workers never initialize UI or read the registry on import.
 
 This is a local research view, not a published service or a change to strategy
 selection. Subsequent minute registrations appear through the same queries.

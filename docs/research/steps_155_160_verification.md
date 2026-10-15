@@ -12,12 +12,20 @@ tests both clean and dirty lineage and compares persisted flags and commits
 with the saved artifact. The affected backtest, dashboard and PostgreSQL schema
 groups subsequently passed **38 tests**. The earlier three-second Streamlit test
 timeout and migration-007 head expectation were also corrected and verified.
-Runtime code did not change after the verified public PAPER session.
+PAPER execution and research code did not change after the verified public session.
 
 Final Ruff lint/format checks passed for 264 files, strict mypy passed for 103
 package sources, and `uv lock --check` passed. The local full-run logs and final
 targeted verification are retained outside Git. GitHub CI is checked against
 the exact final pushed commit in addition to these local checks.
+
+The first pushed CI run caught a Streamlit/spawn interaction: AppTest can leave
+the page as the process entrypoint, causing spawned workers to execute its
+top-level UI/database code. The page now renders only through guarded `main()`;
+report/error branches return explicitly. Regression tests cover both inert
+`__mp_main__` reimport and an actual spawned worker with the page entrypoint and
+deliberately invalid database settings. Research artifacts are not reevaluated
+for this dashboard-only correction.
 
 The public session is a bounded integration demonstration with one simulated
 fill. It establishes neither a promoted alpha nor a 24-hour live soak.

@@ -1,3 +1,4 @@
+import runpy
 from pathlib import Path
 from unittest.mock import patch
 
@@ -67,3 +68,38 @@ def test_connection_error_does_not_expose_settings_or_traceback():
         ).run()
     assert not app.exception and app.error
     assert "secret-password" not in app.error[0].value
+
+
+def test_spawn_reimport_never_renders_ui_or_reads_database():
+    # Streamlit's test runner can leave the page as __main__.__file__. Spawn
+    # imports that path as __mp_main__; it must not execute the page again.
+    with (
+        patch("streamlit.set_page_config", side_effect=AssertionError("unexpected UI")),
+        patch(
+            "helios.dashboard.registry.read_registry", side_effect=AssertionError("unexpected DB")
+        ),
+    ):
+        runpy.run_path(str(Path("dashboards/streamlit/app.py").resolve()), run_name="__mp_main__")
+
+
+def test_spawn_worker_with_dashboard_as_main_never_boots_the_page(monkeypatch):
+    import os
+    import sys
+
+    from test_sim_many import process_probe
+
+    from helios.registry.results import Split
+    from helios.sim.evaluate import EvaluationConfig
+    from helios.sim.many import EvaluationRequest, evaluate_many
+
+    # Reproduce the CI entrypoint left by AppTest. A page boot would fail before
+    # connecting to any database; a guarded spawn import does not read settings.
+    monkeypatch.setattr(
+        sys.modules["__main__"], "__file__", str(Path("dashboards/streamlit/app.py").resolve())
+    )
+    monkeypatch.setattr(sys.modules["__main__"], "__spec__", None)
+    monkeypatch.setenv("POSTGRES_PORT", "invalid-for-spawn-regression")
+    request = EvaluationRequest("test_dashboard_spawn", Split.VALID, 1, EvaluationConfig())
+    result = evaluate_many([request], workers=1, worker=process_probe)[0]
+    assert result.error is None and result.status == "SYNTHETIC_TEST"
+    assert int(result.run_id) != os.getpid()

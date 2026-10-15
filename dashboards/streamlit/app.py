@@ -8,6 +8,12 @@ from helios.dashboard.registry import read_registry, report_html
 
 def main() -> None:
     st.set_page_config(page_title="HELIOS · Alpha registry", layout="wide")
+    page = st.sidebar.radio("Page", ["Alpha registry", "Paper trading"])
+    if page == "Paper trading":
+        from helios.dashboard.paper_page import render_paper
+
+        render_paper()
+        return
     st.caption("HELIOS · BACKTEST RESEARCH · READ ONLY")
     st.title("Alpha registry")
     st.write(

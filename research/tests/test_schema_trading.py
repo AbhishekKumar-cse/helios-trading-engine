@@ -16,6 +16,7 @@ TABLES = {
     "pnl_snapshots",
     "risk_events",
     "backtest_runs",
+    "paper_runs",
     "audit_events",
 }
 
@@ -83,7 +84,7 @@ def test_all_tables_visible(connection: Connection) -> None:
     assert TABLES <= set(inspect(connection).get_table_names())
     assert (
         connection.execute(text("SELECT version_num FROM alembic_version")).scalar_one()
-        == "d14900000700"
+        == "e16000000800"
     )
 
 

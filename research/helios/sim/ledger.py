@@ -38,7 +38,9 @@ class LedgerConfig(HeliosConfig):
     initial_cash: Money
     mode: Mode
     quote_asset: Literal["USDT"] = "USDT"
-    mark: Literal["contemporaneous_book_mid", "bar_close_proxy"] = "contemporaneous_book_mid"
+    mark: Literal["contemporaneous_book_mid", "bar_close_proxy", "public_last_price_proxy"] = (
+        "contemporaneous_book_mid"
+    )
     accounting: Literal["exact_average_cost_v1"] = "exact_average_cost_v1"
     rounding: Literal["half_even_18_decimals"] = "half_even_18_decimals"
     reconciliation_tolerance: Literal["0.000000000000000002"] = "0.000000000000000002"
@@ -71,7 +73,7 @@ class PnLLedger:
         quote_asset: str = "USDT",
         *,
         mark_reference: Literal[
-            "contemporaneous_book_mid", "bar_close_proxy"
+            "contemporaneous_book_mid", "bar_close_proxy", "public_last_price_proxy"
         ] = "contemporaneous_book_mid",
     ) -> None:
         initial_cash = TypeAdapter(Money).validate_python(initial_cash)

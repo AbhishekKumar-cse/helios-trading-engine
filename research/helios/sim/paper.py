@@ -304,6 +304,18 @@ class BarPaperVenue:
             self._report(changed, fill)
         self.dispatch_reports()
 
+    def on_public_price(self, observation: BarOpen) -> None:
+        """PAPER-only market opportunity at actual receipt time, never a bar-open claim.
+
+        Reuse the same full-fill, fee and slippage arithmetic. A public last trade
+        is a price proxy, not a bid/ask observation. Passive fills are unsupported.
+        """
+        if self.mode is not Mode.PAPER or any(
+            order.request.price is not None for order in self.snapshot_open_orders()
+        ):
+            raise ValueError("public price proxy requires PAPER market orders only")
+        self.on_open(observation)
+
     def on_bar(self, bar: Bar) -> None:
         """Resolve passive fills only after a complete bar's range is available.
 

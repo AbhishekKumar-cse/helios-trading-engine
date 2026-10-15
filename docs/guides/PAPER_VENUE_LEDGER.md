@@ -53,3 +53,13 @@ nonflat instrument at that exact timestamp. The declared mark is the two-sided
 midpoint. Snapshot marking changes unrealized P&L only, never cash, realized P&L,
 inventory or fees. Ledger config/mark/rounding policy is hash-bound. Initial cash
 is fixed; deposits, withdrawals and non-USDT fee conversion are unsupported.
+
+Every snapshot checks the exact internal identity:
+`cash + signed inventory at mark = initial cash + realized + unrealized - fees`.
+It also checks public rounded fields within an absolute 2e-18 USDT tolerance
+(four independently rounded values). A mismatch logs CRITICAL
+`LEDGER_RECONCILIATION_BREAK`, raises `ReconciliationError`, and latches a halt
+on subsequent reporting and fill booking. There is no automatic reset.
+The property test uses 150 generated multi-instrument sequences and an
+independent cash-flow/inventory model, including 18-decimal quantities, shorts,
+position changes and duplicate retries. Fault injection checks the halt latch.

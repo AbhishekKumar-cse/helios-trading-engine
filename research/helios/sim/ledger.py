@@ -30,6 +30,10 @@ class LedgerError(ValueError):
     pass
 
 
+class ReconciliationError(LedgerError):
+    pass
+
+
 class LedgerConfig(HeliosConfig):
     initial_cash: Money
     mode: Mode
@@ -37,6 +41,7 @@ class LedgerConfig(HeliosConfig):
     mark: Literal["contemporaneous_book_mid"] = "contemporaneous_book_mid"
     accounting: Literal["exact_average_cost_v1"] = "exact_average_cost_v1"
     rounding: Literal["half_even_18_decimals"] = "half_even_18_decimals"
+    reconciliation_tolerance: Literal["0.000000000000000002"] = "0.000000000000000002"
 
 
 def decimal_value(value: Fraction) -> Decimal:
@@ -71,6 +76,7 @@ class PnLLedger:
         self._lots: dict[str, _Lot] = {}
         self._fills: dict[str, Fill] = {}
         self._clock = 0
+        self._halted = False
         self.config_hash = config_hash(LedgerConfig(initial_cash=initial_cash, mode=self.mode))
 
     def position(self, symbol: str) -> Position:
@@ -89,6 +95,8 @@ class PnLLedger:
         return False if report.fill is None else self.book(report.fill)
 
     def book(self, fill: Fill) -> bool:
+        if self._halted:
+            raise ReconciliationError("ledger halted after a reconciliation break")
         fill = Fill.model_validate(fill.model_dump())
         prior = self._fills.get(fill.fill_id)
         if prior is not None:
@@ -141,6 +149,8 @@ class PnLLedger:
         return True
 
     def snapshot(self, timestamp: int, marks: Mapping[str, BookView]) -> PnLSnapshot:
+        if self._halted:
+            raise ReconciliationError("reporting halted after a reconciliation break")
         timestamp = TypeAdapter(Timestamp).validate_python(timestamp)
         if timestamp < self._clock:
             raise LedgerError("snapshot clock cannot regress")
@@ -165,6 +175,11 @@ class PnLLedger:
             market_value += lot.quantity * mark
             direction = 1 if lot.quantity > 0 else -1
             unrealized += lot.quantity * mark - direction * lot.basis
+        expected = self._initial + self._realized + unrealized - self._fees
+        if self._cash + market_value != expected:
+            self._break(
+                "exact cash + marked inventory differs from initial + realized + unrealized - fees"
+            )
         result = PnLSnapshot(
             timestamp=timestamp,
             quote_asset=self.quote_asset,
@@ -176,5 +191,19 @@ class PnLLedger:
             mode=self.mode,
             config_hash=self.config_hash,
         )
+        # Four independently rounded fields each contribute at most half a unit.
+        public_expected = (
+            self._initial
+            + Fraction(result.realized_pnl)
+            + Fraction(result.unrealized_pnl)
+            - Fraction(result.fees)
+        )
+        if abs(Fraction(result.equity) - public_expected) > Fraction(2, 10**18):
+            self._break("public PnL snapshot exceeds the declared 2e-18 rounding tolerance")
         self._clock = timestamp
         return result
+
+    def _break(self, reason: str) -> None:
+        self._halted = True
+        LOGGER.critical("LEDGER_RECONCILIATION_BREAK: %s; reporting halted", reason)
+        raise ReconciliationError(reason)

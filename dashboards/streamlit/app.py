@@ -7,12 +7,36 @@ from helios.dashboard.registry import read_registry, report_html
 
 
 def main() -> None:
-    st.set_page_config(page_title="HELIOS · Alpha registry", layout="wide")
-    page = st.sidebar.radio("Page", ["Alpha registry", "Paper trading"])
+    st.set_page_config(
+        page_title="HELIOS · Backtesting lab", layout="wide", initial_sidebar_state="collapsed"
+    )
+    st.sidebar.title("HELIOS")
+    st.sidebar.caption("Research & simulated execution")
+    default = 1 if st.query_params.get("run") or st.query_params.get("page") == "registry" else 0
+    if st.query_params.get("page") == "equities":
+        default = 3
+    page = st.sidebar.radio(
+        "Page",
+        ["Simulation", "Alpha registry", "Paper trading", "Nifty 50 equities"],
+        index=default,
+    )
+    st.sidebar.caption(
+        "Simulation is ready without a database. Registry and PAPER show retained runs."
+    )
+    if page == "Simulation":
+        from helios.dashboard.simulation_page import render_simulation
+
+        render_simulation()
+        return
     if page == "Paper trading":
         from helios.dashboard.paper_page import render_paper
 
         render_paper()
+        return
+    if page == "Nifty 50 equities":
+        from helios.dashboard.equity_page import render_equities
+
+        render_equities()
         return
     st.caption("HELIOS · BACKTEST RESEARCH · READ ONLY")
     st.title("Alpha registry")
@@ -22,7 +46,7 @@ def main() -> None:
     )
 
     if run := st.query_params.get("run"):
-        st.link_button("Back to registry", "?")
+        st.link_button("Back to registry", "?page=registry")
         try:
             content = report_html(run)
         except Exception:

@@ -53,6 +53,7 @@ def test_streamlit_registry_and_filters_render_read_only_fixture():
         app = AppTest.from_file(
             str(Path("dashboards/streamlit/app.py").resolve()), default_timeout=30
         ).run()
+        app.sidebar.radio[0].set_value("Alpha registry").run()
         assert not app.exception
         assert app.metric[0].value == "1" and len(app.dataframe[0].value) == 1
         app.text_input[0].set_value("absent").run()
@@ -66,6 +67,7 @@ def test_connection_error_does_not_expose_settings_or_traceback():
         app = AppTest.from_file(
             str(Path("dashboards/streamlit/app.py").resolve()), default_timeout=30
         ).run()
+        app.sidebar.radio[0].set_value("Alpha registry").run()
     assert not app.exception and app.error
     assert "secret-password" not in app.error[0].value
 

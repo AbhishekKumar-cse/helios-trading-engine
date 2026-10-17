@@ -1,0 +1,20 @@
+# Fixed before the first equity model is fitted. Independent of crypto ADR-004.
+version: nifty50_equity_pilot_v1
+daily_start: 2016-01-01
+hourly_start: 2024-10-19
+minute_start: 2026-10-10
+end_exclusive: 2026-10-17
+daily_train_end: 2022-12-31
+daily_valid_start: 2023-01-09
+daily_valid_end: 2024-12-31
+daily_test_start: 2025-01-09
+hourly_train_end: 2025-12-31
+hourly_valid_start: 2026-01-09
+hourly_valid_end: 2026-06-30
+hourly_test_start: 2026-07-09
+seed: 42
+n_estimators: 300
+num_leaves: 15
+min_child_samples: 200
+learning_rate: 0.03
+stopping_rounds: 30

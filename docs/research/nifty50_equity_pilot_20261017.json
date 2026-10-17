@@ -1,0 +1,3572 @@
+{
+  "config_hash": "985d97ef51a4624e6e8281db5237eac5e56b7662c2299520baf60f101addf20e",
+  "coverage": [
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "ADANIENT",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 474,
+      "rejected_rows": {
+        "missing_or_nonfinite": 51
+      },
+      "retained_bars": 3405,
+      "symbol": "ADANIENT",
+      "zero_volume_bars": 447
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 78
+      },
+      "retained_bars": 1797,
+      "symbol": "ADANIENT",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "ADANIPORTS",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 475,
+      "rejected_rows": {
+        "missing_or_nonfinite": 49
+      },
+      "retained_bars": 3407,
+      "symbol": "ADANIPORTS",
+      "zero_volume_bars": 459
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 82
+      },
+      "retained_bars": 1793,
+      "symbol": "ADANIPORTS",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "APOLLOHOSP",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 471,
+      "rejected_rows": {
+        "missing_or_nonfinite": 53
+      },
+      "retained_bars": 3403,
+      "symbol": "APOLLOHOSP",
+      "zero_volume_bars": 466
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 79
+      },
+      "retained_bars": 1796,
+      "symbol": "APOLLOHOSP",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "ASIANPAINT",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 476,
+      "rejected_rows": {
+        "missing_or_nonfinite": 48
+      },
+      "retained_bars": 3408,
+      "symbol": "ASIANPAINT",
+      "zero_volume_bars": 452
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 79
+      },
+      "retained_bars": 1796,
+      "symbol": "ASIANPAINT",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "AXISBANK",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 482,
+      "rejected_rows": {
+        "missing_or_nonfinite": 42
+      },
+      "retained_bars": 3414,
+      "symbol": "AXISBANK",
+      "zero_volume_bars": 467
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 79
+      },
+      "retained_bars": 1796,
+      "symbol": "AXISBANK",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "BAJAJ-AUTO",
+      "zero_volume_bars": 3
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 470,
+      "rejected_rows": {
+        "missing_or_nonfinite": 54
+      },
+      "retained_bars": 3402,
+      "symbol": "BAJAJ-AUTO",
+      "zero_volume_bars": 463
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 80
+      },
+      "retained_bars": 1795,
+      "symbol": "BAJAJ-AUTO",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "BAJAJFINSV",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 474,
+      "rejected_rows": {
+        "missing_or_nonfinite": 51
+      },
+      "retained_bars": 3405,
+      "symbol": "BAJAJFINSV",
+      "zero_volume_bars": 457
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 80
+      },
+      "retained_bars": 1795,
+      "symbol": "BAJAJFINSV",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "BAJFINANCE",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 481,
+      "rejected_rows": {
+        "missing_or_nonfinite": 44
+      },
+      "retained_bars": 3412,
+      "symbol": "BAJFINANCE",
+      "zero_volume_bars": 449
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 78
+      },
+      "retained_bars": 1797,
+      "symbol": "BAJFINANCE",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "BEL",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 483,
+      "rejected_rows": {
+        "missing_or_nonfinite": 42
+      },
+      "retained_bars": 3414,
+      "symbol": "BEL",
+      "zero_volume_bars": 454
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 78
+      },
+      "retained_bars": 1797,
+      "symbol": "BEL",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "BHARTIARTL",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 479,
+      "rejected_rows": {
+        "missing_or_nonfinite": 45
+      },
+      "retained_bars": 3411,
+      "symbol": "BHARTIARTL",
+      "zero_volume_bars": 461
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 79
+      },
+      "retained_bars": 1796,
+      "symbol": "BHARTIARTL",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2017-02-03",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2397,
+      "symbol": "BSE",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 479,
+      "rejected_rows": {
+        "missing_or_nonfinite": 47
+      },
+      "retained_bars": 3409,
+      "symbol": "BSE",
+      "zero_volume_bars": 426
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 78
+      },
+      "retained_bars": 1797,
+      "symbol": "BSE",
+      "zero_volume_bars": 7
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "CIPLA",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 474,
+      "rejected_rows": {
+        "missing_or_nonfinite": 51
+      },
+      "retained_bars": 3405,
+      "symbol": "CIPLA",
+      "zero_volume_bars": 449
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 80
+      },
+      "retained_bars": 1795,
+      "symbol": "CIPLA",
+      "zero_volume_bars": 10
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "COALINDIA",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 484,
+      "rejected_rows": {
+        "missing_or_nonfinite": 40
+      },
+      "retained_bars": 3416,
+      "symbol": "COALINDIA",
+      "zero_volume_bars": 442
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 79
+      },
+      "retained_bars": 1796,
+      "symbol": "COALINDIA",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "DRREDDY",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 477,
+      "rejected_rows": {
+        "missing_or_nonfinite": 48
+      },
+      "retained_bars": 3408,
+      "symbol": "DRREDDY",
+      "zero_volume_bars": 456
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 77
+      },
+      "retained_bars": 1798,
+      "symbol": "DRREDDY",
+      "zero_volume_bars": 8
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "EICHERMOT",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 473,
+      "rejected_rows": {
+        "missing_or_nonfinite": 52
+      },
+      "retained_bars": 3404,
+      "symbol": "EICHERMOT",
+      "zero_volume_bars": 465
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 77
+      },
+      "retained_bars": 1798,
+      "symbol": "EICHERMOT",
+      "zero_volume_bars": 7
+    },
+    {
+      "first_session": "2021-07-23",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 1295,
+      "symbol": "ETERNAL",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2025-04-09",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 365,
+      "rejected_rows": {
+        "missing_or_nonfinite": 31
+      },
+      "retained_bars": 2606,
+      "symbol": "ETERNAL",
+      "zero_volume_bars": 340
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 78
+      },
+      "retained_bars": 1797,
+      "symbol": "ETERNAL",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "GRASIM",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 476,
+      "rejected_rows": {
+        "missing_or_nonfinite": 49
+      },
+      "retained_bars": 3407,
+      "symbol": "GRASIM",
+      "zero_volume_bars": 461
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 79
+      },
+      "retained_bars": 1796,
+      "symbol": "GRASIM",
+      "zero_volume_bars": 13
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "HCLTECH",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 477,
+      "rejected_rows": {
+        "missing_or_nonfinite": 47
+      },
+      "retained_bars": 3409,
+      "symbol": "HCLTECH",
+      "zero_volume_bars": 451
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 79
+      },
+      "retained_bars": 1796,
+      "symbol": "HCLTECH",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "HDFCBANK",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 485,
+      "rejected_rows": {
+        "missing_or_nonfinite": 41
+      },
+      "retained_bars": 3415,
+      "symbol": "HDFCBANK",
+      "zero_volume_bars": 448
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 79
+      },
+      "retained_bars": 1796,
+      "symbol": "HDFCBANK",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2017-11-17",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2202,
+      "symbol": "HDFCLIFE",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 481,
+      "rejected_rows": {
+        "missing_or_nonfinite": 43
+      },
+      "retained_bars": 3413,
+      "symbol": "HDFCLIFE",
+      "zero_volume_bars": 452
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 78
+      },
+      "retained_bars": 1797,
+      "symbol": "HDFCLIFE",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "HINDALCO",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 482,
+      "rejected_rows": {
+        "missing_or_nonfinite": 44
+      },
+      "retained_bars": 3412,
+      "symbol": "HINDALCO",
+      "zero_volume_bars": 454
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 78
+      },
+      "retained_bars": 1797,
+      "symbol": "HINDALCO",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "HINDUNILVR",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 480,
+      "rejected_rows": {
+        "missing_or_nonfinite": 47
+      },
+      "retained_bars": 3409,
+      "symbol": "HINDUNILVR",
+      "zero_volume_bars": 464
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 79
+      },
+      "retained_bars": 1796,
+      "symbol": "HINDUNILVR",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "ICICIBANK",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 476,
+      "rejected_rows": {
+        "missing_or_nonfinite": 49
+      },
+      "retained_bars": 3407,
+      "symbol": "ICICIBANK",
+      "zero_volume_bars": 470
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 78
+      },
+      "retained_bars": 1797,
+      "symbol": "ICICIBANK",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "INDIGO",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 472,
+      "rejected_rows": {
+        "missing_or_nonfinite": 54
+      },
+      "retained_bars": 3402,
+      "symbol": "INDIGO",
+      "zero_volume_bars": 452
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 81
+      },
+      "retained_bars": 1794,
+      "symbol": "INDIGO",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "INFY",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 481,
+      "rejected_rows": {
+        "missing_or_nonfinite": 43
+      },
+      "retained_bars": 3413,
+      "symbol": "INFY",
+      "zero_volume_bars": 449
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 78
+      },
+      "retained_bars": 1797,
+      "symbol": "INFY",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "ITC",
+      "zero_volume_bars": 1
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 485,
+      "rejected_rows": {
+        "missing_or_nonfinite": 39
+      },
+      "retained_bars": 3417,
+      "symbol": "ITC",
+      "zero_volume_bars": 444
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 78
+      },
+      "retained_bars": 1797,
+      "symbol": "ITC",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2023-08-21",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 780,
+      "symbol": "JIOFIN",
+      "zero_volume_bars": 3
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 487,
+      "rejected_rows": {
+        "missing_or_nonfinite": 37
+      },
+      "retained_bars": 3419,
+      "symbol": "JIOFIN",
+      "zero_volume_bars": 446
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 77
+      },
+      "retained_bars": 1798,
+      "symbol": "JIOFIN",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "JSWSTEEL",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 475,
+      "rejected_rows": {
+        "missing_or_nonfinite": 52
+      },
+      "retained_bars": 3404,
+      "symbol": "JSWSTEEL",
+      "zero_volume_bars": 461
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 77
+      },
+      "retained_bars": 1798,
+      "symbol": "JSWSTEEL",
+      "zero_volume_bars": 7
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "KOTAKBANK",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 482,
+      "rejected_rows": {
+        "missing_or_nonfinite": 45
+      },
+      "retained_bars": 3411,
+      "symbol": "KOTAKBANK",
+      "zero_volume_bars": 470
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 77
+      },
+      "retained_bars": 1798,
+      "symbol": "KOTAKBANK",
+      "zero_volume_bars": 9
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "LT",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 478,
+      "rejected_rows": {
+        "missing_or_nonfinite": 48
+      },
+      "retained_bars": 3408,
+      "symbol": "LT",
+      "zero_volume_bars": 461
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 78
+      },
+      "retained_bars": 1797,
+      "symbol": "LT",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "M&M",
+      "zero_volume_bars": 3
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 477,
+      "rejected_rows": {
+        "missing_or_nonfinite": 47
+      },
+      "retained_bars": 3409,
+      "symbol": "M&M",
+      "zero_volume_bars": 462
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 77
+      },
+      "retained_bars": 1798,
+      "symbol": "M&M",
+      "zero_volume_bars": 7
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "MARUTI",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 478,
+      "rejected_rows": {
+        "missing_or_nonfinite": 46
+      },
+      "retained_bars": 3410,
+      "symbol": "MARUTI",
+      "zero_volume_bars": 475
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 78
+      },
+      "retained_bars": 1797,
+      "symbol": "MARUTI",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2020-08-21",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 1524,
+      "symbol": "MAXHEALTH",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 476,
+      "rejected_rows": {
+        "missing_or_nonfinite": 48
+      },
+      "retained_bars": 3408,
+      "symbol": "MAXHEALTH",
+      "zero_volume_bars": 444
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 78
+      },
+      "retained_bars": 1797,
+      "symbol": "MAXHEALTH",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "NESTLEIND",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 478,
+      "rejected_rows": {
+        "missing_or_nonfinite": 46
+      },
+      "retained_bars": 3410,
+      "symbol": "NESTLEIND",
+      "zero_volume_bars": 462
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 77
+      },
+      "retained_bars": 1798,
+      "symbol": "NESTLEIND",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "NTPC",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 483,
+      "rejected_rows": {
+        "missing_or_nonfinite": 44
+      },
+      "retained_bars": 3412,
+      "symbol": "NTPC",
+      "zero_volume_bars": 447
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 78
+      },
+      "retained_bars": 1797,
+      "symbol": "NTPC",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "ONGC",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 484,
+      "rejected_rows": {
+        "missing_or_nonfinite": 42
+      },
+      "retained_bars": 3414,
+      "symbol": "ONGC",
+      "zero_volume_bars": 450
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 77
+      },
+      "retained_bars": 1798,
+      "symbol": "ONGC",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "POWERGRID",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 481,
+      "rejected_rows": {
+        "missing_or_nonfinite": 45
+      },
+      "retained_bars": 3411,
+      "symbol": "POWERGRID",
+      "zero_volume_bars": 458
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 78
+      },
+      "retained_bars": 1797,
+      "symbol": "POWERGRID",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "RELIANCE",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 485,
+      "rejected_rows": {
+        "missing_or_nonfinite": 39
+      },
+      "retained_bars": 3417,
+      "symbol": "RELIANCE",
+      "zero_volume_bars": 444
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 77
+      },
+      "retained_bars": 1798,
+      "symbol": "RELIANCE",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2017-10-03",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2234,
+      "symbol": "SBILIFE",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 472,
+      "rejected_rows": {
+        "missing_or_nonfinite": 54
+      },
+      "retained_bars": 3402,
+      "symbol": "SBILIFE",
+      "zero_volume_bars": 460
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 77
+      },
+      "retained_bars": 1798,
+      "symbol": "SBILIFE",
+      "zero_volume_bars": 7
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "SBIN",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 484,
+      "rejected_rows": {
+        "missing_or_nonfinite": 40
+      },
+      "retained_bars": 3416,
+      "symbol": "SBIN",
+      "zero_volume_bars": 451
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 78
+      },
+      "retained_bars": 1797,
+      "symbol": "SBIN",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "SHRIRAMFIN",
+      "zero_volume_bars": 3
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 482,
+      "rejected_rows": {
+        "missing_or_nonfinite": 43
+      },
+      "retained_bars": 3413,
+      "symbol": "SHRIRAMFIN",
+      "zero_volume_bars": 456
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 78
+      },
+      "retained_bars": 1797,
+      "symbol": "SHRIRAMFIN",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "SUNPHARMA",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 479,
+      "rejected_rows": {
+        "missing_or_nonfinite": 45
+      },
+      "retained_bars": 3411,
+      "symbol": "SUNPHARMA",
+      "zero_volume_bars": 461
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 79
+      },
+      "retained_bars": 1796,
+      "symbol": "SUNPHARMA",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "TATACONSUM",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 483,
+      "rejected_rows": {
+        "missing_or_nonfinite": 42
+      },
+      "retained_bars": 3414,
+      "symbol": "TATACONSUM",
+      "zero_volume_bars": 440
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 79
+      },
+      "retained_bars": 1796,
+      "symbol": "TATACONSUM",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "TATASTEEL",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 483,
+      "rejected_rows": {
+        "missing_or_nonfinite": 41
+      },
+      "retained_bars": 3415,
+      "symbol": "TATASTEEL",
+      "zero_volume_bars": 450
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 79
+      },
+      "retained_bars": 1796,
+      "symbol": "TATASTEEL",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "TCS",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 477,
+      "rejected_rows": {
+        "missing_or_nonfinite": 49
+      },
+      "retained_bars": 3407,
+      "symbol": "TCS",
+      "zero_volume_bars": 444
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 79
+      },
+      "retained_bars": 1796,
+      "symbol": "TCS",
+      "zero_volume_bars": 7
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "TECHM",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 475,
+      "rejected_rows": {
+        "missing_or_nonfinite": 51
+      },
+      "retained_bars": 3405,
+      "symbol": "TECHM",
+      "zero_volume_bars": 461
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 78
+      },
+      "retained_bars": 1797,
+      "symbol": "TECHM",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "TITAN",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 476,
+      "rejected_rows": {
+        "missing_or_nonfinite": 50
+      },
+      "retained_bars": 3406,
+      "symbol": "TITAN",
+      "zero_volume_bars": 448
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 79
+      },
+      "retained_bars": 1796,
+      "symbol": "TITAN",
+      "zero_volume_bars": 7
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "TMPV",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2025-10-24",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 238,
+      "rejected_rows": {
+        "missing_or_nonfinite": 19
+      },
+      "retained_bars": 1680,
+      "symbol": "TMPV",
+      "zero_volume_bars": 233
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 77
+      },
+      "retained_bars": 1798,
+      "symbol": "TMPV",
+      "zero_volume_bars": 6
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "TRENT",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 472,
+      "rejected_rows": {
+        "missing_or_nonfinite": 52
+      },
+      "retained_bars": 3404,
+      "symbol": "TRENT",
+      "zero_volume_bars": 467
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 79
+      },
+      "retained_bars": 1796,
+      "symbol": "TRENT",
+      "zero_volume_bars": 5
+    },
+    {
+      "first_session": "2016-01-01",
+      "interval": "1d",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {},
+      "retained_bars": 2666,
+      "symbol": "ULTRACEMCO",
+      "zero_volume_bars": 2
+    },
+    {
+      "first_session": "2024-10-21",
+      "interval": "60m",
+      "last_session": "2026-10-16",
+      "partial_bars": 463,
+      "rejected_rows": {
+        "missing_or_nonfinite": 64
+      },
+      "retained_bars": 3392,
+      "symbol": "ULTRACEMCO",
+      "zero_volume_bars": 469
+    },
+    {
+      "first_session": "2026-10-12",
+      "interval": "1m",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "rejected_rows": {
+        "missing_or_nonfinite": 80
+      },
+      "retained_bars": 1795,
+      "symbol": "ULTRACEMCO",
+      "zero_volume_bars": 8
+    }
+  ],
+  "feature_protocol_sha256": "07531c0767778c098296c15b7ee19b8c032a6f7f6a186a97fe634b20ae3eb52c",
+  "intervals": {
+    "1d": {
+      "bars": 127736,
+      "companies": 50,
+      "excluded_rows": {},
+      "first_session": "2016-01-01",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "zero_volume_bars": 110
+    },
+    "1m": {
+      "bars": 89831,
+      "companies": 50,
+      "excluded_rows": {
+        "missing_or_nonfinite": 3919
+      },
+      "first_session": "2026-10-12",
+      "last_session": "2026-10-16",
+      "partial_bars": 0,
+      "zero_volume_bars": 307
+    },
+    "60m": {
+      "bars": 167931,
+      "companies": 50,
+      "excluded_rows": {
+        "missing_or_nonfinite": 2293
+      },
+      "first_session": "2024-10-21",
+      "last_session": "2026-10-16",
+      "partial_bars": 23560,
+      "zero_volume_bars": 22418
+    }
+  },
+  "limitations": [
+    "Current-universe survivorship bias; not a point-in-time Nifty index backtest.",
+    "Yahoo-distributed data and adjustments are not exchange-verified or point-in-time.",
+    "VALID selects early stopping; metrics are development evidence, not a final test.",
+    "No fees, taxes, slippage, executable P&L, promotion or live orders.",
+    "Daily uses observed sessions, not an independently verified historical calendar.",
+    "Full hourly bars only; labels never cross missing hours or overnight boundaries.",
+    "Recent minute coverage is ingestion evidence only; no minute model is fitted.",
+    "Uncommitted development source is archived; this is not a clean reported run."
+  ],
+  "manifest_sha256": "cb0adba828f80270727388c578406af1a34d7a7e001c87d9929a7c5c5b96c01b",
+  "models": {
+    "1d": {
+      "best_iteration": 46,
+      "by_symbol": [
+        {
+          "accuracy": 0.6103092783505155,
+          "log_loss": 0.6774881212918156,
+          "macro_f1": 0.4069638802088387,
+          "n_samples": 485,
+          "roc_auc": 0.5331173958295948,
+          "symbol": "ADANIENT"
+        },
+        {
+          "accuracy": 0.5835051546391753,
+          "log_loss": 0.6818012429191627,
+          "macro_f1": 0.3984551527654976,
+          "n_samples": 485,
+          "roc_auc": 0.5529108814420434,
+          "symbol": "ADANIPORTS"
+        },
+        {
+          "accuracy": 0.5051546391752577,
+          "log_loss": 0.6947583615285471,
+          "macro_f1": 0.3356164383561644,
+          "n_samples": 485,
+          "roc_auc": 0.5339625850340136,
+          "symbol": "APOLLOHOSP"
+        },
+        {
+          "accuracy": 0.5422680412371134,
+          "log_loss": 0.6900398995288516,
+          "macro_f1": 0.3516042780748663,
+          "n_samples": 485,
+          "roc_auc": 0.4634617365331136,
+          "symbol": "ASIANPAINT"
+        },
+        {
+          "accuracy": 0.511340206185567,
+          "log_loss": 0.6939825982546993,
+          "macro_f1": 0.3383356070941337,
+          "n_samples": 485,
+          "roc_auc": 0.5320879270450524,
+          "symbol": "AXISBANK"
+        },
+        {
+          "accuracy": 0.4924406047516199,
+          "log_loss": 0.6983782569790318,
+          "macro_f1": 0.3299565846599132,
+          "n_samples": 463,
+          "roc_auc": 0.4958939902948861,
+          "symbol": "BAJAJ-AUTO"
+        },
+        {
+          "accuracy": 0.5628865979381443,
+          "log_loss": 0.6849454949760602,
+          "macro_f1": 0.36015831134564646,
+          "n_samples": 485,
+          "roc_auc": 0.5452346395742622,
+          "symbol": "BAJAJFINSV"
+        },
+        {
+          "accuracy": 0.5793814432989691,
+          "log_loss": 0.6827084417506407,
+          "macro_f1": 0.37134651552889747,
+          "n_samples": 485,
+          "roc_auc": 0.5142770034843205,
+          "symbol": "BAJFINANCE"
+        },
+        {
+          "accuracy": 0.5319587628865979,
+          "log_loss": 0.6893386120578451,
+          "macro_f1": 0.37335291338672316,
+          "n_samples": 485,
+          "roc_auc": 0.5368290598290598,
+          "symbol": "BEL"
+        },
+        {
+          "accuracy": 0.534020618556701,
+          "log_loss": 0.6898643427015354,
+          "macro_f1": 0.3481182795698925,
+          "n_samples": 485,
+          "roc_auc": 0.5362609765264632,
+          "symbol": "BHARTIARTL"
+        },
+        {
+          "accuracy": 0.49896907216494846,
+          "log_loss": 0.699419772419172,
+          "macro_f1": 0.35030677890419565,
+          "n_samples": 485,
+          "roc_auc": 0.5040221088435374,
+          "symbol": "BSE"
+        },
+        {
+          "accuracy": 0.5463917525773195,
+          "log_loss": 0.6889309337477597,
+          "macro_f1": 0.35333333333333333,
+          "n_samples": 485,
+          "roc_auc": 0.5277186963979417,
+          "symbol": "CIPLA"
+        },
+        {
+          "accuracy": 0.5567010309278351,
+          "log_loss": 0.6857173357767242,
+          "macro_f1": 0.37402825052076766,
+          "n_samples": 485,
+          "roc_auc": 0.5438045945388266,
+          "symbol": "COALINDIA"
+        },
+        {
+          "accuracy": 0.5092783505154639,
+          "log_loss": 0.6950376910267124,
+          "macro_f1": 0.337431693989071,
+          "n_samples": 485,
+          "roc_auc": 0.5069234171401354,
+          "symbol": "DRREDDY"
+        },
+        {
+          "accuracy": 0.5278350515463918,
+          "log_loss": 0.6934481509750574,
+          "macro_f1": 0.35322412517979745,
+          "n_samples": 485,
+          "roc_auc": 0.4682738521321198,
+          "symbol": "EICHERMOT"
+        },
+        {
+          "accuracy": 0.5075593952483801,
+          "log_loss": 0.6957485125936759,
+          "macro_f1": 0.3689383070301291,
+          "n_samples": 463,
+          "roc_auc": 0.5359702161012204,
+          "symbol": "ETERNAL"
+        },
+        {
+          "accuracy": 0.5092783505154639,
+          "log_loss": 0.6951433307148094,
+          "macro_f1": 0.34115296803652967,
+          "n_samples": 485,
+          "roc_auc": 0.5083353179328411,
+          "symbol": "GRASIM"
+        },
+        {
+          "accuracy": 0.5298969072164949,
+          "log_loss": 0.6901236972768043,
+          "macro_f1": 0.3463611859838275,
+          "n_samples": 485,
+          "roc_auc": 0.5403781828111134,
+          "symbol": "HCLTECH"
+        },
+        {
+          "accuracy": 0.49896907216494846,
+          "log_loss": 0.6966870957128682,
+          "macro_f1": 0.3328748280605227,
+          "n_samples": 485,
+          "roc_auc": 0.4797299595279393,
+          "symbol": "HDFCBANK"
+        },
+        {
+          "accuracy": 0.5484536082474227,
+          "log_loss": 0.6872181142585041,
+          "macro_f1": 0.3623822644839448,
+          "n_samples": 485,
+          "roc_auc": 0.5461341710440484,
+          "symbol": "HDFCLIFE"
+        },
+        {
+          "accuracy": 0.5525773195876289,
+          "log_loss": 0.6870738452163315,
+          "macro_f1": 0.3559096945551129,
+          "n_samples": 485,
+          "roc_auc": 0.49854862119013066,
+          "symbol": "HINDALCO"
+        },
+        {
+          "accuracy": 0.5237113402061856,
+          "log_loss": 0.693127882554264,
+          "macro_f1": 0.34757542758311444,
+          "n_samples": 485,
+          "roc_auc": 0.4822901049475262,
+          "symbol": "HINDUNILVR"
+        },
+        {
+          "accuracy": 0.49690721649484537,
+          "log_loss": 0.6962941867802945,
+          "macro_f1": 0.3319559228650138,
+          "n_samples": 485,
+          "roc_auc": 0.5164359567376369,
+          "symbol": "ICICIBANK"
+        },
+        {
+          "accuracy": 0.51340206185567,
+          "log_loss": 0.6941802102757976,
+          "macro_f1": 0.33923705722070846,
+          "n_samples": 485,
+          "roc_auc": 0.4824775112443778,
+          "symbol": "INDIGO"
+        },
+        {
+          "accuracy": 0.5257731958762887,
+          "log_loss": 0.6921600220152594,
+          "macro_f1": 0.34459459459459457,
+          "n_samples": 485,
+          "roc_auc": 0.4932589255239266,
+          "symbol": "INFY"
+        },
+        {
+          "accuracy": 0.5319587628865979,
+          "log_loss": 0.6906494225049616,
+          "macro_f1": 0.3472409152086137,
+          "n_samples": 485,
+          "roc_auc": 0.5175443089847352,
+          "symbol": "ITC"
+        },
+        {
+          "accuracy": 0.5690721649484536,
+          "log_loss": 0.6850209774549875,
+          "macro_f1": 0.37134475722675997,
+          "n_samples": 485,
+          "roc_auc": 0.5159563427543502,
+          "symbol": "JSWSTEEL"
+        },
+        {
+          "accuracy": 0.5237113402061856,
+          "log_loss": 0.6933149725510689,
+          "macro_f1": 0.34370771312584575,
+          "n_samples": 485,
+          "roc_auc": 0.47151337336244536,
+          "symbol": "KOTAKBANK"
+        },
+        {
+          "accuracy": 0.5278350515463918,
+          "log_loss": 0.6913452312759114,
+          "macro_f1": 0.3493898974277865,
+          "n_samples": 485,
+          "roc_auc": 0.5085592497868713,
+          "symbol": "LT"
+        },
+        {
+          "accuracy": 0.5051546391752577,
+          "log_loss": 0.6957555971343617,
+          "macro_f1": 0.34644926559762834,
+          "n_samples": 485,
+          "roc_auc": 0.5259837431554604,
+          "symbol": "M&M"
+        },
+        {
+          "accuracy": 0.5237113402061856,
+          "log_loss": 0.6936166185471945,
+          "macro_f1": 0.34370771312584575,
+          "n_samples": 485,
+          "roc_auc": 0.48215563963595454,
+          "symbol": "MARUTI"
+        },
+        {
+          "accuracy": 0.51340206185567,
+          "log_loss": 0.695247463719495,
+          "macro_f1": 0.34299949487991915,
+          "n_samples": 485,
+          "roc_auc": 0.47237277158537005,
+          "symbol": "MAXHEALTH"
+        },
+        {
+          "accuracy": 0.5773195876288659,
+          "log_loss": 0.6846932609719879,
+          "macro_f1": 0.3660130718954248,
+          "n_samples": 485,
+          "roc_auc": 0.46601045296167243,
+          "symbol": "NESTLEIND"
+        },
+        {
+          "accuracy": 0.5298969072164949,
+          "log_loss": 0.6890904824970566,
+          "macro_f1": 0.3579292084726867,
+          "n_samples": 485,
+          "roc_auc": 0.560268619018363,
+          "symbol": "NTPC"
+        },
+        {
+          "accuracy": 0.5690721649484536,
+          "log_loss": 0.6851535120456158,
+          "macro_f1": 0.3836832472988831,
+          "n_samples": 485,
+          "roc_auc": 0.515255820389525,
+          "symbol": "ONGC"
+        },
+        {
+          "accuracy": 0.4865979381443299,
+          "log_loss": 0.6976135127236209,
+          "macro_f1": 0.3308269010190116,
+          "n_samples": 485,
+          "roc_auc": 0.5170002042066572,
+          "symbol": "POWERGRID"
+        },
+        {
+          "accuracy": 0.5175257731958763,
+          "log_loss": 0.6947078672274907,
+          "macro_f1": 0.34103260869565216,
+          "n_samples": 485,
+          "roc_auc": 0.47421425409473217,
+          "symbol": "RELIANCE"
+        },
+        {
+          "accuracy": 0.5752577319587628,
+          "log_loss": 0.6846127630106558,
+          "macro_f1": 0.3739974937343359,
+          "n_samples": 485,
+          "roc_auc": 0.5059517603308656,
+          "symbol": "SBILIFE"
+        },
+        {
+          "accuracy": 0.5319587628865979,
+          "log_loss": 0.689973933076163,
+          "macro_f1": 0.35119542221357897,
+          "n_samples": 485,
+          "roc_auc": 0.5318717948717948,
+          "symbol": "SBIN"
+        },
+        {
+          "accuracy": 0.5442764578833693,
+          "log_loss": 0.6909984137757318,
+          "macro_f1": 0.3609197658064305,
+          "n_samples": 463,
+          "roc_auc": 0.46267605633802816,
+          "symbol": "SHRIRAMFIN"
+        },
+        {
+          "accuracy": 0.51340206185567,
+          "log_loss": 0.6947678746290102,
+          "macro_f1": 0.33923705722070846,
+          "n_samples": 485,
+          "roc_auc": 0.48672656728609354,
+          "symbol": "SUNPHARMA"
+        },
+        {
+          "accuracy": 0.5443298969072164,
+          "log_loss": 0.6883814891387076,
+          "macro_f1": 0.35246995994659547,
+          "n_samples": 485,
+          "roc_auc": 0.5057592611666152,
+          "symbol": "TATACONSUM"
+        },
+        {
+          "accuracy": 0.5690721649484536,
+          "log_loss": 0.6847279038957219,
+          "macro_f1": 0.36268068331143233,
+          "n_samples": 485,
+          "roc_auc": 0.5022329962117262,
+          "symbol": "TATASTEEL"
+        },
+        {
+          "accuracy": 0.5216494845360825,
+          "log_loss": 0.6927134940106461,
+          "macro_f1": 0.3428184281842818,
+          "n_samples": 485,
+          "roc_auc": 0.5123177047839717,
+          "symbol": "TCS"
+        },
+        {
+          "accuracy": 0.511340206185567,
+          "log_loss": 0.6933673525923285,
+          "macro_f1": 0.3383356070941337,
+          "n_samples": 485,
+          "roc_auc": 0.5065106382978725,
+          "symbol": "TECHM"
+        },
+        {
+          "accuracy": 0.5298969072164949,
+          "log_loss": 0.6904278080344066,
+          "macro_f1": 0.3463611859838275,
+          "n_samples": 485,
+          "roc_auc": 0.5374483206341614,
+          "symbol": "TITAN"
+        },
+        {
+          "accuracy": 0.6,
+          "log_loss": 0.6782080373188029,
+          "macro_f1": 0.3934998968646865,
+          "n_samples": 485,
+          "roc_auc": 0.5610547988596769,
+          "symbol": "TMPV"
+        },
+        {
+          "accuracy": 0.5195876288659794,
+          "log_loss": 0.6924760200823779,
+          "macro_f1": 0.35318157622103036,
+          "n_samples": 485,
+          "roc_auc": 0.5419985024845143,
+          "symbol": "TRENT"
+        },
+        {
+          "accuracy": 0.5319587628865979,
+          "log_loss": 0.6914613977611115,
+          "macro_f1": 0.3472409152086137,
+          "n_samples": 485,
+          "roc_auc": 0.5129768124850596,
+          "symbol": "ULTRACEMCO"
+        }
+      ],
+      "coverage": [
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "ADANIENT",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "ADANIPORTS",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "APOLLOHOSP",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "ASIANPAINT",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "AXISBANK",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "BAJAJ-AUTO",
+          "train_samples": 1709,
+          "usable_samples": 2178,
+          "valid_samples": 463
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "BAJAJFINSV",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "BAJFINANCE",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "BEL",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "BHARTIARTL",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 1952,
+          "excluded_from_fit": null,
+          "first_session": "2017-02-03",
+          "symbol": "BSE",
+          "train_samples": 1440,
+          "usable_samples": 1931,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "CIPLA",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "COALINDIA",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "DRREDDY",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "EICHERMOT",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 850,
+          "excluded_from_fit": null,
+          "first_session": "2021-07-23",
+          "symbol": "ETERNAL",
+          "train_samples": 338,
+          "usable_samples": 807,
+          "valid_samples": 463
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "GRASIM",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "HCLTECH",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "HDFCBANK",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 1757,
+          "excluded_from_fit": null,
+          "first_session": "2017-11-17",
+          "symbol": "HDFCLIFE",
+          "train_samples": 1245,
+          "usable_samples": 1736,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "HINDALCO",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "HINDUNILVR",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "ICICIBANK",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "INDIGO",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "INFY",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "ITC",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 335,
+          "excluded_from_fit": "fewer than 100 TRAIN or 20 VALID samples",
+          "first_session": "2023-08-21",
+          "symbol": "JIOFIN",
+          "train_samples": 0,
+          "usable_samples": 292,
+          "valid_samples": 292
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "JSWSTEEL",
+          "train_samples": 1621,
+          "usable_samples": 2112,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "KOTAKBANK",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "LT",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "M&M",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "MARUTI",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 1079,
+          "excluded_from_fit": null,
+          "first_session": "2020-08-21",
+          "symbol": "MAXHEALTH",
+          "train_samples": 567,
+          "usable_samples": 1058,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "NESTLEIND",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "NTPC",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "ONGC",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "POWERGRID",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "RELIANCE",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 1789,
+          "excluded_from_fit": null,
+          "first_session": "2017-10-03",
+          "symbol": "SBILIFE",
+          "train_samples": 1277,
+          "usable_samples": 1768,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "SBIN",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "SHRIRAMFIN",
+          "train_samples": 1709,
+          "usable_samples": 2178,
+          "valid_samples": 463
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "SUNPHARMA",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "TATACONSUM",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "TATASTEEL",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "TCS",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "TECHM",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "TITAN",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "TMPV",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "TRENT",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        },
+        {
+          "development_bars": 2221,
+          "excluded_from_fit": null,
+          "first_session": "2016-01-01",
+          "symbol": "ULTRACEMCO",
+          "train_samples": 1709,
+          "usable_samples": 2200,
+          "valid_samples": 485
+        }
+      ],
+      "feature_importance": {
+        "bar_slot": 0,
+        "body": 70,
+        "close_location": 86,
+        "open_gap": 83,
+        "range": 79,
+        "relative_volume_20": 54,
+        "return_1": 45,
+        "return_20": 80,
+        "return_5": 103,
+        "volatility_20": 44
+      },
+      "interval": "1d",
+      "lineage": {
+        "code_commit": "b5358027b79b51a09211db8c3954b21326ddca46",
+        "config_hash": "985d97ef51a4624e6e8281db5237eac5e56b7662c2299520baf60f101addf20e",
+        "created_at": "2026-10-17 11:41:05.304112+00:00",
+        "data_snapshot_id": "cb0adba828f80270727388c578406af1a34d7a7e001c87d9929a7c5c5b96c01b",
+        "dirty": true,
+        "seed": 42
+      },
+      "manifest_sha256": "cb0adba828f80270727388c578406af1a34d7a7e001c87d9929a7c5c5b96c01b",
+      "model_metrics": {
+        "accuracy": 0.5340731676442044,
+        "log_loss": 0.6906396431171137,
+        "macro_f1": 0.3540531551489706,
+        "roc_auc": 0.5112250352179195
+      },
+      "model_sha256": "f7e2404fc5a19a6776bb9ccc7b70f937f0d928aa7a1dd051d220b4be34610cca",
+      "predictions_sha256": "3024e48f7ca7b5d334e9e00c88841c59338f4beadbaf168342329efcdd35277f",
+      "train_constant_baseline": {
+        "accuracy": 0.534115363517448,
+        "log_loss": 0.6909020986050493,
+        "macro_f1": 0.34815853893335535,
+        "roc_auc": 0.5
+      },
+      "train_positive_fraction": 0.4594060643951235,
+      "train_sample_sha256": "50969a9be4ecb03034b387c22473c18b6ff7d010d430b78f5455450424b8484b",
+      "train_samples": 79975,
+      "train_symbols": 49,
+      "valid_sample_sha256": "40eca4a5b1e83a7fc0c74432f89e2f908229446d61962f9f514668f98042d437",
+      "valid_samples": 23699,
+      "valid_symbols": 49
+    },
+    "60m": {
+      "best_iteration": 1,
+      "by_symbol": [
+        {
+          "accuracy": 0.49640287769784175,
+          "log_loss": 0.6938353579857784,
+          "macro_f1": 0.3317307692307692,
+          "n_samples": 139,
+          "roc_auc": 0.4710144927536232,
+          "symbol": "ADANIENT"
+        },
+        {
+          "accuracy": 0.45925925925925926,
+          "log_loss": 0.6960307732239571,
+          "macro_f1": 0.3147208121827411,
+          "n_samples": 135,
+          "roc_auc": 0.48950508174988955,
+          "symbol": "ADANIPORTS"
+        },
+        {
+          "accuracy": 0.549618320610687,
+          "log_loss": 0.690834730936513,
+          "macro_f1": 0.35467980295566504,
+          "n_samples": 131,
+          "roc_auc": 0.45256591337099816,
+          "symbol": "APOLLOHOSP"
+        },
+        {
+          "accuracy": 0.5190839694656488,
+          "log_loss": 0.6924099997419509,
+          "macro_f1": 0.3417085427135678,
+          "n_samples": 131,
+          "roc_auc": 0.4834267040149393,
+          "symbol": "ASIANPAINT"
+        },
+        {
+          "accuracy": 0.4881889763779528,
+          "log_loss": 0.6944070231958919,
+          "macro_f1": 0.328042328042328,
+          "n_samples": 127,
+          "roc_auc": 0.45037220843672465,
+          "symbol": "AXISBANK"
+        },
+        {
+          "accuracy": 0.5365853658536586,
+          "log_loss": 0.6912771547390033,
+          "macro_f1": 0.3492063492063492,
+          "n_samples": 123,
+          "roc_auc": 0.5429292929292929,
+          "symbol": "BAJAJ-AUTO"
+        },
+        {
+          "accuracy": 0.5040650406504065,
+          "log_loss": 0.6935341552518616,
+          "macro_f1": 0.33513513513513515,
+          "n_samples": 123,
+          "roc_auc": 0.4382601797990481,
+          "symbol": "BAJAJFINSV"
+        },
+        {
+          "accuracy": 0.46564885496183206,
+          "log_loss": 0.6959225290673152,
+          "macro_f1": 0.3177083333333333,
+          "n_samples": 131,
+          "roc_auc": 0.39566744730679154,
+          "symbol": "BAJFINANCE"
+        },
+        {
+          "accuracy": 0.4409448818897638,
+          "log_loss": 0.6970760370315094,
+          "macro_f1": 0.30601092896174864,
+          "n_samples": 127,
+          "roc_auc": 0.49434104627766595,
+          "symbol": "BEL"
+        },
+        {
+          "accuracy": 0.5267175572519084,
+          "log_loss": 0.6917398636710329,
+          "macro_f1": 0.345,
+          "n_samples": 131,
+          "roc_auc": 0.5745675549322113,
+          "symbol": "BHARTIARTL"
+        },
+        {
+          "accuracy": 0.5185185185185185,
+          "log_loss": 0.6927076282123936,
+          "macro_f1": 0.34146341463414637,
+          "n_samples": 135,
+          "roc_auc": 0.4114285714285715,
+          "symbol": "BSE"
+        },
+        {
+          "accuracy": 0.5648854961832062,
+          "log_loss": 0.6897662289172677,
+          "macro_f1": 0.36097560975609755,
+          "n_samples": 131,
+          "roc_auc": 0.5046230440967282,
+          "symbol": "CIPLA"
+        },
+        {
+          "accuracy": 0.4796747967479675,
+          "log_loss": 0.6948603543688361,
+          "macro_f1": 0.3241758241758242,
+          "n_samples": 123,
+          "roc_auc": 0.4817266949152542,
+          "symbol": "COALINDIA"
+        },
+        {
+          "accuracy": 0.5374149659863946,
+          "log_loss": 0.6914643652590794,
+          "macro_f1": 0.3495575221238938,
+          "n_samples": 147,
+          "roc_auc": 0.478499627699181,
+          "symbol": "DRREDDY"
+        },
+        {
+          "accuracy": 0.48091603053435117,
+          "log_loss": 0.6944191884811675,
+          "macro_f1": 0.3247422680412371,
+          "n_samples": 131,
+          "roc_auc": 0.5657096171802054,
+          "symbol": "EICHERMOT"
+        },
+        {
+          "accuracy": 0.5196850393700787,
+          "log_loss": 0.6927270433536544,
+          "macro_f1": 0.34196891191709844,
+          "n_samples": 127,
+          "roc_auc": 0.4087183308494784,
+          "symbol": "ETERNAL"
+        },
+        {
+          "accuracy": 0.5691056910569106,
+          "log_loss": 0.6896222992466274,
+          "macro_f1": 0.3626943005181347,
+          "n_samples": 123,
+          "roc_auc": 0.4363881401617251,
+          "symbol": "GRASIM"
+        },
+        {
+          "accuracy": 0.5196850393700787,
+          "log_loss": 0.6923107866215368,
+          "macro_f1": 0.34196891191709844,
+          "n_samples": 127,
+          "roc_auc": 0.509438648782911,
+          "symbol": "HCLTECH"
+        },
+        {
+          "accuracy": 0.5725190839694656,
+          "log_loss": 0.6891544782568285,
+          "macro_f1": 0.3640776699029126,
+          "n_samples": 131,
+          "roc_auc": 0.53,
+          "symbol": "HDFCBANK"
+        },
+        {
+          "accuracy": 0.5648854961832062,
+          "log_loss": 0.689722233610065,
+          "macro_f1": 0.36097560975609755,
+          "n_samples": 131,
+          "roc_auc": 0.465742057847321,
+          "symbol": "HDFCLIFE"
+        },
+        {
+          "accuracy": 0.5467625899280576,
+          "log_loss": 0.6909501686255173,
+          "macro_f1": 0.35348837209302325,
+          "n_samples": 139,
+          "roc_auc": 0.4404761904761904,
+          "symbol": "HINDALCO"
+        },
+        {
+          "accuracy": 0.4796747967479675,
+          "log_loss": 0.6945194273919778,
+          "macro_f1": 0.3241758241758242,
+          "n_samples": 123,
+          "roc_auc": 0.5595868644067797,
+          "symbol": "HINDUNILVR"
+        },
+        {
+          "accuracy": 0.5853658536585366,
+          "log_loss": 0.6887290124651322,
+          "macro_f1": 0.36923076923076925,
+          "n_samples": 123,
+          "roc_auc": 0.448665577342048,
+          "symbol": "ICICIBANK"
+        },
+        {
+          "accuracy": 0.5179856115107914,
+          "log_loss": 0.6924115723930094,
+          "macro_f1": 0.3412322274881517,
+          "n_samples": 139,
+          "roc_auc": 0.5210406301824213,
+          "symbol": "INDIGO"
+        },
+        {
+          "accuracy": 0.5447154471544715,
+          "log_loss": 0.6909600105924202,
+          "macro_f1": 0.3526315789473684,
+          "n_samples": 123,
+          "roc_auc": 0.46855010660980806,
+          "symbol": "INFY"
+        },
+        {
+          "accuracy": 0.5772357723577236,
+          "log_loss": 0.6890160675712688,
+          "macro_f1": 0.36597938144329895,
+          "n_samples": 123,
+          "roc_auc": 0.48564463705308775,
+          "symbol": "ITC"
+        },
+        {
+          "accuracy": 0.5378151260504201,
+          "log_loss": 0.6911624965575432,
+          "macro_f1": 0.34972677595628415,
+          "n_samples": 119,
+          "roc_auc": 0.5372159090909091,
+          "symbol": "JIOFIN"
+        },
+        {
+          "accuracy": 0.48739495798319327,
+          "log_loss": 0.6945870103376978,
+          "macro_f1": 0.327683615819209,
+          "n_samples": 119,
+          "roc_auc": 0.4318824194460147,
+          "symbol": "JSWSTEEL"
+        },
+        {
+          "accuracy": 0.5121951219512195,
+          "log_loss": 0.692692153814026,
+          "macro_f1": 0.3387096774193548,
+          "n_samples": 123,
+          "roc_auc": 0.5544973544973545,
+          "symbol": "KOTAKBANK"
+        },
+        {
+          "accuracy": 0.5039370078740157,
+          "log_loss": 0.6935734969588926,
+          "macro_f1": 0.33507853403141363,
+          "n_samples": 127,
+          "roc_auc": 0.4464285714285714,
+          "symbol": "LT"
+        },
+        {
+          "accuracy": 0.6097560975609756,
+          "log_loss": 0.6872815458327457,
+          "macro_f1": 0.3787878787878788,
+          "n_samples": 123,
+          "roc_auc": 0.4973611111111111,
+          "symbol": "M&M"
+        },
+        {
+          "accuracy": 0.5203252032520326,
+          "log_loss": 0.6923907875018961,
+          "macro_f1": 0.3422459893048128,
+          "n_samples": 123,
+          "roc_auc": 0.5268802966101693,
+          "symbol": "MARUTI"
+        },
+        {
+          "accuracy": 0.4961832061068702,
+          "log_loss": 0.6940692419275617,
+          "macro_f1": 0.33163265306122447,
+          "n_samples": 131,
+          "roc_auc": 0.4339160839160839,
+          "symbol": "MAXHEALTH"
+        },
+        {
+          "accuracy": 0.4645669291338583,
+          "log_loss": 0.6954660621191265,
+          "macro_f1": 0.3172043010752688,
+          "n_samples": 127,
+          "roc_auc": 0.5300348953140578,
+          "symbol": "NESTLEIND"
+        },
+        {
+          "accuracy": 0.5365853658536586,
+          "log_loss": 0.6917700867637849,
+          "macro_f1": 0.3492063492063492,
+          "n_samples": 123,
+          "roc_auc": 0.4085592769803295,
+          "symbol": "NTPC"
+        },
+        {
+          "accuracy": 0.4460431654676259,
+          "log_loss": 0.6970452035975259,
+          "macro_f1": 0.30845771144278605,
+          "n_samples": 139,
+          "roc_auc": 0.4337033933808128,
+          "symbol": "ONGC"
+        },
+        {
+          "accuracy": 0.42857142857142855,
+          "log_loss": 0.6976066502257995,
+          "macro_f1": 0.3,
+          "n_samples": 119,
+          "roc_auc": 0.5389273356401384,
+          "symbol": "POWERGRID"
+        },
+        {
+          "accuracy": 0.5447154471544715,
+          "log_loss": 0.6910186991160882,
+          "macro_f1": 0.3526315789473684,
+          "n_samples": 123,
+          "roc_auc": 0.4809434968017058,
+          "symbol": "RELIANCE"
+        },
+        {
+          "accuracy": 0.5271317829457365,
+          "log_loss": 0.6919520105302019,
+          "macro_f1": 0.34517766497461927,
+          "n_samples": 129,
+          "roc_auc": 0.4962632594021215,
+          "symbol": "SBILIFE"
+        },
+        {
+          "accuracy": 0.5118110236220472,
+          "log_loss": 0.6931480064286621,
+          "macro_f1": 0.3385416666666667,
+          "n_samples": 127,
+          "roc_auc": 0.42754342431761777,
+          "symbol": "SBIN"
+        },
+        {
+          "accuracy": 0.48031496062992124,
+          "log_loss": 0.6946648933605846,
+          "macro_f1": 0.324468085106383,
+          "n_samples": 127,
+          "roc_auc": 0.5075757575757576,
+          "symbol": "SHRIRAMFIN"
+        },
+        {
+          "accuracy": 0.48854961832061067,
+          "log_loss": 0.6943745831435261,
+          "macro_f1": 0.3282051282051282,
+          "n_samples": 131,
+          "roc_auc": 0.480527052238806,
+          "symbol": "SUNPHARMA"
+        },
+        {
+          "accuracy": 0.4881889763779528,
+          "log_loss": 0.6943199588463499,
+          "macro_f1": 0.328042328042328,
+          "n_samples": 127,
+          "roc_auc": 0.47456575682382135,
+          "symbol": "TATACONSUM"
+        },
+        {
+          "accuracy": 0.42857142857142855,
+          "log_loss": 0.6975702847079771,
+          "macro_f1": 0.3,
+          "n_samples": 119,
+          "roc_auc": 0.5631487889273357,
+          "symbol": "TATASTEEL"
+        },
+        {
+          "accuracy": 0.4666666666666667,
+          "log_loss": 0.69564262485013,
+          "macro_f1": 0.3181818181818182,
+          "n_samples": 135,
+          "roc_auc": 0.4554673721340389,
+          "symbol": "TCS"
+        },
+        {
+          "accuracy": 0.5275590551181102,
+          "log_loss": 0.6920391668780332,
+          "macro_f1": 0.34536082474226804,
+          "n_samples": 127,
+          "roc_auc": 0.4935323383084577,
+          "symbol": "TECHM"
+        },
+        {
+          "accuracy": 0.48091603053435117,
+          "log_loss": 0.6944849215972827,
+          "macro_f1": 0.3247422680412371,
+          "n_samples": 131,
+          "roc_auc": 0.5692110177404295,
+          "symbol": "TITAN"
+        },
+        {
+          "accuracy": 0.48148148148148145,
+          "log_loss": 0.6945054286291438,
+          "macro_f1": 0.325,
+          "n_samples": 135,
+          "roc_auc": 0.5046153846153847,
+          "symbol": "TRENT"
+        },
+        {
+          "accuracy": 0.5126050420168067,
+          "log_loss": 0.6928933270316918,
+          "macro_f1": 0.3388888888888889,
+          "n_samples": 119,
+          "roc_auc": 0.49123798756359527,
+          "symbol": "ULTRACEMCO"
+        }
+      ],
+      "coverage": [
+        {
+          "development_bars": 2888,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "ADANIENT",
+          "train_samples": 505,
+          "usable_samples": 650,
+          "valid_samples": 139
+        },
+        {
+          "development_bars": 2889,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "ADANIPORTS",
+          "train_samples": 490,
+          "usable_samples": 631,
+          "valid_samples": 135
+        },
+        {
+          "development_bars": 2889,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "APOLLOHOSP",
+          "train_samples": 462,
+          "usable_samples": 599,
+          "valid_samples": 131
+        },
+        {
+          "development_bars": 2890,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "ASIANPAINT",
+          "train_samples": 518,
+          "usable_samples": 655,
+          "valid_samples": 131
+        },
+        {
+          "development_bars": 2890,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "AXISBANK",
+          "train_samples": 454,
+          "usable_samples": 587,
+          "valid_samples": 127
+        },
+        {
+          "development_bars": 2889,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "BAJAJ-AUTO",
+          "train_samples": 478,
+          "usable_samples": 607,
+          "valid_samples": 123
+        },
+        {
+          "development_bars": 2888,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "BAJAJFINSV",
+          "train_samples": 486,
+          "usable_samples": 615,
+          "valid_samples": 123
+        },
+        {
+          "development_bars": 2887,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "BAJFINANCE",
+          "train_samples": 493,
+          "usable_samples": 630,
+          "valid_samples": 131
+        },
+        {
+          "development_bars": 2888,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "BEL",
+          "train_samples": 451,
+          "usable_samples": 584,
+          "valid_samples": 127
+        },
+        {
+          "development_bars": 2890,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "BHARTIARTL",
+          "train_samples": 502,
+          "usable_samples": 639,
+          "valid_samples": 131
+        },
+        {
+          "development_bars": 2886,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "BSE",
+          "train_samples": 534,
+          "usable_samples": 675,
+          "valid_samples": 135
+        },
+        {
+          "development_bars": 2888,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "CIPLA",
+          "train_samples": 506,
+          "usable_samples": 643,
+          "valid_samples": 131
+        },
+        {
+          "development_bars": 2889,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "COALINDIA",
+          "train_samples": 494,
+          "usable_samples": 623,
+          "valid_samples": 123
+        },
+        {
+          "development_bars": 2887,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "DRREDDY",
+          "train_samples": 541,
+          "usable_samples": 698,
+          "valid_samples": 147
+        },
+        {
+          "development_bars": 2887,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "EICHERMOT",
+          "train_samples": 493,
+          "usable_samples": 630,
+          "valid_samples": 131
+        },
+        {
+          "development_bars": 2082,
+          "excluded_from_fit": null,
+          "first_session": "2025-04-09",
+          "symbol": "ETERNAL",
+          "train_samples": 335,
+          "usable_samples": 468,
+          "valid_samples": 127
+        },
+        {
+          "development_bars": 2888,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "GRASIM",
+          "train_samples": 502,
+          "usable_samples": 631,
+          "valid_samples": 123
+        },
+        {
+          "development_bars": 2889,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "HCLTECH",
+          "train_samples": 498,
+          "usable_samples": 635,
+          "valid_samples": 127
+        },
+        {
+          "development_bars": 2886,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "HDFCBANK",
+          "train_samples": 469,
+          "usable_samples": 606,
+          "valid_samples": 131
+        },
+        {
+          "development_bars": 2889,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "HDFCLIFE",
+          "train_samples": 478,
+          "usable_samples": 615,
+          "valid_samples": 131
+        },
+        {
+          "development_bars": 2887,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "HINDALCO",
+          "train_samples": 483,
+          "usable_samples": 628,
+          "valid_samples": 139
+        },
+        {
+          "development_bars": 2887,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "HINDUNILVR",
+          "train_samples": 491,
+          "usable_samples": 620,
+          "valid_samples": 123
+        },
+        {
+          "development_bars": 2889,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "ICICIBANK",
+          "train_samples": 453,
+          "usable_samples": 582,
+          "valid_samples": 123
+        },
+        {
+          "development_bars": 2888,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "INDIGO",
+          "train_samples": 503,
+          "usable_samples": 648,
+          "valid_samples": 139
+        },
+        {
+          "development_bars": 2890,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "INFY",
+          "train_samples": 494,
+          "usable_samples": 623,
+          "valid_samples": 123
+        },
+        {
+          "development_bars": 2889,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "ITC",
+          "train_samples": 486,
+          "usable_samples": 619,
+          "valid_samples": 123
+        },
+        {
+          "development_bars": 2890,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "JIOFIN",
+          "train_samples": 471,
+          "usable_samples": 596,
+          "valid_samples": 119
+        },
+        {
+          "development_bars": 2887,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "JSWSTEEL",
+          "train_samples": 489,
+          "usable_samples": 614,
+          "valid_samples": 119
+        },
+        {
+          "development_bars": 2886,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "KOTAKBANK",
+          "train_samples": 483,
+          "usable_samples": 612,
+          "valid_samples": 123
+        },
+        {
+          "development_bars": 2888,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "LT",
+          "train_samples": 503,
+          "usable_samples": 636,
+          "valid_samples": 127
+        },
+        {
+          "development_bars": 2889,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "M&M",
+          "train_samples": 506,
+          "usable_samples": 635,
+          "valid_samples": 123
+        },
+        {
+          "development_bars": 2890,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "MARUTI",
+          "train_samples": 458,
+          "usable_samples": 587,
+          "valid_samples": 123
+        },
+        {
+          "development_bars": 2889,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "MAXHEALTH",
+          "train_samples": 518,
+          "usable_samples": 655,
+          "valid_samples": 131
+        },
+        {
+          "development_bars": 2891,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "NESTLEIND",
+          "train_samples": 510,
+          "usable_samples": 643,
+          "valid_samples": 127
+        },
+        {
+          "development_bars": 2886,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "NTPC",
+          "train_samples": 475,
+          "usable_samples": 604,
+          "valid_samples": 123
+        },
+        {
+          "development_bars": 2887,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "ONGC",
+          "train_samples": 465,
+          "usable_samples": 614,
+          "valid_samples": 139
+        },
+        {
+          "development_bars": 2887,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "POWERGRID",
+          "train_samples": 415,
+          "usable_samples": 540,
+          "valid_samples": 119
+        },
+        {
+          "development_bars": 2890,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "RELIANCE",
+          "train_samples": 498,
+          "usable_samples": 631,
+          "valid_samples": 123
+        },
+        {
+          "development_bars": 2888,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "SBILIFE",
+          "train_samples": 493,
+          "usable_samples": 628,
+          "valid_samples": 129
+        },
+        {
+          "development_bars": 2889,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "SBIN",
+          "train_samples": 498,
+          "usable_samples": 631,
+          "valid_samples": 127
+        },
+        {
+          "development_bars": 2889,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "SHRIRAMFIN",
+          "train_samples": 478,
+          "usable_samples": 611,
+          "valid_samples": 127
+        },
+        {
+          "development_bars": 2889,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "SUNPHARMA",
+          "train_samples": 474,
+          "usable_samples": 611,
+          "valid_samples": 131
+        },
+        {
+          "development_bars": 2888,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "TATACONSUM",
+          "train_samples": 547,
+          "usable_samples": 680,
+          "valid_samples": 127
+        },
+        {
+          "development_bars": 2889,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "TATASTEEL",
+          "train_samples": 494,
+          "usable_samples": 619,
+          "valid_samples": 119
+        },
+        {
+          "development_bars": 2888,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "TCS",
+          "train_samples": 499,
+          "usable_samples": 640,
+          "valid_samples": 135
+        },
+        {
+          "development_bars": 2888,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "TECHM",
+          "train_samples": 478,
+          "usable_samples": 611,
+          "valid_samples": 127
+        },
+        {
+          "development_bars": 2887,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "TITAN",
+          "train_samples": 525,
+          "usable_samples": 666,
+          "valid_samples": 131
+        },
+        {
+          "development_bars": 1151,
+          "excluded_from_fit": "fewer than 100 TRAIN or 20 VALID samples",
+          "first_session": "2025-10-24",
+          "symbol": "TMPV",
+          "train_samples": 52,
+          "usable_samples": 185,
+          "valid_samples": 127
+        },
+        {
+          "development_bars": 2889,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "TRENT",
+          "train_samples": 418,
+          "usable_samples": 563,
+          "valid_samples": 135
+        },
+        {
+          "development_bars": 2886,
+          "excluded_from_fit": null,
+          "first_session": "2024-10-21",
+          "symbol": "ULTRACEMCO",
+          "train_samples": 495,
+          "usable_samples": 620,
+          "valid_samples": 119
+        }
+      ],
+      "feature_importance": {
+        "bar_slot": 0,
+        "body": 0,
+        "close_location": 3,
+        "open_gap": 2,
+        "range": 1,
+        "relative_volume_3": 3,
+        "return_1": 1,
+        "return_2": 1,
+        "return_3": 0,
+        "volatility_3": 3
+      },
+      "interval": "60m",
+      "lineage": {
+        "code_commit": "b5358027b79b51a09211db8c3954b21326ddca46",
+        "config_hash": "985d97ef51a4624e6e8281db5237eac5e56b7662c2299520baf60f101addf20e",
+        "created_at": "2026-10-17 11:41:29.371637+00:00",
+        "data_snapshot_id": "cb0adba828f80270727388c578406af1a34d7a7e001c87d9929a7c5c5b96c01b",
+        "dirty": true,
+        "seed": 42
+      },
+      "manifest_sha256": "cb0adba828f80270727388c578406af1a34d7a7e001c87d9929a7c5c5b96c01b",
+      "model_metrics": {
+        "accuracy": 0.5110721682332324,
+        "log_loss": 0.6929590987824761,
+        "macro_f1": 0.3382182393252504,
+        "roc_auc": 0.48689437411684217
+      },
+      "model_sha256": "25d1c1d4aaf42f70228fda7eae7d6ee00a8c7f0c0acc248827af30767e645498",
+      "predictions_sha256": "5c3ad0b2361c72a6bb7f3e4ca4ce99d4e3b4003866363c9521f14777075df401",
+      "train_constant_baseline": {
+        "accuracy": 0.5110721682332324,
+        "log_loss": 0.6929300545760266,
+        "macro_f1": 0.3382182393252504,
+        "roc_auc": 0.5
+      },
+      "train_positive_fraction": 0.48518222707974273,
+      "train_sample_sha256": "a0561a1391815aecede790c6241c79bb56cdaab92b199ab8bb07d5b971f03c29",
+      "train_samples": 23789,
+      "train_symbols": 49,
+      "valid_sample_sha256": "a1965af0c4b003aa23f0c42b083b0e7449bce1f1f6831beef21db152c47fff62",
+      "valid_samples": 6277,
+      "valid_symbols": 49
+    }
+  },
+  "prior_attempt": {
+    "failure": {
+      "daily_model_sha256": "f7e2404fc5a19a6776bb9ccc7b70f937f0d928aa7a1dd051d220b4be34610cca",
+      "daily_predictions_sha256": "3024e48f7ca7b5d334e9e00c88841c59338f4beadbaf168342329efcdd35277f",
+      "reason": "Initial 20-bar hourly lookback plus strict zero-volume exclusion left insufficient TRAIN/VALID samples. No hourly model fitted and no hourly metrics reviewed.",
+      "status": "INCOMPLETE_HOURLY_INPUT_ELIGIBILITY_FAILED",
+      "test_observation_accesses": 0
+    },
+    "failure_sha256": "3f566a794f587c6dd1cb5f902fd4af54d8970d35b36fb23b67e69d7ac6563672",
+    "path": "reports_out/equities/20261017T113402Z_fac604bd"
+  },
+  "provider": "Yahoo Finance public chart API; NSE-listed equities, NOT official NSE price files",
+  "registry_writes": 0,
+  "report_sha256": "32199bf9c07d7860634bb8cfd63f6413f89120aeebdb2515ec491913ff4e25a9",
+  "run": "reports_out/equities/20261017T114046Z_9b888dd7",
+  "saved_models_reload_and_predictions_match": true,
+  "snapshot": "data/equities/nifty50/20261017T112815Z_2528ceac",
+  "source_sha256": {
+    "pyproject.toml": "7a5d82e5cff317f7dcd318581a3ee8e0da1d1ed266e5abd9b0a619e6a181185d",
+    "research/helios/common/config.py": "a159e0159f226deb961e0bec34c5a5cf920b1c7a70c9c2d75fe733b69c15e48f",
+    "research/helios/common/lineage.py": "b2d1690de6e01892efff569deb1d342343c92462da59b4f9a9fb1abfa6dcdc5a",
+    "research/helios/data/equities.py": "8a2d7e95148647c985df7dd03b44555db456eb2bf65a1e18018e747fb665093c",
+    "research/helios/ml/equity_pilot.py": "778fd9c4221a0c7b66c81c0a1a104d591759b694c521cacfc92cc27d6b0804b4",
+    "uv.lock": "dc6a152eae0a787cedee8e7d45bf1c5266ca84bc9e6a7c3fd86164084025614c"
+  },
+  "status": "VERIFIED_DEVELOPMENT_ONLY",
+  "test_observation_accesses": 0,
+  "universe_sha256": "f5ba4027d935ae72879d5c24bbebf0e8439ec8ed504ffdf4175fde69206244b3",
+  "universe_source": "https://www.niftyindices.com/IndexConstituent/ind_nifty50list.csv",
+  "versions": {
+    "lightgbm": "4.7.0",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "pyarrow": "25.0.1",
+    "scikit-learn": "1.9.1"
+  }
+}

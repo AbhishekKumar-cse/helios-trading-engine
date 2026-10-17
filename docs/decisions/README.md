@@ -24,3 +24,4 @@ memory, so nobody has to guess later why something is the way it is.
 | [004](ADR-004-split-dates.md) | Train / validation / test split dates | Accepted | 2026-09-20 |
 | [005](ADR-005-fees-and-slippage.md) | Trading fees and slippage assumptions | Accepted | 2026-09-20 |
 | [006](ADR-006-interfaces.md) | Core trading interfaces | Proposed | 2026-10-11 |
+| [007](ADR-007-equity-research-pilot.md) | Add Nifty 50 equity research | Accepted scope; experimental pilot defaults | 2026-10-17 |

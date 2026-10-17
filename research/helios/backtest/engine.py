@@ -4,6 +4,7 @@ from decimal import Decimal, localcontext
 from types import SimpleNamespace
 
 from helios.backtest.config import BacktestConfig
+from helios.backtest.equity_config import EquityBacktestConfig
 from helios.common.types import (
     AlphaValue,
     Bar,
@@ -42,7 +43,7 @@ class ReplayTrace(Record):
 
 
 def simulate(
-    config: BacktestConfig,
+    config: BacktestConfig | EquityBacktestConfig,
     bars: tuple[Bar, ...],
     signals: tuple[AlphaValue, ...],
     store: TripStore,
@@ -64,7 +65,14 @@ def simulate(
     signal_map = {s.timestamp: s for s in signals}
     if len(signal_map) != len(signals):
         raise ValueError("signal timestamps must be unique")
-    ledger = PnLLedger(config.strategy.capital, Mode.BACKTEST, mark_reference=config.mark_reference)
+    equity_market = isinstance(config, EquityBacktestConfig)
+    ledger = PnLLedger(
+        config.strategy.capital,
+        Mode.BACKTEST,
+        "INR" if equity_market else "USDT",
+        symbols=(config.symbol,) if equity_market else (),
+        mark_reference=config.mark_reference,
+    )
     strategy = BarStrategy(config.strategy)
     clock, price = bars[0].open_time, bars[0].open
     histories: list[PriceObservation] = []
@@ -117,10 +125,15 @@ def simulate(
     def identifier() -> str:
         nonlocal counter
         counter += 1
-        return str(counter)
+        return f"{config.run_id}:{counter}" if equity_market else str(counter)
 
     oms = OrderManagementSystem(config.run_id, Mode.BACKTEST, risk, id_factory=identifier)
-    venue = BarPaperVenue(Mode.BACKTEST, config.fees)
+    venue = BarPaperVenue(
+        Mode.BACKTEST,
+        config.fees,
+        venue_id=config.run_id if equity_market else "bar-paper",
+        quote_asset="INR" if equity_market else "USDT",
+    )
 
     def on_report(report: ExecutionReport) -> None:
         oms.on_report(report)

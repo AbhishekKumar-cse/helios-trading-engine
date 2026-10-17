@@ -104,7 +104,9 @@ def load_inputs(
     return frames, manifest, sha256(manifest_path)
 
 
-def features_and_labels(frame: pd.DataFrame, interval: ModelInterval) -> pd.DataFrame:
+def features_and_labels(
+    frame: pd.DataFrame, interval: ModelInterval, *, include_unlabelled: bool = False
+) -> pd.DataFrame:
     """Causal per-symbol features; horizon is next bar open-to-close.
 
     Daily uses the next observed session (at most seven calendar days later).
@@ -174,6 +176,11 @@ def features_and_labels(frame: pd.DataFrame, interval: ModelInterval) -> pd.Data
         eligible &= frame["label_open_time"] - frame["timestamp"] == pd.Timedelta(hours=1)
     else:
         eligible &= frame["label_open_time"] - frame["timestamp"] <= pd.Timedelta(days=7)
+    if include_unlabelled:
+        frame["feature_available"] = good & np.isfinite(
+            frame[list(features_for(interval))].to_numpy(dtype=float)
+        ).all(axis=1)
+        return frame.reset_index(drop=True)
     finite = np.isfinite(frame[[*features_for(interval), "target"]].to_numpy(dtype=float)).all(
         axis=1
     )

@@ -1,5 +1,10 @@
 # Nifty 50 equity research
 
+The hourly alpha path now connects to the shared evaluator, backtest engine,
+gates and registry. See [NSE shared research](NSE_SHARED_RESEARCH.md) for the
+preregistered round, execution assumptions and coverage limitations. The daily/
+hourly prediction pilot described below is retained as separate earlier evidence.
+
 This extension downloads the current official Nifty 50 constituents and fits
 separate daily/hourly LightGBM direction baselines. Crypto data, policies, fees,
 registry results and existing execution are retained unchanged. See

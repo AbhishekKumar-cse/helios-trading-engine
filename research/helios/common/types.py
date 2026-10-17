@@ -9,9 +9,18 @@ from __future__ import annotations
 from decimal import Decimal, localcontext
 from enum import StrEnum
 from math import isfinite
-from typing import Annotated, Literal, Self
+from typing import Annotated, Any, Literal, Self
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, field_validator, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    SerializerFunctionWrapHandler,
+    StrictBool,
+    field_validator,
+    model_serializer,
+    model_validator,
+)
 
 from helios.common.project_config import HorizonFamily
 from helios.data.klines import interval_us
@@ -102,6 +111,15 @@ class DecisionLineage(Record):
 
 
 class Bar(Record):
+    calendar: Literal["continuous_utc", "nse_regular_v1"] = "continuous_utc"
+
+    @model_serializer(mode="wrap")
+    def _calendar_serialization(self, handler: SerializerFunctionWrapHandler) -> dict[str, Any]:
+        data: dict[str, Any] = handler(self)
+        if self.calendar == "continuous_utc":
+            data.pop("calendar", None)
+        return data
+
     symbol: Identifier
     source: Identifier
     sequence: Sequence
@@ -135,6 +153,10 @@ class Bar(Record):
 
     @property
     def is_complete_interval(self) -> bool:
+        if self.calendar == "nse_regular_v1":
+            from helios.common.market_clock import nse_bar_complete
+
+            return nse_bar_complete(self.open_time, self.close_time, self.interval)
         period = interval_us(self.interval)
         return self.open_time % period == 0 and self.close_time - self.open_time == period
 

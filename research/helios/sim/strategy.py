@@ -71,6 +71,10 @@ class BarStrategyConfig(TargetConfig):
     mode: Literal[Mode.BACKTEST, Mode.REPLAY, Mode.PAPER] = Mode.BACKTEST
 
 
+class ShareBarStrategyConfig(BarStrategyConfig):
+    quantity_step: Annotated[Decimal, Field(gt=0, allow_inf_nan=False)] = Decimal(1)
+
+
 WORKING_STATES = frozenset(
     (
         OrderState.CREATED,
@@ -85,7 +89,11 @@ WORKING_STATES = frozenset(
 
 class BarStrategy:
     def __init__(self, config: BarStrategyConfig) -> None:
-        self.config = BarStrategyConfig.model_validate(config.model_dump())
+        self.config = (
+            ShareBarStrategyConfig.model_validate(config.model_dump())
+            if isinstance(config, ShareBarStrategyConfig)
+            else BarStrategyConfig.model_validate(config.model_dump())
+        )
 
     def on_update(
         self,
@@ -145,6 +153,10 @@ class BarStrategy:
             ):
                 return []
             quantity = abs(delta).quantize(PRECISION, rounding=ROUND_DOWN)
+            if isinstance(self.config, ShareBarStrategyConfig):
+                quantity = (quantity / self.config.quantity_step).to_integral_value(
+                    rounding=ROUND_DOWN
+                ) * self.config.quantity_step
         if quantity == 0:
             return []
         payload = "|".join(

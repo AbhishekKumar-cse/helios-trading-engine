@@ -10,7 +10,7 @@ from collections.abc import Callable
 from dataclasses import asdict, dataclass, is_dataclass, replace
 from decimal import Decimal
 from pathlib import Path
-from typing import Any, Literal
+from typing import TYPE_CHECKING, Any, Literal
 
 import pandas as pd
 from pydantic import BaseModel, Field, StrictInt
@@ -46,6 +46,9 @@ from helios.sim.stability import StabilityConfig, fit_volatility_regimes, stabil
 from helios.sim.validity import ValidityConfig
 
 REPORT_DIR = Path(__file__).resolve().parents[3] / "reports_out" / "evaluations"
+
+if TYPE_CHECKING:
+    from helios.sim.equity_evaluation import EquityEvaluationContext
 
 
 class EvaluationConfig(HeliosConfig):
@@ -146,8 +149,23 @@ def evaluate(
     actor: str = "",
     purpose: str = "",
     reported: bool = True,
+    equity: EquityEvaluationContext | None = None,
 ) -> AlphaResult:
     """Persist one attempt, including INVALID, without promotion or TEST double-counting."""
+    if equity is not None:
+        if config is not None or load_inputs is not None:
+            raise RegistryError("equity uses its explicit market context, not crypto overrides")
+        from helios.sim.equity_evaluation import evaluate_equity
+
+        return evaluate_equity(
+            alpha_id,
+            Split(split),
+            experiment_id,
+            engine=get_engine() if engine is None else engine,
+            context=equity,
+            output_dir=output_dir,
+            reported=reported,
+        )
     started = time.monotonic()
     split = Split(split)
     selected = (

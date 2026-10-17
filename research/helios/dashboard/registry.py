@@ -36,6 +36,7 @@ def registry_rows(connection: Connection) -> tuple[list[dict[str, Any]], list[di
                 Version=definition.version,
                 Name=definition.name,
                 Family=definition.horizon_family.value,
+                Market=definition.spec.get("market", "binance_spot"),
                 Provenance=definition.provenance.value.upper(),
                 Measurement=latest.status.value if latest else "DRAFT",
                 Selection=selection.status if selection else "UNDECIDED",

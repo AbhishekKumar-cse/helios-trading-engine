@@ -37,7 +37,7 @@ class ReconciliationError(LedgerError):
 class LedgerConfig(HeliosConfig):
     initial_cash: Money
     mode: Mode
-    quote_asset: Literal["USDT"] = "USDT"
+    quote_asset: Literal["USDT", "INR"] = "USDT"
     mark: Literal["contemporaneous_book_mid", "bar_close_proxy", "public_last_price_proxy"] = (
         "contemporaneous_book_mid"
     )
@@ -72,13 +72,17 @@ class PnLLedger:
         mode: Mode,
         quote_asset: str = "USDT",
         *,
+        symbols: tuple[str, ...] = (),
         mark_reference: Literal[
             "contemporaneous_book_mid", "bar_close_proxy", "public_last_price_proxy"
         ] = "contemporaneous_book_mid",
     ) -> None:
         initial_cash = TypeAdapter(Money).validate_python(initial_cash)
-        if initial_cash <= 0 or quote_asset != "USDT":
-            raise LedgerError("positive initial cash and USDT quote are required")
+        if initial_cash <= 0 or quote_asset not in ("USDT", "INR"):
+            raise LedgerError("positive initial cash and a supported quote are required")
+        if quote_asset == "INR" and not symbols:
+            raise LedgerError("INR accounting requires an explicit instrument allowlist")
+        self._symbols = frozenset(symbols)
         self.mode, self.quote_asset = Mode(mode), quote_asset
         self._initial = Fraction(initial_cash)
         self._cash = self._initial
@@ -89,7 +93,12 @@ class PnLLedger:
         self._clock = 0
         self._halted = False
         self.config_hash = config_hash(
-            LedgerConfig(initial_cash=initial_cash, mode=self.mode, mark=mark_reference)
+            LedgerConfig(
+                initial_cash=initial_cash,
+                mode=self.mode,
+                mark=mark_reference,
+                quote_asset="INR" if quote_asset == "INR" else "USDT",
+            )
         )
 
     def position(self, symbol: str) -> Position:
@@ -119,7 +128,8 @@ class PnLLedger:
         if (
             fill.mode != self.mode
             or fill.fee_asset != self.quote_asset
-            or not fill.symbol.endswith(self.quote_asset)
+            or (self.quote_asset == "USDT" and not fill.symbol.endswith(self.quote_asset))
+            or (self.quote_asset == "INR" and fill.symbol not in self._symbols)
             or fill.symbol == self.quote_asset
             or fill.timestamp < self._clock
         ):

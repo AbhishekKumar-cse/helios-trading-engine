@@ -51,7 +51,8 @@ def render_equities() -> None:
     st.write("Real downloaded equity bars and retained LightGBM development models.")
     st.info(
         "Current Nifty constituents with Yahoo-distributed prices. Historical membership is "
-        "not reconstructed. Model validation is experimental; no trading P&L or promoted alpha."
+        "not reconstructed. Shared-engine results below are conditional development "
+        "simulations; no promoted equity alpha."
     )
     snapshots = retained_snapshots(PROJECT_ROOT / "data/equities/nifty50")
     if not snapshots:
@@ -117,7 +118,10 @@ def render_equities() -> None:
         report = json.loads(path.read_text())
         if report.get("snapshot") == str(selected.parent.relative_to(PROJECT_ROOT)):
             matching.append((path, report))
-    st.subheader("Retained model validation")
+    from helios.dashboard.equity_research import render_equity_research
+
+    render_equity_research(symbol)
+    st.subheader("Prediction pilot · earlier development fit")
     if not matching:
         st.info("Training has not completed for this snapshot yet.")
     else:

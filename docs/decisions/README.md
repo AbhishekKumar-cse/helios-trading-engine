@@ -25,3 +25,4 @@ memory, so nobody has to guess later why something is the way it is.
 | [005](ADR-005-fees-and-slippage.md) | Trading fees and slippage assumptions | Accepted | 2026-09-20 |
 | [006](ADR-006-interfaces.md) | Core trading interfaces | Proposed | 2026-10-11 |
 | [007](ADR-007-equity-research-pilot.md) | Add Nifty 50 equity research | Accepted scope; experimental pilot defaults | 2026-10-17 |
+| [008](ADR-008-nse-shared-research-loop.md) | Connect NSE hourly research to the shared engine | Accepted scope; experimental research assumptions | 2026-10-17 |

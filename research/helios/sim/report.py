@@ -138,6 +138,8 @@ def generate_report(result: AlphaResult, *, output_root: Path = DEFAULT_REPORT_R
         else "Simulated reference exposure, net of configured costs. This is not live execution, "
         "compounded portfolio NAV or a promise of profitability."
     )
+    if data.get("notice"):
+        notice = str(data["notice"]) + " " + notice
     cost_table = (
         _table(
             ["Cost multiplier", "Total cost", "Net total", "Annual Sharpe"],

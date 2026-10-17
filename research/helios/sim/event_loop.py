@@ -58,7 +58,11 @@ class BarEventLoop:
                 or not bar.is_complete_interval
                 or (
                     old is not None
-                    and (bar.interval != old.interval or bar.open_time != old.close_time)
+                    and (
+                        bar.interval != old.interval
+                        or bar.calendar != old.calendar
+                        or bar.open_time != old.close_time
+                    )
                 )
             ):
                 raise ValueError("event loop requires complete contiguous snapshot bars")

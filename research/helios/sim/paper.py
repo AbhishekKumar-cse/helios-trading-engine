@@ -47,12 +47,20 @@ def rounded(value: Decimal) -> Decimal:
 
 class BarPaperVenue:
     def __init__(
-        self, mode: Mode, fees: FeesConfig | None = None, venue_id: str = "bar-paper"
+        self,
+        mode: Mode,
+        fees: FeesConfig | None = None,
+        venue_id: str = "bar-paper",
+        *,
+        quote_asset: Literal["USDT", "INR"] = "USDT",
     ) -> None:
         self.mode = Mode(mode)
         self._info = VenueInfo(venue_id=venue_id, supports_amend=False)
         selected = load_fees() if fees is None else fees
         self._fees = FeesConfig.model_validate(selected.model_dump())
+        if quote_asset == "INR" and self._fees.exchange != "nse_cash":
+            raise ValueError("INR execution requires an explicit NSE cost policy")
+        self.quote_asset = quote_asset
         if any(bps >= 10000 for bps in self._fees.slippage_bps.values()):
             raise ValueError("slippage must be less than 10000 bps")
         self.fees_hash = config_hash(self._fees)
@@ -115,7 +123,8 @@ class BarPaperVenue:
         if (
             o.mode != self.mode
             or o.symbol not in self._fees.slippage_bps
-            or not o.symbol.endswith("USDT")
+            or (self.quote_asset == "USDT" and not o.symbol.endswith("USDT"))
+            or (self.quote_asset == "INR" and o.quantity != o.quantity.to_integral_value())
             or timestamp < self._clock.get(o.symbol, 0)
             or timestamp < o.timestamp
             or (opening is not None and timestamp <= opening.timestamp)
@@ -228,7 +237,7 @@ class BarPaperVenue:
             quantity=order.remaining_quantity,
             price=price,
             fee=fee,
-            fee_asset="USDT",
+            fee_asset=self.quote_asset,
             timestamp=timestamp,
             venue_id=self._info.venue_id,
             liquidity=liquidity,

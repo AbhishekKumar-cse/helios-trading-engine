@@ -77,6 +77,7 @@ def test_equity_page_renders_downloaded_prices_without_database(tmp_path):
     )
     with (
         patch("helios.dashboard.equity_page.PROJECT_ROOT", tmp_path),
+        patch("helios.dashboard.equity_research.PROJECT_ROOT", tmp_path),
         patch("helios.dashboard.registry.read_registry", side_effect=AssertionError("DB access")),
     ):
         app = AppTest.from_file(

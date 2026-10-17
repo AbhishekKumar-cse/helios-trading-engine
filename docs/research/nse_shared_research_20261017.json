@@ -97,6 +97,10 @@
     "research/helios/dashboard/equity_page.py": {
       "archived": "723d946468563de8363fbd96a2b7059b7fc084efe3f1c568326b128111c2c1e8",
       "current": "049121195da8d1770a8642b1340cbc83c56e8a71c17a40423efaef12fc4f3c82"
+    },
+    "research/helios/sim/equity_evaluation.py": {
+      "archived": "b63e6aa9c5cf190eab854515e235b5801354ca8a3edf502aad181472b952eb00",
+      "current": "62c2ab591fdfa4dc0dba60546414d68182d80fc5ecaeff2fadd4effcdecc9162"
     }
   },
   "preregistered_before_first_valid_pnl": true,

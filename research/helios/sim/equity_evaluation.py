@@ -9,7 +9,7 @@ import uuid
 from dataclasses import asdict, dataclass, replace
 from decimal import ROUND_HALF_UP, Decimal, localcontext
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 import numpy as np
 from sqlalchemy import Engine, text
@@ -94,7 +94,7 @@ def evaluate_equity(
     sessions, excluded = eligible_sessions(source)
     # Performance is explicitly conditional on this ex-post complete-session cohort.
     # This is a data-quality study; G7 prohibits promotion for the current vendor data.
-    opportunity_times = set()
+    opportunity_times: set[int] = set()
     for frame in sessions:
         opportunity_times.update(int(value) for value in frame.open_time.iloc[:5])
     keep = alpha.open_time.isin(opportunity_times) & alpha.available
@@ -127,7 +127,10 @@ def evaluate_equity(
         calibration_hash=context.model.calibration_hash,
         test_access=False,
     )
-    daily, stress, fills, snapshots = [], [], [], []
+    daily: list[dict[str, Any]] = []
+    stress: list[float] = []
+    fills: list[dict[str, Any]] = []
+    snapshots: list[dict[str, Any]] = []
     turn, fee_total = [], Decimal(0)
     metrics = stressed_metrics = None
     fit_value = fraction = drawdown = hit_rate = None
@@ -224,7 +227,8 @@ def evaluate_equity(
     )
     if not valid:
         outcomes = tuple(replace(gate, passed=False, reason="invalid_alpha") for gate in outcomes)
-    status = Status.REJECTED if valid else Status.INVALID
+    report_status: Literal["REJECTED", "INVALID"] = "REJECTED" if valid else "INVALID"
+    status = Status(report_status)
     validity_evidence = asdict(validity) | dict(
         status="VALID" if valid else "INVALID",
         reasons=[reason.value for reason in reasons],
@@ -238,7 +242,7 @@ def evaluate_equity(
         validity=validity_evidence,
         protocol=protocol,
         gates=asdict(
-            replace(report, status=status.value, outcomes=outcomes, invalid_reasons=tuple(reasons))
+            replace(report, status=report_status, outcomes=outcomes, invalid_reasons=tuple(reasons))
         ),
         source=asdict(lineage),
         source_hashes=context.source_hashes,

@@ -41,14 +41,18 @@ final equity/UI focused suite **13 passed**, including the new session fill-ID
 check. A subsequent dashboard wording check passed all four dashboard tests.
 Ruff lint/format and mypy (122 source files) passed. Live dashboard and report
 verification are recorded in the local project context.
+After the clean-CI typing correction, uncached mypy again passed all 122 source
+files, all nine equity integration tests passed, and immutable artifact/registry
+reconciliation passed without fitting models or rerunning research attempts.
 
 The frozen source was archived from main commit
 `d2078d3a4124feada2b4b6a13fd794bf2ed40b53` with `dirty=true`. Committing this
-implementation later does not change that historical run lineage. The only
-post-round production edit changes the lab's
-introductory wording to describe the now-completed simulations. Its archived and
-current hashes are explicitly listed in the verification JSON; execution code
-was unchanged during and after this round.
+implementation later does not change that historical run lineage. Post-round
+production edits update the lab's introductory wording and correct explicit
+collection/status types in the evaluator after clean CI identified typing errors.
+The status construction remains equivalent; execution calculations are unchanged.
+Archived/current hashes are explicitly listed in the verification JSON. The
+actual round's frozen execution source and saved results remain unmodified.
 
 Evidence: [verification JSON](nse_shared_research_20261017.json), local immutable
 artifacts in `reports_out/equity_research/nse_hourly_round1/`, and read-only

@@ -5243,3 +5243,77 @@ Each of the 32 required statements is verified against the document. All must ho
 
 *End of HELIOS System Design & Software Requirements Specification v1.0.*
 *Every requirement in this document carries an ID, priority, and verification method. Every result carries a `TBD-MEASURE` placeholder until an experiment produces it. Every claim about infrastructure the project does not have is marked as such.*
+
+## Controlled implementation addendum 2026 10 18
+
+This addendum records implemented fifth-semester decisions after the original
+design draft. Earlier architectural proposals are not evidence that those
+components have been implemented. The measured research notes linked below
+replace placeholders only for their explicitly scoped experiments.
+
+**[CONFIRMED]** The implemented bar research stack is Python 3.12, Pydantic,
+NumPy/pandas/PyArrow, PostgreSQL/SQLAlchemy, LightGBM, pytest/Hypothesis and a
+local Streamlit lab, with locked dependencies. C++ low-latency infrastructure,
+matching-engine distribution, colocation and FPGA work remain later stages.
+ADRs 001–005 resolve the stack, Fitness, horizon, split and cost questions for
+the implemented crypto stages; preserve their accepted formulas and protocols.
+ADR 006 records the interface design and retains its recorded Proposed status;
+this addendum does not silently approve it. The original open-items table is
+historical design context, not a replacement for these implementation records.
+
+**[CONFIRMED]** Crypto research uses separate hourly and minute horizons,
+chronological embargoed splits, explicit feature availability, fixed gate
+versions and an append-only registry. Formula and ML candidates pass through
+shared evaluation. Negative/INVALID findings are retained. Crypto selection
+reviews left TEST sealed because no candidate qualified; no profitability is
+implied by a completed implementation step.
+
+**[CONFIRMED]** The user requested an NSE equity extension and public sources
+without a provider account. ADRs 007–009 define this additional development
+scope. The current Nifty 50 roster is frozen with daily/hourly Yahoo prices
+and public Upstox minute observations. It is not a reconstructed historical
+index or a BSE-specific feed. The completed minute collection retains 6,865,386
+bars across all 50 companies, from 2025-01-01 through 2026-06-30. Source bytes,
+exclusions, hashes and dates are retained locally; credentials and bulk data
+are excluded from commits.
+
+**[CONFIRMED]** Equity execution adapts the shared strategy, independent risk,
+OMS, simulated venue and fill-booked ledger to INR and whole shares. Normal
+NSE sessions use Asia/Kolkata, not a continuous UTC crypto grid. Hourly sessions
+contain six full hours plus the observed final partial bar; minute sessions
+contain 375 slots. Decisions fill at the next observed opening; calendar-known
+flat targets finish the observed session without invented liquidation. Missing
+sessions are excluded explicitly, so current research is conditional on an
+ex-post complete-session cohort. Daily return aggregation assumes 252 sessions
+per year. Legacy crypto defaults and result lineage remain unchanged.
+
+**[ASSUMPTION]** Equity costs remain 15 bps commission/tax proxy plus 5 bps
+slippage per side, with a 2x-cost replay, INR 100,000 independent session capital
+and long-only research allocation. They are not validated historical broker
+invoices or executable quote spreads. Historical membership, corporate actions,
+special sessions and causal outage handling remain unresolved. G7 explicitly
+prevents promotion; no accepted gate or source requirement is silently weakened.
+
+**[CONFIRMED]** The minute model pools all 50 companies, with a fixed five-minute
+sampling schedule for TRAIN fit/calibration only. It fits through 2025-09-30
+and calibrates expected returns on 2025-10-09 through 2025-12-31. VALID is
+2026-01-09 through 2026-06-30 and never fits or selects this model. The first
+minute execution benchmark is RELIANCE, with three quantitative baselines,
+eight additional formulas and one ML definition. Testing one benchmark is not
+an all-50-stock strategy result. Equity TEST remains unconditionally sealed.
+
+**[CONFIRMED]** The live NSE adapter is integration-only simulated PAPER. It
+uses typed closed minutes and actual later public last-trade timestamps; stale
+quotes, clock errors and gaps halt risk and cancel pending orders. The bounded
+runner requires clean source, registered metadata and a normal open session.
+The separate public OBSERVE service records heartbeats and raw observations
+without orders; it cannot satisfy a promoted-candidate PAPER trial.
+
+**[OPEN]** The actual unattended 24-hour PAPER deployment, promoted seven-day
+trial, same-date backtest comparison and full market-hours NSE demo still need
+their real observations and elapsed time. They cannot be inferred from tests,
+Docker startup or historical simulation. See the
+[completion assessment](../research/5th_sem_equity_completion_status.md),
+[public minute guide](../guides/NSE_PUBLIC_MINUTES.md),
+[archived replay evidence](../research/nse_archived_reproduction_20261017.json)
+and [carryover](../../6thSem/carryover_from_5th.md).

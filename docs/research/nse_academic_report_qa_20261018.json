@@ -1,0 +1,36 @@
+{
+  "version": "template_report_package_and_render_review_v1",
+  "report_path": "docs\\reports\\HELIOS_5th_sem_NSE_report_20261018.docx",
+  "report_sha256": "62ac9055ad9896b97ceef29d56356d9ea79526514411ae0cf7cdf8b3db79d49a",
+  "reference_sha256": "70ed27b0a7abf226c1f4f940cc2170813904883d1714b9402772646f7881b015",
+  "changed_parts": [
+    "word/document.xml"
+  ],
+  "all_other_package_parts_byte_identical": true,
+  "section_geometry_exact": true,
+  "preserved_features": {
+    "bookmarkStart": 1,
+    "bookmarkEnd": 1,
+    "instrText": 0,
+    "fldSimple": 0,
+    "drawing": 1,
+    "sdt": 0,
+    "footnoteReference": 0
+  },
+  "unresolved_slots": 0,
+  "rendered_pages": 8,
+  "rendering": "Installed Word read-only PDF export; packaged render_docx.py with task-local bundled PDFium backend adapter after diagnosed missing LibreOffice.",
+  "visual_review": "All eight final rendered page images inspected at full resolution; no clipping, overlap or missing glyphs found.",
+  "page_image_sha256": {
+    "page-1.png": "c687c89c63f39774f636485475f594351acae94755b70cc173578ced1bdae31c",
+    "page-2.png": "6ef0ca3be91601d10db160bd9cd3a1716d00819e96de2fa7583744fda0a8e18b",
+    "page-3.png": "bbcbc9b17195c1a328037ca9ee394afaf7dc82732d53274fa3e2f1c23f7cb7ad",
+    "page-4.png": "9cfad7973b0a4b87593cb1f3b8b056d465d630dcc0fb4c9f674bbd34d10c92a8",
+    "page-5.png": "7ad8460600b249ea8ebaefc8a133fc8708c16fdac48a69c996211c90d5954b7f",
+    "page-6.png": "60839b2c4944dc5dcee1434396fbdde4ba25c039ca168be119c7ad966ae946c8",
+    "page-7.png": "4bab2996ec56579615606133d8f939804b0399b819e04e356967b0cf36d4acf0",
+    "page-8.png": "6fda7dc465e0c6471e3cec1db797627407aa43e62737b22541d513b1046ed884"
+  },
+  "qa_pdf_sha256": "aa462047637881dce2ecd796d4e9206f07480dfe777532bae6aaf4d397426be7",
+  "limitations": "Report-ready evidence only; not proof of submission, promoted alpha, completed PAPER trial or full semester exit."
+}

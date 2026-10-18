@@ -1,0 +1,142 @@
+{
+  "attempts": 50,
+  "base_and_stress_metrics_verified": true,
+  "base_fees_inr": "111862.433887296649984440",
+  "calibration": {
+    "available_after_us": 1767205800000000,
+    "calibration_first_feature": "2025-10-09 03:45:00+00:00",
+    "calibration_last_label": "2025-12-31 09:45:00+00:00",
+    "calibration_sample_sha256": "dfdac880d0b448c73b00b1e95baf2ee1b737636c33864f69151d262519b88ab0",
+    "calibration_samples": 3319,
+    "model_sha256": "a3264e1d00b37d7d91265cf729bbb535d82bab28b02be5aaff9072587e0cb470",
+    "test_access": false,
+    "train_last_label": "2025-09-30 09:45:00+00:00",
+    "train_sample_sha256": "e2b847a04db0697e74636dc01458608fa24f61e1bd5062d53fc018410b862c4d",
+    "train_samples": 20185,
+    "valid_observations_used_for_fit_or_calibration": false,
+    "version": "nse_expected_return_isotonic_v1",
+    "x": [
+      0.36159762740314083,
+      0.37231518816716275,
+      0.38029785358584633,
+      0.381591502780679,
+      0.4204662115013089,
+      0.42047547093775844,
+      0.4471911976681854,
+      0.4471916552662501,
+      0.4507103995118231,
+      0.4507361747487148,
+      0.4938784181810014,
+      0.4938999578238419,
+      0.4961216729367166,
+      0.4961472330651245,
+      0.4967177379052533,
+      0.4967441786185089,
+      0.49912530121014576,
+      0.4991340545595587,
+      0.5231334065954893,
+      0.5232771947323566,
+      0.5292402480798158,
+      0.5293947973189809,
+      0.5298270159673248,
+      0.5298663985088767,
+      0.5936792484070171
+    ],
+    "y": [
+      -0.0033439579967643462,
+      -0.0026659956167205032,
+      -0.0026659956167205032,
+      -0.0005112671591985117,
+      -0.0005112671591985117,
+      -0.00019758755177231706,
+      -0.00019758755177231706,
+      -0.0001953765228244734,
+      -0.0001953765228244734,
+      -0.00010598584390661185,
+      -0.00010598584390661185,
+      5.749305808732978e-05,
+      5.749305808732978e-05,
+      0.00010494510603608007,
+      0.00010494510603608007,
+      0.00010676791104116149,
+      0.00010676791104116149,
+      0.00023394483803659415,
+      0.00023394483803659415,
+      0.0005601770398726149,
+      0.0005601770398726149,
+      0.000568465729211487,
+      0.000568465729211487,
+      0.0015371856845073325,
+      0.0015371856845073325
+    ]
+  },
+  "coverage_max": 0.9736842105263158,
+  "coverage_min": 0.9473684210526315,
+  "crypto_registry": {
+    "alpha_definitions": {
+      "count": 25,
+      "sha256": "05a213f0cd7e02ed1e75c78cbd8216289f8ad4b6868ec9dfa7f9dc47d8137991"
+    },
+    "alpha_results": {
+      "count": 34,
+      "sha256": "dac77bc7006b06bc9b5e62af846d2300054aa706b1788491d8de24d6b971ba62"
+    },
+    "test_accesses": 0
+  },
+  "dirty": true,
+  "fill_ids_unique": true,
+  "invalid_reasons": {},
+  "ledger_reconciliation": true,
+  "positive_conditional_results": {
+    "volume_shock": 0
+  },
+  "post_round_source_changes": {
+    "research/helios/backtest/equity.py": {
+      "archived": "fd85d2249bad3664eb8b117ae57f45da6623d7dc17b4a285644693aea3ba982b",
+      "current": "6645c2ff176f65393287c5e048d00211040e16b5b835d62fb3ccd0cdabe8a48a"
+    },
+    "research/helios/dashboard/equity_page.py": {
+      "archived": "74236b15600e30ac6c4a206f24da34627e1dd6169bc2f25378485c6125d62517",
+      "current": "bb0deb2e2ce937f8072bd69cd92453c4728e1c6e507ee2b61e7d89c52ae63570"
+    },
+    "research/helios/dashboard/equity_research.py": {
+      "archived": "38cde1551fb48af23e40769132c3614ea2f70a4e45d1a0ab3600b065a7a2d3ae",
+      "current": "4723aed572fc0b5d790c4d81cd09720244002e721e7c0824874136ec61ead5b6"
+    },
+    "research/helios/dashboard/equity_sources.py": {
+      "archived": "cd96527ab1026ebea7560caf3a4d562b0fe9911bcc54444230dbaa6e306609d0",
+      "current": "3228d2925a7c3808d54e5187fce6c12d5944bf1aaa0f32f7b7c0653871d7b4ef"
+    },
+    "research/helios/equities/service.py": {
+      "archived": "dad4472196d94d63c73ce6afbf4bb979c1030c93fe044d00a8c3647f14a69d22",
+      "current": "ed1e64bd2044fb1cbd1b9da852a88d61f52402e48fcf4c60f32f9536937e2df3"
+    },
+    "research/helios/paper/runtime.py": {
+      "archived": "e7ea7c7d98974bd3d6d83db56a08c908e01ace1959ceb8bf70dfee9371b93af3",
+      "current": "3889c058d93449e53b572e703f59225e68492abdeceae532298519717c40cda8"
+    },
+    "research/helios/paper/store.py": {
+      "archived": "95d29ea1d61f922571dc3168da7af735a8a3032da76395b57944abe74febfcdd",
+      "current": "46866de854c29b6f478b624b7f1d0f09f6bf211a4f997e3636dee9c412288b51"
+    }
+  },
+  "preregistered_before_first_valid_pnl": true,
+  "promoted": 0,
+  "protocol_sha256": "28adbf185fff004956e8c885272741f8d6d062f3b6550b1362480c8515a6e94b",
+  "reconciled_base_fills": 5162,
+  "reconciled_base_sessions": 5503,
+  "round_id": "nse_hourly_reference",
+  "snapshot_id": "3fcfb9361738d9ebb90c6ed4136ea4ba37a3a313f8038fadda51124dfeeeac13",
+  "source_manifest_verified": true,
+  "statuses": {
+    "REJECTED": 50
+  },
+  "statuses_by_candidate": {
+    "volume_shock": {
+      "REJECTED": 50
+    }
+  },
+  "symbols": 50,
+  "test_accesses": 0,
+  "whole_share_long_only_flat_end": true
+}

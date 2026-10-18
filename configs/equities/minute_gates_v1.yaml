@@ -1,0 +1,11 @@
+version: nse_minute_gates_v1
+sharpe_min: 1.0
+fitness_min: 1.0
+fitness_turnover_floor: 0.125
+turnover_min: 0.01
+turnover_max: 0.70
+require_out_of_sample: true
+stability_subperiod: month
+stability_min_positive_fraction: 0.60
+cost_stress_multiplier: 2.0
+cost_stress_sharpe_min: 0.0

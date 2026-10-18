@@ -7,6 +7,7 @@ from sqlalchemy import Engine, text
 
 from helios.common.config import config_hash
 from helios.common.lineage import RunContext
+from helios.equities.paper_config import EquityPaperConfig
 from helios.paper.config import PaperConfig
 from helios.paper.runtime import PaperRuntime
 from helios.registry.experiments import (
@@ -19,7 +20,9 @@ from helios.sim.paper import rounded
 
 
 class PaperStore:
-    def __init__(self, engine: Engine, config: PaperConfig, context: RunContext) -> None:
+    def __init__(
+        self, engine: Engine, config: PaperConfig | EquityPaperConfig, context: RunContext
+    ) -> None:
         if (
             context.dirty
             or context.config_hash != config_hash(config)
@@ -37,7 +40,12 @@ class PaperStore:
             experiment = register_experiment(
                 connection,
                 kind=ExperimentKind.INFRASTRUCTURE,
-                hypothesis="Fixed rejected minute reversal used only to verify observed-data PAPER "
+                hypothesis=(
+                    "Fixed registered NSE formula"
+                    if isinstance(config, EquityPaperConfig)
+                    else "Fixed rejected minute reversal"
+                )
+                + " used only to verify observed-data PAPER "
                 "strategy/risk/OMS/venue/ledger persistence; no promotion or TEST.",
                 params=dict(protocol=config.model_dump(mode="json")),
                 author="helios_paper",

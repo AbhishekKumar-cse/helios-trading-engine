@@ -24,6 +24,9 @@ from helios.common.types import (
 from helios.sim.paper import rounded
 
 LOGGER = logging.getLogger(__name__)
+# Compile the same numeric constraints once, rather than on every ledger mark.
+_MONEY: TypeAdapter[Decimal] = TypeAdapter(Money)
+_TIMESTAMP: TypeAdapter[int] = TypeAdapter(Timestamp)
 
 
 class LedgerError(ValueError):
@@ -77,7 +80,7 @@ class PnLLedger:
             "contemporaneous_book_mid", "bar_close_proxy", "public_last_price_proxy"
         ] = "contemporaneous_book_mid",
     ) -> None:
-        initial_cash = TypeAdapter(Money).validate_python(initial_cash)
+        initial_cash = _MONEY.validate_python(initial_cash)
         if initial_cash <= 0 or quote_asset not in ("USDT", "INR"):
             raise LedgerError("positive initial cash and a supported quote are required")
         if quote_asset == "INR" and not symbols:
@@ -164,7 +167,7 @@ class PnLLedger:
             else decimal_value(basis / abs(new_quantity)),
         )
         for amount in (cash, realized, self._fees + fee):
-            TypeAdapter(Money).validate_python(decimal_value(amount))
+            _MONEY.validate_python(decimal_value(amount))
         self._lots[fill.symbol] = new_lot
         self._cash, self._realized, self._fees = cash, realized, self._fees + fee
         self._clock = fill.timestamp
@@ -174,7 +177,7 @@ class PnLLedger:
     def snapshot(self, timestamp: int, marks: Mapping[str, BookView]) -> PnLSnapshot:
         if self._halted:
             raise ReconciliationError("reporting halted after a reconciliation break")
-        timestamp = TypeAdapter(Timestamp).validate_python(timestamp)
+        timestamp = _TIMESTAMP.validate_python(timestamp)
         if timestamp < self._clock:
             raise LedgerError("snapshot clock cannot regress")
         market_value = unrealized = Fraction(0)

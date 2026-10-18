@@ -302,7 +302,7 @@ Follow the numbers in order.
 | [ ] | 166 | Run the PAPER runner on an always-on machine (spare PC or small VM) with `docker compose` | S | 5J-03 | Runs unattended for 24 h |
 | [ ] | 167 | Start the **7-day** paper run with the promoted minute (or hourly) alpha | S | 5J-07 | Day 1 records present |
 | [ ] | 168 | *(Optional, recommended)* Start a simple WebSocket order-book recorder for BTC/ETH to collect millisecond data for the 6th sem | S | 6A-06 | Daily files appearing |
-| [ ] | 169 | Reproducibility check: pick a random stored result, re-run from its lineage, get identical numbers | Q | 5K-01 | Identical output |
+| [x] | 169 | Reproducibility check: pick a random stored result, re-run from its lineage, get identical numbers | Q | 5K-01 | Done 2026-10-18: seed 169 selected the retained MAXHEALTH hourly momentum result. Imported its hash-verified archived source and replayed base plus 2x costs: 111 sessions, 116 base fills and 777 ledger snapshots matched exactly (only generated execution IDs excluded). No refit, new measurement or TEST access. Evidence: `docs/research/nse_archived_reproduction_20261017.json`. |
 
 ---
 
@@ -311,11 +311,11 @@ Follow the numbers in order.
 | ✓ | Step | What to do | Owner | Plan ID | Done when |
 |---|---|---|---|---|---|
 | [ ] | 170 | After 7 days: paper-vs-backtest comparison over the same days; explain differences | Q | 5J-08 | Report merged |
-| [ ] | 171 | Check branch protection: CI, leakage suite and property tests are required checks | S | 5K-02 | Screenshot in `docs/` |
-| [ ] | 172 | Update spec/SRS with decisions made this semester (crypto data, horizon stages, stack, Fitness) | All | 5K-03 | Docs updated |
-| [ ] | 173 | 5th-sem report (template sections) with **measured results only** + negative results | All | 5K-04 | Report ready |
+| [x] | 171 | Check branch protection: CI, leakage suite and property tests are required checks | S | 5K-02 | Reviewed 2026-10-18: read-only GitHub API confirms strict required `lint, types, tests` and `leakage (required)`; property/registry tests run inside pytest. API evidence and its explicitly labelled screenshot: `docs/research/nse_branch_protection_20261018.{json,png}`. No settings changed. Administrator enforcement is false; current uncommitted work still needs CI after a later authorized push. |
+| [x] | 172 | Update spec/SRS with decisions made this semester (crypto data, horizon stages, stack, Fitness) | All | 5K-03 | Updated 2026-10-18: controlled implementation addendum records accepted ADRs, actual Python/bar stack, preserved crypto protocols, public NSE minute/model/execution scope and remaining promotion/live constraints. ADR 009 and public-minute guide added; older architectural proposals remain distinguished from implemented evidence. |
+| [x] | 173 | 5th-sem report (template sections) with **measured results only** + negative results | All | 5K-04 | Ready 2026-10-18: template-derived `docs/reports/HELIOS_5th_sem_NSE_report_20261018.docx` and Markdown source. All eight rendered pages inspected; reference geometry and every preserve-only package part unchanged. Reports 612 measured attempts (561 REJECTED, 51 INVALID), exact cost attribution, matched-date diagnostic, actual archived replay, verification limits and outstanding PAPER/demo criteria. No profitable alpha or completed semester exit claimed. |
 | [ ] | 174 | Demo video: data → features → alpha → gates → backtest → live paper dashboard → kill switch | All | 5K-04 | Video recorded |
-| [ ] | 175 | Write `6thSem/carryover_from_5th.md` with any unfinished step numbers | All | 5K-05 | Merged |
+| [x] | 175 | Write `6thSem/carryover_from_5th.md` with any unfinished step numbers | All | 5K-05 | Written 2026-10-18 on main: explicit IDs and closure conditions for 166/167/170/174, source/cost/selection/live/restart gaps, 010/022 team evidence and optional 168. No exit-criterion waiver or invented trial. New work remains uncommitted under the current repository instruction. |
 
 **Final checkpoint:** every box in the "Exit criteria" of [5thSem_Plan.md](5thSem_Plan.md) is ticked.
 

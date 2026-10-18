@@ -39,7 +39,8 @@ class EquityBacktestConfig(HeliosConfig):
             self.policy.valid_start <= local.date() <= self.policy.valid_end
         ):
             raise ValueError("NSE replay must start at 09:15 inside the frozen VALID window")
-        if not nse_bar_complete(self.start_us, self.start_us + 3_600_000_000, "1h"):
+        duration = 3_600_000_000 if self.policy.interval == "1h" else 60_000_000
+        if not nse_bar_complete(self.start_us, self.start_us + duration, self.policy.interval):
             raise ValueError("NSE backtest starts on an observed normal-session hour")
         if self.end_us - self.start_us != 375 * 60_000_000:
             raise ValueError("one complete 375-minute session is required")

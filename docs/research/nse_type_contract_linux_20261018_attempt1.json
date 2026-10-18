@@ -1,0 +1,554 @@
+{
+  "version": "exact_source_linux_type_contract_v2",
+  "checked_at": "2026-10-18T03:06:06.827686+00:00",
+  "passed": true,
+  "return_code": 0,
+  "elapsed_seconds": 85.80004555399864,
+  "source_hashes": [
+    {
+      "path": "research/helios/__init__.py",
+      "sha256": "9ce8e7e3eaf4feb41480b1a861cea9bb2ca7a602011dd4d408b9b80ad751dfac"
+    },
+    {
+      "path": "research/helios/alpha/__init__.py",
+      "sha256": "546cc312dafbb2a96c5d2f84a939c34417b9a4d598257bb0ad3677195b95e034"
+    },
+    {
+      "path": "research/helios/alpha/complexity.py",
+      "sha256": "56cf450c84bd404b13c9cfd9edd4e58458fc011f0ac47457c20d00eb8af79ed1"
+    },
+    {
+      "path": "research/helios/alpha/cross_sectional.py",
+      "sha256": "0d03bdfd2eaf823988b856a4632bb32cc282736a31d8239610c2720b55df97cb"
+    },
+    {
+      "path": "research/helios/alpha/definition.py",
+      "sha256": "6a4ce4eef0d5e9610fc077e06f94c2bf2dd98bb74e8f2207d9461f4e38b67118"
+    },
+    {
+      "path": "research/helios/alpha/errors.py",
+      "sha256": "2f68c0f0706bd37489c5342e03dde30574405ad581726db075b8358185e7d198"
+    },
+    {
+      "path": "research/helios/alpha/evaluator.py",
+      "sha256": "16ae0d2ceeedc4d2e3a2fa389b6a4037a083bdaa629c58ef333ce1ff59a8bc16"
+    },
+    {
+      "path": "research/helios/alpha/final_test.py",
+      "sha256": "da65519303157dc3042bcb8166f570038248f297a18b7d2fbc17210b0fda5e85"
+    },
+    {
+      "path": "research/helios/alpha/hourly_evaluation.py",
+      "sha256": "a44fb84064231573e80a65ac3c0eaabfd183e3ca2a7979c52fee71499967939f"
+    },
+    {
+      "path": "research/helios/alpha/hourly_hypotheses.py",
+      "sha256": "6139618df45badee4786b69114c53213e710fafa6e9d9e76d7860c9fec88f122"
+    },
+    {
+      "path": "research/helios/alpha/hourly_round.py",
+      "sha256": "f69fed0fc612b3706ecc235c6d5c517636b4c5238ad5f93c81664d6f8cebcc85"
+    },
+    {
+      "path": "research/helios/alpha/minute_round.py",
+      "sha256": "5abffbe8c1fcfe5d12913a24e66ab2feafdf4c05dc2ceb6fab0bbfee17fbcf46"
+    },
+    {
+      "path": "research/helios/alpha/minute_selection.py",
+      "sha256": "48d461fadfba5675b269b04e012f8f560a3d37e7542ca159b97a47492083ec70"
+    },
+    {
+      "path": "research/helios/alpha/output.py",
+      "sha256": "74d78f0b1f648ce4a078a4fcf03a09d0cfe73e9614e4c124e516bb396cc6b162"
+    },
+    {
+      "path": "research/helios/alpha/parser.py",
+      "sha256": "bf4c15153d9e01539205c300c753236225ebf0dc2dae8523172f1f46e1ad40e2"
+    },
+    {
+      "path": "research/helios/alpha/safety.py",
+      "sha256": "b43643a61d0d709e68dba9ccd1256043f4b5557d53f7def11fca8bd81e812e43"
+    },
+    {
+      "path": "research/helios/alpha/search_effort.py",
+      "sha256": "9b865706003015dba33847a556029ee475ddd0a63457bd6583182994ea762977"
+    },
+    {
+      "path": "research/helios/backtest/__init__.py",
+      "sha256": "a0cc4a3d4e821d710b9fd088ebd13b294e551e13b0eb4bd773f83722fee3e1e4"
+    },
+    {
+      "path": "research/helios/backtest/config.py",
+      "sha256": "548ba5ecdb19db80350d3ce5cef81bf116f0a1e1516a584759d78eb48dd7d822"
+    },
+    {
+      "path": "research/helios/backtest/engine.py",
+      "sha256": "d1aab06ed0ba1ffb591fe5eaf999ad683700761cb89a9d3ed1e057161425793b"
+    },
+    {
+      "path": "research/helios/backtest/equity.py",
+      "sha256": "6645c2ff176f65393287c5e048d00211040e16b5b835d62fb3ccd0cdabe8a48a"
+    },
+    {
+      "path": "research/helios/backtest/equity_config.py",
+      "sha256": "bae20fbd253f9c0d90ee7bec0aefa41c1667c26eba08a4f8b0f55ea31d9a1075"
+    },
+    {
+      "path": "research/helios/backtest/inputs.py",
+      "sha256": "16d2534ce24467d7f411f98dde2545c97a952f19f37ef57bc06a0f5e9d8e861e"
+    },
+    {
+      "path": "research/helios/backtest/report.py",
+      "sha256": "b9710cb38ff89c2e87f4790e6a76a24441c8a5d69f54966e1f9610dff9599ea6"
+    },
+    {
+      "path": "research/helios/backtest/runner.py",
+      "sha256": "707f1fa150560a2ee3da2e1803c6fe694a1cb1eb77701ded6585ddf4f3410c7f"
+    },
+    {
+      "path": "research/helios/common/__init__.py",
+      "sha256": "925ca53fa0dc1ccc2af03cef8a3621b3db046320dbbf8229d8406144ba4aaeb8"
+    },
+    {
+      "path": "research/helios/common/config.py",
+      "sha256": "a159e0159f226deb961e0bec34c5a5cf920b1c7a70c9c2d75fe733b69c15e48f"
+    },
+    {
+      "path": "research/helios/common/db.py",
+      "sha256": "bba82abfcf03f692701f0ebd624eda901dc158bc63da9a322e6d3a60dc1c3474"
+    },
+    {
+      "path": "research/helios/common/interfaces.py",
+      "sha256": "538e369e5a45764430db5e16962054f10151700b2fdaa7967255e1bb1cd8fbd7"
+    },
+    {
+      "path": "research/helios/common/lineage.py",
+      "sha256": "b2d1690de6e01892efff569deb1d342343c92462da59b4f9a9fb1abfa6dcdc5a"
+    },
+    {
+      "path": "research/helios/common/market_clock.py",
+      "sha256": "371be9e7a0ca37cc5162d573e4317cb0185fa09c87ae7e380eff75f6243628ac"
+    },
+    {
+      "path": "research/helios/common/project_config.py",
+      "sha256": "258c3aff359828deae3396e25de69bcafc8aee492246c84be48b42a24acaa0ae"
+    },
+    {
+      "path": "research/helios/common/seed.py",
+      "sha256": "fb5404ada17d96e0f21ebff7532e00a20da2a0c76c5bbe7adca6eb595ecfd3f7"
+    },
+    {
+      "path": "research/helios/common/types.py",
+      "sha256": "e493487d1681676ea0029e34e63c5f3b446f8198dca4173f1ee125b56d73fd92"
+    },
+    {
+      "path": "research/helios/dashboard/__init__.py",
+      "sha256": "524f986e1bd1f8c11c5a5af5b3f685f9d64ef8b2775877587b670a1173c076c7"
+    },
+    {
+      "path": "research/helios/dashboard/control.py",
+      "sha256": "f1d5cf43dfd50a7614b529ae071d41e503a7b8fdf569d9a674e19fe91967254e"
+    },
+    {
+      "path": "research/helios/dashboard/equity_page.py",
+      "sha256": "0c5da0d0bc269bb1e32f2be5d65d64229d4d4ad05e386b0e244642e1c297f55b"
+    },
+    {
+      "path": "research/helios/dashboard/equity_research.py",
+      "sha256": "529485b1809c1b14897b39b140fec321636aaa167a826efc8f82febfaa647cdd"
+    },
+    {
+      "path": "research/helios/dashboard/equity_sources.py",
+      "sha256": "3228d2925a7c3808d54e5187fce6c12d5944bf1aaa0f32f7b7c0653871d7b4ef"
+    },
+    {
+      "path": "research/helios/dashboard/paper.py",
+      "sha256": "623eb9cf7030188dd1c8d5faba5c4c66ff25b34d38d73c835601136e60b36680"
+    },
+    {
+      "path": "research/helios/dashboard/paper_page.py",
+      "sha256": "b01493790c93a9f15330cde1c9c839ef4a6eeef1f615752cf4ed62ae490a2092"
+    },
+    {
+      "path": "research/helios/dashboard/registry.py",
+      "sha256": "da494d7f86da0dd5d773dfdc2c4716eaa6dc3b1d632cb56d2e36007bbd054e2c"
+    },
+    {
+      "path": "research/helios/dashboard/simulation.py",
+      "sha256": "db5d415b14896deb750310f2aa20359ac89486061afd7577a57ec34df8ddd86b"
+    },
+    {
+      "path": "research/helios/dashboard/simulation_page.py",
+      "sha256": "275eab213dc71c49ab15e8d5a2414464afb561c65cfce62203cc07541e154c71"
+    },
+    {
+      "path": "research/helios/data/__init__.py",
+      "sha256": "c46b2c0644740af45f3aa0acae764bd7b3542e33903fa9313bac64dd65fdafcb"
+    },
+    {
+      "path": "research/helios/data/bars.py",
+      "sha256": "b1403f1e52080784c392048e4a510072f95f17210da9b7eda256fc62aa8b7896"
+    },
+    {
+      "path": "research/helios/data/binance.py",
+      "sha256": "6b7018dd0c77f7ce104cdf1202ca805f166e1494bd0df312d48a825220e74516"
+    },
+    {
+      "path": "research/helios/data/equities.py",
+      "sha256": "8a2d7e95148647c985df7dd03b44555db456eb2bf65a1e18018e747fb665093c"
+    },
+    {
+      "path": "research/helios/data/instruments.py",
+      "sha256": "f8d341236bec9f3e0ac5e6950115f3d58d0a07f197ea37c64ddc2947b67421b4"
+    },
+    {
+      "path": "research/helios/data/klines.py",
+      "sha256": "ad834ecd1cebd168e110aefa38be63cc690ab0c2a09f19f0a99a8c869710a61b"
+    },
+    {
+      "path": "research/helios/data/live_klines.py",
+      "sha256": "f819bbeae2b5e8253ef2d43421659cd6023676f228160ff5fba94c5b83b9421a"
+    },
+    {
+      "path": "research/helios/data/loader.py",
+      "sha256": "1ecba12e157129968bba90981b3679dd135473559ab2f888d0495434c9fd5b93"
+    },
+    {
+      "path": "research/helios/data/replay.py",
+      "sha256": "fb3bd4141d55bacfcd81e52ec50151ea59848c419efd2cb93eb418eaf6b788e3"
+    },
+    {
+      "path": "research/helios/data/resample.py",
+      "sha256": "a3a7d5d2ce28940debafe756232e508b27950b7dbc4c014d29c0657109b7f908"
+    },
+    {
+      "path": "research/helios/data/resilient_klines.py",
+      "sha256": "930fa8e2068dbde44d0cfa1778e096bc21cd07fd499650afc83d0931bc9f7976"
+    },
+    {
+      "path": "research/helios/data/snapshots.py",
+      "sha256": "4dd524560edb68e4a56158a147132a080cee79edf0a51f40b4b634042604fe9a"
+    },
+    {
+      "path": "research/helios/data/universe.py",
+      "sha256": "54b471693d3ab9c7cb97f02c153419d80c46bad29b62ee28ae8e27c709affa5b"
+    },
+    {
+      "path": "research/helios/equities/__init__.py",
+      "sha256": "d80ce9c414e73cd8a82e5a3c913b735131f6c3af7817ba0dc3c4ab1a74347603"
+    },
+    {
+      "path": "research/helios/equities/calendar.py",
+      "sha256": "f29a1468707dcb2d255b55c9e3afc2d048a4d17dbae88734c7510718607e462c"
+    },
+    {
+      "path": "research/helios/equities/config.py",
+      "sha256": "1eaa9d7dce80217d068ca9230907ad9a8e44ea245400eaa48ea0c3191f25dc2c"
+    },
+    {
+      "path": "research/helios/equities/features.py",
+      "sha256": "2ef3faf981d9a714152a1ea812bc3e0678aaee5a345ffc24709f546ca4b5916e"
+    },
+    {
+      "path": "research/helios/equities/inputs.py",
+      "sha256": "d614b217f026e558038ad12e515d97d0cad5d103169d64843e57428f5016872d"
+    },
+    {
+      "path": "research/helios/equities/instruments.py",
+      "sha256": "4a6999298dd82a7d590a181ab01cbcc91e3a9519f8adec10f41fba83ffe642fa"
+    },
+    {
+      "path": "research/helios/equities/live.py",
+      "sha256": "2607f6539531026619eba4b3b57b80ea5e704859b520390d87d4f427907d96cd"
+    },
+    {
+      "path": "research/helios/equities/model.py",
+      "sha256": "6306a5160b2c9ac2eea704da5a171cc7f5c653cac710a57e1ba02618cbd74096"
+    },
+    {
+      "path": "research/helios/equities/paper_config.py",
+      "sha256": "50beeddf4b25af82bf83c06fe33d5a4eccac2bca717c9a3fc9306a63b8e7229f"
+    },
+    {
+      "path": "research/helios/equities/paper_runner.py",
+      "sha256": "68f8b28817a926335ae5759163b5cbea43e6577c6e8d0f78db141c6cdfd14f0b"
+    },
+    {
+      "path": "research/helios/equities/pipeline.py",
+      "sha256": "58473cc114e91d8668e2dbecc552149030b9b45aabec7f0a15a855844dddc0b7"
+    },
+    {
+      "path": "research/helios/equities/public_data.py",
+      "sha256": "fadd6c218caa6b51d8fac05bc7e0b468ba455eaefa829671d0fccc3c1d0e0d9f"
+    },
+    {
+      "path": "research/helios/equities/service.py",
+      "sha256": "ed1e64bd2044fb1cbd1b9da852a88d61f52402e48fcf4c60f32f9536937e2df3"
+    },
+    {
+      "path": "research/helios/features/__init__.py",
+      "sha256": "96245633b32635462527fd2e00b480729e2cfd564b6da6822cd6e1be03e28178"
+    },
+    {
+      "path": "research/helios/features/basic.py",
+      "sha256": "c653f27e0c19860f0d074160a4cca6987241b87568abb7dcfbed7a7824e1bb2d"
+    },
+    {
+      "path": "research/helios/features/helpers.py",
+      "sha256": "9b0056ede5af164f1c72d3830a92c48b7c5ae27df94f4a61e48d95ea83a16de2"
+    },
+    {
+      "path": "research/helios/features/registry.py",
+      "sha256": "a4c6af4802846f474fa5d411083ce26fc7563961f3cf4d534aad94c507624f55"
+    },
+    {
+      "path": "research/helios/features/runner.py",
+      "sha256": "dc31979375c232f6ef90aaaad78c9b48aa538563e322707a4e7eb8d97549ce17"
+    },
+    {
+      "path": "research/helios/features/store.py",
+      "sha256": "6f28d34e2e435a0c68e3535a624b758c7c144848777b93c7e4b4d15c3b7d068c"
+    },
+    {
+      "path": "research/helios/ml/__init__.py",
+      "sha256": "7aa83c585ef1f386338aa4ef651277003cb0700a73159cc64da04cd0bdaa5a5a"
+    },
+    {
+      "path": "research/helios/ml/baselines.py",
+      "sha256": "0f465511079bfc15f9f1e84d4bb3b5fd1515c19eb602eb2ce07fe405e70c7fcb"
+    },
+    {
+      "path": "research/helios/ml/calibration.py",
+      "sha256": "bbfa8572bc88cbbf7539d8fc5869e2e0771858bf1ae6e87dea162a79ee3cbb11"
+    },
+    {
+      "path": "research/helios/ml/dataset.py",
+      "sha256": "37c58ff9206a7307a15e78005fd32603194c252fe2b28303fed44967580dae47"
+    },
+    {
+      "path": "research/helios/ml/deeplob.py",
+      "sha256": "4605864f078baf4a2cc99fb6b4cbac49caecd9467e9aea4e2fdb619710b410c6"
+    },
+    {
+      "path": "research/helios/ml/deeplob_evaluation.py",
+      "sha256": "94a81da6d05c455cfe84f0f454c421cd700acd8603138f395770282f63df38da"
+    },
+    {
+      "path": "research/helios/ml/deeplob_training.py",
+      "sha256": "4f5072148dee86b5950abc43df62aba59f861d326f63bc79a2922aab50ad6b10"
+    },
+    {
+      "path": "research/helios/ml/equity_pilot.py",
+      "sha256": "07843ea26981d46914fddda73e5d0f5ed3e8869708175b3b34a960eb44dc9434"
+    },
+    {
+      "path": "research/helios/ml/fi2010.py",
+      "sha256": "314366d0528483d4c848a9636e01667db8c4561489a6ee8911db0404b1ed6a98"
+    },
+    {
+      "path": "research/helios/ml/hourly_baselines.py",
+      "sha256": "711ebabf545c99491e4bb0d2bfb178609a20247724d1885d48e84fe1d7e3ec43"
+    },
+    {
+      "path": "research/helios/ml/hourly_inputs.py",
+      "sha256": "79c18bcaac748367c00f01c7212752d904d1acd4c9d72b0f0a438ec40bc05254"
+    },
+    {
+      "path": "research/helios/ml/hourly_lightgbm.py",
+      "sha256": "d2176e1387962511f5429d1b03df9390bef1aebb40707c14671346bf8ba6031e"
+    },
+    {
+      "path": "research/helios/ml/minute_pipeline.py",
+      "sha256": "b253f520d25ce7a50ecd5f26c2fee0a6803911767a80b09261e3281665703c4d"
+    },
+    {
+      "path": "research/helios/ml/prediction_alpha.py",
+      "sha256": "6fae7bb16b2bff779e1f24635eef413454e468dc19c27bc3b249a3fa26167928"
+    },
+    {
+      "path": "research/helios/ml/registered_alpha.py",
+      "sha256": "ff93a35364a241a208b478c1ee885286f57a9c0f58bc38fbcd4ee5235ae7454c"
+    },
+    {
+      "path": "research/helios/ml/splits.py",
+      "sha256": "13e6c6b064f268f7f211fb5a362135cb931ac256d04b066767a84d6aaf019eb9"
+    },
+    {
+      "path": "research/helios/paper/__init__.py",
+      "sha256": "ec225e4a5093e4a1b7267fac0e0d76ba8fc84a9bcf6fe8cbbfdbd6418c797702"
+    },
+    {
+      "path": "research/helios/paper/config.py",
+      "sha256": "71042677af9c18e0a543cff9a8f1eb557ac04e1fe6023bbb1adff185a2bce058"
+    },
+    {
+      "path": "research/helios/paper/runner.py",
+      "sha256": "5ac33a00d483212bf4405e1798a0d3f060df3809ebe10d15d95af58fc5272be2"
+    },
+    {
+      "path": "research/helios/paper/runtime.py",
+      "sha256": "3889c058d93449e53b572e703f59225e68492abdeceae532298519717c40cda8"
+    },
+    {
+      "path": "research/helios/paper/store.py",
+      "sha256": "46866de854c29b6f478b624b7f1d0f09f6bf211a4f997e3636dee9c412288b51"
+    },
+    {
+      "path": "research/helios/registry/__init__.py",
+      "sha256": "5c7a19ff34da47a86d889aa4e480f6c01765473f1242cfd6855d6f15c204b88f"
+    },
+    {
+      "path": "research/helios/registry/api.py",
+      "sha256": "8814a4539818f378d2eb0d3162524e7debe07beba9ea69b74563d150a980f3d4"
+    },
+    {
+      "path": "research/helios/registry/experiments.py",
+      "sha256": "8d5ae6c6ca7393e0b0989dc3025700cad91cee377f0ccf3c98ea6e4f63ae2b3a"
+    },
+    {
+      "path": "research/helios/registry/gates.py",
+      "sha256": "86d66b75256ffb01db6fbf1b1fcd1999fa205a311eca020b50a0de45ea1f646a"
+    },
+    {
+      "path": "research/helios/registry/lifecycle.py",
+      "sha256": "3e07da75352ec302e3eacfeb50ccff5693c9be3bec78633a11a604ca00aa4660"
+    },
+    {
+      "path": "research/helios/registry/results.py",
+      "sha256": "1e83cd533b5222f19abb492175e774f5286030a73c17ffde564528768bedb3f4"
+    },
+    {
+      "path": "research/helios/registry/selection.py",
+      "sha256": "bb099c91f8fa69999788a2b125644e38dbcfae5bbed5e84b6a83d9c01e183977"
+    },
+    {
+      "path": "research/helios/registry/test_access.py",
+      "sha256": "df83bfdf5856edb149f0f707bc4316cc1dcd3352cba45ea7fd2a47fd47e52c90"
+    },
+    {
+      "path": "research/helios/sim/__init__.py",
+      "sha256": "173ccfdc2a20fff73af35e06d6e257ff5d191e05d6360c33ce84d32f075b77a8"
+    },
+    {
+      "path": "research/helios/sim/cost_sensitivity.py",
+      "sha256": "aaa17ce982af1d744231a113843ce17b9dc157a174dda0830623c7123afe79a6"
+    },
+    {
+      "path": "research/helios/sim/costs.py",
+      "sha256": "c9d1a0f4be9ab4984dd540920be20dd024d026ec63db5e1323b59cf2bf7684d3"
+    },
+    {
+      "path": "research/helios/sim/diagnostics.py",
+      "sha256": "f93519a08e866704544e318286918bc43849b97d4708866332bc347cec22aebf"
+    },
+    {
+      "path": "research/helios/sim/equity_evaluation.py",
+      "sha256": "1981f80fd9a114a4d42a0b62ecb67b5d08f785886f884a899a9b2a39b8fee252"
+    },
+    {
+      "path": "research/helios/sim/evaluate.py",
+      "sha256": "89e32002f0553a02f3d1b15c76f027f88594440dcef406146e7cc1fccef340a4"
+    },
+    {
+      "path": "research/helios/sim/event_loop.py",
+      "sha256": "499b9ab7c6f0d81adf77c2ef56fe09fc5d5960116f08166d1366d00f6d0e026f"
+    },
+    {
+      "path": "research/helios/sim/fitness.py",
+      "sha256": "b9afd9937621ad3aef75750356538aa6f007f3ccefc2f92bc60d76b33809f16d"
+    },
+    {
+      "path": "research/helios/sim/gates.py",
+      "sha256": "2fc1f575dcc0848240cfa8b61fa6b876e4bb9071974b0cd4dd09d6086f757b8b"
+    },
+    {
+      "path": "research/helios/sim/ic.py",
+      "sha256": "9fa6c7b0b6138b11484bf8546bb40f7c48d4703ffacdc0ee86170ca8aeadb019"
+    },
+    {
+      "path": "research/helios/sim/ledger.py",
+      "sha256": "666d547dbe4671a226cd5d0498ad1e040ee6ff423460388e20932b2c76f47fe3"
+    },
+    {
+      "path": "research/helios/sim/loss_risk.py",
+      "sha256": "5ca5ea05b88d0ca4ed4f735f3ac1c2602e69df37b2965ccc1a77f5a58f9422ae"
+    },
+    {
+      "path": "research/helios/sim/many.py",
+      "sha256": "a535e869bc467b93bb73f1acf25f6a3af6ea81ace2164176a94d78e0c63dfe31"
+    },
+    {
+      "path": "research/helios/sim/metrics.py",
+      "sha256": "b2036ce897d80bc45a66f4333a19076ae9a692030b43672e663bac1c47d6cb7c"
+    },
+    {
+      "path": "research/helios/sim/minute_cost_report.py",
+      "sha256": "1c45c51ebc289b739b7f80111295fce5536fbf627bf5a46ee28ed0378e540500"
+    },
+    {
+      "path": "research/helios/sim/oms.py",
+      "sha256": "19709b68c23ccdf3710f014097aa82b42459cfe3b2a9c89c6a27a62511db7074"
+    },
+    {
+      "path": "research/helios/sim/paper.py",
+      "sha256": "77d5df2d365b70aabe77a517a2c23f3e6ade21bb25041361606e5082315c2779"
+    },
+    {
+      "path": "research/helios/sim/portfolio_risk.py",
+      "sha256": "ee0c90529aac9e2d1021588c3549ec6c1befb63dd914e83db293c9b46bb59e82"
+    },
+    {
+      "path": "research/helios/sim/positions.py",
+      "sha256": "435d0056f230c8770eb2bca563d13378e298a0f2995da79378ffbc7a56993e90"
+    },
+    {
+      "path": "research/helios/sim/price_risk.py",
+      "sha256": "bcfd6753fae0ccb0fe310cb4cb40d998b8e1075b726c8dd061fa12a9cfdb8d39"
+    },
+    {
+      "path": "research/helios/sim/report.py",
+      "sha256": "16ec49d20ac5f5600d44196b917a13e2df1c6a292024cc20a80290b847f9161c"
+    },
+    {
+      "path": "research/helios/sim/risk.py",
+      "sha256": "d5dc3d2672da6fd768388d471b1b04d8d2ac8efe028eece6418562de41348ede"
+    },
+    {
+      "path": "research/helios/sim/splits.py",
+      "sha256": "27e3eb63e9ec064fe054e6ab7b147f5a9f8d7418403ee2d5efe7b8ac516795fc"
+    },
+    {
+      "path": "research/helios/sim/stability.py",
+      "sha256": "a2c112cfd61b9827e88d1f1aec89117e96cdb4c832131189706481836a9f3fef"
+    },
+    {
+      "path": "research/helios/sim/strategy.py",
+      "sha256": "d2c7cbdec9c7dd81a7e5c1385e8508c91ecf23642d3743205355f10fddef1feb"
+    },
+    {
+      "path": "research/helios/sim/validity.py",
+      "sha256": "d1e2cfe21858f2a15c7465e928f129b221fefc7fc4f57976071505e9a665e6e7"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "7a5d82e5cff317f7dcd318581a3ee8e0da1d1ed266e5abd9b0a619e6a181185d"
+    },
+    {
+      "path": "research/tests/test_common_interfaces.py",
+      "sha256": "1522f901d28cd783c51d3a14be9c595d65bb80cc959ddebc2166cbd0f0432b6c"
+    },
+    {
+      "path": "research/tests/conftest.py",
+      "sha256": "51259facb7484c13a519abb5207d84a409a4b5fa81ca0bedaa71e1b29e370433"
+    }
+  ],
+  "file_count": 134,
+  "source_copy": "/tmp/helios_type_contract_siho_6wa",
+  "identical_source_before_and_after": true,
+  "credentials_data_git_copied": false,
+  "log_sha256": "1f2808216ccd15ffa48f151aa3a6b958f1e74fca3bd3af10ee267dde61b176e0",
+  "reason": "Original unchanged test hit its 90-second subprocess budget on the active OneDrive workspace; verify the same source/test/config on Linux storage.",
+  "interpreter": "/home/abhi/.venvs/helios/bin/python",
+  "original_receipt_sha256": "ac9d86334879dd1b10d5c8560f20724987a3dccef9d80cb282b28a193ba3db6f",
+  "manifest_format_note": "Publication-only representation change: path and SHA-256 are separate fields to avoid treating source filenames as credential assignments. All original file digests and measured fields are unchanged; original receipt retained locally at reports_out/equity_closeout/type_contract_original_receipt.json."
+}

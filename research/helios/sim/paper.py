@@ -36,6 +36,8 @@ from helios.sim.event_loop import BarOpen
 
 SCALE = Decimal("1e-18")
 TERMINAL = frozenset((OrderState.FILLED, OrderState.CANCELLED, OrderState.EXPIRED))
+_PRICE: TypeAdapter[Decimal] = TypeAdapter(Price)
+_TIMESTAMP: TypeAdapter[int] = TypeAdapter(Timestamp)
 
 
 def rounded(value: Decimal) -> Decimal:
@@ -256,8 +258,8 @@ class BarPaperVenue:
 
     def on_open(self, opening: BarOpen) -> None:
         """Only opening price is visible; no high/low/close enters market fills."""
-        TypeAdapter(Price).validate_python(opening.price)
-        TypeAdapter(Timestamp).validate_python(opening.timestamp)
+        _PRICE.validate_python(opening.price)
+        _TIMESTAMP.validate_python(opening.timestamp)
         if opening.timestamp < self._clock.get(opening.symbol, 0):
             raise ValueError("opening clock precedes an observed command or bar")
         old = self._opens.get(opening.symbol)

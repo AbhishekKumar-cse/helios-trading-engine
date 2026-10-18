@@ -29,8 +29,12 @@ from helios.common.types import (
     RiskState,
 )
 from helios.data.live_klines import ClosedKline, KlineStreamError, decode_closed_kline
+from helios.equities.features import minute_samples
+from helios.equities.live import EquityClosedCandle, yahoo_public_quote
+from helios.equities.paper_config import EquityPaperConfig
 from helios.features import basic  # noqa: F401
-from helios.features.runner import compute_features
+from helios.features.runner import FeatureFrame, compute_features
+from helios.ml.equity_pilot import features_for
 from helios.paper.config import PaperConfig
 from helios.sim.event_loop import BarOpen
 from helios.sim.ledger import PnLLedger
@@ -76,15 +80,20 @@ def public_price(
 
 class PaperRuntime:
     def __init__(
-        self, config: PaperConfig, definition: AlphaDefinition, code_commit: str, store: TripStore
+        self,
+        config: PaperConfig | EquityPaperConfig,
+        definition: AlphaDefinition,
+        code_commit: str,
+        store: TripStore,
     ) -> None:
         if (
             definition.alpha_id != config.alpha_id
             or definition.version != config.alpha_version
             or definition.horizon_family is not HorizonFamily.MINUTE
-            or definition.expression != "-sign(log_return_1)"
+            or (isinstance(config, PaperConfig) and definition.expression != "-sign(log_return_1)")
+            or (isinstance(config, EquityPaperConfig) and definition.expression is None)
         ):
-            raise ValueError("fixed integration policy requires the registered one-bar reversal")
+            raise ValueError("integration policy requires a matching registered minute formula")
         self.config, self.definition, self.store = config, definition, store
         self.clock, self.price = 0, Decimal(1)
         self.day, self.baseline, self.last_equity = (
@@ -93,7 +102,7 @@ class PaperRuntime:
             config.strategy.capital,
         )
         self.history: list[PriceObservation] = []
-        self.bars: list[ClosedKline] = []
+        self.bars: list[ClosedKline | EquityClosedCandle] = []
         self.signals: list[AlphaValue] = []
         self.reports: list[ExecutionReport] = []
         self.snapshots: list[PnLSnapshot] = []
@@ -101,14 +110,22 @@ class PaperRuntime:
         self.marks: list[Decimal] = []
         self.decisions: list[RiskDecision] = []
         self.ledger = PnLLedger(
-            config.strategy.capital, Mode.PAPER, mark_reference="public_last_price_proxy"
+            config.strategy.capital,
+            Mode.PAPER,
+            "INR" if isinstance(config, EquityPaperConfig) else "USDT",
+            symbols=(config.symbol,) if isinstance(config, EquityPaperConfig) else (),
+            mark_reference="public_last_price_proxy",
         )
         self.strategy = BarStrategy(config.strategy)
         self.risk = DailyRisk(
             config.risk, self.state, lambda _: tuple(self.history), self.portfolio, store
         )
         self.oms = OrderManagementSystem(config.run_id, Mode.PAPER, self.risk)
-        self.venue = BarPaperVenue(Mode.PAPER, config.fees)
+        self.venue = BarPaperVenue(
+            Mode.PAPER,
+            config.fees,
+            quote_asset="INR" if isinstance(config, EquityPaperConfig) else "USDT",
+        )
         self.venue.subscribe_reports(self.on_report)
         self.lineage = DecisionLineage(
             alpha_id=definition.alpha_id,
@@ -213,7 +230,21 @@ class PaperRuntime:
             self.risk.trip(self.clock, "paper_loss_guard", ReasonCode.DAILY_LOSS_LIMIT)
             raise PaperSafetyStop("daily loss guard latched after fill")
 
-    def closed(self, bar: ClosedKline) -> None:
+    def closed(self, bar: ClosedKline | EquityClosedCandle) -> None:
+        equity_market = isinstance(self.config, EquityPaperConfig)
+        if equity_market != isinstance(bar, EquityClosedCandle):
+            self.stop("equity_feed_type_mismatch", max(self.clock, bar.received_time))
+        if (
+            equity_market
+            and self.bars
+            and pd.Timestamp(bar.open_time, unit="us", tz="UTC").date()
+            != pd.Timestamp(self.bars[-1].open_time, unit="us", tz="UTC").date()
+        ):
+            if self.ledger.position(self.config.symbol).quantity != 0:
+                self.stop(
+                    "unreconciled_overnight_equity_position", max(self.clock, bar.received_time)
+                )
+            self.bars.clear()
         if bar.symbol != self.config.symbol or (
             self.bars and bar.open_time != self.bars[-1].open_time + 60_000_000
         ):
@@ -230,17 +261,32 @@ class PaperRuntime:
                     close=float(b.close),
                     volume=float(b.volume),
                 )
-                for b in self.bars[-2:]
+                for b in self.bars[-32 if equity_market else -2 :]
             ]
         )
-        features = compute_features(frame, "1m", names=["log_return_1"], symbol=bar.symbol)
+        if equity_market:
+            frame["symbol"] = bar.symbol
+            frame["timestamp"] = pd.to_datetime(frame.open_time, unit="us", utc=True)
+            frame["available_at"] = frame.timestamp + pd.Timedelta(minutes=1)
+            frame["session_date"] = frame.timestamp.dt.tz_convert("Asia/Kolkata").dt.strftime(
+                "%Y-%m-%d"
+            )
+            frame["full_bar"] = True
+            samples = minute_samples(frame, include_unlabelled=True)
+            values = samples[list(features_for("60m"))]
+            masks = pd.DataFrame({name: samples.feature_available for name in values})
+            features = FeatureFrame(bar.symbol, samples.open_time, values.where(masks), masks)
+        else:
+            features = compute_features(frame, "1m", names=["log_return_1"], symbol=bar.symbol)
         alpha = evaluate_definition(self.definition, features, interval="1m")
         available = bool(alpha.available.iloc[-1])
+        local = pd.Timestamp(bar.received_time, unit="us", tz="UTC").tz_convert("Asia/Kolkata")
+        closing_target = equity_market and local.hour * 60 + local.minute >= 925
         signal = AlphaValue(
             symbol=bar.symbol,
             timestamp=bar.received_time,
-            status=AlphaStatus.OK if available else AlphaStatus.UNAVAILABLE,
-            value=float(alpha.values.iloc[-1]) if available else None,
+            status=AlphaStatus.OK if available or closing_target else AlphaStatus.UNAVAILABLE,
+            value=0.0 if closing_target else float(alpha.values.iloc[-1]) if available else None,
             lineage=self.lineage,
         )
         self.signals.append(signal)
@@ -265,7 +311,11 @@ class PaperRuntime:
         self.snapshot()
 
     def message(self, raw: str | bytes, received: int) -> None:
-        quote = public_price(raw, (self.config.symbol,), received)
+        quote = (
+            yahoo_public_quote(raw, self.config.symbol)
+            if isinstance(self.config, EquityPaperConfig)
+            else public_price(raw, (self.config.symbol,), received)
+        )
         if quote is None:
             return
         opened, event, price = quote
@@ -276,6 +326,10 @@ class PaperRuntime:
         self.observe(received, event, price)
         working = tuple(o for o in self.oms.snapshot() if o.state in WORKING_STATES)
         if working:
+            if isinstance(self.config, EquityPaperConfig) and any(
+                event <= order.request.timestamp for order in working
+            ):
+                self.stop("equity_quote_predates_pending_intent")
             if self.store.is_tripped(self.config.run_id) or any(
                 received - o.request.timestamp > self.config.max_intent_age_us for o in working
             ):

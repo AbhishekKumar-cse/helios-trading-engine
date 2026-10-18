@@ -46,13 +46,60 @@ class SessionReplay:
     trace: ReplayTrace
 
 
-def eligible_sessions(inputs: EquityInputs) -> tuple[list[pd.DataFrame], list[dict[str, str]]]:
+@dataclass(frozen=True)
+class SessionEvidence:
+    day: str
+    net_return: float
+    turnover: float
+    fees: str
+    n_fills: int
+    fills: tuple[dict[str, Any], ...]
+    snapshots: tuple[dict[str, Any], ...]
+
+
+def replay_pair(arguments: tuple[Any, ...]) -> tuple[SessionEvidence, SessionEvidence]:
+    """Pure worker boundary: no database, shared state or retained parent traces."""
+    frame, alpha, policy, snapshot, identifier, commit, stress, model = arguments
+    evidence = []
+    for multiplier in (1.0, stress):
+        result = replay_session(
+            frame,
+            alpha,
+            policy,
+            snapshot_id=snapshot,
+            alpha_id=identifier,
+            code_commit=commit,
+            multiplier=multiplier,
+            model_hash=model,
+        )
+        evidence.append(
+            SessionEvidence(
+                result.day,
+                result.net_return,
+                result.turnover,
+                result.fees,
+                result.n_fills,
+                result.fills,
+                result.snapshots,
+            )
+        )
+    return evidence[0], evidence[1]
+
+
+def eligible_sessions(
+    inputs: EquityInputs, *, interval: str = "1h"
+) -> tuple[list[pd.DataFrame], list[dict[str, str]]]:
+    if interval not in ("1h", "1m"):
+        raise ValueError("unsupported equity frequency")
     sessions, excluded = [], []
     for day in inputs.expected_sessions:
         frame = inputs.bars.loc[inputs.bars.session_date == day].sort_values("open_time")
         local = frame.timestamp.dt.tz_convert("Asia/Kolkata")
         minutes = (local.dt.hour * 60 + local.dt.minute).tolist()
-        if minutes != [555 + 60 * slot for slot in range(7)]:
+        expected = (
+            [555 + 60 * slot for slot in range(7)] if interval == "1h" else list(range(555, 930))
+        )
+        if minutes != expected:
             excluded.append(dict(day=day, reason="missing_or_nonstandard_bar_slots"))
             continue
         if (local.dt.second != 0).any() or (local.dt.microsecond != 0).any():
@@ -124,7 +171,7 @@ def replay_session(
         alpha_id=alpha_id,
         alpha_version=1,
         feature_set_version="nse_session_features_v1",
-        horizon_family=HorizonFamily.HOURLY,
+        horizon_family=HorizonFamily.HOURLY if policy.interval == "1h" else HorizonFamily.MINUTE,
         code_commit=code_commit,
         config_hash=config_hash(policy),
         snapshot_id=snapshot_id,
@@ -138,14 +185,15 @@ def replay_session(
     bars, signals = [], []
     for slot, row in enumerate(frame.itertuples(index=False)):
         opening = int(frame.open_time.iloc[slot])
-        closing = opening + (60 if slot < 6 else 15) * 60_000_000
+        duration = (60 if slot < 6 else 15) if policy.interval == "1h" else 1
+        closing = opening + duration * 60_000_000
         bars.append(
             Bar(
                 calendar="nse_regular_v1",
                 symbol=symbol,
-                source="yahoo_nse",
+                source="yahoo_nse" if policy.interval == "1h" else "upstox_public_minute",
                 sequence=slot,
-                interval="1h",
+                interval=policy.interval,
                 open_time=opening,
                 ingest_time=closing,
                 recorded_close_time=closing - 1,
@@ -157,8 +205,8 @@ def replay_session(
                 volume=Decimal(str(row.volume)),
             )
         )
-        # A calendar-known flat target at 15:15 exits at the observed partial-hour open.
-        value = 0.0 if slot >= 5 else lookup.get(opening)
+        # A calendar-known flat target exits at the final observed bar opening.
+        value = 0.0 if slot >= policy.session_slots - 2 else lookup.get(opening)
         signals.append(
             AlphaValue(
                 symbol=symbol,

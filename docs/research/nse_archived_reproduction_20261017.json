@@ -1,0 +1,29 @@
+{
+  "alpha_id": "nse_hourly_round1_momentum",
+  "archived_engine_sha256": "d1aab06ed0ba1ffb591fe5eaf999ad683700761cb89a9d3ed1e057161425793b",
+  "daily_returns_exact": true,
+  "eligible_results": 100,
+  "fill_numeric_fields_exact": true,
+  "fills": 116,
+  "identity_fields_excluded": [
+    "fill_id",
+    "order_id",
+    "venue_id"
+  ],
+  "ledger_snapshots": 777,
+  "ledger_snapshots_exact": true,
+  "model_refit": false,
+  "original_artifact_sha256": "9ab1a7d4da06f98f54fb6393c0efa3e0938a3194a2e3f9c25fecd1fe5d73056a",
+  "original_artifact_unchanged": true,
+  "original_code_commit": "d2078d3a4124feada2b4b6a13fd794bf2ed40b53",
+  "original_dirty": true,
+  "random_seed": 169,
+  "registry_read_only": true,
+  "selected_run_id": "16471859-4ea0-4d48-bd26-0fa480251fc5",
+  "sessions": 111,
+  "source_archive_verified": true,
+  "stress_returns_exact": true,
+  "symbol": "MAXHEALTH",
+  "test_accesses": 0,
+  "version": "nse_archived_replay_v1"
+}

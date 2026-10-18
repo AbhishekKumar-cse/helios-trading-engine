@@ -1,0 +1,18 @@
+{
+  "version": "compiled_validator_reuse_parity_v1",
+  "symbol": "RELIANCE",
+  "day": "2026-01-09",
+  "exact_base_and_stress_accounting": true,
+  "all_ledger_snapshots_exact": true,
+  "all_financial_fill_fields_exact": true,
+  "reference_result_returns_exact": true,
+  "registry_mutations": false,
+  "test_access": false,
+  "archived_seconds": 15.43054047699843,
+  "current_seconds": 8.149959528996988,
+  "observed_single_session_speedup": 1.8933272517609006,
+  "reference_artifact_sha256": "db446ff83419b001cb8aa1d9974a688399f5f0060cdbce1045fd09b5214ac612",
+  "archived_trace_sha256": "aed7df365e0b81a6b6f793a37a214e5378a653c151f1b521a6df38a02dc33ddb",
+  "current_trace_sha256": "6acdea4347618b9a9e60986db248b70351ef91a62f0cea70161a0b9700033129",
+  "limitations": "One retained session, base and 2x cost, under current host load; not a throughput guarantee. Generated execution identifiers excluded."
+}

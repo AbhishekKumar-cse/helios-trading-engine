@@ -1,0 +1,22 @@
+{
+  "checked_at": "2026-10-17T19:00:56.798590+00:00",
+  "protection": {
+    "contexts": [
+      "lint, types, tests",
+      "leakage (required)"
+    ],
+    "enforce_admins": false,
+    "strict": true,
+    "url": "https://api.github.com/repos/AbhishekKumar-cse/helios-trading-engine/branches/main/protection"
+  },
+  "last_committed_ci": {
+    "conclusion": "success",
+    "databaseId": 39056117131,
+    "headSha": "8a66f496ed4de797cd818d035eee4b94fac8f1d8",
+    "status": "completed",
+    "url": "https://github.com/AbhishekKumar-cse/helios-trading-engine/actions/runs/39056117131"
+  },
+  "current_working_tree_ci": "Pending a later authorized commit and push",
+  "scope": "Read-only API evidence; no branch settings changed",
+  "evidence_sha256": "d6612c449250ac9481f079ca8c9f94d6b82035c6d850eb25e9b9d5bda0de7f6f"
+}

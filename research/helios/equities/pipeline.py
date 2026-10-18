@@ -22,7 +22,7 @@ from helios.data.equities import constituents, sha256, write_json
 from helios.data.snapshots import Snapshot, SnapshotFile, compute_snapshot_id, register_snapshot
 from helios.equities.config import EquityResearchPolicy
 from helios.equities.inputs import load_equity_inputs
-from helios.equities.model import MODEL_PROTOCOL, EquityModel, fit_equity_model
+from helios.equities.model import EquityModel, fit_equity_model, model_protocol
 from helios.registry.api import AlphaDefinition as RegistryDefinition
 from helios.registry.api import register_definition
 from helios.registry.experiments import (
@@ -33,7 +33,7 @@ from helios.registry.experiments import (
 )
 from helios.registry.gates import store_gate_config
 from helios.registry.results import Split
-from helios.sim.equity_evaluation import GATES_PATH, EquityEvaluationContext
+from helios.sim.equity_evaluation import EquityEvaluationContext, equity_gates_path
 from helios.sim.evaluate import evaluate
 
 CANDIDATES = {
@@ -42,17 +42,41 @@ CANDIDATES = {
     "ml": None,
 }
 
+REFERENCE_CANDIDATES: dict[str, str | None] = {
+    "volume_shock": "clip(relative_volume_3 - 1, 0, 1)",
+}
 
-def candidate_definition(round_id: str, candidate: str, model: EquityModel) -> RegistryDefinition:
+# Fixed before any new VALID P&L. Each is a distinct hypothesis, not a tuning grid.
+EXTENDED_CANDIDATES: dict[str, str | None] = {
+    "trend_3": "clip(sign(return_3), 0, 1)",
+    "reversal_3": "clip(-sign(return_3), 0, 1)",
+    "vol_scaled_trend": "clip(return_3 / (2 * volatility_3), 0, 1)",
+    "body_reversal": "clip(-body / range, 0, 1)",
+    "close_strength": "clip(2 * close_location - 1, 0, 1)",
+    "close_fade": "clip(1 - 2 * close_location, 0, 1)",
+    "volume_trend": "clip(sign(return_1) * relative_volume_3, 0, 1)",
+    "gap_reversal": "clip(-sign(open_gap), 0, 1)",
+}
+
+
+def candidate_definition(
+    round_id: str,
+    candidate: str,
+    model: EquityModel,
+    *,
+    policy: EquityResearchPolicy | None = None,
+    candidates: dict[str, str | None] | None = None,
+) -> RegistryDefinition:
     """Keep research metadata outside the DSL's numeric parameter namespace."""
-    expression = CANDIDATES[candidate]
+    policy = EquityResearchPolicy() if policy is None else policy
+    expression = (CANDIDATES if candidates is None else candidates)[candidate]
     definition = AlphaDefinition(
         alpha_id=f"{round_id}_{candidate}",
         version=1,
-        name=f"NSE hourly {candidate} development benchmark",
+        name=f"NSE {policy.interval} {candidate} development benchmark",
         provenance="ML" if expression is None else "QUANT",
         feature_set_version="nse_session_features_v1",
-        horizon_family="H-HOURLY",
+        horizon_family="H-HOURLY" if policy.interval == "1h" else "H-MINUTE",
         horizon_periods=1,
         expression=expression,
         model_ref="sha256:" + model.model_hash if expression is None else None,
@@ -100,19 +124,41 @@ def registry_fingerprint(engine: Engine) -> dict[str, Any]:
     return answer
 
 
-def run_round(snapshot: Path, round_id: str, *, engine: Engine | None = None) -> Path:
+def run_round(
+    snapshot: Path,
+    round_id: str,
+    *,
+    engine: Engine | None = None,
+    interval: str = "1h",
+    suite: str = "baseline",
+    research_symbols: tuple[str, ...] = (),
+    workers: int = 1,
+) -> Path:
     if not re.fullmatch(r"nse_[a-z0-9_]{3,32}", round_id):
         raise ValueError(
             "round ID must start nse_ and contain lowercase letters/digits/underscores"
         )
-    policy = EquityResearchPolicy()
+    if interval not in ("1h", "1m") or suite not in ("baseline", "reference", "extended", "all"):
+        raise ValueError("unsupported equity interval/suite")
+    policy = (
+        EquityResearchPolicy()
+        if interval == "1h"
+        else EquityResearchPolicy(version="nse_minute_research_v1", interval="1m")
+    )
+    if not 1 <= workers <= 4:
+        raise ValueError("equity research permits one to four isolated execution workers")
+    candidates = CANDIDATES.copy() if suite == "baseline" else EXTENDED_CANDIDATES.copy()
+    if suite == "reference":
+        candidates = REFERENCE_CANDIDATES.copy()
+    if suite == "all":
+        candidates = CANDIDATES | REFERENCE_CANDIDATES | EXTENDED_CANDIDATES
     engine = get_engine() if engine is None else engine
     output = PROJECT_ROOT / "reports_out/equity_research" / round_id
     output.mkdir(parents=True, exist_ok=False)
     (output / "source").mkdir()
     source_hashes = {}
     sources = list((PROJECT_ROOT / "research/helios").rglob("*.py")) + [
-        GATES_PATH,
+        equity_gates_path(policy),
         PROJECT_ROOT / "pyproject.toml",
         PROJECT_ROOT / "uv.lock",
     ]
@@ -127,8 +173,8 @@ def run_round(snapshot: Path, round_id: str, *, engine: Engine | None = None) ->
     protocol = dict(
         round_id=round_id,
         policy=policy.model_dump(mode="json"),
-        candidates=CANDIDATES,
-        model=MODEL_PROTOCOL,
+        candidates=candidates,
+        model=model_protocol(policy),
         source_commit=git_commit(),
         dirty=git_is_dirty(),
         source_hashes=source_hashes,
@@ -136,12 +182,17 @@ def run_round(snapshot: Path, round_id: str, *, engine: Engine | None = None) ->
         source_snapshot=str(snapshot),
         test_access=False,
         automatic_promotion=False,
-        scope="hourly intraday; daily is calendar evidence; minute history insufficient",
+        scope=f"{interval} conditional intraday research; all frozen constituents in model inputs",
+        research_symbols=research_symbols,
+        execution_workers=workers,
         coverage="ex-post complete-session conditional study; excluded sessions stay unknown",
     )
     write_json(output / "protocol.json", protocol)
     roster = constituents((snapshot / "constituents.csv").read_bytes())
     inputs = [load_equity_inputs(snapshot, row["Symbol"], policy) for row in roster]
+    selected = tuple(item.symbol for item in inputs) if not research_symbols else research_symbols
+    if len(set(selected)) != len(selected) or not set(selected) <= {item.symbol for item in inputs}:
+        raise ValueError("research companies must be distinct frozen constituents")
     (output / "inputs").mkdir()
     files = []
     for item in inputs:
@@ -152,8 +203,8 @@ def run_round(snapshot: Path, round_id: str, *, engine: Engine | None = None) ->
         )
     snapshot_record = Snapshot(
         snapshot_id=compute_snapshot_id(files),
-        source="yahoo_nse_research_prefix",
-        interval="1h",
+        source="yahoo_nse_research_prefix" if interval == "1h" else "upstox_nse_research_prefix",
+        interval=policy.interval,
         symbols=[item.symbol for item in inputs],
         first_open_time=min(int(item.bars.open_time.min()) for item in inputs),
         last_open_time=max(int(item.bars.open_time.max()) for item in inputs),
@@ -164,7 +215,7 @@ def run_round(snapshot: Path, round_id: str, *, engine: Engine | None = None) ->
         files=files,
     )
     write_json(output / "snapshot.json", asdict(snapshot_record))
-    gates = load_config(GATES_PATH, GatesConfig)
+    gates = load_config(equity_gates_path(policy), GatesConfig)
     with engine.begin() as connection:
         register_snapshot(connection, snapshot_record)
         store_gate_config(connection, gates, author="helios_equity_research")
@@ -173,7 +224,7 @@ def run_round(snapshot: Path, round_id: str, *, engine: Engine | None = None) ->
             hypothesis=(
                 "Fixed hourly classifier with disjoint TRAIN-tail expected-return calibration"
             ),
-            params=MODEL_PROTOCOL
+            params=model_protocol(policy)
             | {"policy": policy.model_dump(mode="json"), "source_hashes": source_hashes},
             kind=ExperimentKind.ML,
             author="helios_equity_research",
@@ -188,11 +239,18 @@ def run_round(snapshot: Path, round_id: str, *, engine: Engine | None = None) ->
         set_status(connection, ml_experiment.experiment_id, ExperimentStatus.FINISHED)
     attempts: list[dict[str, Any]] = []
     with engine.begin() as connection:
-        for candidate in CANDIDATES:
+        for candidate in candidates:
             identifier = f"{round_id}_{candidate}"
-            register_definition(connection, candidate_definition(round_id, candidate, model))
+            register_definition(
+                connection,
+                candidate_definition(
+                    round_id, candidate, model, policy=policy, candidates=candidates
+                ),
+            )
             for source in inputs:
-                params = dict(
+                if source.symbol not in selected:
+                    continue
+                params: dict[str, Any] = dict(
                     market="nse_cash",
                     symbol=source.symbol,
                     alpha_id=identifier,
@@ -201,6 +259,8 @@ def run_round(snapshot: Path, round_id: str, *, engine: Engine | None = None) ->
                     calibration_hash=model.calibration_hash,
                     source_hashes=source_hashes,
                 )
+                if workers != 1:
+                    params["execution_workers"] = workers
                 experiment = register_experiment(
                     connection,
                     hypothesis=(
@@ -244,6 +304,7 @@ def run_round(snapshot: Path, round_id: str, *, engine: Engine | None = None) ->
                 snapshot_record.snapshot_id,
                 model,
                 source_hashes,
+                workers=workers,
             ),
         )
         with engine.begin() as connection:
@@ -262,7 +323,8 @@ def run_round(snapshot: Path, round_id: str, *, engine: Engine | None = None) ->
         with (output / "outcomes.jsonl").open("a") as handle:
             handle.write(json.dumps(row) + "\n")
         print(
-            f"{index}/150 {attempt['candidate']} {attempt['symbol']} {result.status.value}",
+            f"{index}/{len(attempts)} {attempt['candidate']} "
+            f"{attempt['symbol']} {result.status.value}",
             flush=True,
         )
     for source_name, digest in source_hashes.items():
@@ -287,6 +349,9 @@ def run_round(snapshot: Path, round_id: str, *, engine: Engine | None = None) ->
         crypto_unchanged=True,
         promoted=0,
         scope=protocol["scope"],
+        interval=policy.interval,
+        research_symbols=selected,
+        model_symbols=[source.symbol for source in inputs],
     )
     write_json(output / "summary.json", summary)
     print(f"Completed: {output / 'summary.json'}", flush=True)
@@ -297,8 +362,21 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("snapshot", type=Path)
     parser.add_argument("--round-id", required=True)
+    parser.add_argument("--interval", choices=("1h", "1m"), default="1h")
+    parser.add_argument(
+        "--suite", choices=("baseline", "reference", "extended", "all"), default="baseline"
+    )
+    parser.add_argument("--research-symbols", nargs="*", default=[])
+    parser.add_argument("--workers", type=int, choices=(1, 2, 3, 4), default=1)
     args = parser.parse_args()
-    run_round(args.snapshot, args.round_id)
+    run_round(
+        args.snapshot,
+        args.round_id,
+        interval=args.interval,
+        suite=args.suite,
+        research_symbols=tuple(args.research_symbols),
+        workers=args.workers,
+    )
 
 
 if __name__ == "__main__":

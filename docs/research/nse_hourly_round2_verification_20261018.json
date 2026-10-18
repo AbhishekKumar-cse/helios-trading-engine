@@ -1,0 +1,174 @@
+{
+  "attempts": 400,
+  "base_and_stress_metrics_verified": true,
+  "base_fees_inr": "2418159.812515708671393797",
+  "calibration": {
+    "available_after_us": 1767205800000000,
+    "calibration_first_feature": "2025-10-09 03:45:00+00:00",
+    "calibration_last_label": "2025-12-31 09:45:00+00:00",
+    "calibration_sample_sha256": "dfdac880d0b448c73b00b1e95baf2ee1b737636c33864f69151d262519b88ab0",
+    "calibration_samples": 3319,
+    "model_sha256": "a3264e1d00b37d7d91265cf729bbb535d82bab28b02be5aaff9072587e0cb470",
+    "test_access": false,
+    "train_last_label": "2025-09-30 09:45:00+00:00",
+    "train_sample_sha256": "e2b847a04db0697e74636dc01458608fa24f61e1bd5062d53fc018410b862c4d",
+    "train_samples": 20185,
+    "valid_observations_used_for_fit_or_calibration": false,
+    "version": "nse_expected_return_isotonic_v1",
+    "x": [
+      0.36159762740314083,
+      0.37231518816716275,
+      0.38029785358584633,
+      0.381591502780679,
+      0.4204662115013089,
+      0.42047547093775844,
+      0.4471911976681854,
+      0.4471916552662501,
+      0.4507103995118231,
+      0.4507361747487148,
+      0.4938784181810014,
+      0.4938999578238419,
+      0.4961216729367166,
+      0.4961472330651245,
+      0.4967177379052533,
+      0.4967441786185089,
+      0.49912530121014576,
+      0.4991340545595587,
+      0.5231334065954893,
+      0.5232771947323566,
+      0.5292402480798158,
+      0.5293947973189809,
+      0.5298270159673248,
+      0.5298663985088767,
+      0.5936792484070171
+    ],
+    "y": [
+      -0.0033439579967643462,
+      -0.0026659956167205032,
+      -0.0026659956167205032,
+      -0.0005112671591985117,
+      -0.0005112671591985117,
+      -0.00019758755177231706,
+      -0.00019758755177231706,
+      -0.0001953765228244734,
+      -0.0001953765228244734,
+      -0.00010598584390661185,
+      -0.00010598584390661185,
+      5.749305808732978e-05,
+      5.749305808732978e-05,
+      0.00010494510603608007,
+      0.00010494510603608007,
+      0.00010676791104116149,
+      0.00010676791104116149,
+      0.00023394483803659415,
+      0.00023394483803659415,
+      0.0005601770398726149,
+      0.0005601770398726149,
+      0.000568465729211487,
+      0.000568465729211487,
+      0.0015371856845073325,
+      0.0015371856845073325
+    ]
+  },
+  "coverage_max": 0.9736842105263158,
+  "coverage_min": 0.9473684210526315,
+  "crypto_registry": {
+    "alpha_definitions": {
+      "count": 25,
+      "sha256": "05a213f0cd7e02ed1e75c78cbd8216289f8ad4b6868ec9dfa7f9dc47d8137991"
+    },
+    "alpha_results": {
+      "count": 34,
+      "sha256": "dac77bc7006b06bc9b5e62af846d2300054aa706b1788491d8de24d6b971ba62"
+    },
+    "test_accesses": 0
+  },
+  "dirty": true,
+  "fill_ids_unique": true,
+  "invalid_reasons": {},
+  "ledger_reconciliation": true,
+  "positive_conditional_results": {
+    "body_reversal": 0,
+    "close_fade": 0,
+    "close_strength": 0,
+    "gap_reversal": 0,
+    "reversal_3": 0,
+    "trend_3": 0,
+    "vol_scaled_trend": 0,
+    "volume_trend": 0
+  },
+  "post_round_source_changes": {
+    "research/helios/backtest/equity.py": {
+      "archived": "0b0dce125b448ea995335936a8fbdd7ebdba6eaafc7ae6326a925ffbaf52af2f",
+      "current": "6645c2ff176f65393287c5e048d00211040e16b5b835d62fb3ccd0cdabe8a48a"
+    },
+    "research/helios/dashboard/equity_page.py": {
+      "archived": "049121195da8d1770a8642b1340cbc83c56e8a71c17a40423efaef12fc4f3c82",
+      "current": "0c5da0d0bc269bb1e32f2be5d65d64229d4d4ad05e386b0e244642e1c297f55b"
+    },
+    "research/helios/dashboard/equity_research.py": {
+      "archived": "9f05ce0dc30a7b6d4abfff78ec7800ddafde804aefd8ece7571da9bbd61354fd",
+      "current": "8c5889173f3bd128f254443c6445295fc7693543a73a03a3fe56f32ee6ae2c46"
+    },
+    "research/helios/dashboard/paper_page.py": {
+      "archived": "c620dd8b00107a03197ca3c891d082b143ba6d1c200cdf4f1d42730d40a4e609",
+      "current": "b01493790c93a9f15330cde1c9c839ef4a6eeef1f615752cf4ed62ae490a2092"
+    },
+    "research/helios/equities/pipeline.py": {
+      "archived": "99b2d227a33a637cb3aace703b668707ed2ce54936c47ad242ed103bbc6ab324",
+      "current": "58473cc114e91d8668e2dbecc552149030b9b45aabec7f0a15a855844dddc0b7"
+    },
+    "research/helios/paper/runtime.py": {
+      "archived": "7f96d9255060f1952990a7e6806a85027e5c171514781d151a835d4d1fb2e467",
+      "current": "3889c058d93449e53b572e703f59225e68492abdeceae532298519717c40cda8"
+    },
+    "research/helios/paper/store.py": {
+      "archived": "c2ff610aae70c2be8f7971b9cad2d1790d2e9be764a98fbd7d874afd37b02a10",
+      "current": "46866de854c29b6f478b624b7f1d0f09f6bf211a4f997e3636dee9c412288b51"
+    },
+    "research/helios/sim/equity_evaluation.py": {
+      "archived": "67b26904fff576e62bbad4562c39aa4bfa8c8f7cb310a5abf6ab0475c72dfa82",
+      "current": "1981f80fd9a114a4d42a0b62ecb67b5d08f785886f884a899a9b2a39b8fee252"
+    }
+  },
+  "preregistered_before_first_valid_pnl": true,
+  "promoted": 0,
+  "protocol_sha256": "2b7a5fadcb9d32ccde48a29afe769bff6a32dbc7373b35bef5aaa22db9504f5d",
+  "reconciled_base_fills": 44173,
+  "reconciled_base_sessions": 44024,
+  "round_id": "nse_hourly_round2",
+  "snapshot_id": "e1cd67a3b2d1579e5063b5dafb166376113d8e484b09e669d2ee7bb9608d0609",
+  "source_manifest_verified": true,
+  "statuses": {
+    "REJECTED": 400
+  },
+  "statuses_by_candidate": {
+    "body_reversal": {
+      "REJECTED": 50
+    },
+    "close_fade": {
+      "REJECTED": 50
+    },
+    "close_strength": {
+      "REJECTED": 50
+    },
+    "gap_reversal": {
+      "REJECTED": 50
+    },
+    "reversal_3": {
+      "REJECTED": 50
+    },
+    "trend_3": {
+      "REJECTED": 50
+    },
+    "vol_scaled_trend": {
+      "REJECTED": 50
+    },
+    "volume_trend": {
+      "REJECTED": 50
+    }
+  },
+  "symbols": 50,
+  "test_accesses": 0,
+  "whole_share_long_only_flat_end": true
+}

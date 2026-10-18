@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import hashlib
 import json
+import multiprocessing
 import time
 import uuid
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import asdict, dataclass, replace
 from decimal import ROUND_HALF_UP, Decimal, localcontext
 from pathlib import Path
@@ -15,7 +17,7 @@ import numpy as np
 from sqlalchemy import Engine, text
 
 from helios.alpha.output import evaluate_definition
-from helios.backtest.equity import eligible_sessions, replay_session
+from helios.backtest.equity import eligible_sessions, replay_pair
 from helios.common.config import config_hash, load_config
 from helios.common.lineage import PROJECT_ROOT, RunContext
 from helios.common.project_config import GatesConfig
@@ -34,6 +36,10 @@ from helios.sim.validity import InvalidReason, ValidityConfig, alpha_validity
 GATES_PATH = PROJECT_ROOT / "configs/equities/gates_v1.yaml"
 
 
+def equity_gates_path(policy: EquityResearchPolicy) -> Path:
+    return GATES_PATH if policy.interval == "1h" else GATES_PATH.with_name("minute_gates_v1.yaml")
+
+
 @dataclass(frozen=True)
 class EquityEvaluationContext:
     policy: EquityResearchPolicy
@@ -41,6 +47,7 @@ class EquityEvaluationContext:
     snapshot_id: str
     model: EquityModel
     source_hashes: dict[str, str]
+    workers: int = 1
 
 
 def evaluate_equity(
@@ -59,7 +66,9 @@ def evaluate_equity(
         raise RegistryError("equity research currently authorizes VALID only; TEST stays sealed")
     started = time.monotonic()
     policy, source = context.policy, context.inputs
-    gates = load_config(GATES_PATH, GatesConfig)
+    if not 1 <= context.workers <= 4:
+        raise RegistryError("equity execution permits one to four isolated workers")
+    gates = load_config(equity_gates_path(policy), GatesConfig)
     with engine.begin() as connection:
         definition = _definition(connection, alpha_id, 1)
         experiment = require_open_experiment(connection, experiment_id)
@@ -71,7 +80,7 @@ def evaluate_equity(
             model_hash=context.model.model_hash,
             calibration_hash=context.model.calibration_hash,
             source_hashes=context.source_hashes,
-        ):
+        ) | (dict(execution_workers=context.workers) if context.workers != 1 else {}):
             raise RegistryError("equity evaluation differs from the preregistered protocol")
         if connection.execute(
             text("SELECT count(*) FROM alpha_results WHERE experiment_id=:id"),
@@ -87,16 +96,18 @@ def evaluate_equity(
             raise RegistryError("registered equity model reference mismatch")
     lineage = RunContext.capture(policy, context.snapshot_id, policy.seed, reported=reported)
     alpha = (
-        evaluate_definition(definition, source.features, interval="1h")
+        evaluate_definition(definition, source.features, interval=policy.interval)
         if definition.expression is not None
         else context.model.alpha(source.features, policy)
     )
-    sessions, excluded = eligible_sessions(source)
+    sessions, excluded = eligible_sessions(source, interval=policy.interval)
     # Performance is explicitly conditional on this ex-post complete-session cohort.
     # This is a data-quality study; G7 prohibits promotion for the current vendor data.
     opportunity_times: set[int] = set()
     for frame in sessions:
-        opportunity_times.update(int(value) for value in frame.open_time.iloc[:5])
+        opportunity_times.update(
+            int(value) for value in frame.open_time.iloc[: policy.session_slots - 2]
+        )
     keep = alpha.open_time.isin(opportunity_times) & alpha.available
     subset = replace(
         alpha,
@@ -119,13 +130,15 @@ def evaluate_equity(
             "shared strategy/risk/OMS/venue/ledger; next observed open; whole shares; long-only"
         ),
         accounting="independent flat-to-flat sessions; arithmetic P&L / fixed starting capital",
-        turnover="observed traded notional / capital / six scheduled full hours per session",
+        turnover=f"observed traded notional / capital / {policy.full_slots} "
+        "scheduled full bars per session",
         coverage="conditional on complete observed normal sessions, selected ex-post",
         source_hashes=context.source_hashes,
         input_hashes=source.hashes,
         model_hash=context.model.model_hash,
         calibration_hash=context.model.calibration_hash,
         test_access=False,
+        execution_workers=context.workers,
     )
     daily: list[dict[str, Any]] = []
     stress: list[float] = []
@@ -136,26 +149,35 @@ def evaluate_equity(
     fit_value = fraction = drawdown = hit_rate = None
     months: list[dict[str, Any]] = []
     if valid:
+        jobs = []
         for frame in sessions:
-            base = replay_session(
-                frame,
+            keep_session = alpha.open_time.isin(frame.open_time)
+            selected_alpha = replace(
                 alpha,
-                policy,
-                snapshot_id=context.snapshot_id,
-                alpha_id=alpha_id,
-                code_commit=lineage.code_commit,
-                model_hash=context.model.model_hash if definition.model_ref else None,
+                open_time=alpha.open_time.loc[keep_session].reset_index(drop=True),
+                values=alpha.values.loc[keep_session].reset_index(drop=True),
+                available=alpha.available.loc[keep_session].reset_index(drop=True),
             )
-            doubled = replay_session(
-                frame,
-                alpha,
-                policy,
-                snapshot_id=context.snapshot_id,
-                alpha_id=alpha_id,
-                code_commit=lineage.code_commit,
-                multiplier=gates.cost_stress_multiplier,
-                model_hash=context.model.model_hash if definition.model_ref else None,
+            jobs.append(
+                (
+                    frame,
+                    selected_alpha,
+                    policy,
+                    context.snapshot_id,
+                    alpha_id,
+                    lineage.code_commit,
+                    gates.cost_stress_multiplier,
+                    context.model.model_hash if definition.model_ref else None,
+                )
             )
+        if context.workers == 1:
+            pairs = list(map(replay_pair, jobs))
+        else:
+            with ProcessPoolExecutor(
+                max_workers=context.workers, mp_context=multiprocessing.get_context("spawn")
+            ) as pool:
+                pairs = list(pool.map(replay_pair, jobs))
+        for frame, (base, doubled) in zip(sessions, pairs, strict=True):
             daily.append(
                 dict(
                     day=base.day,
@@ -167,7 +189,7 @@ def evaluate_equity(
                 )
             )
             stress.append(doubled.net_return)
-            turn.append(base.turnover / 6)
+            turn.append(base.turnover / policy.full_slots)
             fee_total += Decimal(base.fees)
             fills.extend(base.fills)
             snapshots.extend(base.snapshots)

@@ -1,0 +1,35 @@
+# Public observations only. This service never routes orders or claims PAPER fills.
+# Run separately from the database Compose project; no credentials are required.
+name: helios-equity-observer
+services:
+  observer:
+    build:
+      context: ..
+      dockerfile: infra/equity-observer.Dockerfile
+    command:
+      - --run-id
+      - ${NSE_OBSERVER_RUN_ID:?set a unique NSE_OBSERVER_RUN_ID}
+      - --calendar
+      - /calendar.json
+      - --root
+      - /output
+      - --seconds
+      - ${NSE_OBSERVER_SECONDS:-86400}
+    restart: "no" # A restart is a new measured run, never hidden inside continuous uptime.
+    environment:
+      NSE_OBSERVER_RUN_ID: ${NSE_OBSERVER_RUN_ID:?set a unique NSE_OBSERVER_RUN_ID}
+    read_only: true
+    tmpfs: [/tmp]
+    volumes:
+      - ../data/equities/nifty50_minutes/20261017_public_round1/nse_holidays_raw.json:/calendar.json:ro
+      - ../reports_out/equity_observer:/output
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import os,pathlib,time; p=pathlib.Path('/output')/os.environ['NSE_OBSERVER_RUN_ID']/'heartbeat.json'; exit(0 if p.exists() and time.time()-p.stat().st_mtime<60 else 1)"
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 20s

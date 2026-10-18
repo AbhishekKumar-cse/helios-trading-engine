@@ -1,0 +1,20 @@
+{
+  "captured_at": "2026-10-18T02:40:16.436128+00:00",
+  "first_observed_date": "2025-01-01",
+  "historical_tick_sizes_verified": false,
+  "isin": "INE002A01018",
+  "price_or_quote_observation": false,
+  "raw_path": "/mnt/c/Users/bit/OneDrive/Desktop/helios/reports_out/equity_instruments/20261018T024016Z/response.bin",
+  "raw_sha256": "5e60508b8ec51ffec4edf771514c97dd82888720d4d2e84fbd89cc4672509078",
+  "selected": {
+    "exchange_token": "2885",
+    "instrument_token": "738561",
+    "lot_size": "1",
+    "name": "RELIANCE INDUSTRIES",
+    "symbol": "RELIANCE",
+    "tick_size": "0.1"
+  },
+  "source_manifest_sha256": "fd884361e5e9a175a992f1d1858cd1e9ea2736a7793e6bbe960fa952ea577acb",
+  "source_url": "https://api.kite.trade/instruments/NSE",
+  "version": "nse_current_instrument_source_v1"
+}

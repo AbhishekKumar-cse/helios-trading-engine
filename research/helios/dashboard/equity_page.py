@@ -11,6 +11,7 @@ import streamlit as st
 
 from helios.common.config import load_config
 from helios.common.lineage import PROJECT_ROOT
+from helios.dashboard.equity_sources import public_minute_snapshot, read_public_minutes
 from helios.data.equities import EquityPilotConfig, constituents, sha256
 
 
@@ -50,7 +51,8 @@ def render_equities() -> None:
     st.title("Nifty 50 research lab")
     st.write("Real downloaded equity bars and retained LightGBM development models.")
     st.info(
-        "Current Nifty constituents with Yahoo-distributed prices. Historical membership is "
+        "Current Nifty constituents with public Yahoo hourly/daily and Upstox minute prices. "
+        "Historical membership is "
         "not reconstructed. Shared-engine results below are conditional development "
         "simulations; no promoted equity alpha."
     )
@@ -65,16 +67,32 @@ def render_equities() -> None:
     except (OSError, ValueError, KeyError):
         st.error("The selected snapshot could not be verified.")
         return
+    try:
+        minute_snapshot = public_minute_snapshot(PROJECT_ROOT)
+    except (OSError, ValueError, KeyError):
+        st.error("The public minute snapshot could not be verified.")
+        minute_snapshot = None
     columns = st.columns(3)
     for column, interval, title in zip(
         columns, ("1d", "60m", "1m"), ("Daily bars", "Hourly bars", "Minute bars"), strict=True
     ):
-        records = [record for record in manifest["files"] if record["interval"] == interval]
-        column.metric(title, f"{sum(record['retained_bars'] for record in records):,}")
+        records = (
+            minute_snapshot[1]["files"]
+            if interval == "1m" and minute_snapshot
+            else [record for record in manifest["files"] if record["interval"] == interval]
+        )
+        column.metric(
+            title,
+            f"{sum(record.get('retained_bars', record.get('rows', 0)) for record in records):,}",
+        )
         column.caption(f"{len(records)} / 50 companies")
     st.caption(
-        f"Downloaded {manifest['created_at']} · Currency INR · Exchange timezone Asia/Kolkata"
+        f"Yahoo snapshot {manifest['created_at']} · Currency INR · Exchange timezone Asia/Kolkata"
     )
+    if minute_snapshot:
+        st.caption(
+            f"Public minute snapshot {minute_snapshot[1]['created_at']} · January 2025–June 2026"
+        )
     left, right = st.columns([2, 1])
     members = {member["Symbol"]: member["Company Name"] for member in manifest["members"]}
     symbol = left.selectbox(
@@ -85,6 +103,7 @@ def render_equities() -> None:
         ["1d", "60m", "1m"],
         format_func=lambda key: {"1d": "Daily", "60m": "Hourly", "1m": "Minute"}[key],
     )
+    public_minutes = minute_snapshot if interval == "1m" else None
     record = next(
         (
             entry
@@ -97,7 +116,11 @@ def render_equities() -> None:
         st.warning("This company's requested interval was unavailable; see download failures.")
     else:
         try:
-            bars = read_development_bars(selected.parent, record, config)
+            bars = (
+                read_public_minutes(*public_minutes, symbol)
+                if public_minutes is not None
+                else read_development_bars(selected.parent, record, config)
+            )
         except (OSError, ValueError, KeyError):
             st.error("Bar data failed integrity verification.")
         else:
@@ -105,8 +128,11 @@ def render_equities() -> None:
             price = "adjusted_close" if interval == "1d" else "close"
             st.line_chart(bars.set_index("timestamp")[[price]].tail(800), color="#64d6bb")
             st.caption(
-                "Daily/hourly charts stop at VALID; reserved TEST prices are not displayed. "
-                "Minute bars show recent ingestion coverage only. Missing bars are not filled."
+                "Public Upstox minute history through June 2026; TRAIN and VALID only. "
+                "Prices are provider observations; missing bars are not filled."
+                if public_minutes is not None
+                else "Daily/hourly charts stop at VALID; reserved TEST prices are not displayed. "
+                "The original minute sample shows recent ingestion coverage only."
             )
             if interval == "1m":
                 per_session = bars.groupby("session_date").size().rename("Observed minute bars")
@@ -148,6 +174,7 @@ def render_equities() -> None:
         )
         st.download_button("Download model report", path.read_bytes(), "nifty50_model_report.json")
     with st.expander("Company coverage and data quality"):
+        st.write("Original Yahoo ingestion snapshot")
         st.dataframe(
             pd.DataFrame(
                 [
@@ -167,3 +194,13 @@ def render_equities() -> None:
             width="stretch",
         )
         st.write("Download failures", manifest["failures"])
+        if minute_snapshot:
+            st.write("Public Upstox minute history")
+            st.dataframe(
+                pd.DataFrame(minute_snapshot[1]["files"])[
+                    ["symbol", "rows", "first_session", "last_session"]
+                ],
+                hide_index=True,
+                width="stretch",
+            )
+            st.write("Minute request failures", minute_snapshot[1]["failures"])

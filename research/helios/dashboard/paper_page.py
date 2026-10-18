@@ -35,6 +35,7 @@ def render_paper() -> None:
             st.error("PAPER checkpoints unavailable. Check the local database connection.")
             return
         run, pnl = view["run"], view["pnl"]
+        quote = run["config_json"].get("research_policy", {}).get("quote_asset", "USDT")
         st.write(
             f"Session: {run['status'].upper()} · Risk: {'HALTED' if view['halted'] else 'ARMED'}"
         )
@@ -71,7 +72,7 @@ def render_paper() -> None:
             for column, (label, key) in zip(
                 columns,
                 [
-                    ("Net P&L (USDT)", "total"),
+                    (f"Net P&L ({quote})", "total"),
                     ("Realised", "realised"),
                     ("Unrealised", "unrealised"),
                     ("Fees", "fees"),

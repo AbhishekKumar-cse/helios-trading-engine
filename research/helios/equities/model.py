@@ -15,6 +15,7 @@ from helios.alpha.evaluator import AlphaSeries
 from helios.alpha.output import BoundedAlphaSeries, bound_alpha
 from helios.data.equities import sha256, write_json
 from helios.equities.config import EquityResearchPolicy
+from helios.equities.features import minute_samples
 from helios.equities.inputs import EquityInputs
 from helios.features.runner import FeatureFrame
 from helios.ml.equity_pilot import features_and_labels, features_for, sample_hash
@@ -33,6 +34,16 @@ MODEL_PROTOCOL = dict(
     learning_rate=0.03,
     calibration="isotonic expected return on disjoint TRAIN tail; no VALID selection",
 )
+
+
+def model_protocol(policy: EquityResearchPolicy) -> dict[str, Any]:
+    if policy.interval == "1h":
+        return MODEL_PROTOCOL.copy()
+    return MODEL_PROTOCOL | dict(
+        version="nse_minute_train_only_ml_v1",
+        label="next_minute_open_to_close_return",
+        sample_rule="fixed UTC opening minute divisible by 5; TRAIN/calibration only",
+    )
 
 
 @dataclass(frozen=True)
@@ -65,11 +76,28 @@ def fit_equity_model(
 ) -> tuple[EquityModel, dict[str, Any]]:
     """Protocol must be preregistered by the caller before this function runs."""
     output.mkdir(parents=True, exist_ok=False)
-    write_json(output / "protocol.json", MODEL_PROTOCOL | {"seed": policy.seed})
+    write_json(output / "protocol.json", model_protocol(policy) | {"seed": policy.seed})
     train_parts, calibration_parts = [], []
     for source in inputs:
         history = source.bars.loc[source.bars.session_date <= policy.train_end.isoformat()]
-        samples = features_and_labels(history, "60m")
+        samples = (
+            features_and_labels(history, "60m")
+            if policy.interval == "1h"
+            else minute_samples(history)
+        )
+        if policy.interval == "1m":
+            samples = samples.loc[(samples.timestamp.dt.minute % 5) == 0].copy()
+            samples = samples[
+                [
+                    "symbol",
+                    "timestamp",
+                    "session_date",
+                    "label_session",
+                    "label_end_time",
+                    "target",
+                    *features_for("60m"),
+                ]
+            ]
         train_parts.append(samples.loc[samples.label_session <= FIT_END])
         calibration_parts.append(
             samples.loc[

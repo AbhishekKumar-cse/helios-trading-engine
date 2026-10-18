@@ -1,0 +1,71 @@
+{
+  "version": "nse_assumption_validation_checks_v1",
+  "full_audit_sha256": "0b3d189b16551bda0b59c8c973aa5acbdb05a9eab51e779097711dcb41acd79d",
+  "published_summary_sha256": "cf0aee8b00ea4a9fd1d930a44381c114d07e41c76efdca0051f736c0f40aabfe",
+  "original_minute_summary_sha256": "a6e8fbcdf7207ac85659173796d936eb13c12ca712442bf832619dac0d98b95a",
+  "cost_artifact_lineages_match_original_closeout": true,
+  "archived_runtime_hashes_verified": true,
+  "unchanged_crypto_and_test_fingerprints": {
+    "alpha_definitions": {
+      "count": 25,
+      "sha256": "05a213f0cd7e02ed1e75c78cbd8216289f8ad4b6868ec9dfa7f9dc47d8137991"
+    },
+    "alpha_results": {
+      "count": 34,
+      "sha256": "dac77bc7006b06bc9b5e62af846d2300054aa706b1788491d8de24d6b971ba62"
+    },
+    "test_accesses": 0
+  },
+  "post_run_nonfinite_price_guard_checked_comparisons": 2100,
+  "targeted_tests_passed": 22,
+  "strict_mypy_sources": 133,
+  "ruff_formatted_files": 322,
+  "verification_logs": [
+    {
+      "path": "reports_out\\equity_closeout\\nse_validation_final_tests.log",
+      "sha256": "1e259c1d130d41c3993a573f45b919027762591d09cd1a92188613e6772512b1"
+    },
+    {
+      "path": "reports_out\\equity_closeout\\nse_validation_final_types.log",
+      "sha256": "f22722ad615746b653b99513b65b320be88ca4dea31fb80dd9c9945aaae1b984"
+    },
+    {
+      "path": "reports_out\\equity_closeout\\nse_validation_release_lint.log",
+      "sha256": "956e270c926ce2050310623e462a8b08fdfabbd607229f6bdbd7e966df4f4cc7"
+    }
+  ],
+  "post_run_changes": "Nonfinite-price rejection, explicit old-summary lineage guard and formatting; archived audit runtime retained and all actual compared prices/lineages independently checked. No measured values changed.",
+  "current_source_files": [
+    {
+      "path": "research/helios/equities/charges.py",
+      "sha256": "3a5091dc816ddcc98ac3be7c871f5622967a01099e5aae0871d81adfd0388021"
+    },
+    {
+      "path": "research/helios/equities/validation.py",
+      "sha256": "088428560e2b4ddfd449191fa402342c76c3b166fe5fdd2a46eaab72fc71931c"
+    },
+    {
+      "path": "scripts/collect_nse_validation.py",
+      "sha256": "02767f90d7b218f04b25e42ac92a291d0fd18481131accfa39f4629e15a902d8"
+    },
+    {
+      "path": "scripts/supplement_nse_validation.py",
+      "sha256": "a4437dadb5eb22c9c510fa7cd6f3a9279bcc05cd6daa87cfdc92437cdba8ad08"
+    },
+    {
+      "path": "scripts/audit_nse_assumptions.py",
+      "sha256": "f696ab1d0121c144bda291986d7bd07ae899d00d945fd788c7541c384f4dbb12"
+    },
+    {
+      "path": "scripts/report_nse_validation.py",
+      "sha256": "09e86872eea6ead1b27b732672d529dd09a21a033332cdde61289190a92c8405"
+    },
+    {
+      "path": "configs/equities/validation_reference_v1.json",
+      "sha256": "c4427ef2be653d7d5d2466dc7bffff4b0171652c8a2024da99a683b445bf482d"
+    }
+  ],
+  "new_commit_created": false,
+  "new_model_fit": false,
+  "new_strategy_backtest": false
+}

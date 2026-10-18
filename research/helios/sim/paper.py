@@ -5,6 +5,7 @@ acknowledge acceptance only; report delivery is an explicit event-loop operation
 """
 
 from collections.abc import Callable
+from datetime import UTC, datetime
 from decimal import ROUND_HALF_EVEN, Decimal, localcontext
 from typing import Literal
 from uuid import NAMESPACE_URL, uuid5
@@ -12,6 +13,7 @@ from uuid import NAMESPACE_URL, uuid5
 from pydantic import TypeAdapter
 
 from helios.common.config import config_hash
+from helios.common.market_clock import IST
 from helios.common.project_config import FeesConfig, load_fees
 from helios.common.types import (
     Ack,
@@ -32,6 +34,7 @@ from helios.common.types import (
     Timestamp,
     VenueInfo,
 )
+from helios.equities.charges import ChargeTrade, IntradayChargeBook
 from helios.sim.event_loop import BarOpen
 
 SCALE = Decimal("1e-18")
@@ -55,6 +58,7 @@ class BarPaperVenue:
         venue_id: str = "bar-paper",
         *,
         quote_asset: Literal["USDT", "INR"] = "USDT",
+        charge_book: IntradayChargeBook | None = None,
     ) -> None:
         self.mode = Mode(mode)
         self._info = VenueInfo(venue_id=venue_id, supports_amend=False)
@@ -63,6 +67,13 @@ class BarPaperVenue:
         if quote_asset == "INR" and self._fees.exchange != "nse_cash":
             raise ValueError("INR execution requires an explicit NSE cost policy")
         self.quote_asset = quote_asset
+        if self._fees.version == "nse_intraday_reference_v2" and charge_book is None:
+            raise ValueError("v2 fees require the side/order/day-aware charge book")
+        if charge_book is not None and (
+            quote_asset != "INR" or self._fees.version != "nse_intraday_reference_v2"
+        ):
+            raise ValueError("reference charge book requires the explicit INR v2 fee policy")
+        self._charge_book = charge_book
         if any(bps >= 10000 for bps in self._fees.slippage_bps.values()):
             raise ValueError("slippage must be less than 10000 bps")
         self.fees_hash = config_hash(self._fees)
@@ -245,6 +256,16 @@ class BarPaperVenue:
             liquidity=liquidity,
             mode=self.mode,
         )
+        if self._charge_book is not None:
+            trade = ChargeTrade(
+                datetime.fromtimestamp(timestamp / 1_000_000, UTC).astimezone(IST).date(),
+                order.request.symbol,
+                order.order_id,
+                order.request.side.value,
+                order.remaining_quantity,
+                price,
+            )
+            fill = fill.model_copy(update={"fee": self._charge_book.record(trade)})
         changed = Order.model_validate(
             order.model_dump()
             | dict(

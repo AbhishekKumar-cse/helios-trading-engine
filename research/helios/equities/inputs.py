@@ -89,6 +89,8 @@ def load_equity_inputs(snapshot: Path, symbol: str, policy: EquityResearchPolicy
 
 def load_minute_inputs(snapshot: Path, symbol: str, policy: EquityResearchPolicy) -> EquityInputs:
     manifest: dict[str, Any] = json.loads((snapshot / "manifest.json").read_text())
+    if policy.version == "nse_minute_research_v2":
+        return load_repaired_inputs(snapshot, symbol, policy)
     if manifest["version"] != "nse_public_minutes_v1":
         raise ValueError("minute input must be an immutable public minute snapshot")
     hashes = {"manifest": sha256(snapshot / "manifest.json")}
@@ -134,4 +136,72 @@ def load_minute_inputs(snapshot: Path, symbol: str, policy: EquityResearchPolicy
     features = FeatureFrame(symbol, samples.open_time, values.where(available), available)
     dates, calendar_hashes = snapshot_sessions(snapshot, policy.valid_start, policy.valid_end)
     hashes.update(calendar_hashes)
+    return EquityInputs(symbol, bars, features, dates, hashes)
+
+
+def load_repaired_inputs(snapshot: Path, symbol: str, policy: EquityResearchPolicy) -> EquityInputs:
+    from helios.equities.rebuild import membership, verified_file
+
+    manifest: dict[str, Any] = json.loads((snapshot / "manifest.json").read_text())
+    if (
+        manifest["version"] != "nse_public_minutes_v2"
+        or not manifest["complete"]
+        or manifest["test_access"]
+        or manifest["g7_eligible"]
+    ):
+        raise ValueError("v2 requires a completed conditional, TEST-sealed snapshot")
+    hashes = {"manifest": sha256(snapshot / "manifest.json")}
+    for name, key in (
+        ("protocol.json", "protocol_sha256"),
+        ("sessions.json", "sessions_sha256"),
+        ("universe.json", "universe_sha256"),
+        ("session_checks.json", "checks_sha256"),
+    ):
+        verified_file(snapshot, name, manifest[key])
+        hashes[name] = manifest[key]
+    protocol = json.loads((snapshot / "protocol.json").read_text())
+    if protocol["start"] != "2025-01-01" or protocol["end"] != policy.valid_end.isoformat():
+        raise ValueError("repaired snapshot split mismatch")
+    records = [r for r in manifest["files"] if r["symbol"] == symbol]
+    if len(records) != 1 or records[0]["eligible_rows"] <= 0:
+        raise ValueError("no screened observations for this historical member")
+    record = records[0]
+    path = verified_file(snapshot, record["path"], record["sha256"])
+    hashes[record["path"]] = record["sha256"]
+    bars = pd.read_parquet(path)
+    if (
+        set(bars.symbol) != {symbol}
+        or bars.open_time.duplicated().any()
+        or not bars.session_date.between("2025-01-01", policy.valid_end.isoformat()).all()
+    ):
+        raise ValueError("repaired source dates/identity mismatch")
+    if not all(membership(symbol, day)[1] for day in bars.session_date.unique()):
+        raise ValueError("repaired source contains out-of-membership observations")
+    bars = bars.loc[bars.research_eligible].reset_index(drop=True)
+    if set(bars.screen_status) != {"PASS_SCALE_SCREEN"}:
+        raise ValueError("quarantined prices cannot enter research")
+    sessions = json.loads((snapshot / "sessions.json").read_text())
+    for day, part in bars.groupby("session_date"):
+        setting = sessions[day]
+        if (
+            len(part) != setting["slots"]
+            or set(part.session_slots) != {setting["slots"]}
+            or set(part.session_open_minute) != {setting["open_minute"]}
+        ):
+            raise ValueError("repaired session schedule/coverage mismatch")
+    samples = minute_samples(bars, include_unlabelled=True)
+    values = samples[list(features_for("60m"))].copy()
+    available = pd.DataFrame(
+        {name: samples.feature_available for name in values}, index=values.index
+    )
+    features = FeatureFrame(symbol, samples.open_time, values.where(available), available)
+    dates = tuple(record["expected_valid_sessions"])
+    expected = tuple(
+        d
+        for d in sessions
+        if policy.valid_start.isoformat() <= d <= policy.valid_end.isoformat()
+        and membership(symbol, d)[1]
+    )
+    if dates != expected:
+        raise ValueError("expected-session denominator differs from historical membership")
     return EquityInputs(symbol, bars, features, dates, hashes)

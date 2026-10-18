@@ -39,11 +39,19 @@ MODEL_PROTOCOL = dict(
 def model_protocol(policy: EquityResearchPolicy) -> dict[str, Any]:
     if policy.interval == "1h":
         return MODEL_PROTOCOL.copy()
-    return MODEL_PROTOCOL | dict(
+    minute = MODEL_PROTOCOL | dict(
         version="nse_minute_train_only_ml_v1",
         label="next_minute_open_to_close_return",
         sample_rule="fixed UTC opening minute divisible by 5; TRAIN/calibration only",
     )
+    if policy.version == "nse_minute_research_v2":
+        minute.update(
+            version="nse_minute_train_only_ml_v2",
+            entry_hurdle_bps=21,
+            cohort="historical members; screened complete sessions; quarantines excluded",
+            hurdle="fixed approximate reference-fee plus 5bps/side slippage scenario",
+        )
+    return minute
 
 
 @dataclass(frozen=True)
@@ -63,6 +71,10 @@ class EquityModel:
             probabilities = np.asarray(self.booster.predict(frame.values.loc[mask]), dtype=float)
             expected = np.interp(probabilities, self.thresholds, self.returns)
             round_trip = 2 * (policy.commission_tax_proxy_bps + policy.slippage_proxy_bps) / 10000
+            if policy.version == "nse_minute_research_v2":
+                round_trip = (
+                    0.0021  # Frozen scenario, never fitted to VALID or described as billing.
+                )
             # Expected payoff is calibrated using TRAIN only; net edge must clear both sides.
             scale = max(round_trip, 0.0001)
             values[mask.to_numpy()] = np.clip((expected - round_trip) / scale, 0, 1)

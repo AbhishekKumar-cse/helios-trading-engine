@@ -111,7 +111,7 @@ class DecisionLineage(Record):
 
 
 class Bar(Record):
-    calendar: Literal["continuous_utc", "nse_regular_v1"] = "continuous_utc"
+    calendar: Literal["continuous_utc", "nse_regular_v1", "nse_reviewed_v2"] = "continuous_utc"
 
     @model_serializer(mode="wrap")
     def _calendar_serialization(self, handler: SerializerFunctionWrapHandler) -> dict[str, Any]:
@@ -153,6 +153,10 @@ class Bar(Record):
 
     @property
     def is_complete_interval(self) -> bool:
+        if self.calendar == "nse_reviewed_v2":
+            from helios.common.market_clock import nse_reviewed_bar_complete
+
+            return nse_reviewed_bar_complete(self.open_time, self.close_time, self.interval)
         if self.calendar == "nse_regular_v1":
             from helios.common.market_clock import nse_bar_complete
 

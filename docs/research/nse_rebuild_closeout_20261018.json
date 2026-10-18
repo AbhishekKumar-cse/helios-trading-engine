@@ -1,0 +1,170 @@
+{
+  "calibration_samples": 152405,
+  "calibration_sha256": "f650a3476e4304550f4856aa6dd251299039397a5dce25cb4d01799718e18550",
+  "code_commit": "f8c0e7ef897827751982a641489fe5dbeb4fea16",
+  "companies": 57,
+  "crypto_registry": {
+    "alpha_definitions": {
+      "count": 25,
+      "sha256": "05a213f0cd7e02ed1e75c78cbd8216289f8ad4b6868ec9dfa7f9dc47d8137991"
+    },
+    "alpha_results": {
+      "count": 34,
+      "sha256": "dac77bc7006b06bc9b5e62af846d2300054aa706b1788491d8de24d6b971ba62"
+    },
+    "test_accesses": 0
+  },
+  "decision": "CONDITIONAL_RESEARCH_COMPLETE_G7_BLOCKED",
+  "dirty": true,
+  "exclusions": {
+    "NO_DAILY_IDENTITY_REFERENCE": 18,
+    "PASS_SCALE_SCREEN": 13550,
+    "UNRESOLVED_CAPITAL_ACTION_UNITS": 4797,
+    "ZERO_VOLUME_SESSION": 103
+  },
+  "full_tests_passed": 1830,
+  "limitations": [
+    "Retrospective conditional membership/availability cohort",
+    "Unresolved capital-action units quarantined, not reconstructed",
+    "Daily scale screen does not certify minute prices or volumes",
+    "Historical brokerage and observed liquidity/slippage unverified",
+    "Execution benchmark remains RELIANCE; all screened members feed TRAIN",
+    "Actual market-hours PAPER/restart/24-hour/seven-day evidence outstanding"
+  ],
+  "model_companies": 41,
+  "model_sha256": "407507a5e3a07f17876b4052c7c57560abe21b13fb2664d3b88a44cc6667fd1c",
+  "old_result_artifacts_verified": 612,
+  "outside_membership_minutes_removed": 323310,
+  "promoted": 0,
+  "protocol_sha256": "d3ad37b18df57cc4d58aaa76bec6f2ddc81cf6ecfa9a7199bae57e7542a40a3b",
+  "public_collections": [
+    {
+      "manifest_sha256": "b7e797ec02a36a159a94bcab2c4f1e1e393a2c22b400ba9d53abd0acf0a4cbc2",
+      "path": "reports_out/nse_validation/20261018_rebuild_reference1",
+      "requests": 331,
+      "statuses": {
+        "200": 331
+      }
+    },
+    {
+      "manifest_sha256": "902e4b2a51445b6a7a4bdaa59ad3b86f621fcc7f6f76b9cbae2594f2f2343c08",
+      "path": "data/equities/nifty50_historical/20261018_members_v1",
+      "requests": 54,
+      "statuses": {
+        "200": 54
+      }
+    }
+  ],
+  "results": [
+    {
+      "alpha_id": "nse_minute_repaired1_momentum",
+      "artifact": "/mnt/c/Users/bit/OneDrive/Desktop/helios/reports_out/equity_runtime/nse_minute_repaired1/reports_out/equity_research/nse_minute_repaired1/evaluations/fa5141eb-affa-47bc-ba59-09cf8d89fb9d.json",
+      "artifact_sha256": "0390dfb60081784b0a37fcfee866182431e72a9e9edeb969fc123675c5260bf8",
+      "candidate": "momentum",
+      "experiment_id": 7360,
+      "fitness": -1778.3334155549,
+      "gates": {
+        "G1": false,
+        "G2": false,
+        "G3": true,
+        "G4": true,
+        "G5": false,
+        "G6": false,
+        "G7": false,
+        "G8": true
+      },
+      "run_id": "fa5141eb-affa-47bc-ba59-09cf8d89fb9d",
+      "sharpe": -179.5432298127,
+      "status": "REJECTED",
+      "symbol": "RELIANCE"
+    },
+    {
+      "alpha_id": "nse_minute_repaired1_reversal",
+      "artifact": "/mnt/c/Users/bit/OneDrive/Desktop/helios/reports_out/equity_runtime/nse_minute_repaired1/reports_out/equity_research/nse_minute_repaired1/evaluations/8347b883-ea99-49ae-88fa-6982273c243f.json",
+      "artifact_sha256": "0b371cd856823689e63657ca43fe069c71a2527a6c2331d07a4eb41fd7ab36b2",
+      "candidate": "reversal",
+      "experiment_id": 7361,
+      "fitness": -3047.0281377732,
+      "gates": {
+        "G1": false,
+        "G2": false,
+        "G3": true,
+        "G4": true,
+        "G5": false,
+        "G6": false,
+        "G7": false,
+        "G8": true
+      },
+      "run_id": "8347b883-ea99-49ae-88fa-6982273c243f",
+      "sharpe": -309.2081076456,
+      "status": "REJECTED",
+      "symbol": "RELIANCE"
+    },
+    {
+      "alpha_id": "nse_minute_repaired1_ml",
+      "artifact": "/mnt/c/Users/bit/OneDrive/Desktop/helios/reports_out/equity_runtime/nse_minute_repaired1/reports_out/equity_research/nse_minute_repaired1/evaluations/413a45f3-ba54-4df0-99ad-0a76c503da6e.json",
+      "artifact_sha256": "c9f8637dda6a5fe01ad41de3519a00427ab394000913aa7bfa1436884cffd90a",
+      "candidate": "ml",
+      "experiment_id": 7362,
+      "fitness": null,
+      "gates": {
+        "G1": false,
+        "G2": false,
+        "G3": false,
+        "G4": false,
+        "G5": false,
+        "G6": false,
+        "G7": false,
+        "G8": false
+      },
+      "run_id": "413a45f3-ba54-4df0-99ad-0a76c503da6e",
+      "sharpe": null,
+      "status": "INVALID",
+      "symbol": "RELIANCE"
+    }
+  ],
+  "round_id": "nse_minute_repaired1",
+  "rows": 6909518,
+  "screened_rows": 5069595,
+  "sessions": 369,
+  "slow_test_deselected": 1,
+  "snapshot": "/mnt/c/Users/bit/OneDrive/Desktop/helios/data/equities/nifty50_repaired/20261018_v2",
+  "snapshot_manifest_sha256": "60b808fa29423fe7e0162d34fc24bed9d1fe0286c1c7a5f6869dccdb81706158",
+  "source_and_round_checks": [
+    {
+      "path": "docs/research/nse_rebuild_data_checks_20261018.json",
+      "sha256": "4232bed7a5b273a0e5af3d1e78e6eda8481a87e50587d7998ad53ba2dd98ae8e"
+    },
+    {
+      "path": "docs/research/nse_repaired_round_checks_20261018.json",
+      "sha256": "292ef1cc09215be02ce58542a1ca4403dccf868dc133ebbd08eedc56c605b02b"
+    }
+  ],
+  "special_session_bars": {
+    "2025-02-01": 19125,
+    "2025-10-21": 3000,
+    "2026-02-01": 18750
+  },
+  "summary_sha256": "b09a8d29e4963a8345aa365af50fcefc6085c576be845217f0d98945c5db7d75",
+  "test_accesses": 0,
+  "train_samples": 505528,
+  "verification_logs": [
+    {
+      "path": "reports_out/equity_closeout/nse_rebuild_full_tests.log",
+      "sha256": "36804b7abf200208cec07ad70ff45ec821b012d715d6a31adca1c32bb60d8c32"
+    },
+    {
+      "path": "reports_out/equity_closeout/nse_rebuild_final_lint.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "reports_out/equity_closeout/nse_rebuild_final_format.log",
+      "sha256": "6b099da40f532e26c5c35459e92d60f49177b53b18590e2a6c2fec13092c4b68"
+    },
+    {
+      "path": "reports_out/equity_closeout/nse_rebuild_final_types.log",
+      "sha256": "e4702ba550f3d51822594fd98979a9585a5970032e6fbd5f304d99ffc69a0f00"
+    }
+  ],
+  "version": "nse_rebuild_closeout_v1"
+}

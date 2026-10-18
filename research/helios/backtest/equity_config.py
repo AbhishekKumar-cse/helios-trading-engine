@@ -6,7 +6,7 @@ from typing import Literal, Self
 from pydantic import Field, model_validator
 
 from helios.common.config import HeliosConfig, config_hash
-from helios.common.market_clock import IST, nse_bar_complete
+from helios.common.market_clock import IST, nse_bar_complete, nse_reviewed_bar_complete
 from helios.common.project_config import FeesConfig
 from helios.common.types import Hash, Mode, Timestamp
 from helios.equities.config import EquityResearchPolicy
@@ -35,14 +35,24 @@ class EquityBacktestConfig(HeliosConfig):
     @model_validator(mode="after")
     def session_scope(self) -> Self:
         local = datetime.fromtimestamp(self.start_us / 1_000_000, UTC).astimezone(IST)
-        if (local.hour, local.minute) != (9, 15) or not (
+        short = (
+            self.policy.version == "nse_minute_research_v2"
+            and local.date().isoformat() == "2025-10-21"
+        )
+        opening = (13, 45) if short else (9, 15)
+        if (local.hour, local.minute) != opening or not (
             self.policy.valid_start <= local.date() <= self.policy.valid_end
         ):
             raise ValueError("NSE replay must start at 09:15 inside the frozen VALID window")
         duration = 3_600_000_000 if self.policy.interval == "1h" else 60_000_000
-        if not nse_bar_complete(self.start_us, self.start_us + duration, self.policy.interval):
+        complete = (
+            nse_reviewed_bar_complete
+            if self.policy.version == "nse_minute_research_v2"
+            else nse_bar_complete
+        )
+        if not complete(self.start_us, self.start_us + duration, self.policy.interval):
             raise ValueError("NSE backtest starts on an observed normal-session hour")
-        if self.end_us - self.start_us != 375 * 60_000_000:
+        if self.end_us - self.start_us != (60 if short else 375) * 60_000_000:
             raise ValueError("one complete 375-minute session is required")
         if self.strategy.mode is not Mode.BACKTEST or self.strategy.quantity_step != 1:
             raise ValueError("equity replay requires simulated whole-share orders")

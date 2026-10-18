@@ -5,6 +5,33 @@ research, minute execution round and sampled archived replay are complete.
 The original operational exit criteria remain unmet;
 this assessment does not waive them or claim a profitable alpha.
 
+The follow-up [source and trading assumption audit](nse_assumption_validation_summary_20261018.md)
+is complete. It checked all 900 raw monthly files and all 50 stock Parquets,
+collected public NSE corporate actions and compared 44 official daily files.
+It found 321,060 minutes before documented index inclusions, 135 sampled price
+scale flags across seven stocks, 37,500 excluded Budget-session candles and a
+3,000-minute short-session cohort in TRAIN. These findings require a new dataset
+and protocol before a validated historical-Nifty research claim. The previous
+results remain conditional current-company studies and are not overwritten.
+
+The follow-up rebuild now exists separately: **6,909,518 actual minute bars across
+57 historical companies**, with **5,069,595 screened bars from 41 companies**.
+It removes 323,310 out-of-membership minutes, records temporary demerged membership,
+and implements 368 full sessions plus one 60-minute session. ADR010 adds causal
+per-fill charge accrual and explicit day-end STT settlements through the shared
+simulator/INR ledger. The new model fit uses 505,528 TRAIN and 152,405 separate
+calibration samples. New conditional VALID round `nse_minute_repaired1` completed:
+two REJECTED quantitative results and one INVALID constant ML alpha. Independent
+checks reconciled 43,665 base fills across 228 candidate/session replays, including
+tax settlements, ledger cash, metrics and gates. All 612 earlier artifact hashes
+and crypto fingerprints remain unchanged; TEST access is zero. See the
+[verified closeout](nse_rebuild_closeout_20261018.md) for this separate round.
+Known capital-action units remain quarantined; exact minute/volume certification,
+causal outages and observed execution assumptions still block G7. See the
+[rebuild guide](../guides/NSE_REBUILD.md) and
+[data checks](nse_rebuild_data_checks_20261018.json). Full regressions: 1,830 passed,
+one existing slow test deselected, 15 existing warnings; strict types and Ruff pass.
+
 ## Implemented and measured
 
 - Public Upstox minute history for all 50 current Nifty companies: **6,865,386
@@ -59,6 +86,11 @@ is not evidence of BSE-exchange ingestion.
 Source validation remains substantial: point-in-time index membership, corporate
 operations/ticker continuity, special sessions, causal feed-outage/liquidation
 handling, effective-date brokerage/taxes/rounding and observed liquidity/slippage.
+The audit now supplies actual membership-change notices, 124 returned corporate
+events and an explicit dated exchange/IPFT and side/order/day charge diagnostic.
+It does not certify a complete historical membership history, raw share units,
+dated broker contract or executable liquidity. The charge estimator is separate
+from the frozen execution policy and has not been substituted into old results.
 The existing 15+5 bps-per-side cost scenario is unchanged and explicitly a proxy.
 Complete-session research is selected ex-post. G7 prevents a tradable or promoted
 claim even if a numerical gate passed. Equity TEST stays sealed.

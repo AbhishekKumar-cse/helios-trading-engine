@@ -1,0 +1,350 @@
+{
+  "action_events": 124,
+  "action_kinds": {
+    "capital_or_other": 14,
+    "dividend": 110
+  },
+  "audit_source_sha256": "113aaadf25686120a9dfd9eaf0ec5cc4ad6fd151c8ec1c193d1da03668b7317d",
+  "audited_at": "2026-10-18T03:53:55.848934+00:00",
+  "calendar": {
+    "full_sessions_including_reviewed_specials": 368,
+    "normal_sessions": 366,
+    "raw_budget_session_candles": {
+      "2025-02-01": 18750,
+      "2026-02-01": 18750
+    },
+    "retained_budget_session_minutes": {
+      "2025-02-01": 0,
+      "2026-02-01": 0
+    },
+    "short_sessions": {
+      "2025-10-21": "muhurat_session_2025"
+    }
+  },
+  "charge_diagnostics": [
+    {
+      "actual_base_proxy_fees_inr": "1590635.737987350000000000",
+      "artifact_sha256": "db446ff83419b001cb8aa1d9974a688399f5f0060cdbce1045fd09b5214ac612",
+      "candidate": "momentum",
+      "not_a_resimulation": true,
+      "original_fills_unchanged": true,
+      "reference_charge_estimate": {
+        "brokerage": "318127.1475974700000000000000",
+        "exchange": "32235.84684079875090000000",
+        "gst": "63313.664914848479400000000000",
+        "ipft": "319.16459667567910000000",
+        "orders": 21492,
+        "sebi": "1060.423825324900000000",
+        "stamp": "15914.38030554600000000000000",
+        "stt": "132555",
+        "total": "563525.628080663809400000000000",
+        "turnover": "1060423825.324900000000000000"
+      },
+      "run_id": "2ec05188-1d78-4d11-89cf-154f6199b963"
+    },
+    {
+      "actual_base_proxy_fees_inr": "1602993.753539025000000000",
+      "artifact_sha256": "8bc723fe971f168c6f17e117e32d00126f288928900a3846630351d5bd0899ce",
+      "candidate": "reversal",
+      "not_a_resimulation": true,
+      "original_fills_unchanged": true,
+      "reference_charge_estimate": {
+        "brokerage": "320598.7507078050000000000000",
+        "exchange": "32486.74874507105100000000",
+        "gst": "63805.563365867351100000000000",
+        "ipft": "321.19007736099400000000",
+        "orders": 21760,
+        "sebi": "1068.662502359350000000",
+        "stamp": "16037.90028467100000000000000",
+        "stt": "133585",
+        "total": "567903.815683134746100000000000",
+        "turnover": "1068662502.359350000000000000"
+      },
+      "run_id": "a9f41b74-2a93-455a-8262-6a176f933b9d"
+    },
+    {
+      "actual_base_proxy_fees_inr": "786652.922223675000000000",
+      "artifact_sha256": "0e9e9ed723d433e4a71f88ae4cf9e146dd33a07ff345dd9bae34a5e010b88d71",
+      "candidate": "volume_shock",
+      "not_a_resimulation": true,
+      "original_fills_unchanged": true,
+      "reference_charge_estimate": {
+        "brokerage": "157330.5844447350000000000000",
+        "exchange": "15940.96688442873600000000",
+        "gst": "31311.932916191159700000000000",
+        "ipft": "159.19625708247900000000",
+        "orders": 27814,
+        "sebi": "524.435281482450000000",
+        "stamp": "7870.44996035100000000000000",
+        "stt": "65554",
+        "total": "278691.565744270824700000000000",
+        "turnover": "524435281.482450000000000000"
+      },
+      "run_id": "74f70c85-50a4-4bb7-ab4f-3b6acd1c7e4f"
+    },
+    {
+      "actual_base_proxy_fees_inr": "879909.694078875000000000",
+      "artifact_sha256": "69e89e785d39d47b8fcfae82285f124b3fb203a855860284714e5c3aa81d1b62",
+      "candidate": "trend_3",
+      "not_a_resimulation": true,
+      "original_fills_unchanged": true,
+      "reference_charge_estimate": {
+        "brokerage": "175981.9388157750000000000000",
+        "exchange": "17834.99512475969865000000",
+        "gst": "35023.925463115540500000000000",
+        "ipft": "173.82328072127635000000",
+        "orders": 11905,
+        "sebi": "586.606462719250000000",
+        "stamp": "8803.63506672450000000000000",
+        "stt": "73328",
+        "total": "311732.924213815265500000000000",
+        "turnover": "586606462.719250000000000000"
+      },
+      "run_id": "bd252371-1b92-4d2a-b0bb-f1c379aea35b"
+    },
+    {
+      "actual_base_proxy_fees_inr": "883984.877363325000000000",
+      "artifact_sha256": "bb91718d1f638a43ee2c1cb7631e2195923e39a06ed18002240d3d1a30ee70bf",
+      "candidate": "reversal_3",
+      "not_a_resimulation": true,
+      "original_fills_unchanged": true,
+      "reference_charge_estimate": {
+        "brokerage": "176796.9754726650000000000000",
+        "exchange": "17919.09671684682420000000",
+        "gst": "35186.134058569788300000000000",
+        "ipft": "173.12710652256080000000",
+        "orders": 12038,
+        "sebi": "589.323251575550000000",
+        "stamp": "8844.18096454200000000000000",
+        "stt": "73669",
+        "total": "313177.837570721723300000000000",
+        "turnover": "589323251.575550000000000000"
+      },
+      "run_id": "73e54b73-6fa0-4222-8eec-9151328ebeb2"
+    },
+    {
+      "actual_base_proxy_fees_inr": "763911.775118100000000000",
+      "artifact_sha256": "400a2efb54603c7e7b625207fbc476523933255a7e96a2285d8d046cafad15fc",
+      "candidate": "vol_scaled_trend",
+      "not_a_resimulation": true,
+      "original_fills_unchanged": true,
+      "reference_charge_estimate": {
+        "brokerage": "152782.3550236200000000000000",
+        "exchange": "15480.71051073111090000000",
+        "gst": "30406.744296800852400000000000",
+        "ipft": "154.01715335266910000000",
+        "orders": 20136,
+        "sebi": "509.274516745400000000",
+        "stamp": "7643.04967202850000000000000",
+        "stt": "63663",
+        "total": "270639.151173278532400000000000",
+        "turnover": "509274516.745400000000000000"
+      },
+      "run_id": "d22ec229-1b1f-4e1d-9f2c-adaab839d35b"
+    },
+    {
+      "actual_base_proxy_fees_inr": "934453.550450925000000000",
+      "artifact_sha256": "11ecb76b51a6f44f6cb0748245aa93e7a0c30d3c068e42f012cc12366b4da0a1",
+      "candidate": "body_reversal",
+      "not_a_resimulation": true,
+      "original_fills_unchanged": true,
+      "reference_charge_estimate": {
+        "brokerage": "186890.7100901850000000000000",
+        "exchange": "18936.94592197993950000000",
+        "gst": "37194.989122148618700000000000",
+        "ipft": "188.20341058232550000000",
+        "orders": 29536,
+        "sebi": "622.969033633950000000",
+        "stamp": "9349.15179077550000000000000",
+        "stt": "77871",
+        "total": "331053.969369305333700000000000",
+        "turnover": "622969033.633950000000000000"
+      },
+      "run_id": "7676a997-ca54-49af-afb7-c35e58681989"
+    },
+    {
+      "actual_base_proxy_fees_inr": "1145301.261342150000000000",
+      "artifact_sha256": "0ffef0e4aec3d4c5e5019481bce668fe120c4520eb414f84a38f1ebfadec7201",
+      "candidate": "close_strength",
+      "not_a_resimulation": true,
+      "original_fills_unchanged": true,
+      "reference_charge_estimate": {
+        "brokerage": "229060.2522684300000000000000",
+        "exchange": "23205.29572916786250000000",
+        "gst": "45587.571406462938600000000000",
+        "ipft": "235.20341963480750000000",
+        "orders": 30306,
+        "sebi": "763.534174228100000000",
+        "stamp": "11458.74596272650000000000000",
+        "stt": "95441",
+        "total": "405751.602960650208600000000000",
+        "turnover": "763534174.228100000000000000"
+      },
+      "run_id": "712c4f90-0bf5-4763-907f-4f4cb2754a80"
+    },
+    {
+      "actual_base_proxy_fees_inr": "994652.230988175000000000",
+      "artifact_sha256": "8ad5720f99822a2f32d0f98509982dc6481593ed8ea021b2df2ede27d69d9752",
+      "candidate": "close_fade",
+      "not_a_resimulation": true,
+      "original_fills_unchanged": true,
+      "reference_charge_estimate": {
+        "brokerage": "198930.4461976350000000000000",
+        "exchange": "20156.93507132577315000000",
+        "gst": "39591.137402253317700000000000",
+        "ipft": "200.28058956554185000000",
+        "orders": 27529,
+        "sebi": "663.101487325450000000",
+        "stamp": "9951.50233453500000000000000",
+        "stt": "82889",
+        "total": "352382.403082640082700000000000",
+        "turnover": "663101487.325450000000000000"
+      },
+      "run_id": "f20ad37c-f030-4aa3-8072-172a0989012b"
+    },
+    {
+      "actual_base_proxy_fees_inr": "1431457.795334250000000000",
+      "artifact_sha256": "f077fd784e94be6e63fbf19c0468a6b2d46ac3e5267e2e25791f264e17dc0b65",
+      "candidate": "volume_trend",
+      "not_a_resimulation": true,
+      "original_fills_unchanged": true,
+      "reference_charge_estimate": {
+        "brokerage": "286291.5590668500000000000000",
+        "exchange": "29009.48913299544525000000",
+        "gst": "56977.746085484487000000000000",
+        "ipft": "287.68041151220475000000",
+        "orders": 27558,
+        "sebi": "954.305196889500000000",
+        "stamp": "14321.81592729900000000000000",
+        "stt": "119291",
+        "total": "507133.595821030637000000000000",
+        "turnover": "954305196.889500000000000000"
+      },
+      "run_id": "63493c95-ef77-4522-b006-7dada2061ba2"
+    },
+    {
+      "actual_base_proxy_fees_inr": "908877.793357500000000000",
+      "artifact_sha256": "c0296a41892518c6c9eac2a9b384f7253d6eac38a99a71ab984dc1394361332e",
+      "candidate": "gap_reversal",
+      "not_a_resimulation": true,
+      "original_fills_unchanged": true,
+      "reference_charge_estimate": {
+        "brokerage": "181775.5586715000000000000000",
+        "exchange": "18406.74002719419450000000",
+        "gst": "36176.971686801930000000000000",
+        "ipft": "194.95881018930550000000",
+        "orders": 12307,
+        "sebi": "605.918528905000000000",
+        "stamp": "9093.31947254250000000000000",
+        "stt": "75740",
+        "total": "321993.467197132930000000000000",
+        "turnover": "605918528.905000000000000000"
+      },
+      "run_id": "a088043a-0a3d-4f5b-b9f5-87bc1bc4efe2"
+    }
+  ],
+  "code_commit": "f8c0e7ef897827751982a641489fe5dbeb4fea16",
+  "code_dirty": true,
+  "companies": 50,
+  "decision": "BLOCKED_PENDING_SOURCE_AND_PROTOCOL_REPAIR",
+  "event_announcement_availability_not_verified": 124,
+  "execution_slippage_verified": false,
+  "facts_sha256": "c4427ef2be653d7d5d2466dc7bffff4b0171652c8a2024da99a683b445bf482d",
+  "full_audit_path": "reports_out/nse_validation/20261018_reference1/assumption_audit.json",
+  "full_audit_sha256": "0b3d189b16551bda0b59c8c973aa5acbdb05a9eab51e779097711dcb41acd79d",
+  "g7_relaxed": false,
+  "historical_isin_review_comparisons": 52,
+  "known_missing_historical_members": [
+    "WIPRO",
+    "HEROMOTOCO",
+    "INDUSINDBK",
+    "BPCL",
+    "BRITANNIA"
+  ],
+  "known_preinclusion_by_company": {
+    "BSE": 137310,
+    "ETERNAL": 22500,
+    "INDIGO": 69375,
+    "JIOFIN": 22500,
+    "MAXHEALTH": 69375
+  },
+  "known_preinclusion_minutes": 321060,
+  "limitations": [
+    "Known membership violations are a lower bound, not a complete PIT universe.",
+    "Retrospective ex-dates do not establish announcement availability.",
+    "Daily/minute scope differs. Scale flags need review, never automatic rescaling.",
+    "Current public brokerage is a scenario, not a proven dated account tariff.",
+    "Charge diagnostics reuse retained fills; no new strategy P&L, model fit or ranking.",
+    "GST/stamp/brokerage rounding and contract-note reconciliation remain unverified.",
+    "Spreads, impact, live-feed acceptance and causal outage policy remain unverified."
+  ],
+  "post_run_nonfinite_guard_checked_rows": 2100,
+  "price_comparison_counts": {
+    "NO_LARGE_SCALE_SHIFT_DETECTED": 1965,
+    "NO_RETAINED_MINUTES": 100,
+    "PRICE_SCALE_REVIEW": 135
+  },
+  "price_scale_flags_by_company": {
+    "BAJFINANCE": 13,
+    "BSE": 10,
+    "HDFCBANK": 19,
+    "KOTAKBANK": 33,
+    "NESTLEIND": 17,
+    "SHRIRAMFIN": 4,
+    "TRENT": 39
+  },
+  "raw_months_verified": 900,
+  "reference_statuses": {
+    "200": 106,
+    "404": 1
+  },
+  "references_manifest_sha256": "887c1dd1dfc17e82dcb1dfd90178fc7b86020b0318283607f65d32602985eddf",
+  "registry_after": {
+    "alpha_definitions": {
+      "count": 25,
+      "sha256": "05a213f0cd7e02ed1e75c78cbd8216289f8ad4b6868ec9dfa7f9dc47d8137991"
+    },
+    "alpha_results": {
+      "count": 34,
+      "sha256": "dac77bc7006b06bc9b5e62af846d2300054aa706b1788491d8de24d6b971ba62"
+    },
+    "test_accesses": 0
+  },
+  "registry_before": {
+    "alpha_definitions": {
+      "count": 25,
+      "sha256": "05a213f0cd7e02ed1e75c78cbd8216289f8ad4b6868ec9dfa7f9dc47d8137991"
+    },
+    "alpha_results": {
+      "count": 34,
+      "sha256": "dac77bc7006b06bc9b5e62af846d2300054aa706b1788491d8de24d6b971ba62"
+    },
+    "test_accesses": 0
+  },
+  "reported_corporate_action_isin_mismatches": 53,
+  "research_results_modified": false,
+  "runtime_archive": "reports_out/nse_validation/nse_assumption_validation_20261018_source",
+  "runtime_manifest_sha256": "a2bb61f0f59f3bd01b81d9f48fb64e6495093b92bb3d01ed0de1f604d499e64d",
+  "short_session_minutes_retained": 3000,
+  "snapshot_manifest_sha256": "fd884361e5e9a175a992f1d1858cd1e9ea2736a7793e6bbe960fa952ea577acb",
+  "source_snapshot_modified": false,
+  "source_urls": {
+    "broker_charges_current": "https://zerodha.com/charges/",
+    "broker_ipft_current": "https://support.zerodha.com/category/account-opening/resident-individual/ri-charges/articles/ipft-charges",
+    "budget_session_2026": "https://nsearchives.nseindia.com/content/circulars/CMTR72349.pdf",
+    "exchange_cost_20241001": "https://nsearchives.nseindia.com/content/circulars/FA64232.pdf",
+    "exchange_cost_20260301": "https://nsearchives.nseindia.com/content/circulars/FA73061.pdf",
+    "index_20250328": "https://www.niftyindices.com/Press_Release/ind_prs21022025.pdf",
+    "index_20250930": "https://www.niftyindices.com/Press_Release/ind_prs22082025.pdf",
+    "index_20260330": "https://www.niftyindices.com/Press_Release/ind_prs23022026.pdf",
+    "index_20260930": "https://www.niftyindices.com/Press_Release/ind_prs10082026.pdf",
+    "itc_demerg_exclusion": "https://www.niftyindices.com/Press_Release/ind_prs06022025_1.pdf",
+    "nse_daily_reports": "https://www.nseindia.com/all-reports",
+    "nse_levies": "https://www.nseindia.com/static/invest/first-time-investor-sebi-turnover-fees-stt-other-levies"
+  },
+  "supplement_manifest_sha256": "093ec3b159e7f0b452521678737dff02b08173bcf677709377691fcaa889e523",
+  "test_accesses": 0,
+  "total_minute_rows": 6865386,
+  "verified_historical_broker_account_tariff": false,
+  "version": "nse_assumption_audit_v1"
+}

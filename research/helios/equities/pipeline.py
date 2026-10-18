@@ -75,7 +75,7 @@ def candidate_definition(
         version=1,
         name=f"NSE {policy.interval} {candidate} development benchmark",
         provenance="ML" if expression is None else "QUANT",
-        feature_set_version="nse_session_features_v1",
+        feature_set_version=policy.feature_set_version,
         horizon_family="H-HOURLY" if policy.interval == "1h" else "H-MINUTE",
         horizon_periods=1,
         expression=expression,
@@ -133,6 +133,7 @@ def run_round(
     suite: str = "baseline",
     research_symbols: tuple[str, ...] = (),
     workers: int = 1,
+    repaired: bool = False,
 ) -> Path:
     if not re.fullmatch(r"nse_[a-z0-9_]{3,32}", round_id):
         raise ValueError(
@@ -140,8 +141,17 @@ def run_round(
         )
     if interval not in ("1h", "1m") or suite not in ("baseline", "reference", "extended", "all"):
         raise ValueError("unsupported equity interval/suite")
+    if repaired and interval != "1m":
+        raise ValueError("repaired public snapshots require minute frequency")
     policy = (
-        EquityResearchPolicy()
+        EquityResearchPolicy(
+            version="nse_minute_research_v2",
+            interval="1m",
+            session="reviewed_sessions_v2",
+            commission_tax_proxy_bps=0,
+        )
+        if repaired
+        else EquityResearchPolicy()
         if interval == "1h"
         else EquityResearchPolicy(version="nse_minute_research_v1", interval="1m")
     )
@@ -182,14 +192,26 @@ def run_round(
         source_snapshot=str(snapshot),
         test_access=False,
         automatic_promotion=False,
-        scope=f"{interval} conditional intraday research; all frozen constituents in model inputs",
+        scope=(
+            "1m conditional historical-member research; screened observations only"
+            if repaired
+            else f"{interval} conditional intraday research; "
+            "all frozen constituents in model inputs"
+        ),
         research_symbols=research_symbols,
         execution_workers=workers,
         coverage="ex-post complete-session conditional study; excluded sessions stay unknown",
     )
     write_json(output / "protocol.json", protocol)
-    roster = constituents((snapshot / "constituents.csv").read_bytes())
-    inputs = [load_equity_inputs(snapshot, row["Symbol"], policy) for row in roster]
+    if repaired:
+        if interval != "1m":
+            raise ValueError("repaired public snapshot currently supports minute research only")
+        source_manifest = json.loads((snapshot / "manifest.json").read_text())
+        symbols = [r["symbol"] for r in source_manifest["files"] if r["eligible_rows"] > 0]
+    else:
+        roster = constituents((snapshot / "constituents.csv").read_bytes())
+        symbols = [row["Symbol"] for row in roster]
+    inputs = [load_equity_inputs(snapshot, symbol, policy) for symbol in symbols]
     selected = tuple(item.symbol for item in inputs) if not research_symbols else research_symbols
     if len(set(selected)) != len(selected) or not set(selected) <= {item.symbol for item in inputs}:
         raise ValueError("research companies must be distinct frozen constituents")
@@ -368,6 +390,7 @@ def main() -> None:
     )
     parser.add_argument("--research-symbols", nargs="*", default=[])
     parser.add_argument("--workers", type=int, choices=(1, 2, 3, 4), default=1)
+    parser.add_argument("--repaired", action="store_true")
     args = parser.parse_args()
     run_round(
         args.snapshot,
@@ -376,6 +399,7 @@ def main() -> None:
         suite=args.suite,
         research_symbols=tuple(args.research_symbols),
         workers=args.workers,
+        repaired=args.repaired,
     )
 
 

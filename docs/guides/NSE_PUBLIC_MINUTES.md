@@ -1,5 +1,10 @@
 # Public NSE minute research
 
+This guide records the immutable v1 study. The separate
+[historical-cohort rebuild](NSE_REBUILD.md) adds effective-date membership,
+full/short sessions, quarantines and an opt-in execution charge policy. Original
+prices and research artifacts described below remain unchanged.
+
 The user has no broker/data-provider account. The credential-free public
 Upstox endpoint supplied 6,865,386 retained minute bars for all 50 current Nifty
 companies, 2025-01-01 through 2026-06-30. Zero monthly requests failed. This is
@@ -89,6 +94,13 @@ confirmed INR whole-share PAPER checkpoints. Public feed timeliness and a real
 market-hours smoke remain operational acceptance work.
 
 ## Limits that remain
+
+The [follow-up reference audit](../research/nse_assumption_validation_summary_20261018.md)
+found concrete historical-membership, price-unit and session issues. Its findings
+supersede treating those assumptions as merely unchecked. See the
+[audit guide](NSE_ASSUMPTION_VALIDATION.md) for reproduction, preserved evidence
+and the required new-snapshot work. Existing datasets, archived research and
+promotion gates remain unchanged.
 
 Historical Nifty membership, adjustment/corporate-action continuity, special
 sessions and a causal missing-feed/liquidation policy need separate evidence.

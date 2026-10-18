@@ -50,6 +50,23 @@ def render_equities() -> None:
     st.caption("HELIOS · NSE EQUITIES · LOCAL RESEARCH")
     st.title("Nifty 50 research lab")
     st.write("Real downloaded equity bars and retained LightGBM development models.")
+    rebuilt = sorted(
+        (PROJECT_ROOT / "data/equities/nifty50_repaired").glob("*/manifest.json"), reverse=True
+    )
+    if rebuilt:
+        view = st.radio(
+            "Research dataset",
+            ["Rebuilt historical cohort", "Original experiments"],
+            horizontal=True,
+        )
+        if view == "Rebuilt historical cohort":
+            from helios.dashboard.equity_rebuild import render_rebuilt
+
+            try:
+                render_rebuilt(rebuilt[0].parent)
+            except (OSError, ValueError, KeyError):
+                st.error("The rebuilt snapshot failed integrity verification.")
+            return
     st.info(
         "Current Nifty constituents with public Yahoo hourly/daily and Upstox minute prices. "
         "Historical membership is "

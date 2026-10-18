@@ -140,7 +140,8 @@ def render_equity_research(symbol: str) -> None:
     )
     st.warning(
         "Development benchmark on complete observed sessions. Missing sessions remain unknown. "
-        "Costs are explicit proxies. Current-universe and source limitations block promotion."
+        "Costs follow the selected round's recorded scenario. Source and execution "
+        "limitations block promotion."
     )
     shown = [row for row in report["results"] if row["symbol"] == symbol]
     if not shown:
@@ -191,6 +192,11 @@ def render_equity_research(symbol: str) -> None:
         st.info("INVALID alpha: no rankable backtest metrics. See the report's recorded reasons.")
     with st.expander("Simulated fill log and excluded sessions"):
         st.dataframe(pd.DataFrame(evidence["fills"]), hide_index=True, width="stretch")
+        if evidence.get("fee_adjustments"):
+            st.caption("Separate day-end tax settlements; these are accounting events, not fills.")
+            st.dataframe(
+                pd.DataFrame(evidence["fee_adjustments"]), hide_index=True, width="stretch"
+            )
         st.dataframe(pd.DataFrame(coverage["excluded"]), hide_index=True, width="stretch")
     st.caption(
         f"{len(report['results'])} registered attempts · TEST accesses {report['test_accesses']} · "

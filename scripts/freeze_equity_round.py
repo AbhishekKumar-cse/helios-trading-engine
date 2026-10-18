@@ -23,6 +23,7 @@ def main():
     )
     parser.add_argument("--research-symbols", nargs="*", default=[])
     parser.add_argument("--workers", type=int, choices=(1, 2, 3, 4), default=1)
+    parser.add_argument("--repaired", action="store_true")
     args = parser.parse_args()
     source_snapshot = args.snapshot.resolve()
     if not re.fullmatch(r"nse_[a-z0-9_]{3,32}", args.round_id):
@@ -60,6 +61,7 @@ def main():
         suite=args.suite,
         research_symbols=tuple(args.research_symbols),
         workers=args.workers,
+        repaired=args.repaired,
     )
 
 

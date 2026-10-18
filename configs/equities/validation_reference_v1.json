@@ -1,0 +1,18 @@
+{
+  "version": "nse_assumption_validation_v1",
+  "scope": "Retrospective audit only; not a complete point-in-time universe or promotion authorization",
+  "start": "2025-01-01",
+  "end": "2026-06-30",
+  "known_inclusions": [
+    {"symbol": "JIOFIN", "effective": "2025-03-28", "announced": "2025-02-21", "reference": "index_20250328"},
+    {"symbol": "ETERNAL", "document_symbol": "ZOMATO", "effective": "2025-03-28", "announced": "2025-02-21", "reference": "index_20250328"},
+    {"symbol": "INDIGO", "effective": "2025-09-30", "announced": "2025-08-22", "reference": "index_20250930"},
+    {"symbol": "MAXHEALTH", "effective": "2025-09-30", "announced": "2025-08-22", "reference": "index_20250930"},
+    {"symbol": "BSE", "effective": "2026-09-30", "announced": "2026-08-10", "reference": "index_20260930"}
+  ],
+  "known_missing_historical_members": ["WIPRO", "HEROMOTOCO", "INDUSINDBK", "BPCL", "BRITANNIA"],
+  "normal_weekday_holidays_2025": ["2025-02-26", "2025-03-14", "2025-03-31", "2025-04-10", "2025-04-14", "2025-04-18", "2025-05-01", "2025-08-15", "2025-08-27", "2025-10-02", "2025-10-21", "2025-10-22", "2025-11-05", "2025-12-25"],
+  "special_full_sessions": {"2025-02-01": "budget_session_2025", "2026-02-01": "budget_session_2026"},
+  "special_short_sessions": {"2025-10-21": "muhurat_session_2025"},
+  "promotion_policy": "G7 remains blocked; no automatic repairs or changes to accepted ADRs"
+}

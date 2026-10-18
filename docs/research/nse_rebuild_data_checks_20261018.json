@@ -1,0 +1,319 @@
+{
+  "builder_source_sha256": "d4e282057a2d2b6c050bbe1e47ef39977f77706f2031cccd6ad481cafc6cb6dd",
+  "companies": 57,
+  "full_sessions": 368,
+  "g7_eligible": false,
+  "manifest_sha256": "60b808fa29423fe7e0162d34fc24bed9d1fe0286c1c7a5f6869dccdb81706158",
+  "no_dummy_price_execution": true,
+  "outside_membership_minutes_removed": 323310,
+  "per_company": [
+    {
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "ADANIENT"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 136935,
+      "symbol": "ADANIPORTS"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 135810,
+      "symbol": "APOLLOHOSP"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 136935,
+      "symbol": "ASIANPAINT"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 136935,
+      "symbol": "AXISBANK"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "BAJAJ-AUTO"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 136935,
+      "symbol": "BAJAJFINSV"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "BAJFINANCE"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 136935,
+      "symbol": "BEL"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 136935,
+      "symbol": "BHARTIARTL"
+    },
+    {
+      "rows": 22875,
+      "screened_rows": 21750,
+      "symbol": "BPCL"
+    },
+    {
+      "rows": 22875,
+      "screened_rows": 21375,
+      "symbol": "BRITANNIA"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 136935,
+      "symbol": "CIPLA"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 136935,
+      "symbol": "COALINDIA"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "DRREDDY"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "EICHERMOT"
+    },
+    {
+      "rows": 115185,
+      "screened_rows": 115185,
+      "symbol": "ETERNAL"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 131310,
+      "symbol": "GRASIM"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "HCLTECH"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "HDFCBANK"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "HDFCLIFE"
+    },
+    {
+      "rows": 69750,
+      "screened_rows": 69375,
+      "symbol": "HEROMOTOCO"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "HINDALCO"
+    },
+    {
+      "rows": 138015,
+      "screened_rows": 0,
+      "symbol": "HINDUNILVR"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "ICICIBANK"
+    },
+    {
+      "rows": 68310,
+      "screened_rows": 68310,
+      "symbol": "INDIGO"
+    },
+    {
+      "rows": 69750,
+      "screened_rows": 69375,
+      "symbol": "INDUSINDBK"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "INFY"
+    },
+    {
+      "rows": 138036,
+      "screened_rows": 0,
+      "symbol": "ITC"
+    },
+    {
+      "rows": 3347,
+      "screened_rows": 0,
+      "symbol": "ITCHOTELS"
+    },
+    {
+      "rows": 115185,
+      "screened_rows": 115185,
+      "symbol": "JIOFIN"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "JSWSTEEL"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "KOTAKBANK"
+    },
+    {
+      "rows": 2205,
+      "screened_rows": 0,
+      "symbol": "KWIL"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "LT"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "M&M"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137310,
+      "symbol": "MARUTI"
+    },
+    {
+      "rows": 68310,
+      "screened_rows": 68310,
+      "symbol": "MAXHEALTH"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "NESTLEIND"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "NTPC"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "ONGC"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "POWERGRID"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137310,
+      "symbol": "RELIANCE"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 135435,
+      "symbol": "SBILIFE"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137310,
+      "symbol": "SBIN"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "SHRIRAMFIN"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137310,
+      "symbol": "SUNPHARMA"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 136935,
+      "symbol": "TATACONSUM"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137310,
+      "symbol": "TATASTEEL"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137310,
+      "symbol": "TCS"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137310,
+      "symbol": "TECHM"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 137310,
+      "symbol": "TITAN"
+    },
+    {
+      "rows": 1080,
+      "screened_rows": 0,
+      "symbol": "TMCV"
+    },
+    {
+      "rows": 138015,
+      "screened_rows": 0,
+      "symbol": "TMPV"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "TRENT"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 135060,
+      "symbol": "ULTRACEMCO"
+    },
+    {
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "WIPRO"
+    }
+  ],
+  "retained_builder_modules": {
+    "rebuild.py": "129216e766b7458fc982962e428feb8d9e17f40ee70e2c91b0f7464c8a270d1f",
+    "validation.py": "088428560e2b4ddfd449191fa402342c76c3b166fe5fdd2a46eaab72fc71931c"
+  },
+  "rows": 6909518,
+  "screened_companies": 41,
+  "screened_rows": 5069595,
+  "session_statuses": {
+    "NO_DAILY_IDENTITY_REFERENCE": 18,
+    "PASS_SCALE_SCREEN": 13550,
+    "UNRESOLVED_CAPITAL_ACTION_UNITS": 4797,
+    "ZERO_VOLUME_SESSION": 103
+  },
+  "sessions": 369,
+  "short_sessions": 1,
+  "source_units_unchanged": true,
+  "special_session_bars": {
+    "2025-02-01": 19125,
+    "2025-10-21": 3000,
+    "2026-02-01": 18750
+  },
+  "test_access": false,
+  "version": "nse_rebuild_verification_v1"
+}

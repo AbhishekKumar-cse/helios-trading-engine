@@ -22,8 +22,9 @@ from helios.common.types import (
     RiskDecision,
     RiskState,
 )
+from helios.equities.charges import IntradayChargeBook
 from helios.sim.event_loop import BarEventLoop, BarOpen
-from helios.sim.ledger import PnLLedger
+from helios.sim.ledger import FeeAdjustment, PnLLedger
 from helios.sim.loss_risk import DailyRisk, TripStore
 from helios.sim.oms import OrderManagementSystem
 from helios.sim.paper import BarPaperVenue
@@ -40,6 +41,7 @@ class ReplayTrace(Record):
     marks: tuple[Decimal, ...]
     decisions: tuple[RiskDecision, ...]
     tail: tuple[NewOrder, ...]
+    fee_adjustments: tuple[FeeAdjustment, ...] = ()
 
 
 def simulate(
@@ -66,6 +68,12 @@ def simulate(
     if len(signal_map) != len(signals):
         raise ValueError("signal timestamps must be unique")
     equity_market = isinstance(config, EquityBacktestConfig)
+    charge_book = (
+        IntradayChargeBook(Decimal(str(config.cost_multiplier)))
+        if isinstance(config, EquityBacktestConfig)
+        and config.policy.charge_policy == "intraday_reference_v2"
+        else None
+    )
     ledger = PnLLedger(
         config.strategy.capital,
         Mode.BACKTEST,
@@ -133,6 +141,7 @@ def simulate(
         config.fees,
         venue_id=config.run_id if equity_market else "bar-paper",
         quote_asset="INR" if equity_market else "USDT",
+        charge_book=charge_book,
     )
 
     def on_report(report: ExecutionReport) -> None:
@@ -204,6 +213,17 @@ def simulate(
     tail = BarEventLoop().run(
         SimpleNamespace(events=lambda: iter(bars)), decide, act, opened=opened, closed=closed
     )
+    adjustments: tuple[FeeAdjustment, ...] = ()
+    if charge_book is not None:
+        if tail or venue.snapshot_open_orders():
+            raise ValueError("cannot settle fees while execution remains pending")
+        _, amount = charge_book.settle()
+        adjustment = FeeAdjustment(
+            adjustment_id=config.run_id + ":stt", timestamp=clock, amount=amount
+        )
+        ledger.adjust_fees(adjustment)
+        snapshots[-1] = equity()
+        adjustments = (adjustment,)
     return ReplayTrace(
         orders=oms.snapshot(),
         reports=tuple(reports),
@@ -212,4 +232,5 @@ def simulate(
         marks=tuple(marks),
         decisions=tuple(decisions),
         tail=tuple(p.action for p in tail if isinstance(p.action, NewOrder)),
+        fee_adjustments=adjustments,
     )

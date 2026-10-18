@@ -33,7 +33,8 @@ def minute_samples(bars: pd.DataFrame, *, include_unlabelled: bool = False) -> p
     )
     frame["open_gap"] = frame.open / close.shift(1) - 1
     local = frame.timestamp.dt.tz_convert("Asia/Kolkata")
-    frame["bar_slot"] = local.dt.hour * 60 + local.dt.minute - 555
+    opening = frame.session_open_minute if "session_open_minute" in frame else 555
+    frame["bar_slot"] = local.dt.hour * 60 + local.dt.minute - opening
     frame["feature_available"] = good & np.isfinite(
         frame[list(features_for("60m"))].to_numpy(dtype=float)
     ).all(axis=1)

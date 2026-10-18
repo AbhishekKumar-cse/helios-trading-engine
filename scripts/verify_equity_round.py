@@ -5,6 +5,7 @@ import json
 import math
 from collections import Counter, defaultdict
 from dataclasses import asdict
+from datetime import date
 from decimal import Decimal, localcontext
 from pathlib import Path
 
@@ -16,6 +17,7 @@ from helios.common.db import get_engine
 from helios.common.lineage import PROJECT_ROOT
 from helios.data.equities import sha256
 from helios.data.snapshots import SnapshotFile, compute_snapshot_id
+from helios.equities.charges import ChargeTrade, estimate_intraday_charges
 from helios.equities.pipeline import registry_fingerprint
 from helios.registry.results import get_result
 from helios.sim.fitness import fitness
@@ -39,6 +41,7 @@ assert {(r["symbol"], r["candidate"]) for r in summary["results"]} == {
 }
 slots = 375 if summary.get("interval") == "1m" else 7
 full_slots = 375 if slots == 375 else 6
+repaired = protocol["policy"]["version"] == "nse_minute_research_v2"
 assert len({(r["symbol"], r["candidate"]) for r in summary["results"]}) == attempts
 assert Counter(r["candidate"] for r in summary["results"]) == Counter(
     r["candidate"] for r in prereg["attempts"]
@@ -136,6 +139,16 @@ with engine.connect() as connection, localcontext() as context:
         sessions_count += len(days)
         day_fills = defaultdict(list)
         day_snapshots = defaultdict(list)
+        day_adjustments = defaultdict(list)
+        for adjustment in evidence.get("fee_adjustments", []):
+            day = str(
+                pd.Timestamp(adjustment["timestamp"], unit="us", tz="UTC")
+                .tz_convert("Asia/Kolkata")
+                .date()
+            )
+            assert adjustment["policy"] == "nse_intraday_reference_v2"
+            assert adjustment["reason"] == "flat_day_stt_settlement"
+            day_adjustments[day].append(adjustment)
         for point in evidence["ledger_snapshots"]:
             day = str(
                 pd.Timestamp(point["timestamp"], unit="us", tz="UTC")
@@ -155,7 +168,8 @@ with engine.connect() as connection, localcontext() as context:
             opening = inputs[row["symbol"]][timestamp]
             sign = 1 if fill["side"] == "BUY" else -1
             assert abs(price - opening * (1 + sign * Decimal(".0005"))) <= Decimal("1e-18")
-            assert abs(fee - quantity * price * Decimal(".0015")) <= Decimal("1e-18")
+            if not repaired:
+                assert abs(fee - quantity * price * Decimal(".0015")) <= Decimal("1e-18")
             local = pd.Timestamp(timestamp, unit="us", tz="UTC").tz_convert("Asia/Kolkata")
             assert (
                 (10 <= local.hour <= 15 and local.minute == 15)
@@ -176,6 +190,27 @@ with engine.connect() as connection, localcontext() as context:
                 fees += fee
                 notional += quantity * price
             assert position == 0 and len(day_snapshots[day]) == slots
+            if repaired:
+                assert len(day_adjustments[day]) == 1
+                adjustment = day_adjustments[day][0]
+                assert adjustment["timestamp"] == day_snapshots[day][-1]["timestamp"]
+                amount = Decimal(adjustment["amount"])
+                cash -= amount
+                fees += amount
+                estimate = estimate_intraday_charges(
+                    [
+                        ChargeTrade(
+                            date.fromisoformat(day),
+                            row["symbol"],
+                            f["order_id"],
+                            f["side"],
+                            Decimal(f["quantity"]),
+                            Decimal(f["price"]),
+                        )
+                        for f in day_fills[day]
+                    ]
+                )
+                assert fees == estimate.total.quantize(Decimal("1e-18"))
             final = day_snapshots[day][-1]
             assert abs(cash - Decimal(final["equity"])) < Decimal("1e-12")
             assert Decimal(final["cash"]) == Decimal(final["equity"])
@@ -260,6 +295,7 @@ result = dict(
     fill_ids_unique=True,
     whole_share_long_only_flat_end=True,
     ledger_reconciliation=True,
+    reference_fee_settlement_verified=repaired,
     base_and_stress_metrics_verified=True,
     coverage_min=min(coverage),
     coverage_max=max(coverage),

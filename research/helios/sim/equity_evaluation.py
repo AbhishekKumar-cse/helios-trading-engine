@@ -105,9 +105,7 @@ def evaluate_equity(
     # This is a data-quality study; G7 prohibits promotion for the current vendor data.
     opportunity_times: set[int] = set()
     for frame in sessions:
-        opportunity_times.update(
-            int(value) for value in frame.open_time.iloc[: policy.session_slots - 2]
-        )
+        opportunity_times.update(int(value) for value in frame.open_time.iloc[: len(frame) - 2])
     keep = alpha.open_time.isin(opportunity_times) & alpha.available
     subset = replace(
         alpha,
@@ -132,7 +130,11 @@ def evaluate_equity(
         accounting="independent flat-to-flat sessions; arithmetic P&L / fixed starting capital",
         turnover=f"observed traded notional / capital / {policy.full_slots} "
         "scheduled full bars per session",
-        coverage="conditional on complete observed normal sessions, selected ex-post",
+        coverage=(
+            "conditional on screened complete reviewed sessions, selected ex-post"
+            if policy.version == "nse_minute_research_v2"
+            else "conditional on complete observed normal sessions, selected ex-post"
+        ),
         source_hashes=context.source_hashes,
         input_hashes=source.hashes,
         model_hash=context.model.model_hash,
@@ -144,6 +146,7 @@ def evaluate_equity(
     stress: list[float] = []
     fills: list[dict[str, Any]] = []
     snapshots: list[dict[str, Any]] = []
+    fee_adjustments: list[dict[str, Any]] = []
     turn, fee_total = [], Decimal(0)
     metrics = stressed_metrics = None
     fit_value = fraction = drawdown = hit_rate = None
@@ -189,10 +192,14 @@ def evaluate_equity(
                 )
             )
             stress.append(doubled.net_return)
-            turn.append(base.turnover / policy.full_slots)
+            turn.append(
+                base.turnover
+                / (len(frame) if policy.version == "nse_minute_research_v2" else policy.full_slots)
+            )
             fee_total += Decimal(base.fees)
             fills.extend(base.fills)
             snapshots.extend(base.snapshots)
+            fee_adjustments.extend(base.fee_adjustments)
         returns = np.asarray([row["net_return"] for row in daily], dtype=float)
         metrics = return_metrics(returns, periods_per_year=policy.trading_sessions_per_year)
         stressed_metrics = return_metrics(stress, periods_per_year=policy.trading_sessions_per_year)
@@ -234,7 +241,12 @@ def evaluate_equity(
             False,
             True,
             "source_validation_required",
-            "current-universe survivorship bias; vendor/calendar/corporate actions unverified",
+            (
+                "conditional historical cohort; unresolved adjustments, liquidity and outage policy"
+                if policy.version == "nse_minute_research_v2"
+                else "current-universe survivorship bias; "
+                "vendor/calendar/corporate actions unverified"
+            ),
         ),
         GateOutcome(
             "G8",
@@ -275,6 +287,7 @@ def evaluate_equity(
         costs={"points": []},
         fills=fills,
         ledger_snapshots=snapshots,
+        fee_adjustments=fee_adjustments,
         coverage=dict(
             expected=len(source.expected_sessions),
             complete=len(sessions),

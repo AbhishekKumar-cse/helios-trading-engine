@@ -18,6 +18,7 @@ from helios.common.types import (
     Money,
     PnLSnapshot,
     Position,
+    Record,
     Side,
     Timestamp,
 )
@@ -35,6 +36,14 @@ class LedgerError(ValueError):
 
 class ReconciliationError(LedgerError):
     pass
+
+
+class FeeAdjustment(Record):
+    adjustment_id: str
+    timestamp: Timestamp
+    amount: Money
+    policy: Literal["nse_intraday_reference_v2"] = "nse_intraday_reference_v2"
+    reason: Literal["flat_day_stt_settlement"] = "flat_day_stt_settlement"
 
 
 class LedgerConfig(HeliosConfig):
@@ -93,6 +102,7 @@ class PnLLedger:
         self._fees = Fraction(0)
         self._lots: dict[str, _Lot] = {}
         self._fills: dict[str, Fill] = {}
+        self._adjustments: dict[str, FeeAdjustment] = {}
         self._clock = 0
         self._halted = False
         self.config_hash = config_hash(
@@ -228,6 +238,32 @@ class PnLLedger:
             self._break("public PnL snapshot exceeds the declared 2e-18 rounding tolerance")
         self._clock = timestamp
         return result
+
+    def adjust_fees(self, adjustment: FeeAdjustment) -> bool:
+        """Book a signed tax settlement without inventing a trade or changing P&L."""
+        adjustment = FeeAdjustment.model_validate(adjustment.model_dump())
+        prior = self._adjustments.get(adjustment.adjustment_id)
+        if prior is not None:
+            if prior != adjustment:
+                raise LedgerError("conflicting duplicate fee adjustment")
+            return False
+        if (
+            self._halted
+            or self.mode is not Mode.BACKTEST
+            or self.quote_asset != "INR"
+            or adjustment.timestamp < self._clock
+            or any(lot.quantity != 0 for lot in self._lots.values())
+        ):
+            raise LedgerError("fee settlement requires an unhalted flat INR backtest day")
+        fee = Fraction(adjustment.amount)
+        cash, fees = self._cash - fee, self._fees + fee
+        _MONEY.validate_python(decimal_value(cash))
+        _MONEY.validate_python(decimal_value(fees))
+        if fees < 0:
+            raise LedgerError("tax refund cannot exceed total accrued fees")
+        self._cash, self._fees, self._clock = cash, fees, adjustment.timestamp
+        self._adjustments[adjustment.adjustment_id] = adjustment
+        return True
 
     def _break(self, reason: str) -> None:
         self._halted = True

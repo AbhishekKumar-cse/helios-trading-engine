@@ -44,6 +44,7 @@ class SessionReplay:
     fills: tuple[dict[str, Any], ...]
     snapshots: tuple[dict[str, Any], ...]
     trace: ReplayTrace
+    fee_adjustments: tuple[dict[str, Any], ...] = ()
 
 
 @dataclass(frozen=True)
@@ -55,6 +56,7 @@ class SessionEvidence:
     n_fills: int
     fills: tuple[dict[str, Any], ...]
     snapshots: tuple[dict[str, Any], ...]
+    fee_adjustments: tuple[dict[str, Any], ...] = ()
 
 
 def replay_pair(arguments: tuple[Any, ...]) -> tuple[SessionEvidence, SessionEvidence]:
@@ -81,6 +83,7 @@ def replay_pair(arguments: tuple[Any, ...]) -> tuple[SessionEvidence, SessionEvi
                 result.n_fills,
                 result.fills,
                 result.snapshots,
+                result.fee_adjustments,
             )
         )
     return evidence[0], evidence[1]
@@ -99,6 +102,14 @@ def eligible_sessions(
         expected = (
             [555 + 60 * slot for slot in range(7)] if interval == "1h" else list(range(555, 930))
         )
+        if interval == "1m" and "session_slots" in frame and not frame.empty:
+            if frame.session_slots.nunique() != 1 or frame.session_open_minute.nunique() != 1:
+                raise ValueError("session schedule changed within one day")
+            opening, slots = (
+                int(frame.session_open_minute.iloc[0]),
+                int(frame.session_slots.iloc[0]),
+            )
+            expected = list(range(opening, opening + slots))
         if minutes != expected:
             excluded.append(dict(day=day, reason="missing_or_nonstandard_bar_slots"))
             continue
@@ -131,6 +142,11 @@ def replay_session(
 ) -> SessionReplay:
     symbol = alpha.symbol
     day = str(frame.session_date.iloc[0])
+    slots = (
+        int(frame.session_slots.iloc[0])
+        if policy.version == "nse_minute_research_v2"
+        else policy.session_slots
+    )
     run_id = "nse_" + uuid4().hex[:24]
     notional = policy.capital * policy.max_weight
     config = EquityBacktestConfig(
@@ -139,7 +155,8 @@ def replay_session(
         snapshot_id=snapshot_id,
         symbol=symbol,
         start_us=int(frame.open_time.iloc[0]),
-        end_us=int(frame.open_time.iloc[0]) + 375 * 60_000_000,
+        end_us=int(frame.open_time.iloc[0])
+        + (slots if policy.interval == "1m" else 375) * 60_000_000,
         policy=policy,
         fees=policy.fees(symbol, multiplier),
         cost_multiplier=multiplier,
@@ -170,7 +187,7 @@ def replay_session(
     lineage = DecisionLineage(
         alpha_id=alpha_id,
         alpha_version=1,
-        feature_set_version="nse_session_features_v1",
+        feature_set_version=policy.feature_set_version,
         horizon_family=HorizonFamily.HOURLY if policy.interval == "1h" else HorizonFamily.MINUTE,
         code_commit=code_commit,
         config_hash=config_hash(policy),
@@ -189,7 +206,11 @@ def replay_session(
         closing = opening + duration * 60_000_000
         bars.append(
             Bar(
-                calendar="nse_regular_v1",
+                calendar=(
+                    "nse_reviewed_v2"
+                    if policy.version == "nse_minute_research_v2"
+                    else "nse_regular_v1"
+                ),
                 symbol=symbol,
                 source="yahoo_nse" if policy.interval == "1h" else "upstox_public_minute",
                 sequence=slot,
@@ -206,7 +227,7 @@ def replay_session(
             )
         )
         # A calendar-known flat target exits at the final observed bar opening.
-        value = 0.0 if slot >= policy.session_slots - 2 else lookup.get(opening)
+        value = 0.0 if slot >= slots - 2 else lookup.get(opening)
         signals.append(
             AlphaValue(
                 symbol=symbol,
@@ -240,4 +261,5 @@ def replay_session(
         tuple(fill.model_dump(mode="json") for fill in fills),
         tuple(point.model_dump(mode="json") for point in trace.snapshots),
         trace,
+        tuple(point.model_dump(mode="json") for point in trace.fee_adjustments),
     )

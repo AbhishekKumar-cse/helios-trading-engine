@@ -1,0 +1,17 @@
+{
+  "archive": "reports_out/equity_research/nse_horizon_train1",
+  "files": {
+    "results.json": "33981a3d6704e4f4f670aae2731de940fb782feb54b1a4d6ec9a9d49466de93b",
+    "verification.json": "f6cbd411ca3e8c9e353a2ecf4ad4b546344db3a520adb7844214c0bf590790f2",
+    "probe_receipt.json": "c790d9b42bdb445c1d2bda4f8c57aa294e5a8bd61f4beda66f9b9120413cfce0"
+  },
+  "archive_files": {
+    "protocol.json": "ffc9468e6fec1d7df1f9f56eef24598d99083d4856967d93dd3d67f27d759852",
+    "train_samples.parquet": "51c3f42e2e729eed026fb75883be1b359e53dbb0ae847eb70422a51c7993eeae",
+    "session_records.json": "03a81e24bab1d897ac2484b7089a87976b88d7109877f93cf039c66ec1609815",
+    "decoded_scope.json": "0705c25b9737a7ad05f495dcd8926ac50af2e44295ef0bf5e6ce4d56c103bc25",
+    "exclusions.json": "a50d49401190a1900318f94f1be301780a11545ec715fc4a4826d251a95c44a0"
+  },
+  "source_commit": "f7398746b2c841168c6de8d938aec5a897d85af9",
+  "measurement_dirty": true
+}

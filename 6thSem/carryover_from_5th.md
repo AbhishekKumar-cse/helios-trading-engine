@@ -15,6 +15,12 @@ Independent checks reconcile 180 base fills over 342 candidate-sessions and matc
 certified source evidence and an eligible alpha remain open. Prior TRAIN/VALID
 exposure and dirty frozen development lineage are retained. TEST remains sealed.
 
+The subsequent [longer-horizon TRAIN study](../docs/research/nse_horizons_20261019/REPORT.md)
+also completed and was independently verified. Three fixed ML targets across 41
+conditional companies produced no entries above the 21 bps hurdle and zero
+screen survivors. No VALID/TEST prices or registry writes were added. This is
+negative research evidence, so certification and eligible alpha remain open.
+
 The [public reference audit](../docs/research/nse_assumption_validation_summary_20261018.md)
 has now measured the source issues: 321,060 known pre-inclusion minutes, seven
 stocks with sampled adjusted-price scales, omitted Budget sessions and a short

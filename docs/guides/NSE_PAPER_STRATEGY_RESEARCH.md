@@ -82,3 +82,11 @@ not issue a positive certificate from documentary evidence or release source
 exclusions. Public OHLCV, daily references and published fee schedules do not
 supply missing raw-minute vintage, receipt-time history, account acceptance or
 executable fill observations. No TEST access, promotion or real order is involved.
+
+The subsequent [longer-horizon TRAIN follow-up](../research/nse_horizons_20261019/REPORT.md)
+fits three fixed LightGBM targets using January-August, calibrates September and
+screens October 9-December 31 within TRAIN. All three remain below the fixed
+21 bps expected-return hurdle and make no entries. This is a separate diagnostic,
+not an eligible alpha or additional shared-evaluator result. Reproduce only into
+a new exclusive directory with `scripts/research_nse_horizons.py`, then run
+`scripts/verify_nse_horizons.py`; the verifier accepts zero-entry rounds only.

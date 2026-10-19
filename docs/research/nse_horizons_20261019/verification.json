@@ -1,0 +1,18 @@
+{
+  "active_trades": 0,
+  "all_outcomes_observed_flat": true,
+  "all_screen_predictions_reproduced": true,
+  "all_source_hashes_verified": true,
+  "calibration_refit_matches": true,
+  "companies": 41,
+  "passed": true,
+  "result_sha256": "33981a3d6704e4f4f670aae2731de940fb782feb54b1a4d6ec9a9d49466de93b",
+  "scope": "Zero-entry TRAIN screen audit; no model refit, certification or gate approval",
+  "screen_rows": 2055,
+  "session_scenario_records": 12330,
+  "source_samples": 41,
+  "test_accesses": 0,
+  "train_rows": 8889,
+  "valid_price_reads": 0,
+  "verifier_sha256": "3030145599c0e41860e2c01f7ace14b1f1cab5611fd2b9a373fc185d46037fed"
+}

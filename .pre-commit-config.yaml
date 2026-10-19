@@ -12,8 +12,11 @@ repos:
     rev: v6.0.0
     hooks:
       - id: end-of-file-fixer
+        # Historical evidence is hash-bound to the exact measured bytes.
+        exclude: ^docs/research/nse_intraday_20261019/nse_
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
+        exclude: ^docs/research/nse_intraday_20261019/nse_
       - id: check-yaml
       - id: check-toml
       - id: check-added-large-files

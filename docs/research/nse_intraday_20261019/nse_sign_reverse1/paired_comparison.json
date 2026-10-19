@@ -1,0 +1,179 @@
+{
+  "certified": false,
+  "checks_sha256": "45758b4352ea48c3b98351599c3f6f719f66cce876a85df82e517d7d6add066b",
+  "comparisons": [
+    {
+      "inverse": {
+        "artifact_sha256": "64cd428675981c77142b7f8b9febe26684a0c9ee14ac54a9a4885b870e02438f",
+        "candidate": "inverse_vol_trend",
+        "fees_inr": "277565.061611174291100000",
+        "fills": 20673,
+        "fitness": -1454.659529846,
+        "gates": {
+          "G1": false,
+          "G2": false,
+          "G3": true,
+          "G4": true,
+          "G5": false,
+          "G6": false,
+          "G7": false,
+          "G8": true
+        },
+        "gross_before_slippage_inr": "7266.3",
+        "net_inr": "-531455.406361174291100000",
+        "run_id": "855f0b95-ed48-4f0b-bf77-f51e73909b34",
+        "sessions": 114,
+        "sharpe": -150.0496903628,
+        "slippage_inr": "261156.644750000000000000",
+        "status": "REJECTED",
+        "stress_sharpe": -184.36025500512315,
+        "stressed_net_inr": "-1070184.944468623200000"
+      },
+      "inverse_positive_after_base_and_stress": false,
+      "original": {
+        "artifact_sha256": "ef81368695aca6595917cb2fb90c9874c38a117ee5ad42b2140f8a83046fd16b",
+        "candidate": "original_vol_trend",
+        "fees_inr": "272874.437388886808800000",
+        "fills": 20304,
+        "fitness": -1465.8024568876,
+        "gates": {
+          "G1": false,
+          "G2": false,
+          "G3": true,
+          "G4": true,
+          "G5": false,
+          "G6": false,
+          "G7": false,
+          "G8": true
+        },
+        "gross_before_slippage_inr": "-8129.6",
+        "net_inr": "-537744.172488886808800000",
+        "run_id": "5ce1f40c-480c-4489-9751-28bb09fbb5f1",
+        "sessions": 114,
+        "sharpe": -150.3123797956,
+        "slippage_inr": "256740.135100000000000000",
+        "status": "REJECTED",
+        "stress_sharpe": -188.388313489581,
+        "stressed_net_inr": "-1067366.450485744900000"
+      },
+      "pair": "vol_trend"
+    },
+    {
+      "inverse": {
+        "artifact_sha256": "3002345f13f1849106651d2af71a20a107d849532ef22f20d8e6d64a56b32916",
+        "candidate": "inverse_body_reversal",
+        "fees_inr": "313798.537297418571500000",
+        "fills": 28651,
+        "fitness": -1186.3332637259,
+        "gates": {
+          "G1": false,
+          "G2": false,
+          "G3": true,
+          "G4": true,
+          "G5": false,
+          "G6": false,
+          "G7": false,
+          "G8": true
+        },
+        "gross_before_slippage_inr": "-2940.5",
+        "net_inr": "-611988.201747418571500000",
+        "run_id": "0ff9333b-7b61-4b27-9241-b1fcb169ee39",
+        "sessions": 114,
+        "sharpe": -119.8749987677,
+        "slippage_inr": "295249.164450000000000000",
+        "status": "REJECTED",
+        "stress_sharpe": -128.53956919253565,
+        "stressed_net_inr": "-1221044.762164807600000"
+      },
+      "inverse_positive_after_base_and_stress": false,
+      "original": {
+        "artifact_sha256": "f7b12fea642e9506829a254d7e473ac261351714fbd0f0750ae7c7fa95b1870c",
+        "candidate": "original_body_reversal",
+        "fees_inr": "334191.531550682054800000",
+        "fills": 29819,
+        "fitness": -1535.7361402073,
+        "gates": {
+          "G1": false,
+          "G2": false,
+          "G3": true,
+          "G4": true,
+          "G5": false,
+          "G6": false,
+          "G7": false,
+          "G8": true
+        },
+        "gross_before_slippage_inr": "4088.4",
+        "net_inr": "-644539.775150682054800000",
+        "run_id": "186cc92b-dfb4-4502-970b-2c2712383bfb",
+        "sessions": 114,
+        "sharpe": -156.047714296,
+        "slippage_inr": "314436.643600000000000000",
+        "status": "REJECTED",
+        "stress_sharpe": -165.55279787752093,
+        "stressed_net_inr": "-1293177.381739121800000"
+      },
+      "pair": "body_reversal"
+    },
+    {
+      "inverse": {
+        "artifact_sha256": "3de958c72ae13ce430e1970c7112ea9bc92e18fa46b46361ae4802adb4a845ea",
+        "candidate": "inverse_gap_reversal",
+        "fees_inr": "396330.442232023081900000",
+        "fills": 15132,
+        "fitness": -640.0800644671,
+        "gates": {
+          "G1": false,
+          "G2": false,
+          "G3": true,
+          "G4": true,
+          "G5": false,
+          "G6": false,
+          "G7": false,
+          "G8": true
+        },
+        "gross_before_slippage_inr": "-6957.3",
+        "net_inr": "-776189.154782023081900000",
+        "run_id": "acfda40d-d554-4f67-9ee3-11c4fa98d29d",
+        "sessions": 114,
+        "sharpe": -64.5426250418,
+        "slippage_inr": "372901.412550000000000000",
+        "status": "REJECTED",
+        "stress_sharpe": -65.41420214527014,
+        "stressed_net_inr": "-1545432.19943391100000"
+      },
+      "inverse_positive_after_base_and_stress": false,
+      "original": {
+        "artifact_sha256": "1b53f3e755326938a5c7df7fa46ccd63c733d810a496a08a634d4ee2cc9adb90",
+        "candidate": "original_gap_reversal",
+        "fees_inr": "325712.558017952666600000",
+        "fills": 12449,
+        "fitness": -381.4014218066,
+        "gates": {
+          "G1": false,
+          "G2": false,
+          "G3": true,
+          "G4": true,
+          "G5": false,
+          "G6": false,
+          "G7": false,
+          "G8": true
+        },
+        "gross_before_slippage_inr": "-342.2",
+        "net_inr": "-632513.023817952666600000",
+        "run_id": "1588deb2-935f-4f46-be10-53d95ee2f5ee",
+        "sessions": 114,
+        "sharpe": -38.6217843875,
+        "slippage_inr": "306458.265800000000000000",
+        "status": "REJECTED",
+        "stress_sharpe": -38.98880735923941,
+        "stressed_net_inr": "-1264693.041522951400000"
+      },
+      "pair": "gap_reversal"
+    }
+  ],
+  "prior_valid_exposure": true,
+  "promoted": 0,
+  "protocol_sha256": "d2abe96771a148c8a67a479e378787177830ed1c16ce8e27386d403ce210649b",
+  "signal_checks_sha256": "494ae9841f022b22c4a17a24e787b268033998e32102cd70c4c417b56f3a93e5",
+  "test_accesses": 0
+}

@@ -1,0 +1,30 @@
+{
+  "aggregate_metrics_recomputed": true,
+  "causal_previous_history_verified": true,
+  "company_candidates": 123,
+  "exploratory_survivors": 0,
+  "gross_slippage_fee_net_reconciled": true,
+  "helpers": {
+    "collect_sources.py": "57c35a079ffbdbe621c58e07fd9cd9a806814e3d86b2d4bf544a4a785730d05f",
+    "paper_signals.py": "3ef0bb5ae1c01cda22a9415f1757685b1c78644cdb8c6fcb4f51497e7b6bc93a",
+    "study.py": "451072c9faf7b04bf05cfca0d4948f57a6aacc56d9ce561023d11849f2b81bf8",
+    "test_signals.py": "2264d8e2cd3e498354372dddee140d24a61722f17ef21815b5f3eff3d1dbc5d6",
+    "verify_report.py": "01f4b661285e8cc2d695a128b8b9aed36cf9a171e7fe3b3cc909ea99c5611ed6"
+  },
+  "history_windows": 7100,
+  "known_close_quantity_verified": true,
+  "next_open_execution_verified": true,
+  "official_gate_evaluation": false,
+  "production_source_clean": true,
+  "promoted": 0,
+  "protocol_sha256": "d55e8456a2fc1d4ac5a52efb21e8aaf637ce50f85bf3a79a1465cabf5e4d951c",
+  "reconciled_scenario_fills": 29140,
+  "reconciled_scenario_trades": 14570,
+  "records": 45204,
+  "results_sha256": "792f8f44d8279ac3f50c4e84d51a9d5f4a15b835d7c8d97304b3b4c4fb0fbf56",
+  "source_hashes_verified": true,
+  "strategies": 3,
+  "stress_positions_unchanged": true,
+  "test_accesses": 0,
+  "valid_price_reads": 0
+}

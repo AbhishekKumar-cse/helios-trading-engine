@@ -1,0 +1,72 @@
+"""Three causal long-only NSE adaptations of published intraday hypotheses.
+
+Return decision-bar indexes. Execution is ALWAYS at the next observed opening.
+No source-paper performance is assumed to transfer to this universe or tariff.
+"""
+
+from dataclasses import dataclass
+
+import numpy as np
+import pandas as pd
+from numpy.typing import NDArray
+
+NAMES = ("closing_momentum", "orb_rvol", "noise_vwap")
+
+
+@dataclass
+class Setup:
+    previous_close: float
+    opening_rvol: float | None = None
+    atr14: float | None = None
+    noise14: NDArray[np.float64] | None = None
+    top20: bool = False
+
+
+def decisions(name: str, bars: pd.DataFrame, setup: Setup) -> tuple[int, int] | None:
+    """A single entry and exit at most; None means explicitly flat for the day.
+
+    None history is unavailable, handled by the caller rather than a flat day.
+    Arrays contain actual sorted 375 observed minute bars. A decision can only
+    inspect its prefix. At slot373 the calendar-known final exit is scheduled.
+    """
+    opening = bars["open"].to_numpy(dtype=float)
+    high = bars["high"].to_numpy(dtype=float)
+    low = bars["low"].to_numpy(dtype=float)
+    close = bars["close"].to_numpy(dtype=float)
+    volume = bars["volume"].to_numpy(dtype=float)
+    assert len(close) == 375
+    assert name in NAMES
+    if name == "closing_momentum":
+        # Paper includes overnight: previous regular-session close -> first30 close.
+        return (344, 373) if close[29] > setup.previous_close else None
+    if name == "orb_rvol":
+        assert setup.opening_rvol is not None and setup.atr14 is not None
+        if not setup.top20 or setup.opening_rvol < 1 or close[4] <= opening[0]:
+            return None
+        range_high = float(high[:5].max())
+        entry = None
+        stop = None
+        # Closed five-minute confirmation; no inferred stop-order intrabar fill.
+        for k in range(9, 374, 5):
+            if entry is None:
+                if k <= 344 and close[k] > range_high:
+                    entry = k
+                    stop = close[k] - 0.1 * setup.atr14
+            elif stop is not None and close[k] <= stop:
+                return entry, k
+        return None if entry is None else (entry, 373)
+    assert setup.noise14 is not None and len(setup.noise14) == 375
+    typical = (high + low + close) / 3
+    # These are OHLCV-derived VWAP proxies, not actual trade-by-trade VWAP.
+    vwap = np.cumsum(typical * volume) / np.cumsum(volume)
+    anchor = max(opening[0], setup.previous_close)
+    entry = None
+    # Decisions every30 elapsed minutes, not every minute. Fixed shares once filled.
+    for k in range(29, 374, 30):
+        boundary = max(anchor * (1 + setup.noise14[k]), vwap[k])
+        if entry is None:
+            if k <= 344 and close[k] > boundary:
+                entry = k
+        elif close[k] <= boundary:
+            return entry, k
+    return None if entry is None else (entry, 373)

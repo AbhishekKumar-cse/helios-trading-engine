@@ -1,0 +1,17 @@
+alpha_id: nse_sign_reverse1_inverse_vol_trend
+version: 1
+name: EXPLORATORY NSE 1m inverse_vol_trend
+provenance: QUANT
+feature_set_version: nse_reviewed_minute_features_v2
+horizon_family: H-MINUTE
+horizon_periods: 1
+params: {}
+output:
+  convention: clip_unit_v1
+  lower: -1
+  upper: 1
+  position_scale: 1.0
+expression: clip(-return_3 / (2 * volatility_3), 0, 1)
+model_ref: null
+author: helios_equity_research
+code_commit: 509866fde6b13fa3fcfbb84d6ca0d0c51734954f

@@ -1,0 +1,9 @@
+# Verified SHA-256s of registry/api.py and registry/test_access.py at 509866f.
+# These six immutable protocol lines contain source hashes, not credentials.
+# The publication manifest test binds their exact bytes.
+docs/research/nse_intraday_20261019/nse_costaware_train1/protocol.json:generic-api-key:149
+docs/research/nse_intraday_20261019/nse_costaware_train1/protocol.json:generic-api-key:155
+docs/research/nse_intraday_20261019/nse_papers_train1/protocol.json:generic-api-key:173
+docs/research/nse_intraday_20261019/nse_papers_train1/protocol.json:generic-api-key:179
+docs/research/nse_intraday_20261019/nse_sign_reverse1/protocol.json:generic-api-key:156
+docs/research/nse_intraday_20261019/nse_sign_reverse1/protocol.json:generic-api-key:162

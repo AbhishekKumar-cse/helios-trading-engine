@@ -1,0 +1,46 @@
+[
+  {
+    "bytes": 17,
+    "checked_at": "2026-10-19T15:54:18.585230+00:00",
+    "content_type": "text/plain; charset=UTF-8",
+    "error": "HTTP refusal retained; no retry or bypass",
+    "name": "gao.html",
+    "pdf_magic": false,
+    "sha256": "2938e9f1284180959e33ab1718d0793a72ff6e4cdb8108c34dcd14e69446de5c",
+    "status": 403,
+    "url": "https://profiles.wustl.edu/en/publications/market-intraday-momentum/"
+  },
+  {
+    "bytes": 1038400,
+    "checked_at": "2026-10-19T15:54:19.337175+00:00",
+    "content_type": "application/pdf;charset=UTF-8",
+    "error": null,
+    "name": "orb.pdf",
+    "pdf_magic": true,
+    "sha256": "85d9b8c3c4de0ae31dc74e4c19a8d2f0f3d17347a0c9f840a9002d3ac14f9ca6",
+    "status": 200,
+    "url": "https://www.alexandria.unisg.ch/server/api/core/bitstreams/3c2989c4-688d-4d78-8a71-f02690990d51/content"
+  },
+  {
+    "bytes": 1901828,
+    "checked_at": "2026-10-19T15:54:21.176343+00:00",
+    "content_type": "application/pdf;charset=UTF-8",
+    "error": null,
+    "name": "noise.pdf",
+    "pdf_magic": true,
+    "sha256": "41d635d162551c4add329d2a11cd9571aea391befd00e472ed81c0070bb207ad",
+    "status": 200,
+    "url": "https://alexandria.unisg.ch/server/api/core/bitstreams/a99aba00-f967-49b3-aceb-f544dc386e0b/content"
+  },
+  {
+    "bytes": 196403,
+    "checked_at": "2026-10-19T15:54:22.864147+00:00",
+    "content_type": "application/pdf",
+    "error": null,
+    "name": "heston.pdf",
+    "pdf_magic": true,
+    "sha256": "755b6eda967343fdd1f088dc89b62caad378d98d6e1a14f3d353fb6e790873b5",
+    "status": 200,
+    "url": "https://arxiv.org/pdf/1005.3535"
+  }
+]

@@ -1,0 +1,60 @@
+alpha_id: nse_paper_orb_rvol
+version: 1
+status: EXPLORATORY_TRAIN_SCREEN_ONLY
+implementation: paper_signals.py:decisions
+implementation_sha256: 3ef0bb5ae1c01cda22a9415f1757685b1c78644cdb8c6fcb4f51497e7b6bc93a
+parameters: Positive first5 candle, opening volume >=14day mean and top20, closed5min
+  breakout; exit closed5min below entry-signal close minus0.1ATR14
+source:
+  access: Full university-hosted working paper, method sections2 and4 read
+  id: orb
+  url: https://www.alexandria.unisg.ch/server/api/core/bitstreams/3c2989c4-688d-4d78-8a71-f02690990d51/content
+market: nse_cash
+long_only: true
+execution: fixed whole shares at decision close; next-observed-opening price proxy;
+  one entry/session
+universe:
+- ADANIPORTS
+- APOLLOHOSP
+- ASIANPAINT
+- AXISBANK
+- BAJAJFINSV
+- BEL
+- BHARTIARTL
+- BPCL
+- BRITANNIA
+- CIPLA
+- COALINDIA
+- DRREDDY
+- EICHERMOT
+- ETERNAL
+- GRASIM
+- HCLTECH
+- HDFCLIFE
+- HEROMOTOCO
+- HINDALCO
+- ICICIBANK
+- INDIGO
+- INDUSINDBK
+- JIOFIN
+- JSWSTEEL
+- LT
+- M&M
+- MARUTI
+- MAXHEALTH
+- NTPC
+- ONGC
+- POWERGRID
+- RELIANCE
+- SBILIFE
+- SBIN
+- SUNPHARMA
+- TATACONSUM
+- TATASTEEL
+- TCS
+- TECHM
+- TITAN
+- ULTRACEMCO
+protocol_sha256: d55e8456a2fc1d4ac5a52efb21e8aaf637ce50f85bf3a79a1465cabf5e4d951c
+registered_alpha_result: false
+promoted: false

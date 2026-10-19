@@ -1,0 +1,307 @@
+"""Preregistered exploratory opposite-entry research; no production source edits.
+
+Preserves long-only NSE rules. Negates the pre-clip expression, not the scores.
+All six paired attempts use identical data, capital, execution and cost policy.
+"""
+
+import json
+import os
+import shutil
+import sys
+from dataclasses import asdict
+from pathlib import Path
+
+ROOT = Path("/mnt/c/Users/bit/OneDrive/Desktop/helios")
+ROUND = "nse_sign_reverse1"
+OUTPUT = ROOT / "reports_out/equity_research" / ROUND
+RUNTIME = ROOT / "reports_out/equity_runtime" / ROUND
+DATA = ROOT / "data/equities/nifty50_repaired/20261018_v2"
+OLD = ROOT / "reports_out/equity_research/nse_minute_breadth1/ml"
+CANDIDATES = {
+    "original_vol_trend": "clip(return_3 / (2 * volatility_3), 0, 1)",
+    "inverse_vol_trend": "clip(-return_3 / (2 * volatility_3), 0, 1)",
+    "original_body_reversal": "clip(-body / range, 0, 1)",
+    "inverse_body_reversal": "clip(body / range, 0, 1)",
+    "original_gap_reversal": "clip(-sign(open_gap), 0, 1)",
+    "inverse_gap_reversal": "clip(sign(open_gap), 0, 1)",
+}
+
+
+def main():
+    from helios.common.lineage import git_is_dirty
+    from helios.data.equities import sha256
+
+    if git_is_dirty(ROOT):
+        raise ValueError("preserve pinned clean PAPER source")
+    if (OUTPUT / "protocol.json").exists():
+        raise ValueError("immutable round already prepared; do not rerun")
+    RUNTIME.mkdir(parents=True, exist_ok=False)
+    sources = [
+        *sorted((ROOT / "research/helios").rglob("*.py")),
+        *sorted((ROOT / "configs/equities").glob("*.yaml")),
+        ROOT / "pyproject.toml",
+        ROOT / "uv.lock",
+    ]
+    hashes = {}
+    for source in sources:
+        relative = source.relative_to(ROOT)
+        for base in (RUNTIME, OUTPUT / "source"):
+            target = base / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source, target)
+        hashes[str(relative)] = sha256(source)
+    helper_relative = Path("reports_out/equity_research") / ROUND / "runner.py"
+    helper_copy = OUTPUT / "source" / helper_relative
+    helper_copy.parent.mkdir(parents=True)
+    shutil.copyfile(OUTPUT / "runner.py", helper_copy)
+    hashes[str(helper_relative)] = sha256(helper_copy)
+    (RUNTIME / "reports_out").symlink_to(ROOT / "reports_out", target_is_directory=True)
+    # Fresh interpreter ensures all production imports come from this archive.
+    os.execv(
+        sys.executable,
+        [sys.executable, str(OUTPUT / "runner.py"), "frozen"],
+    )
+
+
+def frozen():
+    sys.path.insert(0, str(RUNTIME / "research"))
+    from lightgbm import Booster
+    from sqlalchemy import create_engine
+
+    from helios.common.config import config_hash, load_config
+    from helios.common.db import DatabaseSettings
+    from helios.common.lineage import git_commit, git_is_dirty
+    from helios.common.project_config import GatesConfig
+    from helios.data.equities import sha256, write_json
+    from helios.data.snapshots import (
+        Snapshot,
+        SnapshotFile,
+        compute_snapshot_id,
+        register_snapshot,
+    )
+    from helios.equities.config import EquityResearchPolicy
+    from helios.equities.inputs import load_equity_inputs
+    from helios.equities.model import EquityModel
+    from helios.equities.pipeline import candidate_definition, registry_fingerprint
+    from helios.registry.api import register_definition
+    from helios.registry.experiments import (
+        ExperimentKind,
+        ExperimentStatus,
+        register_experiment,
+        set_status,
+    )
+    from helios.registry.gates import store_gate_config
+    from helios.registry.results import Split
+    from helios.sim.equity_evaluation import EquityEvaluationContext, equity_gates_path
+    from helios.sim.evaluate import evaluate
+
+    os.chdir("/tmp")
+    policy = EquityResearchPolicy(
+        version="nse_minute_research_v2",
+        interval="1m",
+        session="reviewed_sessions_v2",
+        commission_tax_proxy_bps=0,
+    )
+    hashes = {
+        str(p.relative_to(OUTPUT / "source")): sha256(p)
+        for p in sorted((OUTPUT / "source").rglob("*"))
+        if p.is_file()
+    }
+    for relative, digest in hashes.items():
+        if sha256(ROOT / relative) != digest:
+            raise ValueError("archive does not match actual executable source")
+    engine = create_engine(DatabaseSettings(_env_file=ROOT / ".env").url(), pool_pre_ping=True)
+    before = registry_fingerprint(engine)
+    write_json(OUTPUT / "registry_before.json", before)
+    protocol = dict(
+        round_id=ROUND,
+        policy=policy.model_dump(mode="json"),
+        candidates=CANDIDATES,
+        source_commit=git_commit(),
+        dirty=git_is_dirty(),
+        experimental_runner_uncommitted=True,
+        runner_hash=hashes[str(Path("reports_out/equity_research") / ROUND / "runner.py")],
+        source_hashes=hashes,
+        source_manifest_sha256=sha256(DATA / "manifest.json"),
+        source_snapshot=str(DATA),
+        research_symbols=["RELIANCE"],
+        execution_workers=4,
+        scope=(
+            "Paired exploratory opposite long-entry conditions; "
+            "not short selling or score negation"
+        ),
+        prior_exposure=(
+            "Chosen after seeing negative original VALID results; same VALID period reused; "
+            "exploratory measurements, not fresh out-of-sample confirmation"
+        ),
+        selection="All three original/inverse pairs fixed before any new replay; retain all six",
+        comparison="Full identical 2026-01-09..2026-06-30 conditional complete sessions",
+        model=(
+            "Reuse hash-verified TRAIN-only model/calibration as evaluator lineage; "
+            "no refit and no ML alpha"
+        ),
+        fees="unchanged v2 dated reference charges plus 5bps/side slip; separate 2x-cost replay",
+        coverage="ex-post complete-session conditional study; quarantines unchanged",
+        test_access=False,
+        automatic_promotion=False,
+        scheduled_paper_revision_unchanged=True,
+    )
+    write_json(OUTPUT / "protocol.json", protocol)
+    print("Protocol frozen; loading one screened stock, no refit", flush=True)
+    (OUTPUT / "ml").mkdir()
+    for name in ("model.txt", "calibration.json", "protocol.json"):
+        shutil.copyfile(OLD / name, OUTPUT / "ml" / name)
+        assert sha256(OLD / name) == sha256(OUTPUT / "ml" / name)
+    calibration = json.loads((OUTPUT / "ml/calibration.json").read_text())
+    assert not calibration["test_access"]
+    assert not calibration["valid_observations_used_for_fit_or_calibration"]
+    assert sha256(OUTPUT / "ml/model.txt") == calibration["model_sha256"]
+    model = EquityModel(
+        Booster(model_file=str(OUTPUT / "ml/model.txt")),
+        tuple(calibration["x"]),
+        tuple(calibration["y"]),
+        calibration["available_after_us"],
+        calibration["model_sha256"],
+        sha256(OUTPUT / "ml/calibration.json"),
+        OUTPUT / "ml",
+    )
+    inputs = load_equity_inputs(DATA, "RELIANCE", policy)
+    (OUTPUT / "inputs").mkdir()
+    input_path = OUTPUT / "inputs/RELIANCE.parquet"
+    inputs.bars.to_parquet(input_path, index=False)
+    files = [
+        SnapshotFile(
+            str(input_path.relative_to(ROOT)), sha256(input_path), input_path.stat().st_size
+        )
+    ]
+    snapshot = Snapshot(
+        snapshot_id=compute_snapshot_id(files),
+        source="upstox_nse_research_prefix",
+        interval="1m",
+        symbols=["RELIANCE"],
+        first_open_time=int(inputs.bars.open_time.min()),
+        last_open_time=int(inputs.bars.open_time.max()),
+        file_count=1,
+        row_count=len(inputs.bars),
+        total_bytes=files[0].bytes,
+        code_commit=git_commit(),
+        files=files,
+    )
+    write_json(OUTPUT / "snapshot.json", asdict(snapshot))
+    gates = load_config(equity_gates_path(policy), GatesConfig)
+    attempts = []
+    with engine.begin() as connection:
+        register_snapshot(connection, snapshot)
+        store_gate_config(connection, gates, author="helios_equity_research")
+        for candidate in CANDIDATES:
+            definition = candidate_definition(
+                ROUND, candidate, model, policy=policy, candidates=CANDIDATES
+            )
+            definition = definition.model_copy(update={"name": f"EXPLORATORY NSE 1m {candidate}"})
+            register_definition(connection, definition)
+            experiment = register_experiment(
+                connection,
+                hypothesis=(
+                    f"Exploratory sign-reversal pair: {candidate} has net edge on RELIANCE"
+                ),
+                params=dict(
+                    market="nse_cash",
+                    symbol="RELIANCE",
+                    alpha_id=definition.alpha_id,
+                    policy_hash=config_hash(policy),
+                    model_hash=model.model_hash,
+                    calibration_hash=model.calibration_hash,
+                    source_hashes=hashes,
+                    execution_workers=4,
+                ),
+                kind=ExperimentKind.ALPHA,
+                author="helios_equity_research",
+                code_commit=git_commit(),
+                config_hash=config_hash(policy),
+                snapshot_id=snapshot.snapshot_id,
+                notes=(
+                    "Chosen after prior VALID exposure. Opposite long-only entries, not shorts. "
+                    "Archived uncommitted runner with clean unchanged production source. "
+                    "No new OOS claim; G7 blocks promotion; retain all outcomes."
+                ),
+            )
+            attempts.append(
+                dict(
+                    candidate=candidate,
+                    alpha_id=definition.alpha_id,
+                    symbol="RELIANCE",
+                    experiment_id=experiment.experiment_id,
+                )
+            )
+    write_json(OUTPUT / "preregistration.json", dict(attempts=attempts, calibration=calibration))
+    results = []
+    for index, attempt in enumerate(attempts, 1):
+        with engine.begin() as connection:
+            set_status(connection, attempt["experiment_id"], ExperimentStatus.RUNNING)
+        print(f"START {index}/6 {attempt['candidate']}", flush=True)
+        result = evaluate(
+            attempt["alpha_id"],
+            Split.VALID,
+            attempt["experiment_id"],
+            engine=engine,
+            output_dir=OUTPUT / "evaluations",
+            reported=False,
+            equity=EquityEvaluationContext(
+                policy, inputs, snapshot.snapshot_id, model, hashes, workers=4
+            ),
+        )
+        with engine.begin() as connection:
+            set_status(connection, attempt["experiment_id"], ExperimentStatus.FINISHED)
+        row = attempt | dict(
+            run_id=result.run_id,
+            status=result.status.value,
+            sharpe=None if result.sharpe is None else float(result.sharpe),
+            fitness=None if result.fitness is None else float(result.fitness),
+            gates=result.gate_results,
+            artifact=result.evaluation_json["artifact"],
+            artifact_sha256=result.evaluation_json["artifact_sha256"],
+        )
+        results.append(row)
+        with (OUTPUT / "outcomes.jsonl").open("a") as stream:
+            stream.write(json.dumps(row) + "\n")
+        print(
+            f"DONE {index}/6 {attempt['candidate']} {result.status.value} Sharpe={row['sharpe']}",
+            flush=True,
+        )
+    for relative, digest in hashes.items():
+        assert sha256(ROOT / relative) == digest
+    after = registry_fingerprint(engine)
+    assert before == after
+    assert not git_is_dirty(ROOT)
+    write_json(
+        OUTPUT / "summary.json",
+        dict(
+            round_id=ROUND,
+            market="nse_cash",
+            snapshot_id=snapshot.snapshot_id,
+            protocol_sha256=sha256(OUTPUT / "protocol.json"),
+            results=results,
+            model_hash=model.model_hash,
+            calibration_hash=model.calibration_hash,
+            dirty=git_is_dirty(),
+            source_commit=git_commit(),
+            experimental_runner_uncommitted=True,
+            registry_before=before,
+            registry_after=after,
+            crypto_unchanged=True,
+            test_accesses=0,
+            promoted=0,
+            scope=protocol["scope"],
+            interval="1m",
+            research_symbols=["RELIANCE"],
+            model_reused_from=str(OLD),
+            prior_valid_exposure=True,
+            inverse_definitions=3,
+            paired_original_definitions=3,
+        ),
+    )
+    print("COMPLETED immutable paired research", flush=True)
+
+
+if __name__ == "__main__":
+    frozen() if len(sys.argv) > 1 and sys.argv[1] == "frozen" else main()

@@ -1,0 +1,37 @@
+{
+  "every_preexisting_row_unchanged": true,
+  "inverse_dsl_exports": [
+    {
+      "path": "/mnt/c/Users/bit/OneDrive/Desktop/helios/reports_out/equity_research/nse_sign_reverse1/definitions/inverse_vol_trend.yaml",
+      "sha256": "dd7bbd5ac338bd7234f2ca7406518fe1c9e22eccccb554c7aae2a06b86f283e2"
+    },
+    {
+      "path": "/mnt/c/Users/bit/OneDrive/Desktop/helios/reports_out/equity_research/nse_sign_reverse1/definitions/inverse_body_reversal.yaml",
+      "sha256": "04fe106586075cecb157508db815603704042a9bf91888fb700c0c85a74a86b6"
+    },
+    {
+      "path": "/mnt/c/Users/bit/OneDrive/Desktop/helios/reports_out/equity_research/nse_sign_reverse1/definitions/inverse_gap_reversal.yaml",
+      "sha256": "bca89cf63876e01ed220367c7e87ccdadad54bde2c5fc91aa3be8e6155b7945a"
+    }
+  ],
+  "prior_658_results_including_equities_preserved": true,
+  "prior_registry_fingerprint": {
+    "alpha_definitions": {
+      "count": 55,
+      "sha256": "7f20d9b1d9adcaf982731a7c47bc8498e9a4e6706d039a1f26cced204d5d91f2"
+    },
+    "alpha_results": {
+      "count": 658,
+      "sha256": "752375e4ad778cc2dc571c22232a74057aed242d4a606d1e676760f1eb1703ae"
+    },
+    "experiments": {
+      "count": 658,
+      "sha256": "1bcf58be19b3812f1d9d267d914371755052bbfc490a1234299fc74b4dd3fdc8"
+    },
+    "test_set_access": {
+      "count": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  },
+  "registry_mutations_by_this_script": false
+}

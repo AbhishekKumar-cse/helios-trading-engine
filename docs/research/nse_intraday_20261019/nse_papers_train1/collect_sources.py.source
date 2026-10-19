@@ -1,0 +1,46 @@
+"""Retain four public primary-source receipts; no access-control retries."""
+
+import hashlib
+import json
+import urllib.error
+import urllib.request
+from datetime import UTC, datetime
+from pathlib import Path
+
+root = Path(__file__).resolve().parent
+destination = root / "primary_sources"
+destination.mkdir(exist_ok=False)
+sources = {
+    "gao.html": "https://profiles.wustl.edu/en/publications/market-intraday-momentum/",
+    "orb.pdf": "https://www.alexandria.unisg.ch/server/api/core/bitstreams/3c2989c4-688d-4d78-8a71-f02690990d51/content",
+    "noise.pdf": "https://alexandria.unisg.ch/server/api/core/bitstreams/a99aba00-f967-49b3-aceb-f544dc386e0b/content",
+    "heston.pdf": "https://arxiv.org/pdf/1005.3535",
+}
+receipts = []
+for name, url in sources.items():
+    body = b""
+    status = None
+    content_type = None
+    error = None
+    checked_at = datetime.now(UTC).isoformat()
+    try:
+        with urllib.request.urlopen(url, timeout=15) as response:
+            status = response.status
+            content_type = response.headers.get("Content-Type")
+            body = response.read(20_000_001)
+            if len(body) > 20_000_000:
+                raise ValueError("primary source exceeds20MB bound")
+    except urllib.error.HTTPError as exc:
+        status = exc.code
+        content_type = exc.headers.get("Content-Type")
+        body = exc.read(100_000)
+        error = "HTTP refusal retained; no retry or bypass"
+    except Exception as exc:
+        error = type(exc).__name__
+    with (destination / name).open("xb") as stream:
+        stream.write(body)
+    receipts.append(dict(name=name, url=url, checked_at=checked_at, status=status, content_type=content_type, bytes=len(body), sha256=hashlib.sha256(body).hexdigest(), pdf_magic=body.startswith(b"%PDF"), error=error))
+    print(json.dumps(dict(name=name, status=status, bytes=len(body), error=error)), flush=True)
+with (root / "source_receipts.json").open("x") as stream:
+    json.dump(receipts, stream, indent=2, sort_keys=True)
+    stream.write("\n")

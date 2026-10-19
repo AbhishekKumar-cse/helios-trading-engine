@@ -1,0 +1,27 @@
+{
+  "checks": [
+    {
+      "available_rows": 135842,
+      "inverse_active": 65189,
+      "opposite_conditions_verified": true,
+      "original_active": 64433,
+      "pair": "vol_trend"
+    },
+    {
+      "available_rows": 136209,
+      "inverse_active": 61297,
+      "opposite_conditions_verified": true,
+      "original_active": 63144,
+      "pair": "body_reversal"
+    },
+    {
+      "available_rows": 136209,
+      "inverse_active": 35967,
+      "opposite_conditions_verified": true,
+      "original_active": 33695,
+      "pair": "gap_reversal"
+    }
+  ],
+  "protocol_sha256": "d2abe96771a148c8a67a479e378787177830ed1c16ce8e27386d403ce210649b",
+  "scope": "Algebra on existing TRAIN/VALID features; no new P&L, TEST or tuning"
+}

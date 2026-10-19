@@ -1,0 +1,5 @@
+# Preserve the exact bytes hashed when these historical experiments ran.
+*.json -text
+*.md -text
+*.yaml -text
+*.source -text

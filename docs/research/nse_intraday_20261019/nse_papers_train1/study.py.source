@@ -1,0 +1,448 @@
+"""Frozen TRAIN-only, paper-inspired signal/cost screen; not an official backtest."""
+
+import hashlib
+import json
+import math
+import shutil
+import subprocess
+import sys
+from collections import Counter, defaultdict, deque
+from datetime import UTC, datetime
+from decimal import Decimal, localcontext
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+from paper_signals import NAMES, Setup, decisions
+
+ROOT = Path("/mnt/c/Users/bit/OneDrive/Desktop/helios")
+OUT = ROOT / "reports_out/equity_research/nse_papers_train1"
+DATA = ROOT / "data/equities/nifty50_repaired/20261018_v2"
+CAPITAL = Decimal("100000")
+TARGET = Decimal("50000")
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def read(path):
+    return json.loads(path.read_text())
+
+
+def save(name, data):
+    with (OUT / name).open("x") as stream:
+        json.dump(data, stream, indent=2, sort_keys=True, allow_nan=False)
+        stream.write("\n")
+
+
+def git(*args):
+    return subprocess.check_output(["git", "-C", str(ROOT), *args], text=True).strip()
+
+
+def prepare():
+    assert not git("status", "--porcelain")
+    manifest = read(DATA / "manifest.json")
+    symbols = sorted(r["symbol"] for r in manifest["files"] if r["eligible_rows"] > 0)
+    sources = git(
+        "ls-files", "research/helios", "configs/equities", "pyproject.toml", "uv.lock"
+    ).splitlines()
+    hashes = {}
+    for relative in sources:
+        target = OUT / "source" / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / relative, target)
+        hashes[relative] = sha(target)
+    helpers = {}
+    for name in ("study.py", "paper_signals.py", "test_signals.py", "collect_sources.py"):
+        helpers[name] = sha(OUT / name)
+    protocol = dict(
+        version="nse_paper_train_screen_v1",
+        created_at=datetime.now(UTC).isoformat(),
+        source_commit=git("rev-parse", "HEAD"),
+        production_source_clean=True,
+        helpers_uncommitted=True,
+        helper_sha256=helpers,
+        primary_source_receipts_sha256=sha(OUT / "source_receipts.json"),
+        source_hashes=hashes,
+        manifest_sha256=sha(DATA / "manifest.json"),
+        symbols=symbols,
+        candidates=list(NAMES),
+        comparisons=len(symbols) * 3,
+        fit_end="2025-09-30",
+        calibration_start="2025-10-09",
+        train_end="2025-12-31",
+        scope="Exploratory reused TRAIN/calibration, no new VALID decoding or scoring; no fresh OOS claim",
+        prior_exposure="Existing TRAIN/calibration and older VALID outcomes have been seen",
+        history="Previous14 actual full scheduled sessions plus previous-close observation for ATR; holes invalidate history; current day never included",
+        embargo="Oct1-8 unscored; already observed bars may enter subsequent causal lookbacks",
+        entry="Close-confirmed decisions, fixed quantity sized at known signal close, next observed open fill proxy",
+        exit="Next observed open after an exit decision, or final15:29opening; never same-bar range/stop fills",
+        costs="Shared reference charge estimator, 5bps adverse slip/side; 2x charges and slip independently replayed",
+        capital_inr=str(CAPITAL),
+        decision_target_inr=str(TARGET),
+        max_round_trips_per_day=1,
+        closing_momentum="Long15:00-15:29 when first30 close > previous session close; stock adaptation of ETF finding",
+        orb_rvol="Positive first5 candle, opening volume >=14day mean and top20, closed5min breakout; exit closed5min below entry-signal close minus0.1ATR14",
+        noise_vwap="14day same-slot abs-close/open bands, gap-aware upper anchor, typical-price VWAP, 30min decisions, current upper-band/VWAP exit",
+        deviations="NSE stocks/long-only/fixed50%capital/one-entry cap/next-open execution; no leverage, US dollar filters, dynamic sizing or paper replication claim",
+        criterion="Candidate >=40 calibration dates, >=20 trades, mean net>0 at base/stress, all3 calibration months positive under both; report every stock without searching parameters",
+        gates="No formal gate evaluation; unchanged G3 turnover minimum may conflict with sparse trades; G7 false",
+        test_access=False,
+        valid_access=False,
+        automatic_promotion=False,
+        shared_backtest_status="TRAIN signal/cost screen only; no risk/OMS/venue simulation, no registry alpha result",
+        public_sources=[
+            dict(
+                id="gao",
+                url="https://profiles.wustl.edu/en/publications/market-intraday-momentum/",
+                access="University abstract/method summary; publisher full text not obtained",
+            ),
+            dict(
+                id="orb",
+                url="https://www.alexandria.unisg.ch/server/api/core/bitstreams/3c2989c4-688d-4d78-8a71-f02690990d51/content",
+                access="Full university-hosted working paper, method sections2 and4 read",
+            ),
+            dict(
+                id="noise",
+                url="https://alexandria.unisg.ch/server/api/core/bitstreams/a99aba00-f967-49b3-aceb-f544dc386e0b/content",
+                access="Full university-hosted working paper, method section3 read",
+            ),
+            dict(
+                id="heston",
+                url="https://arxiv.org/pdf/1005.3535",
+                access="Full author preprint; sectionconclusion explicitly notes spread costs can remove returns; excluded as a fourth trading hypothesis",
+            ),
+        ],
+    )
+    save("protocol.json", protocol)
+    print(
+        f"Frozen {len(symbols)} companies x3 paper-inspired candidates before scoring", flush=True
+    )
+
+
+def run():
+    protocol = read(OUT / "protocol.json")
+    assert protocol["source_commit"] == git("rev-parse", "HEAD")
+    assert not git("status", "--porcelain")
+    assert protocol["manifest_sha256"] == sha(DATA / "manifest.json")
+    assert protocol["primary_source_receipts_sha256"] == sha(OUT / "source_receipts.json")
+    for receipt in read(OUT / "source_receipts.json"):
+        assert sha(OUT / "primary_sources" / receipt["name"]) == receipt["sha256"]
+    for name, expected in protocol["helper_sha256"].items():
+        assert sha(OUT / name) == expected
+    for name, expected in protocol["source_hashes"].items():
+        assert sha(ROOT / name) == sha(OUT / "source" / name) == expected
+    sys.path.insert(0, str(OUT / "source/research"))
+    from helios.equities.charges import ChargeTrade, estimate_intraday_charges
+    from helios.equities.rebuild import membership, verified_file
+
+    manifest = read(DATA / "manifest.json")
+    assert manifest["complete"] and manifest["version"] == "nse_public_minutes_v2"
+    assert not manifest["test_access"] and not manifest["g7_eligible"]
+    for name, key in (
+        ("sessions.json", "sessions_sha256"),
+        ("session_checks.json", "checks_sha256"),
+        ("universe.json", "universe_sha256"),
+        ("protocol.json", "protocol_sha256"),
+    ):
+        verified_file(DATA, name, manifest[key])
+    calendar = read(DATA / "sessions.json")
+    days = sorted(day for day in calendar if day <= "2025-12-31")
+    setups, frames, ranks = {}, {}, defaultdict(list)
+    exclusions, decoded, history_audit = [], [], []
+    for symbol in protocol["symbols"]:
+        item = next(r for r in manifest["files"] if r["symbol"] == symbol)
+        path = verified_file(DATA, item["path"], item["sha256"])
+        frame = pd.read_parquet(path, filters=[("session_date", "<=", "2025-12-31")])
+        assert frame.session_date.max() <= "2025-12-31" and set(frame.symbol) == {symbol}
+        decoded.append(
+            dict(
+                symbol=symbol,
+                rows=len(frame),
+                first_day=frame.session_date.min(),
+                last_day=frame.session_date.max(),
+                sha256=item["sha256"],
+            )
+        )
+        grouped = {
+            day: part.sort_values("open_time").reset_index(drop=True)
+            for day, part in frame.groupby("session_date")
+        }
+        history = deque(maxlen=15)
+        previous = None
+        for day in days:
+            if not membership(symbol, day)[1]:
+                history.clear()
+                previous = None
+                continue
+            part = grouped.get(day)
+            good = (
+                part is not None
+                and len(part) == 375
+                and calendar[day]["slots"] == 375
+                and calendar[day]["open_minute"] == 555
+            )
+            if good:
+                minutes = part.timestamp.dt.tz_convert("Asia/Kolkata")
+                good = (
+                    part.research_eligible.all()
+                    and set(part.screen_status) == {"PASS_SCALE_SCREEN"}
+                    and (part.volume > 0).all()
+                    and not part.open_time.duplicated().any()
+                    and (minutes.dt.hour * 60 + minutes.dt.minute).tolist() == list(range(555, 930))
+                    and (minutes.dt.second == 0).all()
+                    and (minutes.dt.microsecond == 0).all()
+                    and (part.low <= part[["open", "close"]].min(axis=1)).all()
+                    and (part.high >= part[["open", "close"]].max(axis=1)).all()
+                )
+            if not good:
+                exclusions.append(
+                    dict(symbol=symbol, day=day, reason="source_or_session_unavailable")
+                )
+                history.append(None)
+                previous = None
+                continue
+            setup = None if previous is None else Setup(float(previous["close"].iloc[-1]))
+            if previous is not None:
+                assert str(previous.session_date.iloc[0]) < day
+            if setup is not None and len(history) == 15 and all(p is not None for p in history):
+                historical = list(history)
+                historical_days = [str(p.session_date.iloc[0]) for p in historical]
+                assert len(set(historical_days)) == 15
+                assert max(historical_days) < day
+                history_audit.append(dict(symbol=symbol, day=day, prior_days=historical_days))
+                recent = historical[1:]
+                denominator = np.mean([float(p.volume.iloc[:5].sum()) for p in recent])
+                setup.opening_rvol = float(part.volume.iloc[:5].sum()) / denominator
+                true_ranges = []
+                for i in range(1, len(historical)):
+                    day_high = float(historical[i].high.max())
+                    day_low = float(historical[i].low.min())
+                    prior = float(historical[i - 1].close.iloc[-1])
+                    true_ranges.append(
+                        max(day_high - day_low, abs(day_high - prior), abs(day_low - prior))
+                    )
+                assert len(true_ranges) == 14
+                setup.atr14 = float(np.mean(true_ranges))
+                setup.noise14 = np.mean(
+                    [
+                        abs(p.close.to_numpy(dtype=float) / float(p.open.iloc[0]) - 1)
+                        for p in recent
+                    ],
+                    axis=0,
+                )
+                ranks[day].append((setup.opening_rvol, symbol))
+            setups[(symbol, day)] = setup
+            frames[(symbol, day)] = part
+            history.append(part)
+            previous = part
+        print(f"Prepared causal TRAIN history: {symbol}", flush=True)
+    for day, values in ranks.items():
+        selected = {symbol for _, symbol in sorted(values, key=lambda x: (-x[0], x[1]))[:20]}
+        for _, symbol in values:
+            setups[(symbol, day)].top20 = symbol in selected
+    records = []
+    for (symbol, day), part in sorted(frames.items()):
+        if "2025-10-01" <= day < "2025-10-09":
+            continue
+        setup = setups[(symbol, day)]
+        for name in NAMES:
+            available = setup is not None and (
+                name == "closing_momentum" or setup.noise14 is not None
+            )
+            if not available:
+                exclusions.append(
+                    dict(
+                        symbol=symbol, day=day, candidate=name, reason="causal_history_unavailable"
+                    )
+                )
+                continue
+            trade = decisions(name, part, setup)
+            for multiplier in (1, 2):
+                gross = slip = fees = net = turnover = Decimal(0)
+                quantity = Decimal(0)
+                signal = entry = exit_signal = exit_slot = None
+                with localcontext() as context:
+                    context.prec = 100
+                    if trade is not None:
+                        signal, exit_signal = trade
+                        entry, exit_slot = signal + 1, exit_signal + 1
+                        assert 0 <= signal < entry <= exit_signal < exit_slot <= 374
+                        assert int(part.open_time.iloc[signal]) + 60000000 <= int(
+                            part.open_time.iloc[entry]
+                        )
+                        signal_price = Decimal(str(part.close.iloc[signal]))
+                        quantity = TARGET // signal_price
+                        assert quantity > 0 and quantity * signal_price <= TARGET
+                        adverse = Decimal(".0005") * multiplier
+                        raw_buy, raw_sell = (
+                            Decimal(str(part.open.iloc[entry])),
+                            Decimal(str(part.open.iloc[exit_slot])),
+                        )
+                        buy, sell = raw_buy * (1 + adverse), raw_sell * (1 - adverse)
+                        trades = [
+                            ChargeTrade(
+                                pd.Timestamp(day).date(), symbol, "entry", "BUY", quantity, buy
+                            ),
+                            ChargeTrade(
+                                pd.Timestamp(day).date(), symbol, "exit", "SELL", quantity, sell
+                            ),
+                        ]
+                        fees = estimate_intraday_charges(trades).total * multiplier
+                        assert quantity * buy + fees < CAPITAL
+                        gross = quantity * (raw_sell - raw_buy)
+                        slip = quantity * (buy - raw_buy + raw_sell - sell)
+                        net = quantity * (sell - buy) - fees
+                        turnover = quantity * (buy + sell)
+                        assert abs(net - (gross - slip - fees)) < Decimal("1e-70")
+                records.append(
+                    dict(
+                        symbol=symbol,
+                        day=day,
+                        partition="fit" if day <= "2025-09-30" else "calibration",
+                        candidate=name,
+                        multiplier=multiplier,
+                        active=trade is not None,
+                        signal_slot=signal,
+                        entry_slot=entry,
+                        exit_signal_slot=exit_signal,
+                        exit_slot=exit_slot,
+                        quantity=str(quantity),
+                        gross=str(gross),
+                        slippage=str(slip),
+                        fees=str(fees),
+                        net=str(net),
+                        turnover=str(turnover),
+                    )
+                )
+    save("decoded_scope.json", decoded)
+    save("history_time_audit.json", history_audit)
+    save("exclusions.json", exclusions)
+    save("session_records.json", records)
+
+    def metrics(rows):
+        monthly = defaultdict(Decimal)
+        for row in rows:
+            monthly[row["day"][:7]] += Decimal(row["net"])
+        values = np.array([float(Decimal(r["net"]) / CAPITAL) for r in rows])
+        std = float(values.std(ddof=1)) if len(values) > 1 else 0
+        return dict(
+            stock_sessions=len(rows),
+            active=sum(r["active"] for r in rows),
+            net_inr=str(sum((Decimal(r["net"]) for r in rows), Decimal(0))),
+            gross_inr=str(sum((Decimal(r["gross"]) for r in rows), Decimal(0))),
+            fees_inr=str(sum((Decimal(r["fees"]) for r in rows), Decimal(0))),
+            slippage_inr=str(sum((Decimal(r["slippage"]) for r in rows), Decimal(0))),
+            monthly_net_inr={k: str(v) for k, v in monthly.items()},
+            descriptive_stock_session_sharpe=None
+            if not std
+            else float(values.mean() / std * math.sqrt(252)),
+            average_per_bar_turnover=None
+            if not rows
+            else float(
+                sum((Decimal(r["turnover"]) for r in rows), Decimal(0))
+                / (CAPITAL * 375 * len(rows))
+            ),
+        )
+
+    companies = []
+    for symbol in protocol["symbols"]:
+        for name in NAMES:
+            phases = {}
+            for phase in ("fit", "calibration"):
+                phases[phase] = {
+                    str(m): metrics(
+                        [
+                            r
+                            for r in records
+                            if r["symbol"] == symbol
+                            and r["candidate"] == name
+                            and r["partition"] == phase
+                            and r["multiplier"] == m
+                        ]
+                    )
+                    for m in (1, 2)
+                }
+            tail = phases["calibration"]
+            passed = all(
+                s["active"] >= 20
+                and len(s["monthly_net_inr"]) == 3
+                and all(Decimal(v) > 0 for v in s["monthly_net_inr"].values())
+                for s in tail.values()
+            )
+            companies.append(
+                dict(symbol=symbol, candidate=name, phases=phases, passes_exploratory_screen=passed)
+            )
+    aggregate = []
+    for name in NAMES:
+        phases = {}
+        for phase in ("fit", "calibration"):
+            phases[phase] = {}
+            for multiplier in (1, 2):
+                rows = [
+                    r
+                    for r in records
+                    if r["candidate"] == name
+                    and r["partition"] == phase
+                    and r["multiplier"] == multiplier
+                ]
+                by_day = defaultdict(list)
+                for row in rows:
+                    by_day[row["day"]].append(float(Decimal(row["net"]) / CAPITAL))
+                series = {day: float(np.mean(values)) for day, values in by_day.items()}
+                monthly = defaultdict(float)
+                for day, value in series.items():
+                    monthly[day[:7]] += value
+                s = metrics(rows)
+                values = list(series.values())
+                std = float(np.std(values, ddof=1)) if len(values) > 1 else 0
+                s.update(
+                    dates=len(series),
+                    mean_independent_account_daily_returns=series,
+                    daily_mean_account_sharpe=None
+                    if not std
+                    else float(np.mean(values) / std * math.sqrt(252)),
+                    monthly_mean_account_returns=dict(monthly),
+                )
+                phases[phase][str(multiplier)] = s
+        tail = phases["calibration"]
+        passed = all(
+            s["dates"] >= 40
+            and s["active"] >= 20
+            and sum(s["mean_independent_account_daily_returns"].values()) > 0
+            and len(s["monthly_mean_account_returns"]) == 3
+            and all(v > 0 for v in s["monthly_mean_account_returns"].values())
+            for s in tail.values()
+        )
+        aggregate.append(dict(candidate=name, phases=phases, passes_exploratory_screen=passed))
+    save(
+        "results.json",
+        dict(
+            protocol_sha256=sha(OUT / "protocol.json"),
+            records_sha256=sha(OUT / "session_records.json"),
+            aggregate=aggregate,
+            companies=companies,
+            exploratory_survivors=sum(r["passes_exploratory_screen"] for r in aggregate),
+            company_screen_survivors=sum(r["passes_exploratory_screen"] for r in companies),
+            exclusion_counts=dict(Counter(r["reason"] for r in exclusions)),
+            test_accesses=0,
+            valid_access=False,
+            formal_registry_results=0,
+            promoted=0,
+        ),
+    )
+    print(
+        json.dumps(
+            dict(
+                records=len(records),
+                candidate_screens=len(companies),
+                survivors=sum(r["passes_exploratory_screen"] for r in aggregate),
+            )
+        ),
+        flush=True,
+    )
+
+
+if __name__ == "__main__":
+    {"prepare": prepare, "run": run}[sys.argv[1]]()

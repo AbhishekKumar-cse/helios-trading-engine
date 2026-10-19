@@ -1,0 +1,30 @@
+{
+  "artifact_hashes": {
+    "certification_full.json": "ae6c59f89ec61c5ef27f2f6856093967ba46ed7f64efd79786b20aef985be1b8",
+    "certification_run.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "certification_summary.json": "0ecdf48ce69789ef9343c6e3590bc9ca8bbd0fb386eb7ebb5c5d48862a2a9e07",
+    "decoded_scope.json": "e02dc83c46ba71cf23269e16f58062544b131277513d5b275aacb32c3bf55089",
+    "exclusions.json": "df754d8f193b3215398c75fa4db8251bb41bdbc388715b92697e8ec4dc45c37c",
+    "protocol.json": "ee7bd56716cd555ed8156a089e0898b41fb509bc405b0209e6f47e0e4aaefcd8",
+    "registry_before.json": "5518df2de8a56349ef66ceef16a294704cc59cde426ecd749c34b5873516a901",
+    "results.json": "ab74c1a44244cc9837028b3982e4a0a8dec9247a827d5eb7ad327ce44d982cf5",
+    "session_records.json": "e6dade4d000bd4581da04599e8b8804308c1bb67a7ca8a662a449bff53db74f3",
+    "study.py": "f9a499f152d2ae6625d365b1cdfe96b04e2a7f19980c69785e9844b0de57fd6c",
+    "verify_report.py": "ba7ff419408614b5bcffca1e41e92a5ab32b6489b2f4aa5da19ff58152e79423"
+  },
+  "candidate_screens": 12,
+  "certification_reproduced_except_assessed_at": true,
+  "exclusion_counts": {
+    "embargo": 20,
+    "non_normal_or_incomplete_or_nonpositive_volume": 4,
+    "source_quarantine_or_screen_failure": 9
+  },
+  "independently_reconciled_records": 5778,
+  "promoted": 0,
+  "registry_unchanged": true,
+  "source_clean": true,
+  "source_commit": "509866fde6b13fa3fcfbb84d6ca0d0c51734954f",
+  "survivors": 0,
+  "test_accesses": 0,
+  "valid_price_reads_in_screen": 0
+}

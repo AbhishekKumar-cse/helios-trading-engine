@@ -1,0 +1,1456 @@
+{
+  "assessed_at": "2026-10-19T12:47:01.271082+00:00",
+  "companies": [
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-11-17",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE423A01024",
+          "subject": "Rights 3:25 @ Premium Rs 1799/-",
+          "symbol": "ADANIENT"
+        }
+      ],
+      "checks": {
+        "UNRESOLVED_CAPITAL_ACTION_UNITS": 369
+      },
+      "daily_extreme_max_relative_difference": 4.5142650775265025e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9845061178815738,
+        0.9999957418868041
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE423A01024"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "ADANIENT",
+      "verdict": "BLOCKED"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 366,
+        "ZERO_VOLUME_SESSION": 3
+      },
+      "daily_extreme_max_relative_difference": 0.0001299545159194615,
+      "minute_to_daily_volume_ratio_range": [
+        0.9505996994081617,
+        0.9999970244283276
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE742F01042"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 136935,
+      "symbol": "ADANIPORTS",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 363,
+        "ZERO_VOLUME_SESSION": 6
+      },
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9394559412100277,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE437A01024"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 135810,
+      "symbol": "APOLLOHOSP",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 366,
+        "ZERO_VOLUME_SESSION": 3
+      },
+      "daily_extreme_max_relative_difference": 4.3174164578996255e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9719149111766769,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE021A01026"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 136935,
+      "symbol": "ASIANPAINT",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 366,
+        "ZERO_VOLUME_SESSION": 3
+      },
+      "daily_extreme_max_relative_difference": 9.686637283845556e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9751826880154205,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE238A01034"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 136935,
+      "symbol": "AXISBANK",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2026-06-24",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE917I01010",
+          "subject": "Buy Back",
+          "symbol": "BAJAJ-AUTO"
+        }
+      ],
+      "checks": {
+        "UNRESOLVED_CAPITAL_ACTION_UNITS": 369
+      },
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9515510299064234,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE917I01010"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "BAJAJ-AUTO",
+      "verdict": "BLOCKED"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 366,
+        "ZERO_VOLUME_SESSION": 3
+      },
+      "daily_extreme_max_relative_difference": 4.881144140100879e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9828460299956666,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE918I01026"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 136935,
+      "symbol": "BAJAJFINSV",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-06-16",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE296A01016",
+          "subject": "Bonus 4:1",
+          "symbol": "BAJFINANCE"
+        },
+        {
+          "broadcast": null,
+          "ex_date": "2025-06-16",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE296A01016",
+          "subject": "Face Value Split (Sub-Division) - From Rs 2/- Per Share To Re 1/- Per Share",
+          "symbol": "BAJFINANCE"
+        }
+      ],
+      "checks": {
+        "UNRESOLVED_CAPITAL_ACTION_UNITS": 369
+      },
+      "daily_extreme_max_relative_difference": 0.9000292393589618,
+      "minute_to_daily_volume_ratio_range": [
+        0.9860218587751193,
+        9.998994056017073
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE296A01024",
+        "INE296A01032"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "BAJFINANCE",
+      "verdict": "BLOCKED"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 366,
+        "ZERO_VOLUME_SESSION": 3
+      },
+      "daily_extreme_max_relative_difference": 3.537944454268249e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.9807987962713124,
+        0.9999856594945518
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE263A01024"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 136935,
+      "symbol": "BEL",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 366,
+        "ZERO_VOLUME_SESSION": 3
+      },
+      "daily_extreme_max_relative_difference": 0.00022022793591380818,
+      "minute_to_daily_volume_ratio_range": [
+        0.9634428091374243,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE397D01024"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 136935,
+      "symbol": "BHARTIARTL",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 58,
+        "ZERO_VOLUME_SESSION": 3
+      },
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9819007386713787,
+        0.9997427478942477
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE029A01011"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 22875,
+      "screened_rows": 21750,
+      "symbol": "BPCL",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 57,
+        "ZERO_VOLUME_SESSION": 4
+      },
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9829627401050213,
+        0.9999290378149929
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE216A01030"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 22875,
+      "screened_rows": 21375,
+      "symbol": "BRITANNIA",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 366,
+        "ZERO_VOLUME_SESSION": 3
+      },
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9751423447552513,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE059A01026"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 136935,
+      "symbol": "CIPLA",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 366,
+        "ZERO_VOLUME_SESSION": 3
+      },
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9720804663022721,
+        0.9999913601408739
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE522F01014"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 136935,
+      "symbol": "COALINDIA",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 368,
+        "ZERO_VOLUME_SESSION": 1
+      },
+      "daily_extreme_max_relative_difference": 9.100423169705607e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9590857682313574,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE089A01031"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "DRREDDY",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 368,
+        "ZERO_VOLUME_SESSION": 1
+      },
+      "daily_extreme_max_relative_difference": 1.9352091960023188e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9726652509826955,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE066A01021"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "EICHERMOT",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 308
+      },
+      "daily_extreme_max_relative_difference": 3.467406380019966e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.9874950966416672,
+        0.9999945017482935
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE758T01015"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 115185,
+      "screened_rows": 115185,
+      "symbol": "ETERNAL",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 351,
+        "ZERO_VOLUME_SESSION": 18
+      },
+      "daily_extreme_max_relative_difference": 3.953428610814491e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.8849915760541432,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE047A01021"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 131310,
+      "symbol": "GRASIM",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 368,
+        "ZERO_VOLUME_SESSION": 1
+      },
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9814001714373412,
+        0.9999959328532849
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE860A01027"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "HCLTECH",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-08-26",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE040A01018",
+          "subject": "Bonus 1:1",
+          "symbol": "HDFCBANK"
+        }
+      ],
+      "checks": {
+        "UNRESOLVED_CAPITAL_ACTION_UNITS": 369
+      },
+      "daily_extreme_max_relative_difference": 0.5000307031010132,
+      "minute_to_daily_volume_ratio_range": [
+        0.9900381587447246,
+        1.999980687215102
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE040A01034"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "HDFCBANK",
+      "verdict": "BLOCKED"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 368,
+        "ZERO_VOLUME_SESSION": 1
+      },
+      "daily_extreme_max_relative_difference": 0.000252503997980158,
+      "minute_to_daily_volume_ratio_range": [
+        0.9895211660686124,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE795G01014"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "HDFCLIFE",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 185,
+        "ZERO_VOLUME_SESSION": 1
+      },
+      "daily_extreme_max_relative_difference": 2.4399765760074743e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9778459400554668,
+        0.9999893432228225
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE158A01026"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 69750,
+      "screened_rows": 69375,
+      "symbol": "HEROMOTOCO",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 368,
+        "ZERO_VOLUME_SESSION": 1
+      },
+      "daily_extreme_max_relative_difference": 1.6763054228485785e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.9706513054733407,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE038A01020"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "HINDALCO",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-12-05",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE030A01027",
+          "subject": "Demerger",
+          "symbol": "HINDUNILVR"
+        }
+      ],
+      "checks": {
+        "UNRESOLVED_CAPITAL_ACTION_UNITS": 369
+      },
+      "daily_extreme_max_relative_difference": 4.456923831108739e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9792280863325916,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE030A01027"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138015,
+      "screened_rows": 0,
+      "symbol": "HINDUNILVR",
+      "verdict": "BLOCKED"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 368,
+        "ZERO_VOLUME_SESSION": 1
+      },
+      "daily_extreme_max_relative_difference": 8.209506608625183e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9150455290046919,
+        0.9999975140914292
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE090A01021"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "ICICIBANK",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 183
+      },
+      "daily_extreme_max_relative_difference": 2.436706547315204e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9785950185688574,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE646L01027"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 68310,
+      "screened_rows": 68310,
+      "symbol": "INDIGO",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 185,
+        "ZERO_VOLUME_SESSION": 1
+      },
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9668102478512933,
+        0.9999951282132479
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE095A01012"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 69750,
+      "screened_rows": 69375,
+      "symbol": "INDUSINDBK",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-11-14",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE009A01021",
+          "subject": "Buy Back",
+          "symbol": "INFY"
+        }
+      ],
+      "checks": {
+        "UNRESOLVED_CAPITAL_ACTION_UNITS": 369
+      },
+      "daily_extreme_max_relative_difference": 7.929585282728802e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9542061173730637,
+        0.9999965509067954
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE009A01021"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "INFY",
+      "verdict": "BLOCKED"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-01-06",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE154A01025",
+          "subject": "Demerger",
+          "symbol": "ITC"
+        }
+      ],
+      "checks": {
+        "UNRESOLVED_CAPITAL_ACTION_UNITS": 369
+      },
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9722044903493228,
+        0.9999932046819
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE154A01025"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138036,
+      "screened_rows": 0,
+      "symbol": "ITC",
+      "verdict": "BLOCKED"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "NO_DAILY_IDENTITY_REFERENCE": 9
+      },
+      "daily_extreme_max_relative_difference": null,
+      "minute_to_daily_volume_ratio_range": null,
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [],
+      "raw_minute_unit_certified": false,
+      "rows": 3347,
+      "screened_rows": 0,
+      "symbol": "ITCHOTELS",
+      "verdict": "BLOCKED"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 308
+      },
+      "daily_extreme_max_relative_difference": 3.8109756097526315e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.9838942893069007,
+        0.9999432424876882
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE758E01017"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 115185,
+      "screened_rows": 115185,
+      "symbol": "JIOFIN",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 368,
+        "ZERO_VOLUME_SESSION": 1
+      },
+      "daily_extreme_max_relative_difference": 9.679605072143715e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9834923841295101,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE019A01038"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "JSWSTEEL",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2026-01-14",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE237A01010",
+          "subject": "Face Value Split (Sub-Division) - From Rs 5/- Per Share To Re 1/- Per Share",
+          "symbol": "KOTAKBANK"
+        }
+      ],
+      "checks": {
+        "UNRESOLVED_CAPITAL_ACTION_UNITS": 369
+      },
+      "daily_extreme_max_relative_difference": 0.8000253260731923,
+      "minute_to_daily_volume_ratio_range": [
+        0.9879761211906675,
+        5.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE237A01028",
+        "INE237A01036"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "KOTAKBANK",
+      "verdict": "BLOCKED"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "NO_DAILY_IDENTITY_REFERENCE": 6
+      },
+      "daily_extreme_max_relative_difference": null,
+      "minute_to_daily_volume_ratio_range": null,
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [],
+      "raw_minute_unit_certified": false,
+      "rows": 2205,
+      "screened_rows": 0,
+      "symbol": "KWIL",
+      "verdict": "BLOCKED"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 368,
+        "ZERO_VOLUME_SESSION": 1
+      },
+      "daily_extreme_max_relative_difference": 2.3015489423183766e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9830408214339791,
+        0.9999924779954502
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE018A01030"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "LT",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 368,
+        "ZERO_VOLUME_SESSION": 1
+      },
+      "daily_extreme_max_relative_difference": 3.065979887173498e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.9718730906542392,
+        0.9999977320363101
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE101A01026"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "M&M",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 367,
+        "ZERO_VOLUME_SESSION": 2
+      },
+      "daily_extreme_max_relative_difference": 4.128529376545842e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.981788665588166,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE585B01010"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137310,
+      "symbol": "MARUTI",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 183
+      },
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9915510184521619,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE027H01010"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 68310,
+      "screened_rows": 68310,
+      "symbol": "MAXHEALTH",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-08-08",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE239A01016",
+          "subject": "Bonus 1:1",
+          "symbol": "NESTLEIND"
+        }
+      ],
+      "checks": {
+        "UNRESOLVED_CAPITAL_ACTION_UNITS": 369
+      },
+      "daily_extreme_max_relative_difference": 0.500023185717598,
+      "minute_to_daily_volume_ratio_range": [
+        0.9859158623319169,
+        1.999976151580554
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE239A01024"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "NESTLEIND",
+      "verdict": "BLOCKED"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 368,
+        "ZERO_VOLUME_SESSION": 1
+      },
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9794220650389772,
+        0.9999995730791572
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE733E01010"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "NTPC",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 368,
+        "ZERO_VOLUME_SESSION": 1
+      },
+      "daily_extreme_max_relative_difference": 3.78931413413941e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.9779707120766107,
+        0.9999934165877373
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE213A01029"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "ONGC",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 368,
+        "ZERO_VOLUME_SESSION": 1
+      },
+      "daily_extreme_max_relative_difference": 3.528581510225948e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.9749251079667146,
+        0.9999993069069266
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE752E01010"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137685,
+      "symbol": "POWERGRID",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 367,
+        "ZERO_VOLUME_SESSION": 2
+      },
+      "daily_extreme_max_relative_difference": 6.94203401595539e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.9634772225297745,
+        0.9999804477689709
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE002A01018"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137310,
+      "symbol": "RELIANCE",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 362,
+        "ZERO_VOLUME_SESSION": 7
+      },
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9818236565433711,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE123W01016"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 135435,
+      "symbol": "SBILIFE",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 367,
+        "ZERO_VOLUME_SESSION": 2
+      },
+      "daily_extreme_max_relative_difference": 9.563886763541696e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9575953813488948,
+        0.9999932023031718
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE062A01020"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137310,
+      "symbol": "SBIN",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-01-10",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE721A01013",
+          "subject": "Face Value Split (Sub-Division) - From Rs 10/- Per Share To Rs 2/- Per Share",
+          "symbol": "SHRIRAMFIN"
+        }
+      ],
+      "checks": {
+        "UNRESOLVED_CAPITAL_ACTION_UNITS": 369
+      },
+      "daily_extreme_max_relative_difference": 0.8000070401464351,
+      "minute_to_daily_volume_ratio_range": [
+        0.9802078787245855,
+        4.996543140171726
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE721A01013",
+        "INE721A01047"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "SHRIRAMFIN",
+      "verdict": "BLOCKED"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 367,
+        "ZERO_VOLUME_SESSION": 2
+      },
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9757509509187049,
+        0.9999991158720419
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE044A01036"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137310,
+      "symbol": "SUNPHARMA",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 366,
+        "ZERO_VOLUME_SESSION": 3
+      },
+      "daily_extreme_max_relative_difference": 0.00016914749661711692,
+      "minute_to_daily_volume_ratio_range": [
+        0.993019020217751,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE192A01025"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 136935,
+      "symbol": "TATACONSUM",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 367,
+        "ZERO_VOLUME_SESSION": 2
+      },
+      "daily_extreme_max_relative_difference": 7.479431563195416e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.9813056428818698,
+        0.9999814948724647
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE081A01020"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137310,
+      "symbol": "TATASTEEL",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 367,
+        "ZERO_VOLUME_SESSION": 2
+      },
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9451292612971245,
+        0.9999948115527121
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE467B01029"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137310,
+      "symbol": "TCS",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 367,
+        "ZERO_VOLUME_SESSION": 2
+      },
+      "daily_extreme_max_relative_difference": 7.90920235693715e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9707311542414038,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE669C01036"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137310,
+      "symbol": "TECHM",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 367,
+        "ZERO_VOLUME_SESSION": 2
+      },
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9843630406042243,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE280A01028"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 137310,
+      "symbol": "TITAN",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "NO_DAILY_IDENTITY_REFERENCE": 3
+      },
+      "daily_extreme_max_relative_difference": null,
+      "minute_to_daily_volume_ratio_range": null,
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [],
+      "raw_minute_unit_certified": false,
+      "rows": 1080,
+      "screened_rows": 0,
+      "symbol": "TMCV",
+      "verdict": "BLOCKED"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-10-14",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE155A01022",
+          "subject": "Demerger",
+          "symbol": "TMPV"
+        }
+      ],
+      "checks": {
+        "UNRESOLVED_CAPITAL_ACTION_UNITS": 369
+      },
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9890979901952117,
+        0.99998339701763
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE155A01022"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138015,
+      "screened_rows": 0,
+      "symbol": "TMPV",
+      "verdict": "BLOCKED"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2026-06-04",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE849A01012",
+          "subject": "Bonus 1:2",
+          "symbol": "TRENT"
+        }
+      ],
+      "checks": {
+        "UNRESOLVED_CAPITAL_ACTION_UNITS": 369
+      },
+      "daily_extreme_max_relative_difference": 0.3333137139493819,
+      "minute_to_daily_volume_ratio_range": [
+        0.998287209400715,
+        1.4998927973745668
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE849A01020"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "TRENT",
+      "verdict": "BLOCKED"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [],
+      "checks": {
+        "PASS_SCALE_SCREEN": 361,
+        "ZERO_VOLUME_SESSION": 8
+      },
+      "daily_extreme_max_relative_difference": 0.0005928184281842608,
+      "minute_to_daily_volume_ratio_range": [
+        0.986264033161214,
+        1.0
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE481G01011"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 135060,
+      "symbol": "ULTRACEMCO",
+      "verdict": "CONDITIONAL_SCREEN_ONLY"
+    },
+    {
+      "action_query_available": true,
+      "announcement_availability_certified": false,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2026-06-05",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE075A01022",
+          "subject": "Buy Back",
+          "symbol": "WIPRO"
+        }
+      ],
+      "checks": {
+        "UNRESOLVED_CAPITAL_ACTION_UNITS": 369
+      },
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9691246941498532,
+        0.9999942290301712
+      ],
+      "minute_volume_unit_certified": false,
+      "official_daily_isins": [
+        "INE075A01022"
+      ],
+      "raw_minute_unit_certified": false,
+      "rows": 138060,
+      "screened_rows": 0,
+      "symbol": "WIPRO",
+      "verdict": "BLOCKED"
+    }
+  ],
+  "diagnostic_scope": "Daily regular/preopen scope differs; volume equality is not required or proof.",
+  "diagnostic_stock_days": 18468,
+  "g7_eligible": false,
+  "independently_certified_companies": 0,
+  "obligations": [
+    {
+      "id": "raw_units",
+      "required": "Independent raw minute price/volume vintage and dated adjustment/ISIN chain. A rounded adjusted price cannot be inverted exactly using a share ratio.",
+      "status": "MISSING"
+    },
+    {
+      "id": "causal_availability",
+      "required": "Contemporaneous membership/action/calendar publication times and causal outage handling.",
+      "status": "MISSING"
+    },
+    {
+      "id": "costs",
+      "required": "Dated account tariff/contract-note reconciliation; present v2 taxes are a reference estimate.",
+      "status": "SCENARIO_ONLY"
+    },
+    {
+      "id": "execution",
+      "required": "Timestamped executable spread/depth, latency and participation/fill calibration. OHLCV and public last trade do not prove executable liquidity or 5bps slippage.",
+      "status": "MISSING"
+    }
+  ],
+  "official_reference_sessions": 369,
+  "report_path": "reports_out/equity_research/nse_costaware_train1/certification_full.json",
+  "report_sha256": "ae6c59f89ec61c5ef27f2f6856093967ba46ed7f64efd79786b20aef985be1b8",
+  "snapshot_manifest_sha256": "60b808fa29423fe7e0162d34fc24bed9d1fe0286c1c7a5f6869dccdb81706158",
+  "test_access": false,
+  "verdict": "NOT_CERTIFIED",
+  "version": "nse_execution_certification_v1"
+}

@@ -1,0 +1,79 @@
+"""Verify every prior registry row, and export the three actual inverse DSLs."""
+
+import hashlib
+import json
+from pathlib import Path
+
+import yaml
+from sqlalchemy import text
+
+from helios.common.db import get_engine
+from helios.sim.evaluate import _definition
+
+ROOT = Path("/mnt/c/Users/bit/OneDrive/Desktop/helios")
+OUT = ROOT / "reports_out/equity_research/nse_sign_reverse1"
+preregistration = json.loads((OUT / "preregistration.json").read_text())
+old = json.loads(
+    (ROOT / "reports_out/equity_research/nse_costaware_train1/registry_before.json").read_text()
+)
+prefix = "nse_sign_reverse1_%"
+fingerprint = {}
+with get_engine().connect() as connection:
+    connection.execute(text("SET TRANSACTION READ ONLY"))
+    for table in ("alpha_definitions", "alpha_results", "experiments", "test_set_access"):
+        if table == "test_set_access":
+            condition, parameters = "true", {}
+        elif table == "experiments":
+            condition = "NOT (experiment_id = ANY(:ids))"
+            parameters = {"ids": [r["experiment_id"] for r in preregistration["attempts"]]}
+        else:
+            condition, parameters = "alpha_id NOT LIKE :prefix", {"prefix": prefix}
+        rows = list(
+            connection.execute(
+                text(
+                    f"SELECT to_jsonb(t) FROM {table} t WHERE {condition} "
+                    "ORDER BY to_jsonb(t)::text"
+                ),
+                parameters,
+            ).scalars()
+        )
+        fingerprint[table] = dict(
+            count=len(rows),
+            sha256=hashlib.sha256(
+                json.dumps(rows, sort_keys=True, default=str).encode()
+            ).hexdigest(),
+        )
+    assert fingerprint == old
+    definitions = OUT / "definitions"
+    definitions.mkdir(exist_ok=False)
+    exported = []
+    for attempt in preregistration["attempts"]:
+        if not attempt["candidate"].startswith("inverse_"):
+            continue
+        definition = _definition(connection, attempt["alpha_id"], 1)
+        path = definitions / (attempt["candidate"] + ".yaml")
+        with path.open("x") as stream:
+            stream.write(
+                yaml.safe_dump(
+                    definition.model_dump(
+                        mode="json", exclude={"free_parameter_count", "parameter_count_convention"}
+                    ),
+                    sort_keys=False,
+                )
+            )
+        exported.append(dict(path=str(path), sha256=hashlib.sha256(path.read_bytes()).hexdigest()))
+with (OUT / "history_checks.json").open("x") as stream:
+    json.dump(
+        dict(
+            every_preexisting_row_unchanged=True,
+            prior_658_results_including_equities_preserved=True,
+            prior_registry_fingerprint=fingerprint,
+            inverse_dsl_exports=exported,
+            registry_mutations_by_this_script=False,
+        ),
+        stream,
+        indent=2,
+        sort_keys=True,
+    )
+    stream.write("\n")
+print("All preexisting registry rows unchanged; three registered inverse DSLs exported.")

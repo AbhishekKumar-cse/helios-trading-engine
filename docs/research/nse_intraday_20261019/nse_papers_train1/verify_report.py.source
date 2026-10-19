@@ -1,0 +1,334 @@
+"""Reconcile each TRAIN trade against retained prices and produce a source-cited report."""
+
+import hashlib
+import json
+import math
+import subprocess
+from collections import defaultdict
+from decimal import Decimal, localcontext
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+import yaml
+
+from helios.equities.charges import ChargeTrade, estimate_intraday_charges
+from helios.equities.rebuild import verified_file
+
+ROOT = Path("/mnt/c/Users/bit/OneDrive/Desktop/helios")
+OUT = ROOT / "reports_out/equity_research/nse_papers_train1"
+DATA = ROOT / "data/equities/nifty50_repaired/20261018_v2"
+
+
+def load(name):
+    return json.loads((OUT / name).read_text())
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def write(name, value):
+    with (OUT / name).open("x") as stream:
+        json.dump(value, stream, indent=2, sort_keys=True, allow_nan=False)
+        stream.write("\n")
+
+
+protocol, result = load("protocol.json"), load("results.json")
+assert sha(OUT / "protocol.json") == result["protocol_sha256"]
+assert sha(OUT / "session_records.json") == result["records_sha256"]
+assert sha(DATA / "manifest.json") == protocol["manifest_sha256"]
+assert sha(OUT / "source_receipts.json") == protocol["primary_source_receipts_sha256"]
+for name, expected in protocol["helper_sha256"].items():
+    assert sha(OUT / name) == expected
+for name, expected in protocol["source_hashes"].items():
+    assert sha(ROOT / name) == sha(OUT / "source" / name) == expected
+assert not subprocess.check_output(
+    ["git", "-C", str(ROOT), "status", "--porcelain"], text=True
+).strip()
+for receipt in load("source_receipts.json"):
+    assert sha(OUT / "primary_sources" / receipt["name"]) == receipt["sha256"]
+for history in load("history_time_audit.json"):
+    assert len(set(history["prior_days"])) == 15
+    assert max(history["prior_days"]) < history["day"] <= "2025-12-31"
+records = load("session_records.json")
+identities = {(r["symbol"], r["candidate"], r["day"], r["multiplier"]) for r in records}
+assert len(identities) == len(records)
+manifest = json.loads((DATA / "manifest.json").read_text())
+groups = defaultdict(list)
+pair_rows = defaultdict(list)
+fills = 0
+with localcontext() as context:
+    context.prec = 100
+    for symbol in protocol["symbols"]:
+        item = next(row for row in manifest["files"] if row["symbol"] == symbol)
+        frame = pd.read_parquet(
+            verified_file(DATA, item["path"], item["sha256"]),
+            filters=[("session_date", "<=", "2025-12-31")],
+        )
+        days = {
+            day: part.sort_values("open_time").reset_index(drop=True)
+            for day, part in frame.groupby("session_date")
+        }
+        for row in (r for r in records if r["symbol"] == symbol):
+            assert row["day"] <= "2025-12-31"
+            assert not "2025-10-01" <= row["day"] < "2025-10-09"
+            part = days[row["day"]]
+            assert len(part) == 375 and part.research_eligible.all()
+            groups[(symbol, row["candidate"], row["partition"], str(row["multiplier"]))].append(row)
+            pair_rows[(symbol, row["candidate"], row["day"])].append(row)
+            if not row["active"]:
+                assert all(
+                    Decimal(row[field]) == 0
+                    for field in ("quantity", "gross", "slippage", "fees", "net", "turnover")
+                )
+                continue
+            quantity = Decimal(row["quantity"])
+            signal, entry, exit_signal, exit_slot = (
+                row[k] for k in ("signal_slot", "entry_slot", "exit_signal_slot", "exit_slot")
+            )
+            assert signal + 1 == entry <= exit_signal and exit_signal + 1 == exit_slot <= 374
+            assert quantity == Decimal(50000) // Decimal(str(part.close.iloc[signal]))
+            assert quantity > 0 and quantity == quantity.to_integral_value()
+            assert int(part.open_time.iloc[signal]) + 60000000 == int(part.open_time.iloc[entry])
+            assert int(part.open_time.iloc[exit_signal]) + 60000000 == int(
+                part.open_time.iloc[exit_slot]
+            )
+            raw_buy, raw_sell = (
+                Decimal(str(part.open.iloc[entry])),
+                Decimal(str(part.open.iloc[exit_slot])),
+            )
+            multiplier = row["multiplier"]
+            adverse = Decimal(".0005") * multiplier
+            buy, sell = raw_buy * (1 + adverse), raw_sell * (1 - adverse)
+            trades = [
+                ChargeTrade(pd.Timestamp(row["day"]).date(), symbol, "entry", "BUY", quantity, buy),
+                ChargeTrade(
+                    pd.Timestamp(row["day"]).date(), symbol, "exit", "SELL", quantity, sell
+                ),
+            ]
+            fee = estimate_intraday_charges(trades).total * multiplier
+            gross = quantity * (raw_sell - raw_buy)
+            slippage = quantity * (buy - raw_buy + raw_sell - sell)
+            for field, expected in (
+                ("gross", gross),
+                ("slippage", slippage),
+                ("fees", fee),
+                ("net", gross - slippage - fee),
+                ("turnover", quantity * (buy + sell)),
+            ):
+                assert abs(Decimal(row[field]) - expected) < Decimal("1e-70")
+            fills += 2
+for rows in pair_rows.values():
+    assert len(rows) == 2
+    first, second = sorted(rows, key=lambda r: r["multiplier"])
+    assert first["multiplier"] == 1 and second["multiplier"] == 2
+    assert all(
+        first[k] == second[k]
+        for k in (
+            "active",
+            "quantity",
+            "signal_slot",
+            "entry_slot",
+            "exit_signal_slot",
+            "exit_slot",
+        )
+    )
+    assert math.isclose(float(second["slippage"]), 2 * float(first["slippage"]), abs_tol=1e-10)
+    assert Decimal(second["net"]) <= Decimal(first["net"])
+for company in result["companies"]:
+    for phase, scenarios in company["phases"].items():
+        for scenario, metrics in scenarios.items():
+            rows = groups[(company["symbol"], company["candidate"], phase, scenario)]
+            assert len(rows) == metrics["stock_sessions"]
+            assert sum(row["active"] for row in rows) == metrics["active"]
+            for metric, field in (
+                ("net_inr", "net"),
+                ("gross_inr", "gross"),
+                ("fees_inr", "fees"),
+                ("slippage_inr", "slippage"),
+            ):
+                assert math.isclose(
+                    float(metrics[metric]), math.fsum(float(r[field]) for r in rows), abs_tol=1e-8
+                )
+for candidate in result["aggregate"]:
+    for phase, scenarios in candidate["phases"].items():
+        for scenario, metrics in scenarios.items():
+            rows = [
+                r
+                for r in records
+                if r["candidate"] == candidate["candidate"]
+                and r["partition"] == phase
+                and str(r["multiplier"]) == scenario
+            ]
+            assert len(rows) == metrics["stock_sessions"]
+            assert sum(row["active"] for row in rows) == metrics["active"]
+            for metric, field in (
+                ("net_inr", "net"),
+                ("gross_inr", "gross"),
+                ("fees_inr", "fees"),
+                ("slippage_inr", "slippage"),
+            ):
+                assert math.isclose(
+                    float(metrics[metric]),
+                    math.fsum(float(r[field]) for r in rows),
+                    abs_tol=1e-8,
+                )
+            by_day = defaultdict(list)
+            for row in rows:
+                by_day[row["day"]].append(float(Decimal(row["net"]) / Decimal(100000)))
+            assert set(by_day) == set(metrics["mean_independent_account_daily_returns"])
+            for day, values in by_day.items():
+                assert math.isclose(
+                    float(np.mean(values)),
+                    metrics["mean_independent_account_daily_returns"][day],
+                    abs_tol=1e-15,
+                )
+            values = list(metrics["mean_independent_account_daily_returns"].values())
+            std = float(np.std(values, ddof=1))
+            expected_sharpe = None if std == 0 else float(np.mean(values) / std * math.sqrt(252))
+            assert (
+                expected_sharpe is metrics["daily_mean_account_sharpe"] is None
+            ) or math.isclose(
+                expected_sharpe,
+                metrics["daily_mean_account_sharpe"],
+                rel_tol=1e-12,
+                abs_tol=1e-12,
+            )
+            months = defaultdict(list)
+            for day, values in by_day.items():
+                months[day[:7]].append(float(np.mean(values)))
+            assert set(months) == set(metrics["monthly_mean_account_returns"])
+            for month, values in months.items():
+                assert math.isclose(
+                    math.fsum(values),
+                    metrics["monthly_mean_account_returns"][month],
+                    rel_tol=1e-12,
+                    abs_tol=1e-12,
+                )
+    tail = candidate["phases"]["calibration"]
+    passes = all(
+        s["dates"] >= 40
+        and s["active"] >= 20
+        and sum(s["mean_independent_account_daily_returns"].values()) > 0
+        and len(s["monthly_mean_account_returns"]) == 3
+        and all(v > 0 for v in s["monthly_mean_account_returns"].values())
+        for s in tail.values()
+    )
+    assert passes == candidate["passes_exploratory_screen"]
+assert (
+    sum(c["passes_exploratory_screen"] for c in result["aggregate"])
+    == result["exploratory_survivors"]
+)
+definitions = OUT / "definitions"
+definitions.mkdir(exist_ok=False)
+refs = {"closing_momentum": "gao", "orb_rvol": "orb", "noise_vwap": "noise"}
+for name in protocol["candidates"]:
+    definition = dict(
+        alpha_id="nse_paper_" + name,
+        version=1,
+        status="EXPLORATORY_TRAIN_SCREEN_ONLY",
+        implementation="paper_signals.py:decisions",
+        implementation_sha256=sha(OUT / "paper_signals.py"),
+        parameters=protocol[name],
+        source=next(s for s in protocol["public_sources"] if s["id"] == refs[name]),
+        market="nse_cash",
+        long_only=True,
+        execution="fixed whole shares at decision close; next-observed-opening price proxy; one entry/session",
+        universe=protocol["symbols"],
+        protocol_sha256=sha(OUT / "protocol.json"),
+        registered_alpha_result=False,
+        promoted=False,
+    )
+    with (definitions / (name + ".yaml")).open("x") as stream:
+        stream.write(yaml.safe_dump(definition, sort_keys=False))
+write(
+    "verification.json",
+    dict(
+        protocol_sha256=sha(OUT / "protocol.json"),
+        results_sha256=sha(OUT / "results.json"),
+        records=len(records),
+        reconciled_scenario_trades=fills // 2,
+        reconciled_scenario_fills=fills,
+        company_candidates=len(result["companies"]),
+        strategies=3,
+        history_windows=len(load("history_time_audit.json")),
+        source_hashes_verified=True,
+        causal_previous_history_verified=True,
+        known_close_quantity_verified=True,
+        next_open_execution_verified=True,
+        stress_positions_unchanged=True,
+        gross_slippage_fee_net_reconciled=True,
+        aggregate_metrics_recomputed=True,
+        valid_price_reads=0,
+        test_accesses=0,
+        production_source_clean=True,
+        official_gate_evaluation=False,
+        promoted=0,
+        exploratory_survivors=result["exploratory_survivors"],
+        helpers={p.name: sha(p) for p in OUT.glob("*.py")},
+    ),
+)
+lines = [
+    "# Paper-inspired NSE alpha research — 2026-10-19",
+    "",
+    "Three executable research candidates were implemented and screened after costs. These are NSE adaptations, not replications of US performance. No candidate is certified, promoted, or claimed to pass the formal shared-engine gates.",
+    "",
+    "## Literature and adaptation",
+    "",
+    "1. **Closing momentum.** Gao, Han, Li and Zhou (2018) report that an ETF's early return, including overnight, predicts its closing half hour. [Peer-reviewed study — author university abstract](https://profiles.wustl.edu/en/publications/market-intraday-momentum/). The university abstract was read through the web tool; local retrieval returned403 and is retained. Publisher full text was not obtained. Our hypothesis trades individual NSE stocks long15:00–15:29 when their first30minute close exceeds the prior session close. This narrower stock/venue/long-only interpretation is our adaptation, not a result established by that paper.",
+    "",
+    "2. **Opening range with relative volume.** Zarattini, Barbon and Aziz study opening-range breaks with elevated opening volume. [Full university-hosted working paper](https://www.alexandria.unisg.ch/server/api/core/bitstreams/3c2989c4-688d-4d78-8a71-f02690990d51/content). Our5minute range uses a positive opening candle, relative volume against14prior sessions, top20 available volume ratios, and completed5minute breakout confirmation. A closed-bar0.1ATR14 stop decision executes next open. Fixed capital replaces US dollar filters, leverage and risk sizing; intrabar stop fills are not assumed.",
+    "",
+    "3. **Noise band with VWAP.** Zarattini, Aziz and Barbon use time-specific14day volatility bands and scheduled decisions. [Full university-hosted working paper](https://alexandria.unisg.ch/server/api/core/bitstreams/a99aba00-f967-49b3-aceb-f544dc386e0b/content). Our long-only adaptation uses a gap-aware upper band and an OHLCV typical-price VWAP proxy,30minute decisions, fixed shares and at most one entry/day. Its exit decision crosses the current band/VWAP; all fills use the following observed opening. No leverage, volatility targeting, US fee assumptions or published Sharpe was imported.",
+    "",
+    "Heston, Korajczyk and Sadka document same-clock return continuation but explicitly discuss profits disappearing after spreads. [Author preprint](https://arxiv.org/pdf/1005.3535). This was reviewed as a cost/robustness warning, not added as a fourth candidate. AQR's [institutional cost study](https://www.aqr.com/Insights/Research/Working-Paper/Trading-Costs-of-Asset-Pricing-Anomalies) likewise motivates evaluating implementation costs; its institutional cost estimates were not substituted for NSE assumptions.",
+    "",
+    "## Frozen experiment and measured TRAIN tail",
+    "",
+    "The protocol was frozen before scoring: all41screened companies ×3candidates =123company/strategy comparisons, with all outcomes retained. Jan–Sep2025 is the development partition; Oct9–Dec31 is the existing reused TRAIN tail. October1–8 is not scored, but its already-observed bars may enter subsequent causal history. No new VALID price decoding or TEST access. Prior TRAIN/calibration and earlier VALID exposure prevent an independent OOS claim.",
+    "",
+    "Each independently capitalized stock/day uses INR100,000 and a maximum INR50,000 target sized using the known decision close. Actual next-opening prices may drift from that target. Whole shares stay fixed until exit. The reference charge calculator includes statutory estimates and the current brokerage scenario; adverse slippage is5bps/side, doubled together with fees for stress. No risk/OMS/venue simulation, executable depth, account-contract-note reconciliation or capacity certificate is claimed for this TRAIN screen.",
+    "",
+    "| Candidate | Tail active stock-days | Tail mean stock-day net bps | 2× cost net bps | Tail daily mean-account Sharpe | Frozen screen |",
+    "|---|---:|---:|---:|---:|---|",
+]
+for candidate in result["aggregate"]:
+    tail = candidate["phases"]["calibration"]
+    base, stress = tail["1"], tail["2"]
+    net = float(base["net_inr"]) / (100000 * base["stock_sessions"]) * 10000
+    stressed_net = float(stress["net_inr"]) / (100000 * stress["stock_sessions"]) * 10000
+    ratio = base["daily_mean_account_sharpe"]
+    lines.append(
+        f"| {candidate['candidate']} | {base['active']:,} / {base['stock_sessions']:,} | {net:.4f} | {stressed_net:.4f} | {'undefined' if ratio is None else f'{ratio:.4f}'} | {'Pass' if candidate['passes_exploratory_screen'] else 'Fail'} |"
+    )
+lines.extend(
+    [
+        "",
+        f"**{result['exploratory_survivors']}/3 strategy-level screens survive; {result['company_screen_survivors']}/123 company screens survive the frozen stock-level rule.** These counts are exploratory, not multiplicity-adjusted discoveries. The frozen strategy screen requires at least40tail dates,20trades, positive mean net under normal/stressed costs, and all3tail months positive under both. Every company's full fit/tail outcomes are in results.json, including failures and insufficient-activity cases.",
+        "",
+        "Mean-account returns average separate fully capitalized stock experiments. They are not an executable shared-capital portfolio, do not establish abnormal return over a benchmark, and should not be compounded into an investment track record. Trade timing, company coverage, different denominators and changed fee assumptions prevent comparison with the papers' reported Sharpe.",
+        "",
+        "## Verification and remaining work",
+        "",
+        f"Five golden timing/future-perturbation/filter/no-reentry tests passed before the protocol was frozen. Independent verification reconciled {fills:,} scenario fills, their original observed openings, pre-known quantities, dated charges and gross-minus-slippage-minus-fees. Every15session history window precedes its decision day, and normal/stressed runs use identical positions. All source/helper/protocol/result hashes were checked. Missing, short and quarantined days invalidate history rather than becoming invented zero returns.",
+        "",
+        "This implements three research hypotheses; it does not create three proven profitable alphas. No repeated parameter search on VALID was performed. Source units, causal cohort availability, volume/VWAP quality, executable liquidity and account costs remain uncertified. G7 remains false. Sparse trading is also generally below the existing minute G3 minimum; the decision cadence and turnover units need an explicit reviewed protocol before formal evaluation. No gate thresholds were changed.",
+        "",
+        "Any surviving lead still needs timing-matched market/cash controls, shared-engine integration for its fixed-share holding policy, independent confirmation after known data exposure, and the unchanged gates. If a screen fails, retain the failure rather than tune this tail until a winner appears. Existing main509866f and the scheduled PAPER test remain unchanged; no commit/push or real orders.",
+        "",
+        "Files: definitions/*.yaml are research specifications, not production DSL registrations; paper_signals.py is executable candidate logic; study.py is the frozen runner; protocol.json, primary_sources/, source_receipts.json, source/, signal_tests.log, history_time_audit.json, decoded_scope.json, exclusions.json, session_records.json, results.json and verification.json retain lineage and every observation used. These local artifacts remain outside Git.",
+    ]
+)
+with (OUT / "REPORT.md").open("x") as stream:
+    stream.write("\n".join(lines) + "\n")
+print(
+    json.dumps(
+        dict(
+            records=len(records),
+            reconciled_fills=fills,
+            strategy_survivors=result["exploratory_survivors"],
+            company_survivors=result["company_screen_survivors"],
+        )
+    )
+)

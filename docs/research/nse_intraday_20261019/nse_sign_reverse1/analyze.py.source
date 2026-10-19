@@ -1,0 +1,221 @@
+"""Check opposite-entry algebra, reconcile cost attribution and report all pairs."""
+
+import json
+import math
+import sys
+from decimal import Decimal, localcontext
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
+ROOT = Path("/mnt/c/Users/bit/OneDrive/Desktop/helios")
+OUT = ROOT / "reports_out/equity_research/nse_sign_reverse1"
+
+
+def write(name, value):
+    with (OUT / name).open("x") as stream:
+        json.dump(value, stream, indent=2, sort_keys=True, allow_nan=False)
+        stream.write("\n")
+
+
+def algebra():
+    from helios.alpha.evaluator import evaluate_expression
+    from helios.data.equities import sha256
+    from helios.equities.config import EquityResearchPolicy
+    from helios.equities.inputs import load_equity_inputs
+
+    protocol = json.loads((OUT / "protocol.json").read_text())
+    policy = EquityResearchPolicy.model_validate(protocol["policy"])
+    source = load_equity_inputs(Path(protocol["source_snapshot"]), "RELIANCE", policy)
+    checks = []
+    for pair, expected in (
+        ("vol_trend", source.features.values.return_3 / (2 * source.features.values.volatility_3)),
+        ("body_reversal", -source.features.values.body / source.features.values["range"]),
+        ("gap_reversal", -np.sign(source.features.values.open_gap)),
+    ):
+        original = evaluate_expression(
+            protocol["candidates"]["original_" + pair], source.features, interval="1m"
+        )
+        inverse = evaluate_expression(
+            protocol["candidates"]["inverse_" + pair], source.features, interval="1m"
+        )
+        assert original.available.equals(inverse.available)
+        mask = original.available
+        a, b = original.values.loc[mask], inverse.values.loc[mask]
+        assert np.allclose(a, np.clip(expected.loc[mask], 0, 1), rtol=0, atol=1e-14)
+        assert np.allclose(b, np.clip(-expected.loc[mask], 0, 1), rtol=0, atol=1e-14)
+        assert ((a >= 0) & (a <= 1) & (b >= 0) & (b <= 1)).all()
+        assert (a * b == 0).all()
+        assert np.allclose(a + b, np.clip(abs(expected.loc[mask]), 0, 1), rtol=0, atol=1e-14)
+        checks.append(
+            dict(
+                pair=pair,
+                available_rows=int(mask.sum()),
+                original_active=int((a > 0).sum()),
+                inverse_active=int((b > 0).sum()),
+                opposite_conditions_verified=True,
+            )
+        )
+    write(
+        "signal_checks.json",
+        dict(
+            protocol_sha256=sha256(OUT / "protocol.json"),
+            checks=checks,
+            scope="Algebra on existing TRAIN/VALID features; no new P&L, TEST or tuning",
+        ),
+    )
+    print(json.dumps(checks), flush=True)
+
+
+def report():
+    from helios.data.equities import sha256
+
+    verification = json.loads((OUT / "checks.json").read_text())
+    summary = json.loads((OUT / "summary.json").read_text())
+    protocol = json.loads((OUT / "protocol.json").read_text())
+    assert verification["attempts"] == len(summary["results"]) == 6
+    assert protocol["prior_exposure"] and not protocol["test_access"]
+    assert sha256(OUT / "protocol.json") == summary["protocol_sha256"]
+    source = pd.read_parquet(OUT / "inputs/RELIANCE.parquet", columns=["open_time", "open"])
+    opening = {int(row.open_time): Decimal(str(row.open)) for row in source.itertuples()}
+    rows = []
+    with localcontext() as context:
+        context.prec = 100
+        for row in summary["results"]:
+            assert sha256(Path(row["artifact"])) == row["artifact_sha256"]
+            evidence = json.loads(Path(row["artifact"]).read_text())
+            gross = slip = Decimal(0)
+            for fill in evidence["fills"]:
+                sign = 1 if fill["side"] == "BUY" else -1
+                quantity, price = Decimal(fill["quantity"]), Decimal(fill["price"])
+                raw = opening[int(fill["timestamp"])]
+                gross -= sign * quantity * raw
+                adverse = sign * (price - raw)
+                assert adverse >= 0
+                slip += quantity * adverse
+            fees = Decimal(evidence["fees_total_inr"])
+            net = gross - slip - fees
+            reported_net = math.fsum(point["net_return"] for point in evidence["series"]) * 100000
+            assert abs(float(net) - reported_net) < 1e-7
+            stress = evidence["stress_session_returns"]
+            stress_mean = math.fsum(stress) / len(stress)
+            stress_std = float(np.std(stress, ddof=1))
+            stress_sharpe = stress_mean / stress_std * math.sqrt(252) if stress_std else None
+            rows.append(
+                dict(
+                    candidate=row["candidate"],
+                    run_id=row["run_id"],
+                    sharpe=row["sharpe"],
+                    fitness=row["fitness"],
+                    gross_before_slippage_inr=str(gross),
+                    slippage_inr=str(slip),
+                    fees_inr=str(fees),
+                    net_inr=str(net),
+                    stressed_net_inr=str(Decimal(str(math.fsum(stress))) * 100000),
+                    stress_sharpe=stress_sharpe,
+                    status=row["status"],
+                    gates=row["gates"],
+                    sessions=len(evidence["series"]),
+                    fills=len(evidence["fills"]),
+                    artifact_sha256=row["artifact_sha256"],
+                )
+            )
+    by_name = {row["candidate"]: row for row in rows}
+    pairs = []
+    for key in ("vol_trend", "body_reversal", "gap_reversal"):
+        original, inverse = by_name["original_" + key], by_name["inverse_" + key]
+        assert original["sessions"] == inverse["sessions"]
+        pairs.append(
+            dict(
+                pair=key,
+                original=original,
+                inverse=inverse,
+                inverse_positive_after_base_and_stress=float(inverse["net_inr"]) > 0
+                and float(inverse["stressed_net_inr"]) > 0,
+            )
+        )
+    write(
+        "paired_comparison.json",
+        dict(
+            protocol_sha256=summary["protocol_sha256"],
+            checks_sha256=sha256(OUT / "checks.json"),
+            signal_checks_sha256=sha256(OUT / "signal_checks.json"),
+            comparisons=pairs,
+            prior_valid_exposure=True,
+            certified=False,
+            promoted=0,
+            test_accesses=0,
+        ),
+    )
+    lines = [
+        "# Three reversed NSE entry signals — paired exploratory results",
+        "",
+        "Three distinct inverse candidates were actually replayed, together with their three originals. These are opposite **long-entry** conditions, not short selling, score negation or a promise of profitable alpha. Every outcome is retained in the registry and lab.",
+        "",
+        "| Pair | Original Sharpe | Inverse Sharpe | Inverse Fitness | Inverse net INR | Inverse 2× costs net INR | Inverse gates |",
+        "|---|---:|---:|---:|---:|---:|---:|",
+    ]
+    for pair in pairs:
+        original, inverse = pair["original"], pair["inverse"]
+        lines.append(
+            f"| {pair['pair']} | {original['sharpe']:.4f} | {inverse['sharpe']:.4f} | {inverse['fitness']:.4f} | {float(inverse['net_inr']):,.2f} | {float(inverse['stressed_net_inr']):,.2f} | {sum(inverse['gates'].values())}/8 |"
+        )
+    lines.extend(
+        [
+            "",
+            f"{sum(pair['inverse_positive_after_base_and_stress'] for pair in pairs)}/3 inverses have positive total net P&L under both scenarios. All promotion decisions remain blocked by G7 and any other failed gates. Sharpe/Fitness are recalculated from actual net session returns; no displayed sign was changed.",
+            "",
+            "## Exact experiment",
+            "",
+            "Fixed before the first new replay: RELIANCE, full retained 2026-01-09 through 2026-06-30 VALID period, reviewed v2 snapshot, unchanged INR100,000 independent daily capital/50% target allocation, whole shares, long-only, next observed minute opening, final observed 15:29 opening exit. Normal and doubled reference charges/slippage pass through the unchanged shared strategy/risk/OMS/simulated venue/INR ledger. No guessed corporate-action adjustment, data-quarantine release, gate change or TEST access.",
+            "",
+            "Negation is applied to the directional expression BEFORE clipping to [0,1]. For each pair, independent signal checks verify identical availability masks, disjoint positive entries, and that their sum equals the clipped absolute directional magnitude. Simply negating an existing [0,1] output would not test the opposite long-only entry rule.",
+            "",
+            "The existing TRAIN-only model/calibration was copied byte-for-byte solely as shared evaluator lineage. No model refit or ML candidate ran. These formulas were chosen after negative VALID results were visible; the reused VALID results are exploratory and cannot serve as fresh independent OOS confirmation. Conditional complete sessions were selected ex-post. Costs and executable liquidity remain scenarios.",
+            "",
+            "## Cost attribution — all six attempts",
+            "",
+            "| Candidate | Gross before slippage INR | Slippage INR | Fees INR | Net INR |",
+            "|---|---:|---:|---:|---:|",
+        ]
+    )
+    for row in rows:
+        lines.append(
+            f"| {row['candidate']} | {float(row['gross_before_slippage_inr']):,.2f} | {float(row['slippage_inr']):,.2f} | {float(row['fees_inr']):,.2f} | {float(row['net_inr']):,.2f} |"
+        )
+    lines.extend(
+        [
+            "",
+            "Gross P&L minus adverse slippage minus fees reconciles to the saved ledger. Opposite long-entry rules need not have equal/opposite gross P&L: availability, quantities, entry/exit timing and whole-share rebalancing differ. Independent daily capital is not a continuously compounded portfolio.",
+            "",
+            "## Verification and lineage",
+            "",
+            f"All six attempts were preregistered before new scoring. The existing read-only round verifier independently checked {verification['reconciled_base_fills']:,} base fills and {verification['reconciled_base_sessions']:,} candidate-sessions, dated fees and settlement, whole-share flat-end accounting, normal/stressed Sharpe/Fitness and every gate. Existing crypto definitions/results and global TEST counter are unchanged. See checks.json, signal_checks.json and paired_comparison.json.",
+            "",
+            "Production Python/config files are byte-matched to main509866f and remain clean for scheduled PAPER. The actual runner is an archived uncommitted research helper and its hash is included in the protocol, preregistered parameters and result artifacts. Original dirty markers are preserved; reported=false. Source/ and the frozen runtime retain actual execution bytes. No commit, push, PAPER-schedule change or real order.",
+            "",
+            "[Open the equity lab](http://localhost:8501/?page=equities), select RELIANCE and research round nse_sign_reverse1. The registry holds all originals and inverses with their actual status; every retained run has a hash-verified report. Further parameter changes require a new protocol, not replacing these results or searching this VALID period until a winner appears.",
+        ]
+    )
+    with (OUT / "REPORT.md").open("x") as stream:
+        stream.write("\n".join(lines) + "\n")
+    print(
+        json.dumps(
+            dict(
+                comparisons=3,
+                positive_base_and_stress=sum(
+                    p["inverse_positive_after_base_and_stress"] for p in pairs
+                ),
+                results=[
+                    dict(candidate=r["candidate"], sharpe=r["sharpe"], net=r["net_inr"])
+                    for r in rows
+                ],
+            )
+        ),
+        flush=True,
+    )
+
+
+if __name__ == "__main__":
+    {"algebra": algebra, "report": report}[sys.argv[1]]()

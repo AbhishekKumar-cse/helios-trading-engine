@@ -1,0 +1,144 @@
+{
+  "experimental_helpers_were_uncommitted_at_measurement": true,
+  "files": {
+    "nse_costaware_train1/REPORT.md": {
+      "original_workspace_path": "reports_out/equity_research/nse_costaware_train1/REPORT.md",
+      "sha256": "a92499bc85832f6b8fb185b5aa90105ef5099b14ca87d55cad2de3c46c647a1d"
+    },
+    "nse_costaware_train1/certification_summary.json": {
+      "original_workspace_path": "reports_out/equity_research/nse_costaware_train1/certification_summary.json",
+      "sha256": "0ecdf48ce69789ef9343c6e3590bc9ca8bbd0fb386eb7ebb5c5d48862a2a9e07"
+    },
+    "nse_costaware_train1/protocol.json": {
+      "original_workspace_path": "reports_out/equity_research/nse_costaware_train1/protocol.json",
+      "sha256": "ee7bd56716cd555ed8156a089e0898b41fb509bc405b0209e6f47e0e4aaefcd8"
+    },
+    "nse_costaware_train1/results.json": {
+      "original_workspace_path": "reports_out/equity_research/nse_costaware_train1/results.json",
+      "sha256": "ab74c1a44244cc9837028b3982e4a0a8dec9247a827d5eb7ad327ce44d982cf5"
+    },
+    "nse_costaware_train1/study.py.source": {
+      "original_workspace_path": "reports_out/equity_research/nse_costaware_train1/study.py",
+      "sha256": "f9a499f152d2ae6625d365b1cdfe96b04e2a7f19980c69785e9844b0de57fd6c"
+    },
+    "nse_costaware_train1/verification.json": {
+      "original_workspace_path": "reports_out/equity_research/nse_costaware_train1/verification.json",
+      "sha256": "54148a7348d7d462ae6dc17f1a3742eaf5ad5ca375a1a3a316e52d9455f7c5e6"
+    },
+    "nse_costaware_train1/verify_report.py.source": {
+      "original_workspace_path": "reports_out/equity_research/nse_costaware_train1/verify_report.py",
+      "sha256": "ba7ff419408614b5bcffca1e41e92a5ab32b6489b2f4aa5da19ff58152e79423"
+    },
+    "nse_papers_train1/OVERVIEW.md": {
+      "original_workspace_path": "reports_out/equity_research/nse_papers_train1/OVERVIEW.md",
+      "sha256": "54318336817b33011028563d1ad4f992cebece69af34fe3382fd16632aec757e"
+    },
+    "nse_papers_train1/REPORT.md": {
+      "original_workspace_path": "reports_out/equity_research/nse_papers_train1/REPORT.md",
+      "sha256": "4a063cdc063a992a74f77f37ce262194cb0a4595c3220acb499393681b46a7cc"
+    },
+    "nse_papers_train1/collect_sources.py.source": {
+      "original_workspace_path": "reports_out/equity_research/nse_papers_train1/collect_sources.py",
+      "sha256": "57c35a079ffbdbe621c58e07fd9cd9a806814e3d86b2d4bf544a4a785730d05f"
+    },
+    "nse_papers_train1/definitions/closing_momentum.yaml": {
+      "original_workspace_path": "reports_out/equity_research/nse_papers_train1/definitions/closing_momentum.yaml",
+      "sha256": "5a97a191208b67da23531a8de9f384635c0d83fb316c96a4ce243ec8474899b9"
+    },
+    "nse_papers_train1/definitions/noise_vwap.yaml": {
+      "original_workspace_path": "reports_out/equity_research/nse_papers_train1/definitions/noise_vwap.yaml",
+      "sha256": "0d2c790a4981303457eefceb9fc0f5cf2cb33f239a10debd007186fa1bde6268"
+    },
+    "nse_papers_train1/definitions/orb_rvol.yaml": {
+      "original_workspace_path": "reports_out/equity_research/nse_papers_train1/definitions/orb_rvol.yaml",
+      "sha256": "bd941ed3b9c637924d86726d0fab1f2a0d84a770bcd8444c1ad64f5c58ff2666"
+    },
+    "nse_papers_train1/paper_signals.py.source": {
+      "original_workspace_path": "reports_out/equity_research/nse_papers_train1/paper_signals.py",
+      "sha256": "3ef0bb5ae1c01cda22a9415f1757685b1c78644cdb8c6fcb4f51497e7b6bc93a"
+    },
+    "nse_papers_train1/protocol.json": {
+      "original_workspace_path": "reports_out/equity_research/nse_papers_train1/protocol.json",
+      "sha256": "d55e8456a2fc1d4ac5a52efb21e8aaf637ce50f85bf3a79a1465cabf5e4d951c"
+    },
+    "nse_papers_train1/results.json": {
+      "original_workspace_path": "reports_out/equity_research/nse_papers_train1/results.json",
+      "sha256": "792f8f44d8279ac3f50c4e84d51a9d5f4a15b835d7c8d97304b3b4c4fb0fbf56"
+    },
+    "nse_papers_train1/source_receipts.json": {
+      "original_workspace_path": "reports_out/equity_research/nse_papers_train1/source_receipts.json",
+      "sha256": "127e0bfdd68199dcc6b91e9c35563b9c595e04d3feac6a79c0be5311df7c6090"
+    },
+    "nse_papers_train1/study.py.source": {
+      "original_workspace_path": "reports_out/equity_research/nse_papers_train1/study.py",
+      "sha256": "451072c9faf7b04bf05cfca0d4948f57a6aacc56d9ce561023d11849f2b81bf8"
+    },
+    "nse_papers_train1/test_signals.py.source": {
+      "original_workspace_path": "reports_out/equity_research/nse_papers_train1/test_signals.py",
+      "sha256": "2264d8e2cd3e498354372dddee140d24a61722f17ef21815b5f3eff3d1dbc5d6"
+    },
+    "nse_papers_train1/verification.json": {
+      "original_workspace_path": "reports_out/equity_research/nse_papers_train1/verification.json",
+      "sha256": "7813ea32d2f08ac9ae3884ad679d14aa05c2a75c2e2a0cf11432a67ac25d7f5d"
+    },
+    "nse_papers_train1/verify_report.py.source": {
+      "original_workspace_path": "reports_out/equity_research/nse_papers_train1/verify_report.py",
+      "sha256": "01f4b661285e8cc2d695a128b8b9aed36cf9a171e7fe3b3cc909ea99c5611ed6"
+    },
+    "nse_sign_reverse1/REPORT.md": {
+      "original_workspace_path": "reports_out/equity_research/nse_sign_reverse1/REPORT.md",
+      "sha256": "939902ae925ec96c7fbc06290cd82f520c78a7203c155375baad4637f19298a6"
+    },
+    "nse_sign_reverse1/analyze.py.source": {
+      "original_workspace_path": "reports_out/equity_research/nse_sign_reverse1/analyze.py",
+      "sha256": "d2851ee4af088708e7022781fcd2262f2540c76d89eec744ac6b0e3c6f5af92d"
+    },
+    "nse_sign_reverse1/checks.json": {
+      "original_workspace_path": "reports_out/equity_research/nse_sign_reverse1/checks.json",
+      "sha256": "45758b4352ea48c3b98351599c3f6f719f66cce876a85df82e517d7d6add066b"
+    },
+    "nse_sign_reverse1/definitions/inverse_body_reversal.yaml": {
+      "original_workspace_path": "reports_out/equity_research/nse_sign_reverse1/definitions/inverse_body_reversal.yaml",
+      "sha256": "04fe106586075cecb157508db815603704042a9bf91888fb700c0c85a74a86b6"
+    },
+    "nse_sign_reverse1/definitions/inverse_gap_reversal.yaml": {
+      "original_workspace_path": "reports_out/equity_research/nse_sign_reverse1/definitions/inverse_gap_reversal.yaml",
+      "sha256": "bca89cf63876e01ed220367c7e87ccdadad54bde2c5fc91aa3be8e6155b7945a"
+    },
+    "nse_sign_reverse1/definitions/inverse_vol_trend.yaml": {
+      "original_workspace_path": "reports_out/equity_research/nse_sign_reverse1/definitions/inverse_vol_trend.yaml",
+      "sha256": "dd7bbd5ac338bd7234f2ca7406518fe1c9e22eccccb554c7aae2a06b86f283e2"
+    },
+    "nse_sign_reverse1/history_checks.json": {
+      "original_workspace_path": "reports_out/equity_research/nse_sign_reverse1/history_checks.json",
+      "sha256": "07397da479b7c6a198617a176aa063a54577694860e76d51c79579d393cad372"
+    },
+    "nse_sign_reverse1/paired_comparison.json": {
+      "original_workspace_path": "reports_out/equity_research/nse_sign_reverse1/paired_comparison.json",
+      "sha256": "d6707cd19bf4164795a05296637207884975fdcf514a7bc43777a05c6625323c"
+    },
+    "nse_sign_reverse1/preregistration.json": {
+      "original_workspace_path": "reports_out/equity_research/nse_sign_reverse1/preregistration.json",
+      "sha256": "d9c74f6715ed6c1d38086909872f1e64449245338fb3379b6fd3721ea773ad71"
+    },
+    "nse_sign_reverse1/protocol.json": {
+      "original_workspace_path": "reports_out/equity_research/nse_sign_reverse1/protocol.json",
+      "sha256": "d2abe96771a148c8a67a479e378787177830ed1c16ce8e27386d403ce210649b"
+    },
+    "nse_sign_reverse1/provenance.py.source": {
+      "original_workspace_path": "reports_out/equity_research/nse_sign_reverse1/provenance.py",
+      "sha256": "870adb5f021b27b5e7836010c3179af1df2c5d2f2dd767b6370c5d558de2bc4d"
+    },
+    "nse_sign_reverse1/runner.py.source": {
+      "original_workspace_path": "reports_out/equity_research/nse_sign_reverse1/runner.py",
+      "sha256": "304eac76304da1644b36629b9caa2e0c913dfcfa56a458a5452f74c303b70072"
+    },
+    "nse_sign_reverse1/signal_checks.json": {
+      "original_workspace_path": "reports_out/equity_research/nse_sign_reverse1/signal_checks.json",
+      "sha256": "494ae9841f022b22c4a17a24e787b268033998e32102cd70c4c417b56f3a93e5"
+    }
+  },
+  "production_source_commit_at_measurement": "509866fde6b13fa3fcfbb84d6ca0d0c51734954f",
+  "publication_is_not_a_reexecution": true,
+  "version": 1
+}

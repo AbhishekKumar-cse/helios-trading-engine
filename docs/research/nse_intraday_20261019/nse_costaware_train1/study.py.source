@@ -1,0 +1,329 @@
+"""Immutable exploratory TRAIN screen, not a shared-engine gate evaluation.
+
+Run prepare before certify, then run screen. No VALID prices are decoded by
+this script. Snapshot hashing reads bytes, not prices. All outcomes are retained.
+"""
+
+import hashlib
+import json
+import math
+import shutil
+import subprocess
+import sys
+from collections import defaultdict
+from datetime import UTC, datetime
+from decimal import ROUND_DOWN, Decimal
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
+ROOT = Path("/mnt/c/Users/bit/OneDrive/Desktop/helios")
+OUT = ROOT / "reports_out/equity_research/nse_costaware_train1"
+SNAPSHOT = ROOT / "data/equities/nifty50_repaired/20261018_v2"
+SYMBOLS = ["AXISBANK", "RELIANCE", "SUNPHARMA", "TCS"]
+RULES = ["opening_trend", "opening_reversal", "opening_breakout"]
+CAPITAL = Decimal("100000")
+NOTIONAL = CAPITAL / 2
+
+
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def write(name, data):
+    with (OUT / name).open("x") as stream:
+        json.dump(data, stream, indent=2, sort_keys=True, allow_nan=False)
+        stream.write("\n")
+
+
+def git(*args):
+    return subprocess.check_output(["git", "-C", str(ROOT), *args], text=True).strip()
+
+
+def prepare():
+    if git("status", "--porcelain"):
+        raise ValueError("preserve clean pinned PAPER source")
+    paths = git(
+        "ls-files",
+        "research/helios",
+        "configs/equities",
+        "scripts/certify_nse_execution.py",
+        "uv.lock",
+        "pyproject.toml",
+    ).splitlines()
+    hashes = {}
+    for relative in paths:
+        source = ROOT / relative
+        destination = OUT / "source" / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, destination)
+        hashes[relative] = digest(destination)
+    write(
+        "protocol.json",
+        dict(
+            version="nse_costaware_train_screen_v1",
+            created_at=datetime.now(UTC).isoformat(),
+            source_commit=git("rev-parse", "HEAD"),
+            clean_tracked_source=True,
+            experimental_helper=(
+                "study.py is an archived uncommitted research artifact, not production code"
+            ),
+            helper_sha256=digest(Path(__file__)),
+            source_hashes=hashes,
+            manifest_sha256=digest(SNAPSHOT / "manifest.json"),
+            symbols=SYMBOLS,
+            rules=RULES,
+            number_of_comparisons=12,
+            fit=["2025-01-01", "2025-09-30"],
+            calibration=["2025-10-09", "2025-12-31"],
+            prior_exposure=(
+                "TRAIN/calibration already used for earlier ML; earlier VALID results seen; "
+                "exploratory, not independent out-of-sample evidence"
+            ),
+            read_filter=(
+                "session_date <= 2025-12-31; research_eligible; "
+                "complete normal 375-minute sessions only"
+            ),
+            entry="signal uses first 30 completed bars; trade at opening of bar 30 (09:45 IST)",
+            trend="first30 close / first open - 1 >= 0.0021",
+            reversal="first30 close / first open - 1 <= -0.0021",
+            breakout="trend condition AND bar29 close > max high of bars0..28",
+            exit=(
+                "bar374 opening (15:29 IST); fixed whole-share quantity, "
+                "at most one round trip/session"
+            ),
+            capital_inr=str(CAPITAL),
+            maximum_entry_notional_inr=str(NOTIONAL),
+            costs=(
+                "shared estimate_intraday_charges, current brokerage scenario; "
+                "5bps adverse slippage/side; stress doubles charges and slippage, "
+                "re-sizes whole shares"
+            ),
+            screen_criterion=(
+                "calibration >=20 active sessions, positive total net at base and stress, "
+                "all 3 calibration months positive at base and stress; "
+                "no parameter search or overrides"
+            ),
+            exclusions=(
+                "conditional ex-post complete days; all quarantines preserved; "
+                "special short session excluded; missing days stay unknown"
+            ),
+            official_gate_evaluation=False,
+            registered_alpha_results=0,
+            valid_prices_accessed=False,
+            test_access=False,
+            automatic_promotion=False,
+            g7_eligible=False,
+            schedule_changed=False,
+        ),
+    )
+    print("Prepared immutable protocol before scoring", flush=True)
+
+
+def screen():
+    protocol = json.loads((OUT / "protocol.json").read_text())
+    assert protocol["helper_sha256"] == digest(Path(__file__))
+    assert protocol["source_commit"] == git("rev-parse", "HEAD")
+    assert not git("status", "--porcelain")
+    assert protocol["manifest_sha256"] == digest(SNAPSHOT / "manifest.json")
+    for relative, expected in protocol["source_hashes"].items():
+        assert digest(OUT / "source" / relative) == expected
+        assert digest(ROOT / relative) == expected
+    # Import the archived, byte-matched calculator, not an unrecorded dependency.
+    sys.path.insert(0, str(OUT / "source/research"))
+    from helios.equities.charges import ChargeTrade, estimate_intraday_charges
+
+    certificate = json.loads((OUT / "certification_summary.json").read_text())
+    assert certificate["verdict"] == "NOT_CERTIFIED" and not certificate["g7_eligible"]
+    manifest = json.loads((SNAPSHOT / "manifest.json").read_text())
+    records, exclusions, audit = [], [], []
+    for symbol in SYMBOLS:
+        item = next(row for row in manifest["files"] if row["symbol"] == symbol)
+        source = SNAPSHOT / item["path"]
+        assert digest(source) == item["sha256"]
+        frame = pd.read_parquet(source, filters=[("session_date", "<=", "2025-12-31")])
+        assert set(frame.symbol) == {symbol} and frame.session_date.max() <= "2025-12-31"
+        audit.append(
+            dict(
+                symbol=symbol,
+                decoded_rows=len(frame),
+                min_day=frame.session_date.min(),
+                max_day=frame.session_date.max(),
+                source_sha256=item["sha256"],
+            )
+        )
+        for day, raw in frame.groupby("session_date", sort=True):
+            if "2025-10-01" <= day < "2025-10-09":
+                exclusions.append(dict(symbol=symbol, day=day, reason="embargo"))
+                continue
+            part = raw.sort_values("open_time").reset_index(drop=True)
+            stamps = part.timestamp.dt.tz_convert("Asia/Kolkata")
+            slots = (stamps.dt.hour * 60 + stamps.dt.minute).tolist()
+            if not part.research_eligible.all() or set(part.screen_status) != {"PASS_SCALE_SCREEN"}:
+                exclusions.append(
+                    dict(symbol=symbol, day=day, reason="source_quarantine_or_screen_failure")
+                )
+                continue
+            if slots != list(range(555, 930)) or (part.volume <= 0).any():
+                exclusions.append(
+                    dict(
+                        symbol=symbol,
+                        day=day,
+                        reason="non_normal_or_incomplete_or_nonpositive_volume",
+                    )
+                )
+                continue
+            assert not part.open_time.duplicated().any()
+            assert (stamps.dt.second == 0).all() and (stamps.dt.microsecond == 0).all()
+            assert (part.low <= part[["open", "close"]].min(axis=1)).all()
+            assert (part.high >= part[["open", "close"]].max(axis=1)).all()
+            signal_time = int(part.open_time.iloc[29]) + 60000000
+            entry_time, exit_time = int(part.open_time.iloc[30]), int(part.open_time.iloc[374])
+            assert signal_time <= entry_time < exit_time
+            first_return = Decimal(str(part.close.iloc[29])) / Decimal(str(part.open.iloc[0])) - 1
+            conditions = dict(
+                opening_trend=first_return >= Decimal(".0021"),
+                opening_reversal=first_return <= Decimal("-.0021"),
+                opening_breakout=first_return >= Decimal(".0021")
+                and part.close.iloc[29] > part.high.iloc[:29].max(),
+            )
+            partition = "fit" if day <= "2025-09-30" else "calibration"
+            for rule in RULES:
+                for multiplier in (1, 2):
+                    gross = fees = net = turnover = slip_cost = Decimal(0)
+                    quantity = Decimal(0)
+                    if conditions[rule]:
+                        entry, exit_price = (
+                            Decimal(str(part.open.iloc[30])),
+                            Decimal(str(part.open.iloc[374])),
+                        )
+                        slip = Decimal(".0005") * multiplier
+                        buy, sell = entry * (1 + slip), exit_price * (1 - slip)
+                        quantity = (NOTIONAL / buy).to_integral_value(rounding=ROUND_DOWN)
+                        assert quantity > 0 and quantity * buy <= NOTIONAL
+                        trades = [
+                            ChargeTrade(
+                                pd.Timestamp(day).date(), symbol, "entry", "BUY", quantity, buy
+                            ),
+                            ChargeTrade(
+                                pd.Timestamp(day).date(), symbol, "exit", "SELL", quantity, sell
+                            ),
+                        ]
+                        fees = estimate_intraday_charges(trades).total * multiplier
+                        gross = quantity * (exit_price - entry)
+                        slip_cost = quantity * ((buy - entry) + (exit_price - sell))
+                        net = quantity * (sell - buy) - fees
+                        turnover = quantity * (buy + sell)
+                        assert abs(net - (gross - slip_cost - fees)) < Decimal("1e-20")
+                    records.append(
+                        dict(
+                            symbol=symbol,
+                            rule=rule,
+                            partition=partition,
+                            day=day,
+                            multiplier=multiplier,
+                            active=bool(conditions[rule]),
+                            quantity=str(quantity),
+                            gross=str(gross),
+                            fees=str(fees),
+                            slippage_cost=str(slip_cost),
+                            net=str(net),
+                            turnover=str(turnover),
+                            signal_time=signal_time,
+                            entry_time=entry_time,
+                            exit_time=exit_time,
+                        )
+                    )
+    results = []
+    for symbol in SYMBOLS:
+        for rule in RULES:
+            result = dict(symbol=symbol, rule=rule, partitions={})
+            for partition in ("fit", "calibration"):
+                scenarios = {}
+                for multiplier in (1, 2):
+                    rows = [
+                        r
+                        for r in records
+                        if r["symbol"] == symbol
+                        and r["rule"] == rule
+                        and r["partition"] == partition
+                        and r["multiplier"] == multiplier
+                    ]
+                    monthly = defaultdict(Decimal)
+                    for row in rows:
+                        monthly[row["day"][:7]] += Decimal(row["net"])
+                    values = np.array([float(Decimal(r["net"]) / CAPITAL) for r in rows])
+                    daily_std = float(values.std(ddof=1)) if len(values) > 1 else 0
+                    scenarios[str(multiplier)] = dict(
+                        sessions=len(rows),
+                        active_sessions=sum(r["active"] for r in rows),
+                        net_inr=str(sum((Decimal(r["net"]) for r in rows), Decimal(0))),
+                        gross_inr=str(sum((Decimal(r["gross"]) for r in rows), Decimal(0))),
+                        fees_inr=str(sum((Decimal(r["fees"]) for r in rows), Decimal(0))),
+                        slippage_inr=str(
+                            sum((Decimal(r["slippage_cost"]) for r in rows), Decimal(0))
+                        ),
+                        descriptive_daily_sharpe=None
+                        if daily_std == 0
+                        else float(values.mean() / daily_std * math.sqrt(252)),
+                        monthly_net_inr={key: str(value) for key, value in monthly.items()},
+                        average_per_bar_turnover=float(
+                            sum((Decimal(r["turnover"]) for r in rows), Decimal(0))
+                            / (CAPITAL * len(rows) * 375)
+                        ),
+                    )
+                result["partitions"][partition] = scenarios
+            tail = result["partitions"]["calibration"]
+            result["passes_exploratory_screen"] = all(
+                s["active_sessions"] >= 20
+                and Decimal(s["net_inr"]) > 0
+                and len(s["monthly_net_inr"]) == 3
+                and all(Decimal(v) > 0 for v in s["monthly_net_inr"].values())
+                for s in tail.values()
+            )
+            result["official_status"] = "NOT_EVALUATED; G7 blocked; no promotion"
+            results.append(result)
+    calibration = json.loads(
+        (ROOT / "reports_out/equity_research/nse_minute_breadth1/ml/calibration.json").read_text()
+    )
+    write("decoded_scope.json", audit)
+    write("exclusions.json", exclusions)
+    write("session_records.json", records)
+    write(
+        "results.json",
+        dict(
+            protocol_sha256=digest(OUT / "protocol.json"),
+            certification_sha256=digest(OUT / "certification_summary.json"),
+            records_sha256=digest(OUT / "session_records.json"),
+            results=results,
+            exploratory_survivors=sum(r["passes_exploratory_screen"] for r in results),
+            ml_diagnostic=dict(
+                calibration_sha256=digest(
+                    ROOT / "reports_out/equity_research/nse_minute_breadth1/ml/calibration.json"
+                ),
+                max_calibrated_expected_return_bps=max(calibration["y"]) * 10000,
+                entry_hurdle_bps=21,
+            ),
+            valid_prices_accessed=False,
+            test_access=False,
+            registered_results=0,
+            promoted=0,
+            main_clean=not git("status", "--porcelain"),
+        ),
+    )
+    print(
+        json.dumps(
+            dict(
+                candidate_screens=len(results),
+                survivors=sum(r["passes_exploratory_screen"] for r in results),
+                records=len(records),
+                exclusions=len(exclusions),
+            )
+        ),
+        flush=True,
+    )
+
+
+if __name__ == "__main__":
+    {"prepare": prepare, "screen": screen}[sys.argv[1]]()

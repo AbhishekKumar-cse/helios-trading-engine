@@ -10,6 +10,7 @@ import uuid
 from concurrent.futures import ProcessPoolExecutor
 from dataclasses import asdict, dataclass, replace
 from decimal import ROUND_HALF_UP, Decimal, localcontext
+from functools import partial
 from pathlib import Path
 from typing import Any, Literal
 
@@ -48,6 +49,7 @@ class EquityEvaluationContext:
     model: EquityModel
     source_hashes: dict[str, str]
     workers: int = 1
+    execution_policy: Literal["every_bar_v1", "paper_state_change_v1"] = "every_bar_v1"
 
 
 def evaluate_equity(
@@ -66,6 +68,18 @@ def evaluate_equity(
         raise RegistryError("equity research currently authorizes VALID only; TEST stays sealed")
     started = time.monotonic()
     policy, source = context.policy, context.inputs
+    if context.execution_policy not in ("every_bar_v1", "paper_state_change_v1"):
+        raise RegistryError("unsupported equity execution policy")
+    paper = context.execution_policy == "paper_state_change_v1"
+    if paper and (
+        policy.version != "nse_minute_research_v2" or "paper_signal_sha256" not in source.hashes
+    ):
+        raise RegistryError("paper state-change execution requires bound v2 signal inputs")
+    if paper:
+        from helios.equities.paper_features import feature_digest
+
+        if feature_digest(source.features) != source.hashes["paper_signal_sha256"]:
+            raise RegistryError("paper signal bytes differ from their input hash")
     if not 1 <= context.workers <= 4:
         raise RegistryError("equity execution permits one to four isolated workers")
     gates = load_config(equity_gates_path(policy), GatesConfig)
@@ -80,7 +94,11 @@ def evaluate_equity(
             model_hash=context.model.model_hash,
             calibration_hash=context.model.calibration_hash,
             source_hashes=context.source_hashes,
-        ) | (dict(execution_workers=context.workers) if context.workers != 1 else {}):
+        ) | (dict(execution_workers=context.workers) if context.workers != 1 else {}) | (
+            dict(execution_policy=context.execution_policy, input_hashes=source.hashes)
+            if paper
+            else {}
+        ):
             raise RegistryError("equity evaluation differs from the preregistered protocol")
         if connection.execute(
             text("SELECT count(*) FROM alpha_results WHERE experiment_id=:id"),
@@ -94,6 +112,13 @@ def evaluate_equity(
             and definition.model_ref != "sha256:" + context.model.model_hash
         ):
             raise RegistryError("registered equity model reference mismatch")
+        if paper and (
+            definition.model_ref is not None
+            or definition.feature_set_version != "nse_paper_minute_features_v1"
+        ):
+            raise RegistryError(
+                "paper execution requires a versioned quantitative signal definition"
+            )
     lineage = RunContext.capture(policy, context.snapshot_id, policy.seed, reported=reported)
     alpha = (
         evaluate_definition(definition, source.features, interval=policy.interval)
@@ -101,6 +126,17 @@ def evaluate_equity(
         else context.model.alpha(source.features, policy)
     )
     sessions, excluded = eligible_sessions(source, interval=policy.interval)
+    if paper:
+        ready = []
+        for frame in sessions:
+            mask = alpha.open_time.isin(frame.open_time)
+            if int(mask.sum()) != len(frame) or not alpha.available.loc[mask].all():
+                excluded.append(
+                    dict(day=str(frame.session_date.iloc[0]), reason="paper_history_unavailable")
+                )
+            else:
+                ready.append(frame)
+        sessions = ready
     # Performance is explicitly conditional on this ex-post complete-session cohort.
     # This is a data-quality study; G7 prohibits promotion for the current vendor data.
     opportunity_times: set[int] = set()
@@ -142,6 +178,10 @@ def evaluate_equity(
         test_access=False,
         execution_workers=context.workers,
     )
+    if paper:
+        protocol["execution_policy"] = context.execution_policy
+        protocol["execution"] += "; target only at binary state changes; fixed shares while held"
+        protocol["prior_exposure"] = "Exploratory reused VALID; not independent OOS confirmation"
     daily: list[dict[str, Any]] = []
     stress: list[float] = []
     fills: list[dict[str, Any]] = []
@@ -173,13 +213,22 @@ def evaluate_equity(
                     context.model.model_hash if definition.model_ref else None,
                 )
             )
+        replay = (
+            partial(
+                replay_pair,
+                state_changes_only=True,
+                feature_set_version=definition.feature_set_version,
+            )
+            if paper
+            else replay_pair
+        )
         if context.workers == 1:
-            pairs = list(map(replay_pair, jobs))
+            pairs = list(map(replay, jobs))
         else:
             with ProcessPoolExecutor(
                 max_workers=context.workers, mp_context=multiprocessing.get_context("spawn")
             ) as pool:
-                pairs = list(pool.map(replay_pair, jobs))
+                pairs = list(pool.map(replay, jobs))
         for frame, (base, doubled) in zip(sessions, pairs, strict=True):
             daily.append(
                 dict(

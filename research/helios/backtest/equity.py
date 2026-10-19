@@ -59,7 +59,12 @@ class SessionEvidence:
     fee_adjustments: tuple[dict[str, Any], ...] = ()
 
 
-def replay_pair(arguments: tuple[Any, ...]) -> tuple[SessionEvidence, SessionEvidence]:
+def replay_pair(
+    arguments: tuple[Any, ...],
+    *,
+    state_changes_only: bool = False,
+    feature_set_version: str | None = None,
+) -> tuple[SessionEvidence, SessionEvidence]:
     """Pure worker boundary: no database, shared state or retained parent traces."""
     frame, alpha, policy, snapshot, identifier, commit, stress, model = arguments
     evidence = []
@@ -73,6 +78,8 @@ def replay_pair(arguments: tuple[Any, ...]) -> tuple[SessionEvidence, SessionEvi
             code_commit=commit,
             multiplier=multiplier,
             model_hash=model,
+            state_changes_only=state_changes_only,
+            feature_set_version=feature_set_version,
         )
         evidence.append(
             SessionEvidence(
@@ -139,7 +146,11 @@ def replay_session(
     code_commit: str,
     multiplier: float = 1,
     model_hash: str | None = None,
+    state_changes_only: bool = False,
+    feature_set_version: str | None = None,
 ) -> SessionReplay:
+    if state_changes_only and policy.version != "nse_minute_research_v2":
+        raise ValueError("state-change execution requires the explicit v2 minute cost policy")
     symbol = alpha.symbol
     day = str(frame.session_date.iloc[0])
     slots = (
@@ -187,7 +198,7 @@ def replay_session(
     lineage = DecisionLineage(
         alpha_id=alpha_id,
         alpha_version=1,
-        feature_set_version=policy.feature_set_version,
+        feature_set_version=feature_set_version or policy.feature_set_version,
         horizon_family=HorizonFamily.HOURLY if policy.interval == "1h" else HorizonFamily.MINUTE,
         code_commit=code_commit,
         config_hash=config_hash(policy),
@@ -200,6 +211,8 @@ def replay_session(
         for clock, value, ok in zip(alpha.open_time, alpha.values, alpha.available, strict=True)
     }
     bars, signals = [], []
+    previous_value: float | None = None
+    entries = 0
     for slot, row in enumerate(frame.itertuples(index=False)):
         opening = int(frame.open_time.iloc[slot])
         duration = (60 if slot < 6 else 15) if policy.interval == "1h" else 1
@@ -228,6 +241,19 @@ def replay_session(
         )
         # A calendar-known flat target exits at the final observed bar opening.
         value = 0.0 if slot >= slots - 2 else lookup.get(opening)
+        if state_changes_only and value is not None:
+            if value not in (0.0, 1.0):
+                raise ValueError("state-change research supports binary long/flat targets only")
+            current = value
+            if current == 1.0 and previous_value != 1.0:
+                entries += 1
+                if entries > 1:
+                    raise ValueError("paper research permits at most one entry per session")
+            # A held state creates no fresh notional target. The existing strategy
+            # consequently preserves the actual filled whole-share quantity.
+            if current == previous_value:
+                value = None
+            previous_value = current
         signals.append(
             AlphaValue(
                 symbol=symbol,

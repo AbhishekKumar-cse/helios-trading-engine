@@ -1,0 +1,11 @@
+{
+  "REPORT.md": "f19aa1450f545641510a9d5a099e80fbb691b4c8ea9069b7de603e91e03eb8a4",
+  "certification_assessment.json": "a58731c0ac5051d45c29712e903868688371452abf840cb3197418de6f38396d",
+  "definitions/closing_momentum.yaml": "7535956d8d596a5c4d85a75f12cc1a608f582dfdbdd90ccd4932441ac3cedf19",
+  "definitions/noise_vwap.yaml": "34508203158de01e5288345332945d014f0f9b1de64f499e7bfe32d962e46460",
+  "definitions/orb_rvol.yaml": "98f1ee75f35898a3fc411907ef7b62016a23540ed049e41d4eb4fc8434bf91e6",
+  "history_checks.json": "6a74a3b5ebe58e96890d3faa2d9d0c85cb4deb1284ba4e8230f049fc66188979",
+  "schedule_checks.json": "6d6c35813198aba91f61fb781342c241259ca9190302f00a17359faedf47a315",
+  "shared_checks.json": "c93a43b0a81b99048f669de204dc49391e4580616ee32c480935153c72b10d4e",
+  "summary.json": "c7d43b23d99f85911e4438847b3930ba261f3c186f23610eefa3bec43b6d2053"
+}

@@ -1,0 +1,2047 @@
+{
+  "assessed_at": "2026-10-19T17:11:47.463995+00:00",
+  "boundary": "Public candle definitions and daily aggregates cannot establish exact raw-minute vintage, contemporaneous availability, historical account acceptance or fills. This assessment records verified evidence and specific unresolved obligations.",
+  "certificate_sha256": "0ecdf48ce69789ef9343c6e3590bc9ca8bbd0fb386eb7ebb5c5d48862a2a9e07",
+  "companies": [
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-11-17",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE423A01024",
+          "subject": "Rights 3:25 @ Premium Rs 1799/-",
+          "symbol": "ADANIENT"
+        }
+      ],
+      "daily_extreme_max_relative_difference": 4.5142650775265025e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9845061178815738,
+        0.9999957418868041
+      ],
+      "official_daily_isins": [
+        "INE423A01024"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 0,
+      "source_status": "BLOCKED",
+      "symbol": "ADANIENT",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 0.0001299545159194615,
+      "minute_to_daily_volume_ratio_range": [
+        0.9505996994081617,
+        0.9999970244283276
+      ],
+      "official_daily_isins": [
+        "INE742F01042"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 136935,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "ADANIPORTS",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9394559412100277,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE437A01024"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 135810,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "APOLLOHOSP",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 4.3174164578996255e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9719149111766769,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE021A01026"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 136935,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "ASIANPAINT",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 9.686637283845556e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9751826880154205,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE238A01034"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 136935,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "AXISBANK",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2026-06-24",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE917I01010",
+          "subject": "Buy Back",
+          "symbol": "BAJAJ-AUTO"
+        }
+      ],
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9515510299064234,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE917I01010"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 0,
+      "source_status": "BLOCKED",
+      "symbol": "BAJAJ-AUTO",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 4.881144140100879e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9828460299956666,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE918I01026"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 136935,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "BAJAJFINSV",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-06-16",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE296A01016",
+          "subject": "Bonus 4:1",
+          "symbol": "BAJFINANCE"
+        },
+        {
+          "broadcast": null,
+          "ex_date": "2025-06-16",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE296A01016",
+          "subject": "Face Value Split (Sub-Division) - From Rs 2/- Per Share To Re 1/- Per Share",
+          "symbol": "BAJFINANCE"
+        }
+      ],
+      "daily_extreme_max_relative_difference": 0.9000292393589618,
+      "minute_to_daily_volume_ratio_range": [
+        0.9860218587751193,
+        9.998994056017073
+      ],
+      "official_daily_isins": [
+        "INE296A01024",
+        "INE296A01032"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 0,
+      "source_status": "BLOCKED",
+      "symbol": "BAJFINANCE",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 3.537944454268249e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.9807987962713124,
+        0.9999856594945518
+      ],
+      "official_daily_isins": [
+        "INE263A01024"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 136935,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "BEL",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 0.00022022793591380818,
+      "minute_to_daily_volume_ratio_range": [
+        0.9634428091374243,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE397D01024"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 136935,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "BHARTIARTL",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9819007386713787,
+        0.9997427478942477
+      ],
+      "official_daily_isins": [
+        "INE029A01011"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 21750,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "BPCL",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9829627401050213,
+        0.9999290378149929
+      ],
+      "official_daily_isins": [
+        "INE216A01030"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 21375,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "BRITANNIA",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9751423447552513,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE059A01026"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 136935,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "CIPLA",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9720804663022721,
+        0.9999913601408739
+      ],
+      "official_daily_isins": [
+        "INE522F01014"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 136935,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "COALINDIA",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 9.100423169705607e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9590857682313574,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE089A01031"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137685,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "DRREDDY",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 1.9352091960023188e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9726652509826955,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE066A01021"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137685,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "EICHERMOT",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 3.467406380019966e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.9874950966416672,
+        0.9999945017482935
+      ],
+      "official_daily_isins": [
+        "INE758T01015"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 115185,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "ETERNAL",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 3.953428610814491e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.8849915760541432,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE047A01021"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 131310,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "GRASIM",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9814001714373412,
+        0.9999959328532849
+      ],
+      "official_daily_isins": [
+        "INE860A01027"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137685,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "HCLTECH",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-08-26",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE040A01018",
+          "subject": "Bonus 1:1",
+          "symbol": "HDFCBANK"
+        }
+      ],
+      "daily_extreme_max_relative_difference": 0.5000307031010132,
+      "minute_to_daily_volume_ratio_range": [
+        0.9900381587447246,
+        1.999980687215102
+      ],
+      "official_daily_isins": [
+        "INE040A01034"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 0,
+      "source_status": "BLOCKED",
+      "symbol": "HDFCBANK",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 0.000252503997980158,
+      "minute_to_daily_volume_ratio_range": [
+        0.9895211660686124,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE795G01014"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137685,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "HDFCLIFE",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 2.4399765760074743e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9778459400554668,
+        0.9999893432228225
+      ],
+      "official_daily_isins": [
+        "INE158A01026"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 69375,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "HEROMOTOCO",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 1.6763054228485785e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.9706513054733407,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE038A01020"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137685,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "HINDALCO",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-12-05",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE030A01027",
+          "subject": "Demerger",
+          "symbol": "HINDUNILVR"
+        }
+      ],
+      "daily_extreme_max_relative_difference": 4.456923831108739e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9792280863325916,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE030A01027"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 0,
+      "source_status": "BLOCKED",
+      "symbol": "HINDUNILVR",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 8.209506608625183e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9150455290046919,
+        0.9999975140914292
+      ],
+      "official_daily_isins": [
+        "INE090A01021"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137685,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "ICICIBANK",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 2.436706547315204e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9785950185688574,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE646L01027"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 68310,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "INDIGO",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9668102478512933,
+        0.9999951282132479
+      ],
+      "official_daily_isins": [
+        "INE095A01012"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 69375,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "INDUSINDBK",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-11-14",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE009A01021",
+          "subject": "Buy Back",
+          "symbol": "INFY"
+        }
+      ],
+      "daily_extreme_max_relative_difference": 7.929585282728802e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9542061173730637,
+        0.9999965509067954
+      ],
+      "official_daily_isins": [
+        "INE009A01021"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 0,
+      "source_status": "BLOCKED",
+      "symbol": "INFY",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-01-06",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE154A01025",
+          "subject": "Demerger",
+          "symbol": "ITC"
+        }
+      ],
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9722044903493228,
+        0.9999932046819
+      ],
+      "official_daily_isins": [
+        "INE154A01025"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 0,
+      "source_status": "BLOCKED",
+      "symbol": "ITC",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": null,
+      "minute_to_daily_volume_ratio_range": null,
+      "official_daily_isins": [],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 0,
+      "source_status": "BLOCKED",
+      "symbol": "ITCHOTELS",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 3.8109756097526315e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.9838942893069007,
+        0.9999432424876882
+      ],
+      "official_daily_isins": [
+        "INE758E01017"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 115185,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "JIOFIN",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 9.679605072143715e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9834923841295101,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE019A01038"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137685,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "JSWSTEEL",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2026-01-14",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE237A01010",
+          "subject": "Face Value Split (Sub-Division) - From Rs 5/- Per Share To Re 1/- Per Share",
+          "symbol": "KOTAKBANK"
+        }
+      ],
+      "daily_extreme_max_relative_difference": 0.8000253260731923,
+      "minute_to_daily_volume_ratio_range": [
+        0.9879761211906675,
+        5.0
+      ],
+      "official_daily_isins": [
+        "INE237A01028",
+        "INE237A01036"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 0,
+      "source_status": "BLOCKED",
+      "symbol": "KOTAKBANK",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": null,
+      "minute_to_daily_volume_ratio_range": null,
+      "official_daily_isins": [],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 0,
+      "source_status": "BLOCKED",
+      "symbol": "KWIL",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 2.3015489423183766e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9830408214339791,
+        0.9999924779954502
+      ],
+      "official_daily_isins": [
+        "INE018A01030"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137685,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "LT",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 3.065979887173498e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.9718730906542392,
+        0.9999977320363101
+      ],
+      "official_daily_isins": [
+        "INE101A01026"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137685,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "M&M",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 4.128529376545842e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.981788665588166,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE585B01010"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137310,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "MARUTI",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9915510184521619,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE027H01010"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 68310,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "MAXHEALTH",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-08-08",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE239A01016",
+          "subject": "Bonus 1:1",
+          "symbol": "NESTLEIND"
+        }
+      ],
+      "daily_extreme_max_relative_difference": 0.500023185717598,
+      "minute_to_daily_volume_ratio_range": [
+        0.9859158623319169,
+        1.999976151580554
+      ],
+      "official_daily_isins": [
+        "INE239A01024"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 0,
+      "source_status": "BLOCKED",
+      "symbol": "NESTLEIND",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9794220650389772,
+        0.9999995730791572
+      ],
+      "official_daily_isins": [
+        "INE733E01010"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137685,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "NTPC",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 3.78931413413941e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.9779707120766107,
+        0.9999934165877373
+      ],
+      "official_daily_isins": [
+        "INE213A01029"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137685,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "ONGC",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 3.528581510225948e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.9749251079667146,
+        0.9999993069069266
+      ],
+      "official_daily_isins": [
+        "INE752E01010"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137685,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "POWERGRID",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 6.94203401595539e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.9634772225297745,
+        0.9999804477689709
+      ],
+      "official_daily_isins": [
+        "INE002A01018"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137310,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "RELIANCE",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9818236565433711,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE123W01016"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 135435,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "SBILIFE",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 9.563886763541696e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9575953813488948,
+        0.9999932023031718
+      ],
+      "official_daily_isins": [
+        "INE062A01020"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137310,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "SBIN",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-01-10",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE721A01013",
+          "subject": "Face Value Split (Sub-Division) - From Rs 10/- Per Share To Rs 2/- Per Share",
+          "symbol": "SHRIRAMFIN"
+        }
+      ],
+      "daily_extreme_max_relative_difference": 0.8000070401464351,
+      "minute_to_daily_volume_ratio_range": [
+        0.9802078787245855,
+        4.996543140171726
+      ],
+      "official_daily_isins": [
+        "INE721A01013",
+        "INE721A01047"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 0,
+      "source_status": "BLOCKED",
+      "symbol": "SHRIRAMFIN",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9757509509187049,
+        0.9999991158720419
+      ],
+      "official_daily_isins": [
+        "INE044A01036"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137310,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "SUNPHARMA",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 0.00016914749661711692,
+      "minute_to_daily_volume_ratio_range": [
+        0.993019020217751,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE192A01025"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 136935,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "TATACONSUM",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 7.479431563195416e-05,
+      "minute_to_daily_volume_ratio_range": [
+        0.9813056428818698,
+        0.9999814948724647
+      ],
+      "official_daily_isins": [
+        "INE081A01020"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137310,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "TATASTEEL",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9451292612971245,
+        0.9999948115527121
+      ],
+      "official_daily_isins": [
+        "INE467B01029"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137310,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "TCS",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 7.90920235693715e-06,
+      "minute_to_daily_volume_ratio_range": [
+        0.9707311542414038,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE669C01036"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137310,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "TECHM",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9843630406042243,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE280A01028"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 137310,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "TITAN",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": null,
+      "minute_to_daily_volume_ratio_range": null,
+      "official_daily_isins": [],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 0,
+      "source_status": "BLOCKED",
+      "symbol": "TMCV",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-10-14",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE155A01022",
+          "subject": "Demerger",
+          "symbol": "TMPV"
+        }
+      ],
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9890979901952117,
+        0.99998339701763
+      ],
+      "official_daily_isins": [
+        "INE155A01022"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 0,
+      "source_status": "BLOCKED",
+      "symbol": "TMPV",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2026-06-04",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE849A01012",
+          "subject": "Bonus 1:2",
+          "symbol": "TRENT"
+        }
+      ],
+      "daily_extreme_max_relative_difference": 0.3333137139493819,
+      "minute_to_daily_volume_ratio_range": [
+        0.998287209400715,
+        1.4998927973745668
+      ],
+      "official_daily_isins": [
+        "INE849A01020"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 0,
+      "source_status": "BLOCKED",
+      "symbol": "TRENT",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [],
+      "daily_extreme_max_relative_difference": 0.0005928184281842608,
+      "minute_to_daily_volume_ratio_range": [
+        0.986264033161214,
+        1.0
+      ],
+      "official_daily_isins": [
+        "INE481G01011"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 135060,
+      "source_status": "CONDITIONAL_SCREEN_ONLY",
+      "symbol": "ULTRACEMCO",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    },
+    {
+      "action_broadcast_fields_present": 0,
+      "capital_events": [
+        {
+          "broadcast": null,
+          "ex_date": "2026-06-05",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE075A01022",
+          "subject": "Buy Back",
+          "symbol": "WIPRO"
+        }
+      ],
+      "daily_extreme_max_relative_difference": 0.0,
+      "minute_to_daily_volume_ratio_range": [
+        0.9691246941498532,
+        0.9999942290301712
+      ],
+      "official_daily_isins": [
+        "INE075A01022"
+      ],
+      "release_allowed": false,
+      "required_evidence": [
+        "Independent minute price/share/volume vintage and effective identity chain",
+        "Publication/receipt times and a causal outage/eligibility policy",
+        "Dated account tariff/contract notes and executable liquidity calibration"
+      ],
+      "screened_rows": 0,
+      "source_status": "BLOCKED",
+      "symbol": "WIPRO",
+      "verified_claims": {
+        "announcement_availability_certified": false,
+        "minute_volume_unit_certified": false,
+        "raw_minute_unit_certified": false
+      }
+    }
+  ],
+  "detail_sha256": "ae6c59f89ec61c5ef27f2f6856093967ba46ed7f64efd79786b20aef985be1b8",
+  "diagnostic_stock_days": 18468,
+  "dirty": true,
+  "documentation_receipts": [
+    {
+      "checked_at": "2026-10-19T17:11:05.990518+00:00",
+      "error": null,
+      "establishes": "reference documentation only; not historical execution certification",
+      "key": "provider_candle_definition",
+      "path": "provider_candle_definition.html",
+      "sha256": "90dc1f358a026ebf271c957e4091c141245592cf30efdf8e008c37ae76cd570e",
+      "status": 200,
+      "url": "https://upstox.com/developer/api-documentation/v3/get-historical-candle-data/"
+    },
+    {
+      "checked_at": "2026-10-19T17:11:26.673492+00:00",
+      "error": "TimeoutError",
+      "establishes": "reference documentation only; not historical execution certification",
+      "key": "exchange_order_trade_product",
+      "path": "exchange_order_trade_product.html",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": null,
+      "url": "https://www.nseindia.com/static/market-data/eod-historical-data-subscription"
+    },
+    {
+      "checked_at": "2026-10-19T17:11:46.875629+00:00",
+      "error": "TimeoutError",
+      "establishes": "reference documentation only; not historical execution certification",
+      "key": "exchange_statutory_levies",
+      "path": "exchange_statutory_levies.html",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": null,
+      "url": "https://www.nseindia.com/static/invest/first-time-investor-sebi-turnover-fees-stt-other-levies"
+    },
+    {
+      "checked_at": "2026-10-19T17:11:47.457375+00:00",
+      "error": "HTTP refusal; no retry or bypass",
+      "establishes": "reference documentation only; not historical execution certification",
+      "key": "broker_reference_scenario",
+      "path": "broker_reference_scenario.html",
+      "sha256": "2938e9f1284180959e33ab1718d0793a72ff6e4cdb8108c34dcd14e69446de5c",
+      "status": 403,
+      "url": "https://zerodha.com/charges/"
+    }
+  ],
+  "exclusions_changed": false,
+  "g7_eligible": false,
+  "gates_changed": false,
+  "obligations": [
+    {
+      "id": "raw_units",
+      "required": "Independent raw minute price/volume vintage and dated adjustment/ISIN chain. A rounded adjusted price cannot be inverted exactly using a share ratio.",
+      "status": "MISSING"
+    },
+    {
+      "id": "causal_availability",
+      "required": "Contemporaneous membership/action/calendar publication times and causal outage handling.",
+      "status": "MISSING"
+    },
+    {
+      "id": "costs",
+      "required": "Dated account tariff/contract-note reconciliation; present v2 taxes are a reference estimate.",
+      "status": "SCENARIO_ONLY"
+    },
+    {
+      "id": "execution",
+      "required": "Timestamped executable spread/depth, latency and participation/fill calibration. OHLCV and public last trade do not prove executable liquidity or 5bps slippage.",
+      "status": "MISSING"
+    }
+  ],
+  "official_reference_sessions": 369,
+  "snapshot_manifest_sha256": "60b808fa29423fe7e0162d34fc24bed9d1fe0286c1c7a5f6869dccdb81706158",
+  "source_commit": "eb5c58d88aacab150a83ad2e5c9fa5d61efcbe14",
+  "source_hashes": {
+    "research/helios/data/equities.py": "8a2d7e95148647c985df7dd03b44555db456eb2bf65a1e18018e747fb665093c",
+    "research/helios/equities/rebuild.py": "129216e766b7458fc982962e428feb8d9e17f40ee70e2c91b0f7464c8a270d1f",
+    "scripts/assess_nse_certification.py": "f6a435a3190cb9b9f8e4cd98c33f5641f5c9ae225a80e4cfae89b04cc296242a"
+  },
+  "source_release_count": 0,
+  "source_status_counts": {
+    "BLOCKED": 16,
+    "CONDITIONAL_SCREEN_ONLY": 41
+  },
+  "test_access": false,
+  "verdict": "NOT_CERTIFIED",
+  "verified_minute_files": [
+    {
+      "bytes": 5474347,
+      "path": "bars/ADANIENT.parquet",
+      "sha256": "477812983959db002f50d1136eb9d5ac27677749cd1d1c39cb22b5bcda1de112",
+      "symbol": "ADANIENT"
+    },
+    {
+      "bytes": 5345366,
+      "path": "bars/ADANIPORTS.parquet",
+      "sha256": "3ecddad17dc37e9324d10226c0986007cbf871f712f9f6bbc28958a05c3f2b8a",
+      "symbol": "ADANIPORTS"
+    },
+    {
+      "bytes": 5401076,
+      "path": "bars/APOLLOHOSP.parquet",
+      "sha256": "ce82e1d69f3320ab5805bbe413f76eac90c949874793ef6257232854bdc6e95a",
+      "symbol": "APOLLOHOSP"
+    },
+    {
+      "bytes": 5291677,
+      "path": "bars/ASIANPAINT.parquet",
+      "sha256": "f078be0fc834dc5d4b8eeb00771dfc3361bc95cd6e1c8c85a51b3dd3d62af3c1",
+      "symbol": "ASIANPAINT"
+    },
+    {
+      "bytes": 5478376,
+      "path": "bars/AXISBANK.parquet",
+      "sha256": "3a51309040f75db5e419db4799912e69ad5db02ad5881df7d8121dd03494e0f9",
+      "symbol": "AXISBANK"
+    },
+    {
+      "bytes": 5495652,
+      "path": "bars/BAJAJ-AUTO.parquet",
+      "sha256": "c49bb81af75cbabb499f5e5bc47fc87e98b2740ddbfb684fd465e214a02515ce",
+      "symbol": "BAJAJ-AUTO"
+    },
+    {
+      "bytes": 5306525,
+      "path": "bars/BAJAJFINSV.parquet",
+      "sha256": "9faa6324217dd9664fac01c8140a4197b792842c5c922c79bc00604b6ad79c41",
+      "symbol": "BAJAJFINSV"
+    },
+    {
+      "bytes": 5349986,
+      "path": "bars/BAJFINANCE.parquet",
+      "sha256": "d868ab6f50e8ed49bae6a7220b92299f7519dc0cb4e81af68668dcc82f364b18",
+      "symbol": "BAJFINANCE"
+    },
+    {
+      "bytes": 5771786,
+      "path": "bars/BEL.parquet",
+      "sha256": "8d8d496f34c55400cfb8c4594ab49a7b449a2e9724180c726b43874ac72e79ba",
+      "symbol": "BEL"
+    },
+    {
+      "bytes": 5474673,
+      "path": "bars/BHARTIARTL.parquet",
+      "sha256": "63a0e30c6bf291b3d9d017b24899d1dc941e513496ef13e568c68f2e86c00b1c",
+      "symbol": "BHARTIARTL"
+    },
+    {
+      "bytes": 1022644,
+      "path": "bars/BPCL.parquet",
+      "sha256": "2860f2fb7370cec3e7e8ca427e2b63b28ca9353cd25de3c09452575a5ba44aca",
+      "symbol": "BPCL"
+    },
+    {
+      "bytes": 1028633,
+      "path": "bars/BRITANNIA.parquet",
+      "sha256": "e75d37acad09ea57f2e4f341160086c48cbdb0cba7ea8ae13b39dc4fd8015b71",
+      "symbol": "BRITANNIA"
+    },
+    {
+      "bytes": 5174822,
+      "path": "bars/CIPLA.parquet",
+      "sha256": "c4f5565bc6ef15207e920580ecc372d19d23fed05436012e8dadf5fa1dfca070",
+      "symbol": "CIPLA"
+    },
+    {
+      "bytes": 5287076,
+      "path": "bars/COALINDIA.parquet",
+      "sha256": "34083af57ed42fe5d8f926116c1cb4dcd29598f5e157314439777c37c0b37db5",
+      "symbol": "COALINDIA"
+    },
+    {
+      "bytes": 5238339,
+      "path": "bars/DRREDDY.parquet",
+      "sha256": "1ebeb80012fa4b9d0f4854ef9a6234fe8097f0f5a0bea751c20d0ac61d91a4db",
+      "symbol": "DRREDDY"
+    },
+    {
+      "bytes": 5430553,
+      "path": "bars/EICHERMOT.parquet",
+      "sha256": "9ecfb9d71d2450cddfbd20ca219cf2beee13cec9a4142cc593bc6f1b2d567f35",
+      "symbol": "EICHERMOT"
+    },
+    {
+      "bytes": 5152314,
+      "path": "bars/ETERNAL.parquet",
+      "sha256": "8a5b5f3b854253ae47fc7c82892b91f2de6741ec8d7fa0496317e7e01361b071",
+      "symbol": "ETERNAL"
+    },
+    {
+      "bytes": 5297130,
+      "path": "bars/GRASIM.parquet",
+      "sha256": "76d9b2fba7d934bdd46f9472bc5324c560301edd0dc3da0c6bc11aef56aa56f5",
+      "symbol": "GRASIM"
+    },
+    {
+      "bytes": 5478674,
+      "path": "bars/HCLTECH.parquet",
+      "sha256": "7132cf6ea3bb30c8a2bbc9d8bcf42c059b11beb730b2b5fb54d5b48b24270ccf",
+      "symbol": "HCLTECH"
+    },
+    {
+      "bytes": 5714828,
+      "path": "bars/HDFCBANK.parquet",
+      "sha256": "b49d391341e8cba2666e07f52bf921e1e2ca5af15edcd0ac155186c1e0f342f4",
+      "symbol": "HDFCBANK"
+    },
+    {
+      "bytes": 5255321,
+      "path": "bars/HDFCLIFE.parquet",
+      "sha256": "c4a284ebc4c22f95e29eb519387920763c7389ca20a552f710eb1e244429b9f3",
+      "symbol": "HDFCLIFE"
+    },
+    {
+      "bytes": 2983954,
+      "path": "bars/HEROMOTOCO.parquet",
+      "sha256": "efabbc766d3784953d5149dc6063a2785dc3230fe711714d3266fbcbe7da1824",
+      "symbol": "HEROMOTOCO"
+    },
+    {
+      "bytes": 5537241,
+      "path": "bars/HINDALCO.parquet",
+      "sha256": "9d9d33319dd570d50ce19d6915eca67c2275a4cd8e3bf5afbd3a7eae80186f35",
+      "symbol": "HINDALCO"
+    },
+    {
+      "bytes": 5357954,
+      "path": "bars/HINDUNILVR.parquet",
+      "sha256": "29585eafcb7db8d63f5051fb6817e54295c39c597edaac83c8378d5dc1b5ce1c",
+      "symbol": "HINDUNILVR"
+    },
+    {
+      "bytes": 5577485,
+      "path": "bars/ICICIBANK.parquet",
+      "sha256": "1749af3574892bb399efb7bee92ec39ecb37e2613fb479eb16999c083884ec94",
+      "symbol": "ICICIBANK"
+    },
+    {
+      "bytes": 2775197,
+      "path": "bars/INDIGO.parquet",
+      "sha256": "58f49c4527d1468b1be81d3015ea61e4979ee691f26d4ed69f85c3b3e0810123",
+      "symbol": "INDIGO"
+    },
+    {
+      "bytes": 2923093,
+      "path": "bars/INDUSINDBK.parquet",
+      "sha256": "5c5d3990dc9b6cf57d1d27bc0e2360d750e360b442df26c9affc5103df6fea3b",
+      "symbol": "INDUSINDBK"
+    },
+    {
+      "bytes": 5743526,
+      "path": "bars/INFY.parquet",
+      "sha256": "1e4edb368070bcef165f09c14147f21ead62945b4441935a8beabac5fc5cb67d",
+      "symbol": "INFY"
+    },
+    {
+      "bytes": 5506304,
+      "path": "bars/ITC.parquet",
+      "sha256": "97b11f28e9b884bd7bd2c549af237bb9a2a8a2751b0a0627caf8a47db0309c5a",
+      "symbol": "ITC"
+    },
+    {
+      "bytes": 164050,
+      "path": "bars/ITCHOTELS.parquet",
+      "sha256": "9e987201d703b869622a18f0670d38dd77e2ca2a373f4f3801172c5d7d2647a2",
+      "symbol": "ITCHOTELS"
+    },
+    {
+      "bytes": 4835358,
+      "path": "bars/JIOFIN.parquet",
+      "sha256": "1d498723e1feaa9139a203b911674cdcc7e1ea5656dd7f01772b7756b81d2922",
+      "symbol": "JIOFIN"
+    },
+    {
+      "bytes": 5200858,
+      "path": "bars/JSWSTEEL.parquet",
+      "sha256": "4f1c1490d0bd0b86022104fb00660e90fddc76de02ec0159fa7f9555a69b3888",
+      "symbol": "JSWSTEEL"
+    },
+    {
+      "bytes": 5296731,
+      "path": "bars/KOTAKBANK.parquet",
+      "sha256": "c0dc11a5a2835b0a50aabf3469aafac9a32c69b288a5f94508cc5c4e6a5f2eea",
+      "symbol": "KOTAKBANK"
+    },
+    {
+      "bytes": 104806,
+      "path": "bars/KWIL.parquet",
+      "sha256": "4268e4f6e04394bcf3c7f3fe05b7c92c39351a3c89832bc7b6934b4d9c1d3fca",
+      "symbol": "KWIL"
+    },
+    {
+      "bytes": 5550902,
+      "path": "bars/LT.parquet",
+      "sha256": "09c3f0d69c8346197112fae46dafd1d37d0295c7a82da743338cf25aab2b0f98",
+      "symbol": "LT"
+    },
+    {
+      "bytes": 5648685,
+      "path": "bars/M&M.parquet",
+      "sha256": "d990ba522a0f5241ac20da3f62c010e20dd40b34c01e064ca9e67866a6dd8a69",
+      "symbol": "M&M"
+    },
+    {
+      "bytes": 5512229,
+      "path": "bars/MARUTI.parquet",
+      "sha256": "834dfe2e61a45ad57b331bf9ddc995512daf8cb30ba181eeeb472da0bb1d1070",
+      "symbol": "MARUTI"
+    },
+    {
+      "bytes": 2678181,
+      "path": "bars/MAXHEALTH.parquet",
+      "sha256": "0ad32763f93c1d4663898f1a88c84c88ddb79410da546e7fa96ff49e6a5b1361",
+      "symbol": "MAXHEALTH"
+    },
+    {
+      "bytes": 5029461,
+      "path": "bars/NESTLEIND.parquet",
+      "sha256": "ef4bea8e7cfb694ec864d0e1dafdc5156491480dec7f25957f6c25f8a041f0db",
+      "symbol": "NESTLEIND"
+    },
+    {
+      "bytes": 5380704,
+      "path": "bars/NTPC.parquet",
+      "sha256": "97a50a726e1b0c096e76c6e343830a0e53584f4fa54ad6d5f024ebc5ab055f3d",
+      "symbol": "NTPC"
+    },
+    {
+      "bytes": 5663957,
+      "path": "bars/ONGC.parquet",
+      "sha256": "f639b18e97a792c74b1bea12d8371908a6aadc0e597e13ff893fa4494ae9b021",
+      "symbol": "ONGC"
+    },
+    {
+      "bytes": 5389513,
+      "path": "bars/POWERGRID.parquet",
+      "sha256": "d44c8686fbcadb7aad953fcfc84b330656787b20dc09476e09b7253b7f4fa197",
+      "symbol": "POWERGRID"
+    },
+    {
+      "bytes": 5641275,
+      "path": "bars/RELIANCE.parquet",
+      "sha256": "1daf538dddc6d12f52dab33e0a067986191f3a79572dda189f8c8186e18fca4d",
+      "symbol": "RELIANCE"
+    },
+    {
+      "bytes": 5224726,
+      "path": "bars/SBILIFE.parquet",
+      "sha256": "9baad0a8ea49339ba4e1f771dd564ad82e25e68354c004f6a936da51b74e978e",
+      "symbol": "SBILIFE"
+    },
+    {
+      "bytes": 5677610,
+      "path": "bars/SBIN.parquet",
+      "sha256": "b5610e8238f0d6b8f02d2afff1024d15152fc1f4bb2aceb01d9d9f65a7a4d8ab",
+      "symbol": "SBIN"
+    },
+    {
+      "bytes": 5594511,
+      "path": "bars/SHRIRAMFIN.parquet",
+      "sha256": "f7c39f13128329a751247e1faf4bbbdabb69688131bec96c7f4fe014eb4abeb9",
+      "symbol": "SHRIRAMFIN"
+    },
+    {
+      "bytes": 5282013,
+      "path": "bars/SUNPHARMA.parquet",
+      "sha256": "45c87a420425bc7d74dd1f56ca309a5ce99e202a9eb55fef158f2dbe5c2297ee",
+      "symbol": "SUNPHARMA"
+    },
+    {
+      "bytes": 5183063,
+      "path": "bars/TATACONSUM.parquet",
+      "sha256": "0047cfde6df18bbba88e078dfa2d245b454138f0010f46b38ad89ce8cc5c8864",
+      "symbol": "TATACONSUM"
+    },
+    {
+      "bytes": 6031539,
+      "path": "bars/TATASTEEL.parquet",
+      "sha256": "078d729a7770d4d7a3363f91080554345dff8abbefeddf8680fa20fadc4e3f46",
+      "symbol": "TATASTEEL"
+    },
+    {
+      "bytes": 5730765,
+      "path": "bars/TCS.parquet",
+      "sha256": "71dc8d8466d099abea68c51d7acb266b0e35d4917a4315b16921a4f81f9124a5",
+      "symbol": "TCS"
+    },
+    {
+      "bytes": 5285004,
+      "path": "bars/TECHM.parquet",
+      "sha256": "9ed9dc43ab3c35aca3b46ad7ecf0b82c092914a7c0f060c98f0ccd7c4bc5521d",
+      "symbol": "TECHM"
+    },
+    {
+      "bytes": 5535907,
+      "path": "bars/TITAN.parquet",
+      "sha256": "9d2803ddb36d27258cae42392b904d01528a58ca3d4ed05a2ddc8a52935d0088",
+      "symbol": "TITAN"
+    },
+    {
+      "bytes": 60125,
+      "path": "bars/TMCV.parquet",
+      "sha256": "21e0914a02837a268148634a02548c4a0cce39bfbee75f1512a830feeb19086f",
+      "symbol": "TMCV"
+    },
+    {
+      "bytes": 5655312,
+      "path": "bars/TMPV.parquet",
+      "sha256": "ed313cfff59774e9e5ea94acdae835e67f2a346a3f2b863b9a272582b915fdfd",
+      "symbol": "TMPV"
+    },
+    {
+      "bytes": 5520718,
+      "path": "bars/TRENT.parquet",
+      "sha256": "e51db5788c67d79b22246bdcac7b47a3bbabad466d35e4495edcff125df8e6b3",
+      "symbol": "TRENT"
+    },
+    {
+      "bytes": 5412655,
+      "path": "bars/ULTRACEMCO.parquet",
+      "sha256": "60895e79c202244e33abee2101a36121c59a30104bb75def51a9318a410f07a1",
+      "symbol": "ULTRACEMCO"
+    },
+    {
+      "bytes": 5734664,
+      "path": "bars/WIPRO.parquet",
+      "sha256": "27003083ab84b80eebbcd6f87757a92dc75a4afb7e36c2924caeb7b3813f6da4",
+      "symbol": "WIPRO"
+    }
+  ],
+  "verified_reference_bodies": 492,
+  "version": "nse_certification_obligations_v1"
+}

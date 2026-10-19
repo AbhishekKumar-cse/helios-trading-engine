@@ -1,0 +1,21 @@
+{
+  "base_and_stress_costs_independently_recomputed": true,
+  "causal_history_windows_verified": 321,
+  "counts": {
+    "active_sessions": 90,
+    "base_and_stress_session_returns": 180,
+    "base_fills": 180,
+    "candidate_sessions": 342,
+    "flat_sessions": 252,
+    "historical_train_decision_parity_records": 630
+  },
+  "fixed_share_quantity_verified": true,
+  "holding_rebalance_absent": true,
+  "next_open_timing_verified": true,
+  "promoted": 0,
+  "ranking_source_files_verified": 41,
+  "round_id": "nse_papers_shared1",
+  "summary_sha256": "d62ce839f7764fa22f6f120853a54c23b3c28c72abc7bece7f714e9a8640c893",
+  "test_accesses": 0,
+  "version": "nse_paper_schedule_verification_v1"
+}

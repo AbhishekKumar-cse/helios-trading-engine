@@ -1,0 +1,13 @@
+{
+  "after_counts": {
+    "alpha_definitions": 64,
+    "alpha_results": 667,
+    "experiments": 667
+  },
+  "all_prior_rows_unchanged": true,
+  "before_counts": {
+    "alpha_definitions": 61,
+    "alpha_results": 664,
+    "experiments": 664
+  }
+}

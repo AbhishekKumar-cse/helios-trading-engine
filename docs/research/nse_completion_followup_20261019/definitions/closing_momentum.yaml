@@ -1,0 +1,19 @@
+alpha_id: nse_papers_shared1_closing_momentum
+author: helios_equity_research
+code_commit: eb5c58d88aacab150a83ad2e5c9fa5d61efcbe14
+expression: closing_momentum
+feature_set_version: nse_paper_minute_features_v1
+free_parameter_count: 0
+horizon_family: H-MINUTE
+horizon_periods: 1
+model_ref: null
+name: EXPLORATORY NSE paper closing_momentum
+output:
+  convention: clip_unit_v1
+  lower: -1
+  position_scale: 1.0
+  upper: 1
+parameter_count_convention: dsl_syntax_v1
+params: {}
+provenance: QUANT
+version: 1

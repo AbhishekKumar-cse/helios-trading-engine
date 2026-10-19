@@ -28,3 +28,4 @@ memory, so nobody has to guess later why something is the way it is.
 | [008](ADR-008-nse-shared-research-loop.md) | Connect NSE hourly research to the shared engine | Accepted scope; experimental research assumptions | 2026-10-17 |
 | [009](ADR-009-public-nse-minute-research.md) | Public NSE minute research and operational evidence | Accepted scope; experimental research assumptions | 2026-10-18 |
 | [010](ADR-010-nse-source-rebuild.md) | Historical NSE source rebuild and explicit execution charges | Accepted scope; conditional cohort and experimental billing | 2026-10-18 |
+| [011](ADR-011-nse-paper-strategy-integration.md) | Fixed-share paper-strategy integration and certification boundary | Proposed design record; experimental implementation measured | 2026-10-19 |

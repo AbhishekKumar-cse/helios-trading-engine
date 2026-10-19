@@ -1,9 +1,19 @@
 # Carryover from fifth semester
 
-Review date: 2026-10-18. The new market scope is NSE cash equities using public
+Review date: 2026-10-18; research follow-up 2026-10-19. The new market scope is NSE cash equities using public
 sources; BSE-specific ingestion has not been implemented. Original crypto
 research remains intact. This list records incomplete requirements; it does
 not waive the fifth-semester exit criteria.
+
+October 19 follow-up: the [certification and paper-strategy assessment](../docs/research/nse_completion_followup_20261019/REPORT.md)
+verifies 57 minute files and 492 reference bodies but still releases zero histories
+(16 blocked, 41 conditional). Three literature-inspired prototypes now run through
+the shared evaluator, fixed-share strategy/risk/OMS/venue/ledger, unchanged gates
+and registry on RELIANCE's full frozen VALID period. All three are REJECTED.
+Independent checks reconcile 180 base fills over 342 candidate-sessions and match
+630 prior TRAIN decisions. This closes the bounded prototype integration gap;
+certified source evidence and an eligible alpha remain open. Prior TRAIN/VALID
+exposure and dirty frozen development lineage are retained. TEST remains sealed.
 
 The [public reference audit](../docs/research/nse_assumption_validation_summary_20261018.md)
 has now measured the source issues: 321,060 known pre-inclusion minutes, seven

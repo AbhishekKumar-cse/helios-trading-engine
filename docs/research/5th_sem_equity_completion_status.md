@@ -5,6 +5,24 @@ research, minute execution round and sampled archived replay are complete.
 The original operational exit criteria remain unmet;
 this assessment does not waive them or claim a profitable alpha.
 
+The latest [minute-breadth and PAPER safety follow-up](nse_followup_closeout_20261018.md)
+adds AXISBANK, SUNPHARMA and TCS execution: six REJECTED quantitative outcomes
+and three INVALID ML outcomes. No candidate passes the gates. The new
+[certification assessment](nse_execution_certification_20261018.md) covers 57
+companies, 369 official reference sessions and 18,468 stock-days; it remains
+NOT CERTIFIED. Raw unit, volume, causal-availability and executable-liquidity
+proof are still missing. Official daily identity facts do not remove those gaps.
+Local full regression now passes 1,850 tests, with one existing slow test
+deselected and 15 existing warnings; Ruff/format and strict types pass.
+The new safety work is uncommitted on main and has no new remote CI claim.
+Independent verification reconciles 132,206 base fills and 684 candidate/session
+replays, including dated reference charges and settlements. All 138 archived
+research source files match commit 6ce3a0b byte-for-byte. The protocol/summary
+Git markers are false, while all 9 immutable evaluator markers are true after
+working-tree edits began; those markers are preserved independently, never
+relabelled clean. See the [source check](nse_breadth_source_lineage_20261018.json)
+and [round verification](nse_minute_breadth_checks_20261018.json).
+
 The follow-up [source and trading assumption audit](nse_assumption_validation_summary_20261018.md)
 is complete. It checked all 900 raw monthly files and all 50 stock Parquets,
 collected public NSE corporate actions and compared 44 official daily files.
@@ -52,7 +70,11 @@ one existing slow test deselected, 15 existing warnings; strict types and Ruff p
   reconciled 242,381 base fills over 1,243 candidate/session replays. All eleven
   quantitative results lose after costs. The final cost attribution and hourly
   comparison use 111 common observed dates; this is a conditional diagnostic.
-  The other 49 companies contribute to TRAIN, not minute execution outcomes.
+  In that original round, the other 49 companies contribute to TRAIN only.
+  The separate reconstructed-data baseline round now executes AXISBANK,
+  SUNPHARMA and TCS through the shared engine; all nine outcomes fail eligibility.
+  This is four distinct companies with minute execution evidence including RELIANCE,
+  not an all-company execution result.
 - Actual archived-source replay for **169**: seed 169 selected MAXHEALTH momentum;
   111 sessions, 116 base fills and 777 ledger snapshots matched exactly. No refit,
   new measurement or TEST access. Generated execution IDs alone were excluded.
@@ -65,6 +87,15 @@ one existing slow test deselected, 15 existing warnings; strict types and Ruff p
   INR accounting and actual PostgreSQL persistence inside a rolled-back fixture.
   Current RELIANCE metadata was registered from a retained public Kite dump:
   lot size 1, tick size INR 0.1. It does not establish historical tick rules.
+- Equity-aware atomic dashboard kill, fresh-close startup, silent-feed halt and
+  cancellation, exclusive PostgreSQL process ownership with connection-loss
+  detection, and crash recovery that checks durable fills against every stored
+  ledger/position checkpoint. Synthetic tests cover pending intents, non-flat
+  inventory, corrupt accounting, ownership conflict and audit rollback.
+  Recovery halts the old scope and never invents an exit fill or resumes trading.
+  See [NSE PAPER recovery](../guides/NSE_PAPER_RECOVERY.md). Actual open-session
+  feed/kill/process-stop acceptance remains outstanding; Sunday preflight
+  collected zero observations/fills and recorded uncommitted source.
 - Separate OBSERVE host/container smokes each measured 90 seconds, without gaps,
   candles or fills during market closure. They do not establish PAPER trading.
 

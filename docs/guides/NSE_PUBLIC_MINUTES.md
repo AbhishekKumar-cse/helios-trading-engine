@@ -5,6 +5,12 @@ This guide records the immutable v1 study. The separate
 full/short sessions, quarantines and an opt-in execution charge policy. Original
 prices and research artifacts described below remain unchanged.
 
+For the later per-company source verdict, expanded minute execution and current
+software checks, see the [follow-up closeout](../research/nse_followup_closeout_20261018.md).
+The [NSE PAPER recovery guide](NSE_PAPER_RECOVERY.md) documents the leased runner,
+equity kill control and halted crash recovery. Software tests do not establish
+market-hours or seven-day PAPER acceptance.
+
 The user has no broker/data-provider account. The credential-free public
 Upstox endpoint supplied 6,865,386 retained minute bars for all 50 current Nifty
 companies, 2025-01-01 through 2026-06-30. Zero monthly requests failed. This is

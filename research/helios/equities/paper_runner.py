@@ -7,6 +7,7 @@ same risk/OMS/venue/ledger used by the crypto runner; timestamps are not shifted
 
 import argparse
 import json
+import math
 import time
 import urllib.parse
 from dataclasses import asdict
@@ -23,6 +24,7 @@ from helios.equities.live import EquityClosedCandle
 from helios.equities.paper_config import equity_paper_config
 from helios.equities.public_data import parse_candles
 from helios.equities.service import IST, public_get, session_is_open
+from helios.paper.lease import PaperLease, paper_lease
 from helios.paper.runtime import PaperRuntime, PaperSafetyStop
 from helios.paper.store import PaperStore
 from helios.sim.evaluate import _definition as registered_definition
@@ -48,9 +50,26 @@ def run_equity_paper(
     matches = [row for row in manifest["files"] if row["symbol"] == symbol]
     if len(matches) != 1 or matches[0]["isin"] != isin:
         raise ValueError("PAPER symbol/ISIN must match the frozen public data roster")
-    if seconds <= 0 or not session_is_open(datetime.now(UTC), calendar):
+    if not math.isfinite(seconds) or not 0 < seconds <= 86400:
+        raise ValueError("NSE PAPER duration must be finite, positive and at most 24 hours")
+    if not session_is_open(datetime.now(UTC), calendar):
         raise ValueError("NSE PAPER smoke requires an open normal session and positive duration")
     engine = get_engine() if engine is None else engine
+    with paper_lease(engine, run_id) as lease:
+        return _run_owned(run_id, calendar, seconds, symbol, isin, alpha_id, root, engine, lease)
+
+
+def _run_owned(
+    run_id: str,
+    calendar: Path,
+    seconds: float,
+    symbol: str,
+    isin: str,
+    alpha_id: str,
+    root: Path,
+    engine: Engine,
+    lease: PaperLease,
+) -> Path:
     with engine.connect() as connection:
         definition = registered_definition(connection, alpha_id, 1)
         row = (
@@ -71,7 +90,8 @@ def run_equity_paper(
     write_json(
         identity,
         dict(
-            version="nse_paper_session_v1",
+            version="nse_paper_session_v2",
+            ownership="postgres_session_advisory_lock_v1",
             run_id=run_id,
             mode="PAPER",
             is_simulated=True,
@@ -93,6 +113,7 @@ def run_equity_paper(
     log_path = destination / "observations.jsonl"
     error: BaseException | None = None
     started = time.monotonic()
+    started_at = time.time_ns() // 1000
     with log_path.open("x") as log:
 
         def record(kind: str, **fields: object) -> None:
@@ -104,6 +125,8 @@ def run_equity_paper(
                 now = datetime.now(UTC)
                 if not session_is_open(now, calendar):
                     break
+                lease.check()
+                runtime.check_health(time.time_ns() // 1000, started_at=started_at)
                 url = (
                     "https://api.upstox.com/v3/historical-candle/intraday/"
                     + urllib.parse.quote("NSE_EQ|" + isin, safe="")
@@ -112,13 +135,20 @@ def run_equity_paper(
                 raw = public_get(url)
                 received = time.time_ns() // 1000
                 record("RAW_CANDLES", received_time=received, body=raw.decode())
+                lease.check()
+                runtime.check_health(received, started_at=started_at)
                 day = now.astimezone(IST).date()
                 frame, _ = parse_candles(raw, symbol, day, day)
                 closed = frame.loc[frame.open_time + 60_000_000 <= received]
                 if not closed.empty:
                     latest = closed.iloc[-1]
                     opening = int(latest.open_time)
-                    if not runtime.bars or opening > runtime.bars[-1].open_time:
+                    if (
+                        not runtime.bars
+                        and received - opening - 60_000_000 > config.max_event_skew_us
+                    ):
+                        record("STALE_STARTUP_CANDLE_SKIPPED", open_time=opening)
+                    elif not runtime.bars or opening > runtime.bars[-1].open_time:
                         runtime.closed(
                             EquityClosedCandle(
                                 symbol=symbol,
@@ -142,6 +172,8 @@ def run_equity_paper(
                     quote = public_get(quote_url)
                     received = time.time_ns() // 1000
                     record("RAW_QUOTE", received_time=received, body=quote.decode())
+                    lease.check()
+                    runtime.check_health(received, started_at=started_at)
                     runtime.message(quote, received)
                 store.save(runtime)
                 time.sleep(min(2, max(0, seconds - (time.monotonic() - started))))
@@ -180,7 +212,8 @@ def run_equity_paper(
             limitations=[
                 "No promotion, TEST or real order routing.",
                 "Public last trade is a proxy, not an executable quote.",
-                "No automatic restart reconciliation or seven-day trial claim.",
+                "Crash recovery halts/reconciles the old scope; no automatic trading resume.",
+                "No market-hours or seven-day trial claim follows from software tests.",
                 "15+5 bps per side is an unverified research cost scenario.",
             ],
         ),
@@ -196,8 +229,20 @@ def main() -> None:
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--calendar", required=True, type=Path)
     parser.add_argument("--seconds", type=float, default=180)
+    parser.add_argument("--symbol", default="RELIANCE")
+    parser.add_argument("--isin", default="INE002A01018")
+    parser.add_argument("--alpha-id", default="nse_minute_round1_momentum")
     args = parser.parse_args()
-    print(run_equity_paper(args.run_id, args.calendar, seconds=args.seconds))
+    print(
+        run_equity_paper(
+            args.run_id,
+            args.calendar,
+            seconds=args.seconds,
+            symbol=args.symbol,
+            isin=args.isin,
+            alpha_id=args.alpha_id,
+        )
+    )
 
 
 if __name__ == "__main__":

@@ -82,6 +82,7 @@ fees_total = Decimal(0)
 coverage = []
 invalid = Counter()
 by_candidate = defaultdict(list)
+result_dirty = {}
 with engine.connect() as connection, localcontext() as context:
     connection.execute(text("SET TRANSACTION READ ONLY"))
     context.prec = 100
@@ -112,8 +113,12 @@ with engine.connect() as connection, localcontext() as context:
         assert (
             stored.evaluation_json["artifact_sha256"] == row["artifact_sha256"] == sha256(artifact)
         )
-        assert stored.split.value == "valid" and stored.dirty
+        assert stored.split.value == "valid"
+        assert stored.code_commit == protocol["source_commit"] == summary["source_commit"]
         evidence = json.loads(artifact.read_text())
+        assert evidence["source"]["dirty"] == stored.dirty
+        assert evidence["source"]["code_commit"] == stored.code_commit
+        result_dirty[stored.run_id] = stored.dirty
         assert evidence["gates"]["outcomes"][6]["gate"] == "G7"
         assert not stored.gate_results["G7"]
         assert not evidence["test_access"] and evidence["is_simulated"]
@@ -306,7 +311,14 @@ result = dict(
     crypto_registry=summary["registry_after"],
     test_accesses=0,
     promoted=0,
-    dirty=True,
+    dirty=any(result_dirty.values()),
+    protocol_dirty=protocol["dirty"],
+    summary_dirty=summary["dirty"],
+    result_dirty_by_run=result_dirty,
+    lineage_note=(
+        "Preserve each evaluator's immutable Git marker independently of protocol/summary. "
+        "Frozen source hashes are verified separately; working-tree edits must not relabel results."
+    ),
 )
 with args.output.open("x") as handle:
     handle.write(json.dumps(result, indent=2, sort_keys=True) + "\n")

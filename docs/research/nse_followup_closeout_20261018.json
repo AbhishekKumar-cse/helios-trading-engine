@@ -1,0 +1,280 @@
+{
+  "automatic_resume_implemented": false,
+  "base_fees_inr": "3435747.103614710367870000",
+  "crypto_registry": {
+    "alpha_definitions": {
+      "count": 25,
+      "sha256": "05a213f0cd7e02ed1e75c78cbd8216289f8ad4b6868ec9dfa7f9dc47d8137991"
+    },
+    "alpha_results": {
+      "count": 34,
+      "sha256": "dac77bc7006b06bc9b5e62af846d2300054aa706b1788491d8de24d6b971ba62"
+    },
+    "test_accesses": 0
+  },
+  "deselected": 1,
+  "evidence": [
+    {
+      "path": "reports_out/equity_research/nse_minute_breadth1/summary.json",
+      "sha256": "db834b8c896da860361efa94b5bfe160ba53bf0edd6b44c474955c9da670c5c5"
+    },
+    {
+      "path": "reports_out/equity_research/nse_minute_breadth1/protocol.json",
+      "sha256": "5f0c3410efff92e7e114112acef2ca0b88df652c564968375fbc0a6ce770ae7e"
+    },
+    {
+      "path": "docs/research/nse_minute_breadth_checks_20261018.json",
+      "sha256": "f05badce8407b2ac02005f530802ab77d7f03bd4b28a1440a0c48fc951194c1f"
+    },
+    {
+      "path": "docs/research/nse_execution_certification_20261018.json",
+      "sha256": "1bf078de0625d67046b06f524447f76bc14f297e32224058cd834bb7145db844"
+    },
+    {
+      "path": "docs/research/nse_paper_preflight_20261018.json",
+      "sha256": "65707c0a931fab152a35918757ea1f7d28872f820b0d27ad32aff47582435258"
+    },
+    {
+      "path": "reports_out/equity_closeout/nse_followup_full_tests_final.log",
+      "sha256": "3f0e689d7d12c89305550bc8daf72ce4e142ff137606326a014c340745d868cd"
+    },
+    {
+      "path": "reports_out/equity_closeout/nse_followup_lint_final.log",
+      "sha256": "304807e36961f846a7d7e14ce3fa1d5faac327d887b36de861b7f9bf7b0991fa"
+    },
+    {
+      "path": "reports_out/equity_closeout/nse_safety_types_final.log",
+      "sha256": "1aeeb2c4ee773199b40b81ab2a64c281afac8e659d6eebc9152450ab548c15ac"
+    }
+  ],
+  "full_tests_passed": 1850,
+  "market_hours_validated": false,
+  "promoted": 0,
+  "protocol_dirty": false,
+  "reconciled_base_fills": 132206,
+  "reconciled_base_sessions": 684,
+  "remaining": [
+    "Independent raw-minute/share/volume and causal-availability certification",
+    "Observed executable liquidity/cost calibration and an eligible alpha",
+    "Clean-source real market-hours PAPER feed/kill/crash-recovery acceptance",
+    "Actual 24-hour and seven-day promoted PAPER trials, then same-date comparison"
+  ],
+  "research_dirty": true,
+  "research_source_commit": "6ce3a0b838a97055a5f4fca80c148a8e3a29309b",
+  "research_symbols": [
+    "AXISBANK",
+    "TCS",
+    "SUNPHARMA"
+  ],
+  "results": [
+    {
+      "alpha_id": "nse_minute_breadth1_momentum",
+      "artifact": "/mnt/c/Users/bit/OneDrive/Desktop/helios/reports_out/equity_runtime/nse_minute_breadth1/reports_out/equity_research/nse_minute_breadth1/evaluations/bfa75861-3dfe-425e-a982-d300b6d892ca.json",
+      "artifact_sha256": "b7abedf9fe844149adfbb27c22a20902258c54041a7027307d679ba6e8f3d5ff",
+      "candidate": "momentum",
+      "experiment_id": 7364,
+      "fitness": -1851.9049360471,
+      "gates": {
+        "G1": false,
+        "G2": false,
+        "G3": true,
+        "G4": true,
+        "G5": false,
+        "G6": false,
+        "G7": false,
+        "G8": true
+      },
+      "run_id": "bfa75861-3dfe-425e-a982-d300b6d892ca",
+      "sharpe": -186.0833645856,
+      "status": "REJECTED",
+      "symbol": "AXISBANK"
+    },
+    {
+      "alpha_id": "nse_minute_breadth1_momentum",
+      "artifact": "/mnt/c/Users/bit/OneDrive/Desktop/helios/reports_out/equity_runtime/nse_minute_breadth1/reports_out/equity_research/nse_minute_breadth1/evaluations/ffeb6423-886b-44e7-a241-1fd47c638143.json",
+      "artifact_sha256": "b6a0cd1007f962fbef774021fa7f9379c61e3092587d46a2748e7458bce19424",
+      "candidate": "momentum",
+      "experiment_id": 7365,
+      "fitness": -1636.1540528372,
+      "gates": {
+        "G1": false,
+        "G2": false,
+        "G3": true,
+        "G4": true,
+        "G5": false,
+        "G6": false,
+        "G7": false,
+        "G8": true
+      },
+      "run_id": "ffeb6423-886b-44e7-a241-1fd47c638143",
+      "sharpe": -165.0376468581,
+      "status": "REJECTED",
+      "symbol": "SUNPHARMA"
+    },
+    {
+      "alpha_id": "nse_minute_breadth1_momentum",
+      "artifact": "/mnt/c/Users/bit/OneDrive/Desktop/helios/reports_out/equity_runtime/nse_minute_breadth1/reports_out/equity_research/nse_minute_breadth1/evaluations/4045508c-aa57-4aea-b951-fb33959437d4.json",
+      "artifact_sha256": "384c70b4b2e2c915c4e612f504a9ffbde3132b0ae810a69ba1ff6c832967c195",
+      "candidate": "momentum",
+      "experiment_id": 7366,
+      "fitness": -1639.848195451,
+      "gates": {
+        "G1": false,
+        "G2": false,
+        "G3": true,
+        "G4": true,
+        "G5": false,
+        "G6": false,
+        "G7": false,
+        "G8": true
+      },
+      "run_id": "4045508c-aa57-4aea-b951-fb33959437d4",
+      "sharpe": -165.4530786166,
+      "status": "REJECTED",
+      "symbol": "TCS"
+    },
+    {
+      "alpha_id": "nse_minute_breadth1_reversal",
+      "artifact": "/mnt/c/Users/bit/OneDrive/Desktop/helios/reports_out/equity_runtime/nse_minute_breadth1/reports_out/equity_research/nse_minute_breadth1/evaluations/e1670ad2-28b6-4b9d-8f33-1fa13872bf29.json",
+      "artifact_sha256": "69faeffba9466f09b2abf971fd1ea694b41c9223d3caa1fad38bf651d705972a",
+      "candidate": "reversal",
+      "experiment_id": 7367,
+      "fitness": -2696.9881254212,
+      "gates": {
+        "G1": false,
+        "G2": false,
+        "G3": true,
+        "G4": true,
+        "G5": false,
+        "G6": false,
+        "G7": false,
+        "G8": true
+      },
+      "run_id": "e1670ad2-28b6-4b9d-8f33-1fa13872bf29",
+      "sharpe": -275.3599990449,
+      "status": "REJECTED",
+      "symbol": "AXISBANK"
+    },
+    {
+      "alpha_id": "nse_minute_breadth1_reversal",
+      "artifact": "/mnt/c/Users/bit/OneDrive/Desktop/helios/reports_out/equity_runtime/nse_minute_breadth1/reports_out/equity_research/nse_minute_breadth1/evaluations/fa02f17d-b0ea-4168-a437-9512476e355f.json",
+      "artifact_sha256": "06a7c89663284575d41ba4127b2b156cd110a32d5c778cbe2b9639875c6b9449",
+      "candidate": "reversal",
+      "experiment_id": 7368,
+      "fitness": -2778.659582534,
+      "gates": {
+        "G1": false,
+        "G2": false,
+        "G3": true,
+        "G4": true,
+        "G5": false,
+        "G6": false,
+        "G7": false,
+        "G8": true
+      },
+      "run_id": "fa02f17d-b0ea-4168-a437-9512476e355f",
+      "sharpe": -282.0690650684,
+      "status": "REJECTED",
+      "symbol": "SUNPHARMA"
+    },
+    {
+      "alpha_id": "nse_minute_breadth1_reversal",
+      "artifact": "/mnt/c/Users/bit/OneDrive/Desktop/helios/reports_out/equity_runtime/nse_minute_breadth1/reports_out/equity_research/nse_minute_breadth1/evaluations/adf9edde-f537-49e7-896e-4a55e0d5f7a0.json",
+      "artifact_sha256": "d76d9abc31823f107965ebaab9f96ecd4473be0b406499137ea83dab6b97ff30",
+      "candidate": "reversal",
+      "experiment_id": 7369,
+      "fitness": -2924.6675974526,
+      "gates": {
+        "G1": false,
+        "G2": false,
+        "G3": true,
+        "G4": true,
+        "G5": false,
+        "G6": false,
+        "G7": false,
+        "G8": true
+      },
+      "run_id": "adf9edde-f537-49e7-896e-4a55e0d5f7a0",
+      "sharpe": -295.5337101422,
+      "status": "REJECTED",
+      "symbol": "TCS"
+    },
+    {
+      "alpha_id": "nse_minute_breadth1_ml",
+      "artifact": "/mnt/c/Users/bit/OneDrive/Desktop/helios/reports_out/equity_runtime/nse_minute_breadth1/reports_out/equity_research/nse_minute_breadth1/evaluations/8323945a-4e7d-4f46-b3cb-7187445bb098.json",
+      "artifact_sha256": "265cc1932e1d9be75a14a14d62647b7ae30b51c10df736e39ac2b075af8f7d04",
+      "candidate": "ml",
+      "experiment_id": 7370,
+      "fitness": null,
+      "gates": {
+        "G1": false,
+        "G2": false,
+        "G3": false,
+        "G4": false,
+        "G5": false,
+        "G6": false,
+        "G7": false,
+        "G8": false
+      },
+      "run_id": "8323945a-4e7d-4f46-b3cb-7187445bb098",
+      "sharpe": null,
+      "status": "INVALID",
+      "symbol": "AXISBANK"
+    },
+    {
+      "alpha_id": "nse_minute_breadth1_ml",
+      "artifact": "/mnt/c/Users/bit/OneDrive/Desktop/helios/reports_out/equity_runtime/nse_minute_breadth1/reports_out/equity_research/nse_minute_breadth1/evaluations/09024ca6-3204-41d7-bb54-c146101f75a0.json",
+      "artifact_sha256": "8066c75fbc970651e581dc28bd1eb83fb17cb392d656109ca58c9ad6334f200b",
+      "candidate": "ml",
+      "experiment_id": 7371,
+      "fitness": null,
+      "gates": {
+        "G1": false,
+        "G2": false,
+        "G3": false,
+        "G4": false,
+        "G5": false,
+        "G6": false,
+        "G7": false,
+        "G8": false
+      },
+      "run_id": "09024ca6-3204-41d7-bb54-c146101f75a0",
+      "sharpe": null,
+      "status": "INVALID",
+      "symbol": "SUNPHARMA"
+    },
+    {
+      "alpha_id": "nse_minute_breadth1_ml",
+      "artifact": "/mnt/c/Users/bit/OneDrive/Desktop/helios/reports_out/equity_runtime/nse_minute_breadth1/reports_out/equity_research/nse_minute_breadth1/evaluations/6c3e42b2-4179-4782-98de-65ce8e455b86.json",
+      "artifact_sha256": "fc87c1aaf15ef70eaf1dd372ad057b299ff4464d6ff992a3fe1b47ccc12f6c78",
+      "candidate": "ml",
+      "experiment_id": 7372,
+      "fitness": null,
+      "gates": {
+        "G1": false,
+        "G2": false,
+        "G3": false,
+        "G4": false,
+        "G5": false,
+        "G6": false,
+        "G7": false,
+        "G8": false
+      },
+      "run_id": "6c3e42b2-4179-4782-98de-65ce8e455b86",
+      "sharpe": null,
+      "status": "INVALID",
+      "symbol": "TCS"
+    }
+  ],
+  "round_id": "nse_minute_breadth1",
+  "software_safety": "Synthetic PostgreSQL rollback and ownership-loss tests passed",
+  "source_certification": "NOT_CERTIFIED",
+  "statuses": {
+    "INVALID": 3,
+    "REJECTED": 6
+  },
+  "summary_dirty": false,
+  "test_accesses": 0,
+  "version": "nse_followup_closeout_v1",
+  "warnings": 15
+}

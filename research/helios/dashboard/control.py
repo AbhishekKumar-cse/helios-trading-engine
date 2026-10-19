@@ -8,6 +8,7 @@ from sqlalchemy import Engine, text
 from helios.common.config import config_hash
 from helios.common.db import get_engine
 from helios.common.types import ReasonCode
+from helios.equities.paper_config import EquityPaperConfig
 from helios.paper.config import PaperConfig
 from helios.sim.loss_risk import RiskTrip, record_trip, tripped
 
@@ -26,7 +27,11 @@ def kill_paper(
         ).one_or_none()
         if row is None or row.status != "running":
             raise ValueError("kill control requires a running simulated PAPER session")
-        config = PaperConfig.model_validate(row.config_json)
+        config = (
+            EquityPaperConfig.model_validate(row.config_json)
+            if row.config_json.get("version") == "nse_public_minute_paper_v1"
+            else PaperConfig.model_validate(row.config_json)
+        )
         if config.run_id != run_id or config_hash(config) != row.config_hash:
             raise ValueError("PAPER control requires matching session lineage")
         before = tripped(connection, run_id)

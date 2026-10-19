@@ -1,0 +1,27 @@
+{
+  "blockers": [
+    "NORMAL_NSE_SESSION_CLOSED",
+    "REPORTED_PAPER_REQUIRES_CLEAN_SOURCE"
+  ],
+  "calendar_sha256": "933cf5dc6dd4efe3b8db8ce6ecd6ecb2582929f5e0b4faffdb88e11cf4efdfbe",
+  "checked_at": "2026-10-18T10:24:14.554226+00:00",
+  "code_commit": "6ce3a0b838a97055a5f4fca80c148a8e3a29309b",
+  "dirty": true,
+  "fills_created": 0,
+  "instrument": {
+    "lot_size": "1.000000000000000000",
+    "quote_asset": "INR",
+    "symbol": "RELIANCE",
+    "tick_size": "0.100000000000000000",
+    "venue": "nse_cash"
+  },
+  "integration_run_ready": false,
+  "market_hours_validated": false,
+  "normal_session_open": false,
+  "note": "Read-only preflight. No feed observation, elapsed trading trial or candidate promotion.",
+  "observations_collected": 0,
+  "test_accesses": 0,
+  "trial_24h_completed": false,
+  "trial_7d_completed": false,
+  "version": "nse_paper_preflight_v1"
+}

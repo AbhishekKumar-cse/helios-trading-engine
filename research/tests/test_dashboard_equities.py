@@ -26,8 +26,9 @@ def test_equity_chart_cannot_display_reserved_test_prices(tmp_path, interval, cu
         read_development_bars(tmp_path, record, config())
 
 
-def test_equity_page_is_read_only_and_handles_absent_downloads():
+def test_equity_page_is_read_only_and_handles_absent_downloads(tmp_path):
     with (
+        patch("helios.dashboard.equity_page.PROJECT_ROOT", tmp_path),
         patch("helios.dashboard.equity_page.retained_snapshots", return_value=[]),
         patch("helios.dashboard.registry.read_registry", side_effect=AssertionError("DB access")),
     ):

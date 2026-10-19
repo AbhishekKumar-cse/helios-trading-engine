@@ -21,13 +21,30 @@ with two REJECTED quantitative baselines and one INVALID constant ML alpha.
 Its 43,665 fills and 228 candidate/session replays reconcile. No candidate is
 eligible for promotion; all previous artifacts and TEST counters remain intact.
 
+The additional [minute-breadth and safety follow-up](../docs/research/nse_followup_closeout_20261018.md)
+executes the same fixed minute baselines on AXISBANK, SUNPHARMA and TCS:
+six REJECTED quantitative results and three INVALID ML results. This expands
+execution beyond RELIANCE, without claiming all 41 screened companies were tested.
+The [certification verdict](../docs/research/nse_execution_certification_20261018.md)
+covers 57 companies/369 official reference sessions/18,468 stock-days and remains
+NOT CERTIFIED. Official daily ISIN transitions are recorded separately from
+unproven original minute share/volume units. No exclusions or gates were relaxed.
+Equity-aware dashboard kill, receipt-silence guards, exclusive process ownership
+and halted crash recovery now have synthetic PostgreSQL tests. Recovery preserves
+durable inventory and does not automatically resume trading. The full local
+suite passes 1,850 tests; this is not real market-hours or elapsed-trial evidence.
+Independent checks reconcile 132,206 base fills/684 candidate-session replays.
+All 138 frozen source files match the recorded commit exactly; original protocol,
+summary and evaluator Git markers remain independently preserved. No replays,
+results or source eligibility were relabelled to manufacture acceptance.
+
 | ID | Linked step | Remaining evidence | Closure condition |
 |---|---|---|---|
 | NSE-DATA-01 | 5B, 5G, 5I | Certified raw share units, corporate actions and causal ticker/membership availability | Retrospective member reconstruction exists; excluded unit histories need independent raw observations and a tradable PIT policy |
 | NSE-DATA-02 | 5B, 5J | Causal handling of live gaps | Historical full/short calendar is implemented; still need outage/liquidation policy without ex-post session selection |
 | NSE-COST-01 | 5F, 157 | Historical brokerage acceptance, spread and impact evidence | Reference statutory estimates/order caps/day settlements implemented; historical account tariff and observed liquidity remain unverified |
-| NSE-LIVE-01 | 160, 166 | Real market-hours public-feed PAPER acceptance | Current RELIANCE metadata is registered from a retained public dump; still need a clean-source bounded PAPER artifact with genuine timestamps, durable checkpoints, kill and cancellation; reject stale/delayed data |
-| NSE-RESEARCH-01 | 5I | Broader minute execution cohort and performance budget | Original minute model pools 50 stocks; rebuilt model uses 41 screened historical members. Execution benchmark remains RELIANCE; expand a preregistered cohort before all-company minute claims |
+| NSE-LIVE-01 | 160, 166 | Real market-hours public-feed PAPER acceptance | Ownership, silent-feed cancellation, equity kill and halted recovery are implemented/tested; still need clean-source open-session feed/kill/process-stop/reconciliation evidence. No automatic trading resume; reject stale/delayed data |
+| NSE-RESEARCH-01 | 5I | Further minute execution and independent hypotheses | Model pools 41 screened historical members; execution now covers RELIANCE plus AXISBANK/SUNPHARMA/TCS. No eligible alpha. Further expansion needs a new fixed protocol and performance budget before VALID; no all-company execution claim |
 | NSE-LIVE-02 | 166 | Always-on PAPER deployment | Measured unattended 24 hours on a host that stays awake; OBSERVE heartbeats alone do not qualify |
 | NSE-SELECT-01 | 139, 163 | Eligible equity candidate and preregistered governed TEST adapter | Validated source assumptions, accepted gates and atomic access policy; never force a winner or open TEST for a rejected candidate |
 | NSE-LIVE-03 | 167 | Promoted-candidate seven-day trial | Eligible promotion, explicit calendar, restart/reconciliation and seven actual days of PAPER records |

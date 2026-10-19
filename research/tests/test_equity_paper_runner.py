@@ -1,10 +1,12 @@
 """NSE runner preflight and retained access-denial failure, using test doubles."""
 
 import json
+import time
 import urllib.error
 from datetime import UTC, datetime
 from unittest.mock import MagicMock
 
+import pandas as pd
 import pytest
 from sqlalchemy import Engine
 from test_equity_paper import runtime
@@ -82,3 +84,42 @@ def test_public_access_denial_is_terminal_and_retained(tmp_path, monkeypatch):
     assert artifact["trace"]["orders"] == []
     store.finish.assert_called_once()
     assert store.finish.call_args.kwargs["failed"]
+
+
+@pytest.mark.parametrize("seconds", [float("nan"), float("inf"), 0, 86401])
+def test_runner_rejects_unbounded_or_invalid_duration(tmp_path, monkeypatch, seconds):
+    calendar, snapshot, engine, _ = setup_runner(tmp_path, monkeypatch)
+    with pytest.raises(ValueError, match="duration"):
+        paper_runner.run_equity_paper(
+            "fixture", calendar, seconds=seconds, snapshot=snapshot, engine=engine
+        )
+    engine.connect.assert_not_called()
+
+
+def test_runner_waits_for_fresh_startup_bar_without_retiming_old_prices(tmp_path, monkeypatch):
+    calendar, snapshot, engine, _ = setup_runner(tmp_path, monkeypatch)
+    opened = time.time_ns() // 1000 - 180_000_000
+    monkeypatch.setattr(paper_runner, "public_get", lambda *a: b"{}")
+    monkeypatch.setattr(
+        paper_runner,
+        "parse_candles",
+        lambda *a: (
+            pd.DataFrame([dict(open_time=opened)]),
+            None,
+        ),
+    )
+    artifact = paper_runner.run_equity_paper(
+        "fixture",
+        calendar,
+        seconds=0.05,
+        root=tmp_path / "runs",
+        snapshot=snapshot,
+        engine=engine,
+    )
+    payload = json.loads(artifact.read_text())
+    assert payload["bars"] == [] and payload["trace"]["orders"] == []
+    events = [
+        json.loads(r) for r in (artifact.parent / "observations.jsonl").read_text().splitlines()
+    ]
+    skipped = next(r for r in events if r["event"] == "STALE_STARTUP_CANDLE_SKIPPED")
+    assert skipped["open_time"] == opened

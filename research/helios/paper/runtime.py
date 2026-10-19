@@ -195,6 +195,20 @@ class PaperRuntime:
         self.halt(actor, timestamp)
         raise PaperSafetyStop(actor)
 
+    def check_health(self, now: int, *, started_at: int) -> None:
+        """Poll even when neither feed emits a usable observation.
+
+        Allow one minute plus the skew budget to receive the first fresh close.
+        After startup, silence cannot keep a pending intent alive indefinitely.
+        A kill never depends on receiving a quote or having a pending order.
+        """
+        if self.store.is_tripped(self.config.run_id):
+            self.stop("operator_kill", max(now, self.clock))
+        anchor = self.clock or started_at
+        allowance = self.config.max_event_skew_us + (0 if self.clock else 60_000_000)
+        if now < anchor or now - anchor > allowance:
+            self.stop("feed_silence_or_clock_regression", max(now, self.clock))
+
     def halt(self, actor: str, timestamp: int | None = None) -> None:
         clock = max(self.clock, self.clock if timestamp is None else timestamp)
         self.risk.trip(clock, actor)

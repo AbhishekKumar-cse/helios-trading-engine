@@ -1,0 +1,448 @@
+{
+  "certificate_sha256": "1bf078de0625d67046b06f524447f76bc14f297e32224058cd834bb7145db844",
+  "companies": [
+    {
+      "official_daily_regimes": [
+        {
+          "first_observed_day": "2025-01-01",
+          "isin": "INE423A01024",
+          "large_scale_shift": false,
+          "last_observed_day": "2026-06-30",
+          "max_extreme_ratio": 1.0,
+          "min_extreme_ratio": 0.9999954857349225,
+          "observations": 369
+        }
+      ],
+      "point_in_time_availability_certified": false,
+      "raw_minute_units_certified": false,
+      "retained_official_action_records": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-11-17",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE423A01024",
+          "subject": "Rights 3:25 @ Premium Rs 1799/-",
+          "symbol": "ADANIENT"
+        }
+      ],
+      "symbol": "ADANIENT"
+    },
+    {
+      "official_daily_regimes": [
+        {
+          "first_observed_day": "2025-01-01",
+          "isin": "INE917I01010",
+          "large_scale_shift": false,
+          "last_observed_day": "2026-06-30",
+          "max_extreme_ratio": 1.0,
+          "min_extreme_ratio": 1.0,
+          "observations": 369
+        }
+      ],
+      "point_in_time_availability_certified": false,
+      "raw_minute_units_certified": false,
+      "retained_official_action_records": [
+        {
+          "broadcast": null,
+          "ex_date": "2026-06-24",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE917I01010",
+          "subject": "Buy Back",
+          "symbol": "BAJAJ-AUTO"
+        }
+      ],
+      "symbol": "BAJAJ-AUTO"
+    },
+    {
+      "official_daily_regimes": [
+        {
+          "first_observed_day": "2025-01-01",
+          "isin": "INE296A01024",
+          "large_scale_shift": true,
+          "last_observed_day": "2025-06-13",
+          "max_extreme_ratio": 0.10003297790480378,
+          "min_extreme_ratio": 0.09997076064103813,
+          "observations": 112
+        },
+        {
+          "first_observed_day": "2025-06-16",
+          "isin": "INE296A01032",
+          "large_scale_shift": false,
+          "last_observed_day": "2026-06-30",
+          "max_extreme_ratio": 1.0,
+          "min_extreme_ratio": 1.0,
+          "observations": 257
+        }
+      ],
+      "point_in_time_availability_certified": false,
+      "raw_minute_units_certified": false,
+      "retained_official_action_records": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-06-16",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE296A01016",
+          "subject": "Bonus 4:1",
+          "symbol": "BAJFINANCE"
+        },
+        {
+          "broadcast": null,
+          "ex_date": "2025-06-16",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE296A01016",
+          "subject": "Face Value Split (Sub-Division) - From Rs 2/- Per Share To Re 1/- Per Share",
+          "symbol": "BAJFINANCE"
+        }
+      ],
+      "symbol": "BAJFINANCE"
+    },
+    {
+      "official_daily_regimes": [
+        {
+          "first_observed_day": "2025-01-01",
+          "isin": "INE040A01034",
+          "large_scale_shift": true,
+          "last_observed_day": "2025-08-25",
+          "max_extreme_ratio": 0.5000307824909193,
+          "min_extreme_ratio": 0.49996929689898684,
+          "observations": 162
+        },
+        {
+          "first_observed_day": "2025-08-26",
+          "isin": "INE040A01034",
+          "large_scale_shift": false,
+          "last_observed_day": "2026-06-30",
+          "max_extreme_ratio": 1.0,
+          "min_extreme_ratio": 1.0,
+          "observations": 207
+        }
+      ],
+      "point_in_time_availability_certified": false,
+      "raw_minute_units_certified": false,
+      "retained_official_action_records": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-08-26",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE040A01018",
+          "subject": "Bonus 1:1",
+          "symbol": "HDFCBANK"
+        }
+      ],
+      "symbol": "HDFCBANK"
+    },
+    {
+      "official_daily_regimes": [
+        {
+          "first_observed_day": "2025-01-01",
+          "isin": "INE030A01027",
+          "large_scale_shift": false,
+          "last_observed_day": "2026-06-30",
+          "max_extreme_ratio": 1.0,
+          "min_extreme_ratio": 0.9999955430761689,
+          "observations": 369
+        }
+      ],
+      "point_in_time_availability_certified": false,
+      "raw_minute_units_certified": false,
+      "retained_official_action_records": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-12-05",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE030A01027",
+          "subject": "Demerger",
+          "symbol": "HINDUNILVR"
+        }
+      ],
+      "symbol": "HINDUNILVR"
+    },
+    {
+      "official_daily_regimes": [
+        {
+          "first_observed_day": "2025-01-01",
+          "isin": "INE009A01021",
+          "large_scale_shift": false,
+          "last_observed_day": "2026-06-30",
+          "max_extreme_ratio": 1.0,
+          "min_extreme_ratio": 0.9999920704147173,
+          "observations": 369
+        }
+      ],
+      "point_in_time_availability_certified": false,
+      "raw_minute_units_certified": false,
+      "retained_official_action_records": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-11-14",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE009A01021",
+          "subject": "Buy Back",
+          "symbol": "INFY"
+        }
+      ],
+      "symbol": "INFY"
+    },
+    {
+      "official_daily_regimes": [
+        {
+          "first_observed_day": "2025-01-01",
+          "isin": "INE154A01025",
+          "large_scale_shift": false,
+          "last_observed_day": "2026-06-30",
+          "max_extreme_ratio": 1.0,
+          "min_extreme_ratio": 1.0,
+          "observations": 369
+        }
+      ],
+      "point_in_time_availability_certified": false,
+      "raw_minute_units_certified": false,
+      "retained_official_action_records": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-01-06",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE154A01025",
+          "subject": "Demerger",
+          "symbol": "ITC"
+        }
+      ],
+      "symbol": "ITC"
+    },
+    {
+      "official_daily_regimes": [],
+      "point_in_time_availability_certified": false,
+      "raw_minute_units_certified": false,
+      "retained_official_action_records": [],
+      "symbol": "ITCHOTELS"
+    },
+    {
+      "official_daily_regimes": [
+        {
+          "first_observed_day": "2025-01-01",
+          "isin": "INE237A01028",
+          "large_scale_shift": true,
+          "last_observed_day": "2026-01-13",
+          "max_extreme_ratio": 0.20002900652646846,
+          "min_extreme_ratio": 0.19997467392680765,
+          "observations": 258
+        },
+        {
+          "first_observed_day": "2026-01-14",
+          "isin": "INE237A01036",
+          "large_scale_shift": false,
+          "last_observed_day": "2026-06-30",
+          "max_extreme_ratio": 1.0,
+          "min_extreme_ratio": 1.0,
+          "observations": 111
+        }
+      ],
+      "point_in_time_availability_certified": false,
+      "raw_minute_units_certified": false,
+      "retained_official_action_records": [
+        {
+          "broadcast": null,
+          "ex_date": "2026-01-14",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE237A01010",
+          "subject": "Face Value Split (Sub-Division) - From Rs 5/- Per Share To Re 1/- Per Share",
+          "symbol": "KOTAKBANK"
+        }
+      ],
+      "symbol": "KOTAKBANK"
+    },
+    {
+      "official_daily_regimes": [],
+      "point_in_time_availability_certified": false,
+      "raw_minute_units_certified": false,
+      "retained_official_action_records": [],
+      "symbol": "KWIL"
+    },
+    {
+      "official_daily_regimes": [
+        {
+          "first_observed_day": "2025-01-01",
+          "isin": "INE239A01024",
+          "large_scale_shift": true,
+          "last_observed_day": "2025-08-07",
+          "max_extreme_ratio": 0.5000232007795462,
+          "min_extreme_ratio": 0.49997681428240204,
+          "observations": 151
+        },
+        {
+          "first_observed_day": "2025-08-08",
+          "isin": "INE239A01024",
+          "large_scale_shift": false,
+          "last_observed_day": "2026-06-30",
+          "max_extreme_ratio": 1.0,
+          "min_extreme_ratio": 0.9999212598425198,
+          "observations": 218
+        }
+      ],
+      "point_in_time_availability_certified": false,
+      "raw_minute_units_certified": false,
+      "retained_official_action_records": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-08-08",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE239A01016",
+          "subject": "Bonus 1:1",
+          "symbol": "NESTLEIND"
+        }
+      ],
+      "symbol": "NESTLEIND"
+    },
+    {
+      "official_daily_regimes": [
+        {
+          "first_observed_day": "2025-01-01",
+          "isin": "INE721A01013",
+          "large_scale_shift": true,
+          "last_observed_day": "2025-01-09",
+          "max_extreme_ratio": 0.20000693745880885,
+          "min_extreme_ratio": 0.19999295985356494,
+          "observations": 7
+        },
+        {
+          "first_observed_day": "2025-01-10",
+          "isin": "INE721A01047",
+          "large_scale_shift": false,
+          "last_observed_day": "2026-06-30",
+          "max_extreme_ratio": 1.0,
+          "min_extreme_ratio": 0.9999837741359727,
+          "observations": 362
+        }
+      ],
+      "point_in_time_availability_certified": false,
+      "raw_minute_units_certified": false,
+      "retained_official_action_records": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-01-10",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE721A01013",
+          "subject": "Face Value Split (Sub-Division) - From Rs 10/- Per Share To Rs 2/- Per Share",
+          "symbol": "SHRIRAMFIN"
+        }
+      ],
+      "symbol": "SHRIRAMFIN"
+    },
+    {
+      "official_daily_regimes": [],
+      "point_in_time_availability_certified": false,
+      "raw_minute_units_certified": false,
+      "retained_official_action_records": [],
+      "symbol": "TMCV"
+    },
+    {
+      "official_daily_regimes": [
+        {
+          "first_observed_day": "2025-10-24",
+          "isin": "INE155A01022",
+          "large_scale_shift": false,
+          "last_observed_day": "2026-06-30",
+          "max_extreme_ratio": 1.0,
+          "min_extreme_ratio": 1.0,
+          "observations": 167
+        }
+      ],
+      "point_in_time_availability_certified": false,
+      "raw_minute_units_certified": false,
+      "retained_official_action_records": [
+        {
+          "broadcast": null,
+          "ex_date": "2025-10-14",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE155A01022",
+          "subject": "Demerger",
+          "symbol": "TMPV"
+        }
+      ],
+      "symbol": "TMPV"
+    },
+    {
+      "official_daily_regimes": [
+        {
+          "first_observed_day": "2025-01-01",
+          "isin": "INE849A01020",
+          "large_scale_shift": true,
+          "last_observed_day": "2026-06-03",
+          "max_extreme_ratio": 0.6667137489759597,
+          "min_extreme_ratio": 0.6666862860506181,
+          "observations": 351
+        },
+        {
+          "first_observed_day": "2026-06-04",
+          "isin": "INE849A01020",
+          "large_scale_shift": false,
+          "last_observed_day": "2026-06-30",
+          "max_extreme_ratio": 1.0,
+          "min_extreme_ratio": 1.0,
+          "observations": 18
+        }
+      ],
+      "point_in_time_availability_certified": false,
+      "raw_minute_units_certified": false,
+      "retained_official_action_records": [
+        {
+          "broadcast": null,
+          "ex_date": "2026-06-04",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE849A01012",
+          "subject": "Bonus 1:2",
+          "symbol": "TRENT"
+        }
+      ],
+      "symbol": "TRENT"
+    },
+    {
+      "official_daily_regimes": [
+        {
+          "first_observed_day": "2025-01-01",
+          "isin": "INE075A01022",
+          "large_scale_shift": false,
+          "last_observed_day": "2026-06-30",
+          "max_extreme_ratio": 1.0,
+          "min_extreme_ratio": 1.0,
+          "observations": 369
+        }
+      ],
+      "point_in_time_availability_certified": false,
+      "raw_minute_units_certified": false,
+      "retained_official_action_records": [
+        {
+          "broadcast": null,
+          "ex_date": "2026-06-05",
+          "kind": "capital_or_other",
+          "point_in_time_availability_verified": false,
+          "reported_isin": "INE075A01022",
+          "subject": "Buy Back",
+          "symbol": "WIPRO"
+        }
+      ],
+      "symbol": "WIPRO"
+    }
+  ],
+  "detail_sha256": "0178eb6c16306677fa538db5c41d24a033f5280524d9b5af41a06cdb167058cd",
+  "limitations": [
+    "Segment dates are observed dates, not certified legal or announcement effective times.",
+    "No EQ reference for temporary BE listings. Missing member-days are not interpolated.",
+    "No inverse scaling, eligibility change, TEST access or certificate of minute/volume units."
+  ],
+  "scope": "Observed EQ identities and broad price-basis shifts only; not share-factor repairs.",
+  "version": "nse_retrospective_identity_evidence_v1"
+}

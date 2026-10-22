@@ -29,7 +29,8 @@ def kill_paper(
             raise ValueError("kill control requires a running simulated PAPER session")
         config = (
             EquityPaperConfig.model_validate(row.config_json)
-            if row.config_json.get("version") == "nse_public_minute_paper_v1"
+            if row.config_json.get("version")
+            in ("nse_public_minute_paper_v1", "nse_delayed_public_minute_paper_v1")
             else PaperConfig.model_validate(row.config_json)
         )
         if config.run_id != run_id or config_hash(config) != row.config_hash:

@@ -159,7 +159,7 @@ def observe_service(
                         if not frame.empty:
                             closed = frame.loc[frame.open_time + 60_000_000 <= received]
                             if not closed.empty:
-                                latest = closed.iloc[-1]
+                                latest = closed.sort_values("open_time").iloc[-1]
                                 opening = int(latest.open_time)
                                 if last_open is None or opening > last_open:
                                     if last_open is not None and opening != last_open + 60_000_000:

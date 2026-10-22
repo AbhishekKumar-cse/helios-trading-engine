@@ -27,8 +27,8 @@ from helios.sim.loss_risk import PostgresTripStore, tripped
 paper_engine = pytest.fixture(_paper_engine.__wrapped__)
 
 
-@pytest.fixture
-def session(paper_engine, connection, tmp_path):
+@pytest.fixture(params=["strict", "delayed_public"])
+def session(paper_engine, connection, tmp_path, request):
     folder = tmp_path / "nse_recovery_fixture"
     folder.mkdir()
     identity = folder / "session.json"
@@ -44,7 +44,9 @@ def session(paper_engine, connection, tmp_path):
         ),
     )
     selected = runtime().definition
-    config = equity_paper_config(folder.name, sha256(identity), selected.alpha_id, "EXAMPLE")
+    config = equity_paper_config(
+        folder.name, sha256(identity), selected.alpha_id, "EXAMPLE", timing=request.param
+    )
     connection.execute(
         text("""INSERT INTO instruments
         (symbol,venue,base_asset,quote_asset,tick_size,lot_size,first_available_date)

@@ -172,7 +172,11 @@ class PaperRuntime:
         )
 
     def observe(self, received: int, event: int, price: Decimal) -> None:
-        if received <= self.clock or abs(received - event) > self.config.max_event_skew_us:
+        if (
+            received <= self.clock
+            or received - event > self.config.max_event_skew_us
+            or event - received > min(5_000_000, self.config.max_event_skew_us)
+        ):
             self.stop("nonmonotone_or_stale_feed", max(received, self.clock))
         self.clock, self.price = received, price
         if self.day != received // 86_400_000_000:
@@ -204,6 +208,15 @@ class PaperRuntime:
         """
         if self.store.is_tripped(self.config.run_id):
             self.stop("operator_kill", max(now, self.clock))
+        if isinstance(self.config, EquityPaperConfig) and self.config.delayed_public:
+            if any(
+                o.state in WORKING_STATES
+                and now - o.request.timestamp > self.config.max_intent_age_us
+                for o in self.oms.snapshot()
+            ):
+                self.stop("stale_or_halted_pending_intent", max(now, self.clock))
+            if self.bars and now - self.bars[-1].event_time > self.config.max_event_skew_us:
+                self.stop("delayed_candle_age_exceeded", max(now, self.clock))
         anchor = self.clock or started_at
         allowance = self.config.max_event_skew_us + (0 if self.clock else 60_000_000)
         if now < anchor or now - anchor > allowance:
@@ -335,19 +348,26 @@ class PaperRuntime:
         opened, event, price = quote
         if not self.bars or opened <= self.bars[-1].open_time:
             return
-        if opened != self.bars[-1].open_time + 60_000_000 or received < opened:
+        delayed = isinstance(self.config, EquityPaperConfig) and self.config.delayed_public
+        if (not delayed and opened != self.bars[-1].open_time + 60_000_000) or received < opened:
             self.stop("live_price_gap_or_future_clock", max(self.clock, received))
+        if delayed and received - self.bars[-1].event_time > self.config.max_event_skew_us:
+            self.stop("delayed_candle_age_exceeded", max(self.clock, received))
         self.observe(received, event, price)
         working = tuple(o for o in self.oms.snapshot() if o.state in WORKING_STATES)
         if working:
-            if isinstance(self.config, EquityPaperConfig) and any(
-                event <= order.request.timestamp for order in working
-            ):
-                self.stop("equity_quote_predates_pending_intent")
             if self.store.is_tripped(self.config.run_id) or any(
                 received - o.request.timestamp > self.config.max_intent_age_us for o in working
             ):
                 self.stop("stale_or_halted_pending_intent")
+            if isinstance(self.config, EquityPaperConfig) and any(
+                event <= order.request.timestamp for order in working
+            ):
+                if delayed:
+                    # A repeated delayed price cannot execute a newer intent. Wait
+                    # for a genuine later trade; check_health still expires intents.
+                    return
+                self.stop("equity_quote_predates_pending_intent")
             self.venue.on_public_price(
                 BarOpen(self.config.symbol, received, price, self.config.stream_id)
             )

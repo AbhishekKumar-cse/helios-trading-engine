@@ -4,6 +4,7 @@ import json
 import time
 import urllib.error
 from datetime import UTC, datetime
+from itertools import count
 from unittest.mock import MagicMock
 
 import pandas as pd
@@ -15,6 +16,7 @@ from test_loss_risk import Store
 from helios.common.config import config_hash
 from helios.common.lineage import RunContext
 from helios.equities import paper_runner
+from helios.equities.live import EquityClosedCandle
 
 
 def setup_runner(tmp_path, monkeypatch):
@@ -123,3 +125,58 @@ def test_runner_waits_for_fresh_startup_bar_without_retiming_old_prices(tmp_path
     ]
     skipped = next(r for r in events if r["event"] == "STALE_STARTUP_CANDLE_SKIPPED")
     assert skipped["open_time"] == opened
+
+
+def test_delayed_runner_accepts_delayed_candle_and_records_separate_contract(tmp_path, monkeypatch):
+    calendar, snapshot, engine, _ = setup_runner(tmp_path, monkeypatch)
+    opened = int(pd.Timestamp("2026-01-09 09:15", tz="Asia/Kolkata").value // 1000)
+    stamps = count(opened + 60_000_000 + 43_000_000, 10_000)
+    monkeypatch.setattr(paper_runner.time, "time_ns", lambda: next(stamps) * 1000)
+    raw_quote = json.dumps(
+        dict(
+            chart=dict(
+                result=[
+                    dict(
+                        meta=dict(
+                            symbol="RELIANCE.NS",
+                            currency="INR",
+                            exchangeTimezoneName="Asia/Kolkata",
+                            regularMarketTime=(opened + 61_000_000) // 1_000_000,
+                            regularMarketPrice=100.0,
+                        )
+                    )
+                ]
+            )
+        )
+    ).encode()
+    monkeypatch.setattr(paper_runner, "public_get", lambda *a: raw_quote)
+    monkeypatch.setattr(
+        paper_runner,
+        "parse_candles",
+        lambda *a: (
+            pd.DataFrame(
+                [
+                    dict(open_time=stamp, open=100, high=101, low=99, close=100, volume=1000)
+                    for stamp in (opened + 60_000_000, opened, opened - 60_000_000)
+                ]
+            ),
+            None,
+        ),
+    )
+    artifact = paper_runner.run_equity_paper(
+        "delayed_fixture",
+        calendar,
+        seconds=0.05,
+        root=tmp_path / "runs",
+        snapshot=snapshot,
+        engine=engine,
+        timing="delayed_public",
+    )
+    payload = json.loads(artifact.read_text())
+    assert payload["acceptance_scope"] == "delayed_public_simulation_only"
+    assert payload["purpose"] == "delayed_public_data_simulation"
+    assert payload["config"]["max_event_skew_us"] == 120_000_000
+    assert len(payload["bars"]) == 1 and payload["trace"]["orders"] == []
+    observed = EquityClosedCandle.model_validate(payload["bars"][0])
+    assert observed.event_time == opened + 60_000_000
+    assert observed.received_time - observed.event_time >= 43_000_000

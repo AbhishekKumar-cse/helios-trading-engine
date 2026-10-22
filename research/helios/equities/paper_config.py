@@ -13,30 +13,57 @@ from helios.sim.loss_risk import DailyRiskLimits
 from helios.sim.portfolio_risk import PositionLimits
 from helios.sim.strategy import ShareBarStrategyConfig
 
+PaperTiming = Literal["strict", "delayed_public"]
+
 
 class EquityPaperConfig(HeliosConfig):
-    version: Literal["nse_public_minute_paper_v1"] = "nse_public_minute_paper_v1"
+    version: Literal["nse_public_minute_paper_v1", "nse_delayed_public_minute_paper_v1"] = (
+        "nse_public_minute_paper_v1"
+    )
     mode: Literal[Mode.PAPER] = Mode.PAPER
     is_simulated: Literal[True] = True
-    purpose: Literal["integration_only_rejected_candidate"] = "integration_only_rejected_candidate"
+    purpose: Literal["integration_only_rejected_candidate", "delayed_public_data_simulation"] = (
+        "integration_only_rejected_candidate"
+    )
     run_id: str = Field(pattern=r"^[a-zA-Z0-9_-]{1,40}$")
     stream_id: str = Field(pattern=r"^[0-9a-f]{64}$")
     alpha_id: str
     alpha_version: int = Field(default=1, ge=1)
     symbol: str = Field(pattern=r"^[A-Z0-9&-]+$")
     interval: Literal["1m"] = "1m"
-    max_event_skew_us: int = Field(default=5_000_000, ge=0, le=5_000_000)
-    max_intent_age_us: int = Field(default=10_000_000, gt=0, le=10_000_000)
+    max_event_skew_us: int = Field(default=5_000_000, ge=0, le=120_000_000)
+    max_intent_age_us: int = Field(default=10_000_000, gt=0, le=180_000_000)
     strategy: ShareBarStrategyConfig
     risk: DailyRiskLimits
     fees: FeesConfig
     research_policy: EquityResearchPolicy
-    fill_model: Literal["later_received_public_price_proxy_v1"] = (
+    fill_model: Literal["later_received_public_price_proxy_v1", "delayed_public_price_proxy_v1"] = (
         "later_received_public_price_proxy_v1"
     )
 
+    @property
+    def delayed_public(self) -> bool:
+        return self.version == "nse_delayed_public_minute_paper_v1"
+
     @model_validator(mode="after")
     def one_simulated_inr_instrument(self) -> Self:
+        if self.delayed_public:
+            if (
+                self.purpose != "delayed_public_data_simulation"
+                or self.fill_model != "delayed_public_price_proxy_v1"
+                or self.max_event_skew_us != 120_000_000
+                or self.max_intent_age_us != 180_000_000
+            ):
+                raise ValueError(
+                    "delayed PAPER requires its fixed, explicitly labelled timing policy"
+                )
+        elif (
+            self.purpose != "integration_only_rejected_candidate"
+            or self.fill_model != "later_received_public_price_proxy_v1"
+            or self.max_event_skew_us > 5_000_000
+            or self.max_intent_age_us > 10_000_000
+        ):
+            raise ValueError("strict PAPER timing cannot be widened")
         if (
             self.strategy.mode is not Mode.PAPER
             or self.strategy.quantity_step != 1
@@ -52,10 +79,27 @@ class EquityPaperConfig(HeliosConfig):
 
 
 def equity_paper_config(
-    run_id: str, stream_id: str, alpha_id: str, symbol: str
+    run_id: str,
+    stream_id: str,
+    alpha_id: str,
+    symbol: str,
+    *,
+    timing: PaperTiming = "strict",
 ) -> EquityPaperConfig:
+    if timing not in ("strict", "delayed_public"):
+        raise ValueError("unknown PAPER timing policy")
+    delayed = timing == "delayed_public"
     policy = EquityResearchPolicy(version="nse_minute_research_v1", interval="1m")
     return EquityPaperConfig(
+        version="nse_delayed_public_minute_paper_v1" if delayed else "nse_public_minute_paper_v1",
+        purpose="delayed_public_data_simulation"
+        if delayed
+        else "integration_only_rejected_candidate",
+        fill_model="delayed_public_price_proxy_v1"
+        if delayed
+        else "later_received_public_price_proxy_v1",
+        max_event_skew_us=120_000_000 if delayed else 5_000_000,
+        max_intent_age_us=180_000_000 if delayed else 10_000_000,
         run_id=run_id,
         stream_id=stream_id,
         alpha_id=alpha_id,

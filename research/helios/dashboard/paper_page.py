@@ -35,6 +35,12 @@ def render_paper() -> None:
             st.error("PAPER checkpoints unavailable. Check the local database connection.")
             return
         run, pnl = view["run"], view["pnl"]
+        delayed = run["config_json"].get("version") == "nse_delayed_public_minute_paper_v1"
+        if delayed:
+            st.info(
+                "Delayed-data simulation · prices may arrive up to 2 minutes late. "
+                "Orders wait for a later observed trade."
+            )
         quote = run["config_json"].get("research_policy", {}).get("quote_asset", "USDT")
         st.write(
             f"Session: {run['status'].upper()} · Risk: {'HALTED' if view['halted'] else 'ARMED'}"
@@ -64,7 +70,7 @@ def render_paper() -> None:
             timestamp = datetime.fromtimestamp(pnl["ts"] / 1_000_000, UTC)
             age = max(0.0, (datetime.now(UTC) - timestamp).total_seconds())
             st.caption(f"Latest checkpoint: {timestamp.isoformat()} · age {age:.1f} seconds")
-            if run["status"] == "running" and age > 10:
+            if run["status"] == "running" and age > (120 if delayed else 10):
                 st.warning(
                     "Checkpoint is stale. A running database status is not a feed heartbeat."
                 )

@@ -21,7 +21,7 @@ from helios.common.db import get_engine
 from helios.common.lineage import PROJECT_ROOT, RunContext, git_commit, git_is_dirty
 from helios.data.equities import sha256, write_json
 from helios.equities.live import EquityClosedCandle
-from helios.equities.paper_config import equity_paper_config
+from helios.equities.paper_config import PaperTiming, equity_paper_config
 from helios.equities.public_data import parse_candles
 from helios.equities.service import IST, public_get, session_is_open
 from helios.paper.lease import PaperLease, paper_lease
@@ -42,10 +42,11 @@ def run_equity_paper(
     root: Path = Path("reports_out/equity_paper"),
     snapshot: Path = PROJECT_ROOT / "data/equities/nifty50_minutes/20261017_public_round1",
     engine: Engine | None = None,
+    timing: PaperTiming = "strict",
 ) -> Path:
     if git_is_dirty():
         raise ValueError("reported NSE PAPER execution requires clean source")
-    equity_paper_config(run_id, "0" * 64, alpha_id, symbol)
+    equity_paper_config(run_id, "0" * 64, alpha_id, symbol, timing=timing)
     manifest = json.loads((snapshot / "manifest.json").read_text())
     matches = [row for row in manifest["files"] if row["symbol"] == symbol]
     if len(matches) != 1 or matches[0]["isin"] != isin:
@@ -56,7 +57,9 @@ def run_equity_paper(
         raise ValueError("NSE PAPER smoke requires an open normal session and positive duration")
     engine = get_engine() if engine is None else engine
     with paper_lease(engine, run_id) as lease:
-        return _run_owned(run_id, calendar, seconds, symbol, isin, alpha_id, root, engine, lease)
+        return _run_owned(
+            run_id, calendar, seconds, symbol, isin, alpha_id, root, engine, lease, timing
+        )
 
 
 def _run_owned(
@@ -69,6 +72,7 @@ def _run_owned(
     root: Path,
     engine: Engine,
     lease: PaperLease,
+    timing: PaperTiming,
 ) -> Path:
     with engine.connect() as connection:
         definition = registered_definition(connection, alpha_id, 1)
@@ -95,7 +99,10 @@ def _run_owned(
             run_id=run_id,
             mode="PAPER",
             is_simulated=True,
-            purpose="integration_only_rejected_candidate",
+            purpose="delayed_public_data_simulation"
+            if timing == "delayed_public"
+            else "integration_only_rejected_candidate",
+            timing_profile=timing,
             started_time=time.time_ns() // 1000,
             symbol=symbol,
             isin=isin,
@@ -106,7 +113,7 @@ def _run_owned(
             source="public Upstox closed minutes and Yahoo timestamped last trade",
         ),
     )
-    config = equity_paper_config(run_id, sha256(identity), alpha_id, symbol)
+    config = equity_paper_config(run_id, sha256(identity), alpha_id, symbol, timing=timing)
     context = RunContext.capture(config, config.stream_id, 0, reported=True)
     store = PaperStore(engine, config, context)
     runtime = PaperRuntime(config, definition, context.code_commit, PostgresTripStore(engine))
@@ -141,7 +148,7 @@ def _run_owned(
                 frame, _ = parse_candles(raw, symbol, day, day)
                 closed = frame.loc[frame.open_time + 60_000_000 <= received]
                 if not closed.empty:
-                    latest = closed.iloc[-1]
+                    latest = closed.sort_values("open_time").iloc[-1]
                     opening = int(latest.open_time)
                     if (
                         not runtime.bars
@@ -198,6 +205,10 @@ def _run_owned(
             mode="PAPER",
             is_simulated=True,
             purpose=config.purpose,
+            timing_profile=timing,
+            acceptance_scope="delayed_public_simulation_only"
+            if config.delayed_public
+            else "strict_public_feed_integration",
             status="FAILED" if error else "FINISHED",
             error_type=type(error).__name__ if error else None,
             error_reason=str(error) if isinstance(error, PaperSafetyStop) else None,
@@ -214,6 +225,7 @@ def _run_owned(
                 "Public last trade is a proxy, not an executable quote.",
                 "Crash recovery halts/reconciles the old scope; no automatic trading resume.",
                 "No market-hours or seven-day trial claim follows from software tests.",
+                "Delayed public mode cannot establish strict-feed or broker execution acceptance.",
                 "15+5 bps per side is an unverified research cost scenario.",
             ],
         ),
@@ -232,6 +244,7 @@ def main() -> None:
     parser.add_argument("--symbol", default="RELIANCE")
     parser.add_argument("--isin", default="INE002A01018")
     parser.add_argument("--alpha-id", default="nse_minute_round1_momentum")
+    parser.add_argument("--timing", choices=("strict", "delayed_public"), default="strict")
     args = parser.parse_args()
     print(
         run_equity_paper(
@@ -241,6 +254,7 @@ def main() -> None:
             symbol=args.symbol,
             isin=args.isin,
             alpha_id=args.alpha_id,
+            timing=args.timing,
         )
     )
 

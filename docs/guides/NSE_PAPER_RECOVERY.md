@@ -26,8 +26,20 @@ changing their timestamps. The first fresh close must arrive within one minute
 plus the existing five-second skew budget. After startup, a five-second receipt
 silence or clock regression trips risk and cancels pending simulated intents.
 Stale provider event times and quote-before-intent remain terminal failures.
-The freshness limit is unchanged; a public feed that cannot meet it fails
-acceptance instead of receiving a wider limit after observing the outcome.
+These are the strict profile's limits; a public feed that cannot meet them fails
+strict acceptance. That result is retained even if a separate delayed simulation
+is subsequently requested.
+
+Under [ADR019](../decisions/ADR-019-delayed-public-paper.md), the explicit
+`--timing delayed_public` option permits a separately labelled simulation with
+120-second maximum data age and 180-second pending-intent expiry. Strict mode
+remains the default. Decisions keep their real receipt time. Older quotes never
+fill newer orders: the runner waits for a provider trade timestamp after order
+creation, with no backdating or candle-close fills. Candle age and intent expiry
+are checked independently even when another feed keeps responding. Future-clock
+tolerance stays at most five seconds. Identity, gap, ownership, kill, risk and
+recovery controls remain active. Output is labelled delayed-public simulation
+and cannot close strict-feed or promoted-trial acceptance.
 
 In the documented WSL environment, run a bounded integration session during an
 actual normal NSE session, using a unique run ID and the retained official raw

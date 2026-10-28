@@ -16,15 +16,33 @@ future row has missing return/Sharpe/trade-count values, never invented zero
 performance. Invalid accounts have no ranking. Unverified/incomplete supported
 sources produce visible notices; no stale positive measurement is substituted.
 
-The current importer covers the official daily ADR020-025 studies, the ADR026
+The daily importer covers the official daily ADR020-025 studies, the ADR026
 BSE stock-only candidate, ADR027 RELIANCE compression-breakout and ADR028
 ICICIBANK pressure-recovery research. The stock-study adapters require exact
 definition/instrument identity, both unit conventions and an independent12-account
 audit. They do not reinterpret a basket contribution as standalone performance.
-The sheet does not claim a complete project-wide trial history.
-Existing crypto/minute registered results remain in **Saved results**. New formats
-need a verified adapter before entering this sheet; unsupported schemas must not
-be guessed. No rows are promoted, models fitted or orders placed by this page.
+The tracker also joins every registered definition/version to its individual
+results and exact data snapshot in one read-only repeatable-read transaction.
+It includes crypto and NSE minute/hourly attempts, with a definition-only row
+where a registered alpha has never been evaluated. On October28 this contributes
+667 attempts and one draft, alongside22 audited daily rows:690 records total.
+These are attempts/accounts, not690 independent alphas or independent tests.
+
+Filter by market, frequency, evidence source, dataset and status. The evaluated
+instrument comes from the run's validity/protocol evidence, rather than treating
+all constituents of its input snapshot as evaluated stocks. Each attempt retains
+its split, alpha version, expression, run ID and status. Registry metrics require
+the original evaluation artifact's SHA-256 and snapshot/status identity to match.
+Changed/missing artifacts remain visible with performance withheld. INVALID rows
+keep null metrics; annual returns are never presented as total account returns.
+Normal/doubled returns come from recorded cost points only. For registry records,
+the Trades column counts recorded fill legs; daily studies retain their original
+trade convention. Units and accounting must be checked before comparing rows.
+
+The sheet does not claim a complete history of unregistered exploratory formats.
+Those need verified adapters, rather than guessed metrics. Interactive sandbox
+runs do not enter the research tracker. No rows are promoted, models fitted or
+orders placed by this page. A positive score alone never establishes eligibility.
 
 `local_state/alpha_tracker.csv` is the local derived snapshot, explicitly excluded
 by `.gitignore` along with temporary replacement files. Refresh imports verified
@@ -37,7 +55,7 @@ Refresh runs on the first tracker visit and on **Refresh from verified evidence*
 After a supported research run, update the inventory with the documented WSL Python:
 
 ```text
-PYTHONPATH=research /home/abhi/.venvs/helios/bin/python scripts/refresh_alpha_tracker.py
+PYTHONPATH=research /home/abhi/.venvs/helios-runtime-312/bin/python scripts/refresh_alpha_tracker.py
 ```
 
 Then refresh the page snapshot to see it. The dashboard does not start background

@@ -35,6 +35,14 @@ class TrackerRow:
     next_step: str
     evidence: str
     evidence_sha256: str
+    market: str = "NSE"
+    frequency: str = "1d"
+    source_kind: str = "Audited daily study"
+    version: str = ""
+    run_id: str = ""
+    expression: str = ""
+    evidence_status: str = "Hash verified"
+    trade_count_kind: str = "Study-defined trades"
 
 
 VERSIONS = {
@@ -366,7 +374,22 @@ def write_csv(path: Path, rows: list[TrackerRow]) -> None:
             temporary.unlink(missing_ok=True)
 
 
-def refresh_tracker(root: Path) -> tuple[list[TrackerRow], list[str]]:
+def refresh_tracker(
+    root: Path, *, include_registry: bool = False
+) -> tuple[list[TrackerRow], list[str]]:
     rows, issues = collect_rows(root)
+    if include_registry:
+        from helios.dashboard.registry_tracker import collect_registered
+
+        try:
+            registered, notices = collect_registered(root)
+            rows.extend(registered)
+            issues.extend(notices)
+        except Exception:
+            # Connection errors may include credentials: never render their text.
+            issues.append(
+                "Registry unavailable; showing retained audited daily studies only. "
+                "Retry refresh after database recovery."
+            )
     write_csv(root / "local_state/alpha_tracker.csv", rows)
     return rows, issues

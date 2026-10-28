@@ -104,60 +104,6 @@ def render_shell() -> str:
 
 
 def render_datasets() -> None:
-    """Display declared contracts without claiming uncollected fields are usable."""
-    import pandas as pd
+    from helios.dashboard.datasets_page import render_datasets as render_inventory
 
-    from helios.equities.field_catalog import nse_catalog
-
-    st.title("Datasets & fields")
-    st.write("Find the input, understand its meaning, then build your hypothesis.")
-    st.caption(
-        "This is HELIOS's declared field catalogue. A field definition does not guarantee "
-        "collected history or execution certification."
-    )
-    catalog = nse_catalog()
-    labels = {
-        "price_volume": "Prices & volume",
-        "fundamental": "Company filings",
-        "delivery": "Delivery",
-    }
-    states = {
-        "available_unverified": "History retained · uncertified",
-        "collection_required": "Declared fields · see research rounds for collected coverage",
-        "sample_only": "Schema sample only",
-    }
-    dataset = st.selectbox("Dataset", catalog.datasets, format_func=lambda x: labels[x.family])
-    a, b, c = st.columns(3)
-    a.metric("Market", dataset.market)
-    b.metric("Frequency", "Daily" if dataset.frequency == "daily" else "Filing events")
-    fields = [field for field in catalog.fields if field.dataset_id == dataset.dataset_id]
-    c.metric("Declared fields", len(fields))
-    st.info(states[dataset.history_status])
-    query = st.text_input("Search fields", placeholder="Try volume, profit or publication…")
-    shown = [f for f in fields if query.casefold() in (f.field_id + " " + f.description).casefold()]
-    if not shown:
-        st.info("No fields match. Try a different search.")
-        return
-    st.dataframe(
-        pd.DataFrame(
-            [
-                dict(
-                    Field=f.field_id,
-                    Meaning=f.description,
-                    Shape=f.kind,
-                    Unit=f.unit,
-                    Availability=f.availability,
-                )
-                for f in shown
-            ]
-        ),
-        hide_index=True,
-        width="stretch",
-    )
-    with st.expander("Source & field details"):
-        st.caption(f"Provider: {dataset.provider} · Contract: {dataset.dataset_id}")
-        st.link_button("View source", dataset.source_url)
-        st.json([f.model_dump(mode="json") for f in shown], expanded=False)
-    st.link_button(
-        "Explore retained NSE research", "?page=equities", icon=":material/arrow_forward:"
-    )
+    render_inventory()

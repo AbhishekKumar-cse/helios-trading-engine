@@ -1,5 +1,37 @@
 # Datasets, fields, operators and alphas
 
+## Retained-data browser (October28)
+
+Open `http://localhost:8501/?page=datasets`. The page now inventories actual
+retained collections through `dashboard.dataset_inventory`, rather than showing
+only the three declared contracts. On October28 it finds17 collections and76
+distinct physical/logical field names across NSE and crypto. Collections can
+overlap; row counts are per collection, not additive unique observations.
+
+Use Market, Data family and Frequency, then Inspect dataset and Search fields.
+Coverage includes symbols, row/file counts, dates, provider, certification/access
+limits and evidence paths. Download the collection CSV, selected field CSV or
+full metadata JSON. Refresh reads manifests and Parquet footers without scanning
+market observation pages, fitting models or opening sealed TEST values. Retained
+date ranges include quarantined/held-out storage and do not authorize research
+access outside a frozen protocol. Bulk files are not rehashed by this view;
+manifest hashes are identified as recorded references.
+
+The inventory covers vendor daily/hourly/recent-minute prices, original/repaired
+public NSE minutes, Binance bars/features, the accepted official daily panel,
+both retained profit-filing/matrix collections, delivery schema sample and Bybit
+raw order-book/trade archives. Missing raw parsers have no invented fields or
+row counts. Official panel symbols are not inferred where its footer/manifest
+does not enumerate them. A wide fundamental matrix is one logical growth field
+with instrument columns, rather than treating stock names as economic fields.
+
+Fields are classified as Price, Volume & flow, Time & availability, Quality &
+availability, Identity & lineage, Fundamental, Derived feature or Metadata.
+Observed Arrow types, manifest feature descriptions, units, lookbacks, warmups
+and availability restrictions accompany them. Existing `field_catalog` contracts
+remain unchanged, under Declared field contracts & collection gaps. Actual filing
+coverage is shown above them; a declaration is never proof of collected history.
+
 WorldQuant's public BRAIN material distinguishes datasets, data fields and
 operators. Its official training programme separately covers fundamental/model,
 price-volume, options/relationships/vector fields and newly released datasets.

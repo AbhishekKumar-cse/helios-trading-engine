@@ -210,7 +210,7 @@ def test_tracker_filters_and_pending_state_do_not_query_database(tmp_path):
         assert app.metric[2].value == "0" and len(app.dataframe[0].value) == 3
         app.text_input[0].set_value("BSE").run()
         assert len(app.dataframe[0].value) == 2
-        app.selectbox[1].set_value("Forward plans").run()
+        next(box for box in app.selectbox if box.label == "Show").set_value("Forward plans").run()
         table = app.dataframe[0].value
         assert len(table) == 1 and table["Normal %"].isna().all()
         assert not app.exception

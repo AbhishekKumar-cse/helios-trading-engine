@@ -6,13 +6,35 @@ from unittest.mock import patch
 
 from streamlit.testing.v1 import AppTest
 
+from helios.dashboard.dataset_inventory import DatasetInventory, field_info
 from helios.data.equities import sha256
 
 APP = str(Path("dashboards/streamlit/app.py").resolve())
 
+DATASETS = [
+    DatasetInventory(
+        "fixture",
+        "NSE prices fixture",
+        "NSE",
+        "Prices & volume",
+        "1d",
+        "Fixture provider",
+        "Uncertified fixture",
+        "TRAIN/VALID only",
+        3,
+        ("EQ1",),
+        "2023",
+        tuple(field_info(name, "double", "NSE") for name in ("close", "volume")),
+        (),
+        "fixture",
+        "",
+    )
+]
+
 
 def test_navigation_clears_report_and_honours_new_url_without_database():
     with (
+        patch("helios.dashboard.datasets_page.collect_inventory", return_value=(DATASETS, [])),
         patch("helios.dashboard.registry.report_html", return_value="<p>Retained report</p>"),
         patch(
             "helios.dashboard.registry.read_registry", side_effect=AssertionError("unexpected DB")
@@ -34,15 +56,18 @@ def test_navigation_clears_report_and_honours_new_url_without_database():
 
 
 def test_dataset_search_and_empty_state_do_not_run_research():
-    with patch("helios.dashboard.registry.read_registry", side_effect=AssertionError("DB read")):
+    with (
+        patch("helios.dashboard.registry.read_registry", side_effect=AssertionError("DB read")),
+        patch("helios.dashboard.datasets_page.collect_inventory", return_value=(DATASETS, [])),
+    ):
         app = AppTest.from_file(APP, default_timeout=30)
         app.query_params["page"] = "datasets"
         app.run()
-        assert not app.exception and len(app.dataframe[0].value) == 2
+        assert not app.exception and len(app.dataframe[1].value) == 2
         app.text_input[0].set_value("volume").run()
-        assert not app.exception and app.dataframe[0].value.Field.tolist() == ["volume"]
+        assert not app.exception and app.dataframe[1].value.Field.tolist() == ["volume"]
         app.text_input[0].set_value("no_such_field").run()
-        assert not app.exception and not app.dataframe
+        assert not app.exception and len(app.dataframe) == 2  # inventory + declared contracts
         assert any("No fields match" in item.value for item in app.info)
 
 

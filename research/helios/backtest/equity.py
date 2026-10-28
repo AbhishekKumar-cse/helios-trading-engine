@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from decimal import Decimal, localcontext
+from decimal import ROUND_DOWN, Decimal, localcontext
 from typing import Any
 from uuid import uuid4
 
@@ -159,7 +159,13 @@ def replay_session(
         else policy.session_slots
     )
     run_id = "nse_" + uuid4().hex[:24]
-    notional = policy.capital * policy.max_weight
+    # Carried cash can have all18 monetary decimals; fractional allocation must
+    # fit the same risk-limit precision without rounding/injecting account cash.
+    with localcontext() as context:
+        context.prec = 100
+        notional = (policy.capital * policy.max_weight).quantize(
+            Decimal("1e-18"), rounding=ROUND_DOWN
+        )
     config = EquityBacktestConfig(
         run_id=run_id,
         alpha_id=alpha_id,

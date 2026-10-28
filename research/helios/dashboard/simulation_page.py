@@ -96,7 +96,7 @@ def replay_view(run: DemoRun, cursor: int) -> dict[str, Any]:
     )
 
 
-def price_chart(view: dict[str, Any]) -> None:
+def price_chart(view: dict[str, Any], *, price_title: str = "Synthetic price / USDT") -> None:
     st.vega_lite_chart(
         spec={
             "height": 300,
@@ -110,7 +110,7 @@ def price_chart(view: dict[str, Any]) -> None:
                             "field": "low",
                             "type": "quantitative",
                             "scale": {"zero": False},
-                            "title": "Synthetic price / USDT",
+                            "title": price_title,
                         },
                         "y2": {"field": "high"},
                         "color": {
@@ -172,61 +172,72 @@ def price_chart(view: dict[str, Any]) -> None:
 
 
 def render_simulation() -> None:
-    st.html("""<style>
-    .stMainBlockContainer{max-width:1450px;padding:1.8rem 2.25rem 3rem}
-    [data-testid="stMetric"]{border:1px solid #25334a;border-radius:12px;padding:15px 18px;
-    background:linear-gradient(135deg,#132136,#0e192b)}
-    [data-testid="stMetricLabel"]{color:#a7b6ca;font-size:.85rem}
-    [data-testid="stMetricValue"]{font-size:clamp(1.1rem,2.3vw,1.8rem)}
-    .helios-eyebrow{color:#57dbc0;font-size:.75rem;font-weight:650;letter-spacing:.18em}
-    .helios-pipeline{padding:12px 16px;background:#111f32;border:1px solid #25334a;
-    border-radius:10px;color:#aac2df;font-size:.85rem;margin-bottom:20px}
-    .helios-pipeline b{color:#57dbc0}
-    </style><div class="helios-eyebrow">HELIOS / STRATEGY WORKSPACE</div>""")
-    st.title("Backtesting lab")
-    st.write("Run a strategy. Follow every fill. Watch your portfolio evolve.")
-    st.caption(
-        "SYNTHETIC DEMO · SIMULATED EXECUTION · 1h bars · generated prices, no market claims"
+    st.title("Build & simulate")
+    st.write("Choose a strategy, test an idea, understand the result.")
+    st.caption("SYNTHETIC DEMO · generated BTC prices · simulated execution · 1-hour bars")
+    settings, results = st.columns([1, 2.65], gap="large")
+    with settings:
+        with st.container(border=True):
+            st.html('<div class="workspace-step">01 / Configure your idea</div>')
+            submitted = st.button(
+                "Run simulation", type="primary", width="stretch", icon=":material/play_arrow:"
+            )
+            strategy = st.selectbox("Strategy", STRATEGIES)
+            lookback = st.slider(
+                "Signal lookback / bars",
+                1,
+                24,
+                6,
+                help="Only completed closes enter the signal. Orders fill at the next opening.",
+            )
+            formula = (
+                "1  # long after warm-up"
+                if strategy == "Buy and hold"
+                else ("-" if strategy == "Mean reversion" else "")
+                + f"sign(close - lag(close, {lookback}))"
+            )
+            st.caption("Signal preview · template notation")
+            st.code(formula, language="python", wrap_lines=True)
+            scenario = st.selectbox("Price scenario", SCENARIOS)
+            capital = st.number_input(
+                "Starting capital / USDT", min_value=100, max_value=1000000, value=10000, step=1000
+            )
+            bars = st.selectbox(
+                "Simulation length",
+                [96, 168, 336],
+                index=1,
+                format_func=lambda n: f"{n // 24} days · {n} bars",
+            )
+            with st.expander("Costs, position size & risk"):
+                allocation = st.slider("Target allocation / %", 5, 80, 25, 5)
+                loss = st.slider("Daily loss guard / %", 0.1, 20.0, 5.0, 0.1)
+                seed = st.number_input(
+                    "Random seed", min_value=0, max_value=2**32 - 1, value=42, step=1
+                )
+                st.caption("10 bps fee + 2 bps slippage per side. A loss trip blocks new orders.")
+            st.caption(
+                "Synthetic data means computer-generated prices, not actual market observations. "
+                "Use NSE research to backtest retained equity prices."
+            )
+        st.link_button(
+            "Explore NSE research",
+            "?page=equities",
+            width="stretch",
+            icon=":material/arrow_forward:",
+        )
+    options = DemoOptions(
+        strategy=strategy,
+        scenario=scenario,
+        capital=capital,
+        bars=bars,
+        allocation_pct=allocation,
+        daily_loss_pct=loss,
+        lookback=lookback,
+        seed=seed,
     )
-    st.html("""<div class="helios-pipeline">Synthetic bars &nbsp;→&nbsp; Strategy &nbsp;→&nbsp;
-    Risk checks &nbsp;→&nbsp; OMS &nbsp;→&nbsp; Paper venue &nbsp;→&nbsp;
-    <b>P&L ledger</b></div>""")
-
-    with st.expander("Simulation settings · strategy, scenario, capital & risk", expanded=False):
-        a, b, c, d = st.columns([1.3, 1.5, 1, 1])
-        strategy = a.selectbox("Strategy", STRATEGIES)
-        scenario = b.selectbox("Price scenario", SCENARIOS)
-        capital = c.number_input(
-            "Starting capital / USDT", min_value=100, max_value=1000000, value=10000, step=1000
-        )
-        bars = d.selectbox(
-            "Simulation length",
-            [96, 168, 336],
-            index=1,
-            format_func=lambda n: f"{n // 24} days · {n} bars",
-        )
-        a, b, c, d = st.columns(4)
-        allocation = a.slider("Target allocation / %", 5, 80, 25, 5)
-        loss = b.slider("Daily loss guard / %", 0.1, 20.0, 5.0, 0.1)
-        lookback = c.slider("Signal lookback / bars", 1, 24, 6)
-        seed = d.number_input("Random seed", min_value=0, max_value=2**32 - 1, value=42, step=1)
-        st.caption("Changes apply when you run a new simulation.")
-
-    submitted = st.button("Run simulation", type="primary", width="stretch")
-
     if submitted or "sandbox_run" not in st.session_state:
         try:
-            with st.spinner("Running shared strategy → risk → OMS → venue → ledger…"):
-                options = DemoOptions(
-                    strategy=strategy,
-                    scenario=scenario,
-                    capital=capital,
-                    bars=bars,
-                    allocation_pct=allocation,
-                    daily_loss_pct=loss,
-                    lookback=lookback,
-                    seed=seed,
-                )
+            with results, st.spinner("Running your simulation…"):
                 st.session_state.sandbox_run = run_demo(options)
                 st.session_state.sandbox_cursor = (
                     0 if submitted else len(st.session_state.sandbox_run.artifact.bars)
@@ -234,143 +245,173 @@ def render_simulation() -> None:
                 st.session_state.sandbox_playing = submitted
                 st.session_state.sandbox_preview = not submitted
         except Exception:
-            st.error(
-                "Simulation could not finish. Check the local app log; existing runs are kept."
-            )
+            with results:
+                st.error("The simulation could not finish. Your previous runs are kept.")
             return
+    with results:
+        if options != st.session_state.sandbox_run.options:
+            st.info("Settings changed. Select Run simulation to update these results.")
 
-    @st.fragment(run_every=0.5 if st.session_state.sandbox_playing else None)
-    def playback() -> None:
-        run = st.session_state.sandbox_run
-        total = len(run.artifact.bars)
-        playing = st.session_state.sandbox_playing
-        buttons = st.columns([1, 1, 1, 1.4, 3])
-        if buttons[0].button("Pause" if playing else "Play replay", width="stretch"):
-            if st.session_state.sandbox_cursor == total:
-                st.session_state.sandbox_cursor = 0
-            st.session_state.sandbox_preview = False
-            st.session_state.sandbox_playing = not playing
-            st.rerun()
-        if buttons[1].button("Next bar", disabled=playing, width="stretch"):
-            st.session_state.sandbox_preview = False
-            st.session_state.sandbox_cursor = min(total, st.session_state.sandbox_cursor + 1)
-        if buttons[2].button("Reset replay", width="stretch"):
-            st.session_state.sandbox_cursor = 0
-            st.session_state.sandbox_playing = False
-            st.session_state.sandbox_preview = False
-            st.rerun()
-        speed = buttons[3].selectbox(
-            "Replay speed",
-            [1, 4, 12],
-            index=1,
-            format_func=lambda n: f"{n} bars / tick",
-            label_visibility="collapsed",
-        )
-        buttons[4].caption("Animation replays a completed backend simulation; each tick is 0.5 s.")
-        if playing:
-            st.session_state.sandbox_cursor = min(total, st.session_state.sandbox_cursor + speed)
-            if st.session_state.sandbox_cursor == total:
-                st.session_state.sandbox_playing = False
+        @st.fragment(run_every=0.5 if st.session_state.sandbox_playing else None)
+        def playback() -> None:
+            run = st.session_state.sandbox_run
+            total = len(run.artifact.bars)
+            playing = st.session_state.sandbox_playing
+            # Advance only on a replay tick, never by exposing future fills.
+            if playing:
+                st.session_state.sandbox_cursor = min(
+                    total,
+                    st.session_state.sandbox_cursor + st.session_state.get("sandbox_speed", 4),
+                )
+                if st.session_state.sandbox_cursor == total:
+                    st.session_state.sandbox_playing = False
+                    st.rerun()
+            cursor = st.session_state.sandbox_cursor
+            view = replay_view(run, cursor)
+            state = (
+                "EXAMPLE RUN"
+                if st.session_state.sandbox_preview
+                else "REPLAYING"
+                if playing
+                else "COMPLETE"
+                if cursor == total
+                else "PAUSED"
+            )
+            st.html('<div class="workspace-step">02 / Review the result</div>')
+            st.subheader(run.options.strategy)
+            st.caption(
+                f"{state} · {run.options.scenario} · {run.options.bars // 24} days "
+                "· synthetic BTCUSDT"
+            )
+            columns = st.columns(5)
+            roi = view["pnl"] / run.artifact.config.strategy.capital * 100
+            columns[0].metric("Net P&L", f"{view['pnl']:+,.2f}", f"{roi:+.2f}%")
+            columns[1].metric(
+                "Equity", f"{run.artifact.config.strategy.capital + view['pnl']:,.2f}"
+            )
+            columns[2].metric("Max. drawdown", f"{view['drawdown'] * 100:.2f}%")
+            columns[3].metric("Fills", len(view["fills"]))
+            columns[4].metric("Fees", f"{view['fees']:,.2f}")
+            equity_tab, price_tab, fills_tab, risk_tab, details_tab = st.tabs(
+                ["Equity curve", "Price & fills", "Trade log", "Risk checks", "Run details"]
+            )
+            with equity_tab:
+                st.caption("Portfolio value after fees and slippage · USDT")
+                equity_chart(run, view)
+            with price_tab:
+                st.caption("Synthetic candles · ▲ buy / ▼ sell · next-opening fills")
+                if view["candles"]:
+                    price_chart(view)
+                else:
+                    st.info("Press Play replay or Next bar to reveal the first candle.")
+            with fills_tab:
+                if view["fills"]:
+                    st.dataframe(pd.DataFrame(view["fills"]), hide_index=True, width="stretch")
+                else:
+                    st.info("No fills at this point. The strategy warms up before its first order.")
+                with st.expander("Orders"):
+                    st.dataframe(pd.DataFrame(view["orders"]), hide_index=True, width="stretch")
+            with risk_tab:
+                st.write(
+                    f"Risk state: {'HALTED — daily loss guard' if view['halted'] else 'ARMED'}"
+                )
+                st.write(f"Cash: {view['cash']:,.2f} USDT · Position: {view['position']:+.6f} BTC")
+                st.write(f"Unavailable warm-up signals: {view['unavailable']}")
+                st.write(f"Rejected risk checks: {len(view['rejects'])}")
+                if view["rejects"]:
+                    st.dataframe(pd.DataFrame(view["rejects"]), hide_index=True, width="stretch")
+                st.caption("A loss trip blocks new orders. Inventory stays marked; no forced exit.")
+            with details_tab:
+                st.json(run.options.model_dump(mode="json"), expanded=False)
+                st.caption(
+                    f"Run {run.artifact.config.run_id} "
+                    f"· source {run.artifact.context.code_commit[:12]} "
+                    f"· development source dirty: {run.artifact.context.dirty}"
+                )
+                st.caption(
+                    "Synthetic demo only. No registry writes, TEST access or real orders. "
+                    "Short positions are simulated; borrowing, impact and queueing are unmodelled."
+                )
+                st.download_button(
+                    "Download simulation",
+                    run.export(),
+                    file_name=f"{run.artifact.config.run_id}.json",
+                    mime="application/json",
+                )
+            st.progress(
+                cursor / total, text=f"{cursor} / {total} bars · replay a completed simulation"
+            )
+            buttons = st.columns([1.2, 1, 1, 1])
+            if buttons[0].button("Pause" if playing else "Play replay", width="stretch"):
+                if st.session_state.sandbox_cursor == total:
+                    st.session_state.sandbox_cursor = 0
+                st.session_state.sandbox_preview = False
+                st.session_state.sandbox_playing = not playing
                 st.rerun()
-        cursor = st.session_state.sandbox_cursor
-        view = replay_view(run, cursor)
-        state = (
-            "EXAMPLE RUN"
-            if st.session_state.sandbox_preview
-            else ("REPLAYING" if playing else "COMPLETE" if cursor == total else "PAUSED")
-        )
-        st.caption(
-            f"{state} · {run.options.strategy} · {run.options.scenario} · seed {run.options.seed}"
-        )
-        st.progress(cursor / total, text=f"{cursor} / {total} simulated bars")
-        columns = st.columns(5)
-        roi = view["pnl"] / run.artifact.config.strategy.capital * 100
-        columns[0].metric("Net P&L / USDT", f"{view['pnl']:+,.2f}", f"{roi:+.2f}%")
-        columns[1].metric(
-            "Equity / USDT", f"{run.artifact.config.strategy.capital + view['pnl']:,.2f}"
-        )
-        columns[2].metric("Maximum drawdown", f"{view['drawdown'] * 100:.2f}%")
-        columns[3].metric("Simulated fills", len(view["fills"]))
-        columns[4].metric("Fees paid / USDT", f"{view['fees']:,.2f}")
-        left, right = st.columns([1.7, 1], gap="large")
-        with left:
-            st.subheader("Price & executions")
-            st.caption("BTCUSDT · synthetic candles · ▲ buy / ▼ sell · next-opening fills")
-            if view["candles"]:
-                price_chart(view)
-            else:
-                st.info("Replay reset. Press Play replay or Next bar to reveal the first candle.")
-        with right:
-            st.subheader("Portfolio equity")
-            st.caption("Net of accepted fees and slippage · bar-close marks")
-            st.vega_lite_chart(
-                pd.DataFrame(view["equity"]),
+            if buttons[1].button("Next bar", disabled=playing, width="stretch"):
+                st.session_state.sandbox_preview = False
+                st.session_state.sandbox_cursor = min(total, cursor + 1)
+                st.rerun()
+            if buttons[2].button("Reset replay", width="stretch"):
+                st.session_state.sandbox_cursor = 0
+                st.session_state.sandbox_playing = False
+                st.session_state.sandbox_preview = False
+                st.rerun()
+            buttons[3].selectbox(
+                "Replay speed",
+                [1, 4, 12],
+                index=1,
+                key="sandbox_speed",
+                format_func=lambda n: f"{n} bars / tick",
+                label_visibility="collapsed",
+            )
+            st.caption(
+                "Replay advances every 0.5 seconds. "
+                "Generated-price performance does not establish an eligible alpha."
+            )
+
+        playback()
+
+
+def equity_chart(run: DemoRun, view: dict[str, Any]) -> None:
+    st.vega_lite_chart(
+        pd.DataFrame(view["equity"]),
+        {
+            "height": 300,
+            "layer": [
                 {
-                    "height": 300,
                     "mark": {
                         "type": "area",
                         "line": {"color": "#57dbc0"},
                         "color": "#57dbc0",
-                        "opacity": 0.15,
+                        "opacity": 0.14,
                     },
                     "encoding": {
                         "x": {"field": "time", "type": "temporal", "title": None},
                         "y": {
                             "field": "equity",
                             "type": "quantitative",
-                            "title": "USDT",
+                            "title": None,
                             "scale": {"zero": False},
                             "stack": None,
                         },
                         "y2": {"datum": float(run.artifact.config.strategy.capital)},
                         "tooltip": [
                             {"field": "time", "type": "temporal"},
-                            {"field": "equity", "format": ",.2f"},
+                            {"field": "equity", "title": "Equity", "format": ",.2f"},
                         ],
                     },
-                    "config": {"background": "transparent", "view": {"stroke": None}},
                 },
-                width="stretch",
-            )
-        st.caption(
-            f"Risk: {'HALTED — daily loss guard' if view['halted'] else 'ARMED'} · "
-            f"Position: {view['position']:+.6f} BTC · Cash: {view['cash']:,.2f} USDT · "
-            "10 bps taker fee + 2 bps slippage per side"
-        )
-        tabs = st.tabs(["Fill log", "Orders", "Risk & availability", "Run details"])
-        with tabs[0]:
-            if view["fills"]:
-                st.dataframe(pd.DataFrame(view["fills"]), hide_index=True, width="stretch")
-            else:
-                st.info(
-                    "No fills at this replay time. The strategy warms up before its first order."
-                )
-        with tabs[1]:
-            st.dataframe(pd.DataFrame(view["orders"]), hide_index=True, width="stretch")
-        with tabs[2]:
-            st.write(f"Unavailable warm-up signals: {view['unavailable']}")
-            st.write(f"Rejected risk checks: {len(view['rejects'])}")
-            if view["rejects"]:
-                st.dataframe(pd.DataFrame(view["rejects"]), hide_index=True, width="stretch")
-            st.caption(
-                "A loss trip blocks new orders. Existing inventory stays marked; no forced exit."
-            )
-        with tabs[3]:
-            st.json(run.options.model_dump(mode="json"), expanded=False)
-            st.caption(
-                f"Run {run.artifact.config.run_id} · "
-                f"source {run.artifact.context.code_commit[:12]} "
-                f"· development source dirty: {run.artifact.context.dirty}"
-            )
-            st.caption(
-                "Synthetic demo only. No research registry, TEST access or real order routing. "
-                "Short positions are simulated; borrowing, impact and queueing are unmodelled."
-            )
-            st.download_button(
-                "Download full simulation JSON",
-                run.export(),
-                file_name=f"{run.artifact.config.run_id}.json",
-                mime="application/json",
-            )
-
-    playback()
+                {
+                    "mark": {"type": "rule", "color": "#8797ad", "strokeDash": [4, 4]},
+                    "encoding": {"y": {"datum": float(run.artifact.config.strategy.capital)}},
+                },
+            ],
+            "config": {
+                "background": "transparent",
+                "view": {"stroke": None},
+                "axis": {"gridColor": "#233044", "gridOpacity": 0.5},
+            },
+        },
+        width="stretch",
+    )

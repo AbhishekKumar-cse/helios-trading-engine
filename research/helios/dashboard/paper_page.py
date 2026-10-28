@@ -16,7 +16,8 @@ def display_value(value: object) -> object:
 
 
 def render_paper() -> None:
-    st.title("Paper trading")
+    st.title("Paper monitor")
+    st.write("Follow simulated sessions, positions and risk controls.")
     st.caption("PAPER · is_simulated = true · local checkpoints · refresh every 2 seconds")
     st.info(
         "Integration sessions may use a rejected candidate. This page does not imply promotion."
@@ -48,7 +49,8 @@ def render_paper() -> None:
         st.caption(
             f"Read at {datetime.now(UTC).isoformat()}; historical sessions remain historical."
         )
-        st.json(run["config_json"]["risk"], expanded=False)
+        with st.expander("Session risk limits"):
+            st.json(run["config_json"]["risk"], expanded=False)
         if run["status"] == "running":
             with st.form(f"kill:{run_id}"):
                 actor = st.text_input("Local operator", max_chars=80)

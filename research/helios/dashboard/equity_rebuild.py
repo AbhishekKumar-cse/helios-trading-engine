@@ -23,35 +23,46 @@ def render_rebuilt(snapshot: Path) -> None:
         ("protocol.json", "protocol_sha256"),
     ):
         verified_file(snapshot, name, manifest[key])
-    st.subheader("Historical membership · rebuilt minute data")
-    st.warning(
-        "Conditional research cohort. Unresolved share units are quarantined. "
-        "Daily scale checks do not certify minute prices or volumes. No promoted alpha."
-    )
+    st.caption("NSE cash equities · January 2025–June 2026 · minute observations · TRAIN / VALID")
     a, b, c = st.columns(3)
     a.metric("Historical companies with bars", len(manifest["files"]))
     b.metric("Retained actual minute bars", f"{manifest['rows']:,}")
     c.metric("Screened research bars", f"{manifest['eligible_rows']:,}")
-    st.caption("January 2025–June 2026 · TRAIN / VALID only · Original experiments retained")
     records = {r["symbol"]: r for r in manifest["files"]}
     symbols = sorted(records)
     symbol = st.selectbox("Historical company", symbols, index=symbols.index("RELIANCE"))
     record = records[symbol]
     source = verified_file(snapshot, record["path"], record["sha256"])
     bars = pd.read_parquet(source, filters=[("session_date", "<=", "2026-06-30")])
-    st.line_chart(bars.set_index("timestamp")[["source_close"]].tail(800), color="#64d6bb")
-    st.caption("Provider-observed prices in their original units; no guessed adjustment factors.")
     checks = pd.read_json(snapshot / "session_checks.json")
     selected = checks.loc[checks.symbol == symbol]
-    st.dataframe(selected.groupby("status").size().rename("Sessions"), width="stretch")
-    with st.expander("Membership, calendar and exclusions"):
-        sessions = json.loads((snapshot / "sessions.json").read_text())
-        st.dataframe(
-            pd.DataFrame([dict(day=d, **r) for d, r in sessions.items() if r["kind"] != "normal"]),
-            hide_index=True,
+    st.info("Development research only. Data and execution certification still block promotion.")
+    research, prices, quality = st.tabs(["Strategy results", "Price data", "Data quality"])
+    with research:
+        render_equity_research(symbol)
+    with prices:
+        st.subheader(f"{symbol} · minute close")
+        st.line_chart(bars.set_index("timestamp")[["source_close"]].tail(800), color="#64d6bb")
+        st.caption("Last 800 retained observations · original provider units · INR")
+    with quality:
+        st.warning(
+            "Conditional research cohort. Unresolved share units are quarantined. "
+            "Daily scale checks do not certify minute prices or volumes."
         )
-        st.dataframe(selected, hide_index=True, width="stretch")
-        st.caption("Dummy constituents are recorded before listing; no dummy prices are traded.")
-    render_equity_research(symbol)
-    st.caption(f"Snapshot {snapshot.name} · manifest SHA-256 {sha256(snapshot / 'manifest.json')}")
-    st.caption(f"Source: {snapshot.relative_to(PROJECT_ROOT)}")
+        st.dataframe(selected.groupby("status").size().rename("Sessions"), width="stretch")
+        with st.expander("Membership, calendar and exclusions"):
+            sessions = json.loads((snapshot / "sessions.json").read_text())
+            st.dataframe(
+                pd.DataFrame(
+                    [dict(day=d, **r) for d, r in sessions.items() if r["kind"] != "normal"]
+                ),
+                hide_index=True,
+            )
+            st.dataframe(selected, hide_index=True, width="stretch")
+            st.caption(
+                "Dummy constituents are recorded before listing; no dummy prices are traded."
+            )
+        st.caption(
+            f"Snapshot {snapshot.name} · manifest SHA-256 {sha256(snapshot / 'manifest.json')}"
+        )
+        st.caption(f"Source: {snapshot.relative_to(PROJECT_ROOT)}")

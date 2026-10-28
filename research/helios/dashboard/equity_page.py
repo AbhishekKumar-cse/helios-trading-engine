@@ -1,4 +1,4 @@
-"""Read-only exploration of downloaded equities and retained development fits."""
+"""NSE development backtests, downloaded prices and retained research evidence."""
 
 from __future__ import annotations
 
@@ -47,18 +47,27 @@ def read_development_bars(
 
 
 def render_equities() -> None:
-    st.caption("HELIOS · NSE EQUITIES · LOCAL RESEARCH")
     st.title("Nifty 50 research lab")
-    st.write("Real downloaded equity bars and retained LightGBM development models.")
+    st.write("Choose a strategy, test it on NSE history, understand the result.")
+    from helios.dashboard.nse_backtest_page import render_nse_backtest
+
+    render_nse_backtest(PROJECT_ROOT)
+    with st.expander("Data explorer & saved research", expanded=False):
+        render_equity_data()
+
+
+def render_equity_data() -> None:
+    """Retained data/research views stay below the interactive workspace."""
     rebuilt = sorted(
         (PROJECT_ROOT / "data/equities/nifty50_repaired").glob("*/manifest.json"), reverse=True
     )
     if rebuilt:
-        view = st.radio(
-            "Research dataset",
-            ["Rebuilt historical cohort", "Original experiments"],
-            horizontal=True,
-        )
+        with st.expander("Choose data collection"):
+            view = st.radio(
+                "Research dataset",
+                ["Rebuilt historical cohort", "Original experiments"],
+                horizontal=True,
+            )
         if view == "Rebuilt historical cohort":
             from helios.dashboard.equity_rebuild import render_rebuilt
 

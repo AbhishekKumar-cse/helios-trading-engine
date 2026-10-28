@@ -4,25 +4,22 @@ import pandas as pd
 import streamlit as st
 
 from helios.dashboard.registry import read_registry, report_html
+from helios.dashboard.workspace import render_datasets, render_shell
 
 
 def main() -> None:
     st.set_page_config(
-        page_title="HELIOS · Backtesting lab", layout="wide", initial_sidebar_state="collapsed"
+        page_title="HELIOS · Research workspace", layout="wide", initial_sidebar_state="expanded"
     )
-    st.sidebar.title("HELIOS")
-    st.sidebar.caption("Research & simulated execution")
-    default = 1 if st.query_params.get("run") or st.query_params.get("page") == "registry" else 0
-    if st.query_params.get("page") == "equities":
-        default = 3
-    page = st.sidebar.radio(
-        "Page",
-        ["Simulation", "Alpha registry", "Paper trading", "Nifty 50 equities"],
-        index=default,
-    )
-    st.sidebar.caption(
-        "Simulation is ready without a database. Registry and PAPER show retained runs."
-    )
+    page = render_shell()
+    if page == "Alpha tracker":
+        from helios.dashboard.tracker_page import render_tracker
+
+        render_tracker()
+        return
+    if page == "Datasets":
+        render_datasets()
+        return
     if page == "Simulation":
         from helios.dashboard.simulation_page import render_simulation
 
@@ -38,12 +35,8 @@ def main() -> None:
 
         render_equities()
         return
-    st.caption("HELIOS · BACKTEST RESEARCH · READ ONLY")
-    st.title("Alpha registry")
-    st.write(
-        "Browse registered definitions and retained measurements. "
-        "Selection decisions remain separate."
-    )
+    st.title("Saved results")
+    st.write("Every retained alpha and backtest, with its measured outcome.")
 
     if run := st.query_params.get("run"):
         st.link_button("Back to registry", "?page=registry")
@@ -73,8 +66,11 @@ def main() -> None:
         "Synthetic definitions are marked explicitly."
     )
 
-    search = st.text_input("Search alpha or name")
-    family = st.selectbox("Horizon family", ["All", *sorted({d["Family"] for d in definitions})])
+    search_column, family_column = st.columns([3, 1])
+    search = search_column.text_input("Search alpha or name", placeholder="Search your research…")
+    family = family_column.selectbox(
+        "Horizon family", ["All", *sorted({d["Family"] for d in definitions})]
+    )
     shown = [
         d
         for d in definitions

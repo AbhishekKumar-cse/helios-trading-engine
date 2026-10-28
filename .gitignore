@@ -33,6 +33,8 @@ htmlcov/
 build/
 dist/
 reports_out/
+/local_state/alpha_tracker.csv
+/local_state/alpha_tracker.csv.*
 checkpoints/
 *.pt
 *.ckpt

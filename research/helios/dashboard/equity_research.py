@@ -47,7 +47,7 @@ def verified_round(path: Path) -> dict[str, Any]:
 
 
 def render_equity_research(symbol: str) -> None:
-    st.subheader("Alpha research · shared engine")
+    st.subheader("Retained alpha results")
     for directory in sorted((PROJECT_ROOT / "reports_out/equity_research").glob("nse_*")):
         if (directory / "summary.json").exists() or not (
             directory / "preregistration.json"
@@ -87,8 +87,6 @@ def render_equity_research(symbol: str) -> None:
     if not paths:
         st.info("No completed research attempts for this company yet.")
         return
-    st.button("Refresh research results")
-    st.caption("Refresh reads persisted results; it does not rerun experiments.")
     selected = st.selectbox(
         "Research round",
         paths,
@@ -101,47 +99,45 @@ def render_equity_research(symbol: str) -> None:
     except (OSError, ValueError, KeyError):
         st.error("The research round could not be verified.")
         return
-    st.caption(
-        "Formula / TRAIN-only calibrated ML → strategy → risk → OMS → simulated venue → "
-        "INR ledger → costs / stress → gates → registry."
-    )
     if report.get("partial"):
         st.info(
             "Retained attempts from an unfinished round. "
             "Final source and registry audit is pending."
         )
     calibration_path = selected.parent / "ml/calibration.json"
-    try:
-        calibration = json.loads(calibration_path.read_text())
-        if (
-            report.get("calibration_hash")
-            and sha256(calibration_path) != report["calibration_hash"]
-        ):
-            raise ValueError("model calibration changed")
-        if (
-            sha256(selected.parent / "ml/model.txt") != calibration["model_sha256"]
-            or calibration["valid_observations_used_for_fit_or_calibration"]
-            or calibration["test_access"]
-        ):
-            raise ValueError("model training lineage mismatch")
-        fit, tail = st.columns(2)
-        fit.metric("TRAIN fit samples", f"{calibration['train_samples']:,}")
-        tail.metric("Separate TRAIN calibration samples", f"{calibration['calibration_samples']:,}")
-        st.caption(
-            "Frozen model fitted and calibrated before VALID. "
-            "These are training counts, not profitability scores."
-        )
-    except (OSError, ValueError, KeyError):
-        st.error("Model training evidence failed integrity verification.")
-        return
+    if calibration_path.exists() or report.get("calibration_hash"):
+        with st.expander("Model training evidence"):
+            try:
+                calibration = json.loads(calibration_path.read_text())
+                if (
+                    report.get("calibration_hash")
+                    and sha256(calibration_path) != report["calibration_hash"]
+                ):
+                    raise ValueError("model calibration changed")
+                if (
+                    sha256(selected.parent / "ml/model.txt") != calibration["model_sha256"]
+                    or calibration["valid_observations_used_for_fit_or_calibration"]
+                    or calibration["test_access"]
+                ):
+                    raise ValueError("model training lineage mismatch")
+                fit, tail = st.columns(2)
+                fit.metric("TRAIN fit samples", f"{calibration['train_samples']:,}")
+                tail.metric(
+                    "Separate TRAIN calibration samples", f"{calibration['calibration_samples']:,}"
+                )
+                st.caption(
+                    "Frozen model fitted and calibrated before VALID. "
+                    "These are training counts, not profitability scores."
+                )
+            except (OSError, ValueError, KeyError):
+                st.error("Model training evidence failed integrity verification.")
+                return
     st.caption(
         f"Frequency: {report.get('interval', '1h')} · "
         f"{len(report['results'])} retained attempts in this round"
     )
-    st.warning(
-        "Development benchmark on complete observed sessions. Missing sessions remain unknown. "
-        "Costs follow the selected round's recorded scenario. Source and execution "
-        "limitations block promotion."
+    st.caption(
+        "Recorded costs and gates apply. Missing sessions remain unknown. Development results only."
     )
     shown = [row for row in report["results"] if row["symbol"] == symbol]
     if not shown:
@@ -163,9 +159,20 @@ def render_equity_research(symbol: str) -> None:
         ),
         hide_index=True,
         width="stretch",
-        column_config={"Report": st.column_config.LinkColumn("Report", display_text="Open report")},
+        column_config={
+            "Report": st.column_config.LinkColumn("Report", display_text="View report"),
+            "Sharpe": st.column_config.NumberColumn(
+                "Sharpe",
+                format="%.2f",
+                help="Return relative to variability, after recorded costs.",
+            ),
+            "Fitness": st.column_config.NumberColumn(
+                "Fitness", format="%.2f", help="Combines Sharpe, annual return and turnover."
+            ),
+        },
     )
-    candidate = st.selectbox("Inspect executions", [row["candidate"] for row in shown])
+    st.divider()
+    candidate = st.selectbox("View candidate details", [row["candidate"] for row in shown])
     entry = next(row for row in shown if row["candidate"] == candidate)
     artifact = Path(entry["artifact"])
     try:

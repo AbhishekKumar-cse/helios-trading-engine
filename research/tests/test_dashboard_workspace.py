@@ -44,14 +44,14 @@ def test_navigation_clears_report_and_honours_new_url_without_database():
         app = AppTest.from_file(APP, default_timeout=30)
         app.query_params["run"] = "00000000-0000-0000-0000-000000000001"
         app.run()
-        assert not app.exception and app.sidebar.radio[0].value == "Alpha registry"
-        app.sidebar.radio[0].set_value("Datasets").run()
+        assert not app.exception and app.session_state["workspace_page"] == "Alpha registry"
+        next(b for b in app.sidebar.button if b.label == "Data Explorer").click().run()
         assert not app.exception and "run" not in app.query_params
         assert app.query_params["page"] == "datasets"
         # An externally opened URL must override the last sidebar selection.
         app.query_params["page"] = "paper"
         app.run()
-        assert not app.exception and app.sidebar.radio[0].value == "Paper trading"
+        assert not app.exception and app.session_state["workspace_page"] == "Paper trading"
         assert app.title[0].value == "Paper monitor"
 
 
@@ -63,11 +63,11 @@ def test_dataset_search_and_empty_state_do_not_run_research():
         app = AppTest.from_file(APP, default_timeout=30)
         app.query_params["page"] = "datasets"
         app.run()
-        assert not app.exception and len(app.dataframe[1].value) == 2
+        assert not app.exception and len(app.dataframe[0].value) == 2
         app.text_input[0].set_value("volume").run()
-        assert not app.exception and app.dataframe[1].value.Field.tolist() == ["volume"]
+        assert not app.exception and app.dataframe[0].value.Field.tolist() == ["volume"]
         app.text_input[0].set_value("no_such_field").run()
-        assert not app.exception and len(app.dataframe) == 2  # inventory + declared contracts
+        assert not app.exception and len(app.dataframe) == 1  # declared contracts only
         assert any("No fields match" in item.value for item in app.info)
 
 

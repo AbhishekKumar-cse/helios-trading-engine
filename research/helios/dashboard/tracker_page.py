@@ -10,7 +10,7 @@ from helios.dashboard.alpha_tracker import refresh_tracker
 
 
 def render_tracker() -> None:
-    st.title("Alpha tracker")
+    st.title("Alphas")
     st.write("See which signal worked on which dataset and stock—and what still needs proof.")
     st.caption(
         "Registered crypto and NSE attempts, plus audited daily and stock-specific studies. "

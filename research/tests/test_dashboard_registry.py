@@ -6,9 +6,24 @@ import pytest
 from streamlit.testing.v1 import AppTest
 from test_registry_results import registry as _registry_fixture
 
-from helios.dashboard.registry import registry_rows, report_html
+from helios.dashboard.registry import market_label, registry_rows, report_html
 
 registry = pytest.fixture(_registry_fixture.__wrapped__)
+
+
+@pytest.mark.parametrize(
+    "spec,source,expected",
+    [
+        ({}, "nse_public_minutes_v2", "nse_cash"),
+        ({"market": "binance_spot"}, "nse_official_daily", "nse_cash"),
+        ({}, "binance_spot", "binance_spot"),
+        ({}, "bybit_spot", "bybit_spot"),
+        ({"is_synthetic": True}, None, "synthetic"),
+        ({}, None, "Unspecified"),
+    ],
+)
+def test_market_uses_dataset_identity_and_keeps_missing_metadata_unknown(spec, source, expected):
+    assert market_label(spec, source) == expected
 
 
 def test_registry_includes_draft_definitions_without_invented_measurements(registry):
@@ -52,8 +67,9 @@ def test_streamlit_registry_and_filters_render_read_only_fixture():
     with patch("helios.dashboard.registry.read_registry", return_value=(definitions, attempts)):
         app = AppTest.from_file(
             str(Path("dashboards/streamlit/app.py").resolve()), default_timeout=30
-        ).run()
-        app.sidebar.radio[0].set_value("Alpha registry").run()
+        )
+        app.query_params["page"] = "registry"
+        app.run()
         assert not app.exception
         assert app.metric[0].value == "1" and len(app.dataframe[0].value) == 1
         app.text_input[0].set_value("absent").run()
@@ -66,8 +82,9 @@ def test_connection_error_does_not_expose_settings_or_traceback():
     ):
         app = AppTest.from_file(
             str(Path("dashboards/streamlit/app.py").resolve()), default_timeout=30
-        ).run()
-        app.sidebar.radio[0].set_value("Alpha registry").run()
+        )
+        app.query_params["page"] = "registry"
+        app.run()
     assert not app.exception and app.error
     assert "secret-password" not in app.error[0].value
 

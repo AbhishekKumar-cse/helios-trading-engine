@@ -11,8 +11,30 @@ from helios.registry.selection import get_selection
 from helios.sim.report import DEFAULT_REPORT_ROOT, generate_report
 
 
+def market_label(spec: dict[str, Any], source: str | None) -> str:
+    """Display retained dataset identity without assuming missing metadata means crypto."""
+    source_name = (source or "").lower()
+    if spec.get("is_synthetic") or "synthetic" in source_name:
+        return "synthetic"
+    for token, market in (
+        ("nse", "nse_cash"),
+        ("binance", "binance_spot"),
+        ("bybit", "bybit_spot"),
+    ):
+        if token in source_name:
+            return market
+    return str(spec.get("market") or "Unspecified")
+
+
 def registry_rows(connection: Connection) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     definitions, attempts = [], []
+    sources: dict[str, str] = {
+        str(snapshot): str(source)
+        for snapshot, source in connection.execute(
+            text("SELECT snapshot_id, source FROM data_snapshots")
+        ).all()
+        if source is not None
+    }
     for definition in list_alphas(connection, latest_only=False):
         results = list_results(
             connection, alpha_id=definition.alpha_id, version=definition.version, limit=10000
@@ -36,7 +58,9 @@ def registry_rows(connection: Connection) -> tuple[list[dict[str, Any]], list[di
                 Version=definition.version,
                 Name=definition.name,
                 Family=definition.horizon_family.value,
-                Market=definition.spec.get("market", "binance_spot"),
+                Market=market_label(
+                    definition.spec, sources.get(latest.snapshot_id) if latest else None
+                ),
                 Provenance=definition.provenance.value.upper(),
                 Measurement=latest.status.value if latest else "DRAFT",
                 Selection=selection.status if selection else "UNDECIDED",

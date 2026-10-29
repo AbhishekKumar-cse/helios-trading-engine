@@ -67,8 +67,9 @@ def test_paper_page_refreshes_and_renders_simulation_and_missing_data(session, c
     ):
         app = AppTest.from_file(
             str(Path("dashboards/streamlit/app.py").resolve()), default_timeout=30
-        ).run()
-        app.sidebar.radio[0].set_value("Paper trading").run()
+        )
+        app.query_params["page"] = "paper"
+        app.run()
         assert not app.exception
         assert any("is_simulated = true" in c.value for c in app.caption)
         assert "No P&L checkpoint" in app.warning[0].value
@@ -91,8 +92,9 @@ def test_paper_database_error_is_sanitized():
     ):
         app = AppTest.from_file(
             str(Path("dashboards/streamlit/app.py").resolve()), default_timeout=30
-        ).run()
-        app.sidebar.radio[0].set_value("Paper trading").run()
+        )
+        app.query_params["page"] = "paper"
+        app.run()
         assert not app.exception and app.error
         assert "secret" not in app.error[0].value
 
@@ -118,11 +120,12 @@ def test_dashboard_press_commits_audit_blocks_orders_and_cancels_pending(
     ):
         app = AppTest.from_file(
             str(Path("dashboards/streamlit/app.py").resolve()), default_timeout=30
-        ).run()
-        app.sidebar.radio[0].set_value("Paper trading").run()
+        )
+        app.query_params["page"] = "paper"
+        app.run()
         app.text_input[0].set_value("fixture_operator")
         app.text_input[1].set_value("Synthetic dashboard halt verification")
-        app.button[0].click().run()
+        next(b for b in app.button if b.label == "Halt this PAPER session").click().run()
         assert not app.exception and "committed and audited" in app.success[0].value
     assert runtime.risk.check(pending).reason.value == "HALTED"
     assert not kill_paper(

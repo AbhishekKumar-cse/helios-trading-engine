@@ -206,7 +206,7 @@ def test_tracker_filters_and_pending_state_do_not_query_database(tmp_path):
         )
         app.query_params["page"] = "tracker"
         app.run()
-        assert not app.exception and app.title[0].value == "Alpha tracker"
+        assert not app.exception and app.title[0].value == "Alphas"
         assert app.metric[2].value == "0" and len(app.dataframe[0].value) == 3
         app.text_input[0].set_value("BSE").run()
         assert len(app.dataframe[0].value) == 2

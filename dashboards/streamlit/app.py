@@ -12,6 +12,26 @@ def main() -> None:
         page_title="HELIOS · Research workspace", layout="wide", initial_sidebar_state="expanded"
     )
     page = render_shell()
+    if page == "Dashboard":
+        from helios.dashboard.home_page import render_home
+
+        render_home()
+        return
+    if page == "Template Lab":
+        from helios.dashboard.lab_page import render_lab
+
+        render_lab()
+        return
+    if page == "Tasks":
+        from helios.dashboard.tasks_page import render_tasks
+
+        render_tasks()
+        return
+    if page == "Portfolio":
+        from helios.dashboard.portfolio_page import render_portfolio
+
+        render_portfolio()
+        return
     if page == "Alpha tracker":
         from helios.dashboard.tracker_page import render_tracker
 

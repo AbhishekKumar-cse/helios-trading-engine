@@ -81,16 +81,18 @@ def test_demo_loss_guard_latches_without_opening_new_orders(tmp_path):
     assert replay_view(run, run.options.bars)["halted"]
 
 
-def test_default_page_is_populated_without_database_and_controls_replay(demo):
+def test_simulation_page_is_populated_without_database_and_controls_replay(demo):
     with (
         patch("helios.dashboard.simulation_page.run_demo", return_value=demo) as execute,
         patch("helios.dashboard.registry.read_registry", side_effect=AssertionError("DB read")),
     ):
         app = AppTest.from_file(
             str(Path("dashboards/streamlit/app.py").resolve()), default_timeout=30
-        ).run()
+        )
+        app.query_params["page"] = "simulation"
+        app.run()
         assert not app.exception
-        assert app.sidebar.radio[0].value == "Simulation"
+        assert app.query_params["page"] == "simulation"
         assert len(app.metric) == 5 and int(app.metric[3].value) > 0
         assert len(app.get("vega_lite_chart")) == 2
         next(b for b in app.button if b.label == "Reset replay").click().run()

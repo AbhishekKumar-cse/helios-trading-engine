@@ -38,7 +38,8 @@ def test_equity_page_is_read_only_and_handles_absent_downloads(tmp_path):
         app.query_params["page"] = "equities"
         app.run()
         assert not app.exception
-        assert app.sidebar.radio[0].value == "Nifty 50 equities"
+        assert app.query_params["page"] == "equities"
+        assert any(b.label == "NSE backtest" for b in app.sidebar.button)
         assert app.title[0].value == "Nifty 50 research lab"
         assert any("No completed equity download" in item.value for item in app.info)
 
@@ -90,4 +91,4 @@ def test_equity_page_renders_downloaded_prices_without_database(tmp_path):
         assert app.metric[0].value == "100"
         assert len(app.get("vega_lite_chart")) == 1
         assert len(app.dataframe[0].value) == 1
-        assert not app.button
+        assert all(button.key.startswith("nav_") for button in app.button)

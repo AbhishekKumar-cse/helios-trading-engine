@@ -47,6 +47,7 @@ class NseOptions(HeliosConfig):
     capital: Decimal = Field(default=Decimal("100000"), ge=1000, le=10000000)
     allocation_pct: int = Field(default=10, ge=5, le=80)
     compare_costs: bool = True
+    expression: str | None = Field(default=None, max_length=4096)
 
     @model_validator(mode="after")
     def development_only(self) -> Self:
@@ -171,6 +172,10 @@ def run_backtest(
         )
     if dataset.interval not in ("1m", "1h"):
         raise ValueError("only retained minute/hourly replay is supported")
+    if options.expression is not None:
+        from helios.dashboard.lab_templates import validate_session_expression
+
+        validate_session_expression(options.expression, dataset.interval)
     if sha256(dataset.path / "manifest.json") != dataset.manifest_sha256:
         raise ValueError("dataset manifest changed; refresh the dataset selection")
     policy = policy_for(dataset, options)
@@ -188,7 +193,12 @@ def run_backtest(
         raise ValueError(
             "No complete screened sessions in this range. Choose another retained range"
         )
-    signals = [template_signal(f, options.strategy, options.lookback) for f in sessions]
+    if options.expression is not None:
+        from helios.dashboard.lab_templates import expression_signal
+
+        signals = [expression_signal(f, options.expression, dataset.interval) for f in sessions]
+    else:
+        signals = [template_signal(f, options.strategy, options.lookback) for f in sessions]
     run_id = "nse_ui_" + uuid4().hex[:20]
     output = (output_root or PROJECT_ROOT / "reports_out/nse_sandbox") / run_id
     output.mkdir(parents=True, exist_ok=False)
